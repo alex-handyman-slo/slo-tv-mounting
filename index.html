@@ -12,12 +12,15 @@
         
         .step-title { font-size: 16px; font-weight: 700; margin-bottom: 12px; color: #1b5e20; text-align: center; }
         
+        /* SCROLLABLE CATEGORY LIST */
         .btn-grid { display: grid; grid-template-columns: 1fr; gap: 10px; margin-bottom: 15px; }
         .btn-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 15px; }
         
         .opt-btn { background: #2e7d32; color: #fff; border: none; padding: 14px; border-radius: 8px; font-weight: 600; font-size: 15px; cursor: pointer; text-align: center; transition: background 0.2s; }
         .opt-btn:hover { background: #1b5e20; }
-        
+        .opt-btn-sub { background: #0288d1; color: #fff; border: none; padding: 12px; border-radius: 8px; font-weight: 600; font-size: 14px; cursor: pointer; text-align: center; }
+        .opt-btn-sub:hover { background: #01579b; }
+
         .back-btn { background: #e0e0e0; color: #333; border: none; padding: 8px 15px; border-radius: 6px; font-size: 13px; cursor: pointer; margin-bottom: 15px; }
         
         .step { display: none; }
@@ -63,16 +66,60 @@
     <h1>Alex Handyman Services</h1>
     <p class="subtitle">San Luis Obispo County • Quick Button Booking</p>
 
-    <!-- STEP 1: SELECT CATEGORY -->
+    <!-- STEP 1: ALL CATEGORIES (FULL LIST) -->
     <div id="step-category" class="step active">
         <div class="step-title">Select Service Needed:</div>
         <div class="btn-grid">
             <button class="opt-btn" onclick="selectCategory('tv')">📺 TV Mounting</button>
             <button class="opt-btn" onclick="selectCategory('plumbing')">🚰 Plumbing Fixtures & Repairs</button>
+            <button class="opt-btn" onclick="selectCategory('fences')">🪵 Fences, Gates & Sheds</button>
+            <button class="opt-btn" onclick="selectCategory('concrete')">🧱 Small Concrete & Masonry Patching</button>
             <button class="opt-btn" onclick="selectCategory('painting')">🎨 Painting & Drywall Repair</button>
+            <button class="opt-btn" onclick="selectCategory('doors')">🚪 Doors & Windows Repair / Replace</button>
             <button class="opt-btn" onclick="selectCategory('furniture')">🛋️ Furniture Assembly</button>
             <button class="opt-btn" onclick="selectCategory('hanging')">🖼️ Shelves & Mirrors Hanging</button>
             <button class="opt-btn" onclick="selectCategory('smart')">🔒 Locks, Smart Home & Lights</button>
+            <button class="opt-btn" onclick="selectCategory('general')">🧹 General Home Maintenance</button>
+        </div>
+    </div>
+
+    <!-- QUESTION STEP: ARE MATERIALS PURCHASED? -->
+    <div id="step-material-question" class="step">
+        <button class="back-btn" onclick="showStep('step-category')">← Back</button>
+        <div class="step-title" id="matQuestionTitle">Do you already have the required item / materials purchased?</div>
+        <div class="btn-grid" style="margin-top: 20px;">
+            <button class="opt-btn" onclick="setMaterialAnswer('Customer Has Materials Ready')">YES — I already bought it / ready</button>
+            <button class="opt-btn-sub" onclick="setMaterialAnswer('Needs Alex to advise or purchase')">NO — Need Alex to advise / purchase for me</button>
+        </div>
+    </div>
+
+    <!-- FENCES & SHEDS STEPS -->
+    <div id="step-fences-type" class="step">
+        <button class="back-btn" onclick="showStep('step-category')">← Back</button>
+        <div class="step-title">Select Fence, Gate or Shed Service:</div>
+        <div class="btn-grid">
+            <button class="opt-btn" onclick="askMaterial(120, 'Fence Gate & Post Repair')">🪵 Fence Gate & Post Repair ($120)</button>
+            <button class="opt-btn" onclick="setSimpleJob(145, 'Shed Repair (Roof / Door / Walls)')">🛠️ Shed Repair (Roof, Door, Boards) ($145)</button>
+            <button class="opt-btn" onclick="askMaterial(350, 'New Shed Kit Assembly / Construction')">🛖 New Shed Assembly / Construction ($350)</button>
+        </div>
+        <div class="custom-sms-note">
+            Need a custom fence rebuild or large shed quote? <br>
+            <a href="sms:+12797582752?body=Hi%20Alex!%20I%20need%20a%20custom%20fence/shed%20quote:">📲 Text Alex photos for a custom quote</a>
+        </div>
+    </div>
+
+    <!-- CONCRETE STEPS -->
+    <div id="step-concrete-type" class="step">
+        <button class="back-btn" onclick="showStep('step-category')">← Back</button>
+        <div class="step-title">Select Concrete & Masonry Service:</div>
+        <div class="btn-grid">
+            <button class="opt-btn" onclick="setSimpleJob(95, 'Concrete Crack / Step Repair')">🧱 Concrete Crack & Step Patching ($95)</button>
+            <button class="opt-btn" onclick="setSimpleJob(250, 'Small Concrete Slab / Walkway Pad')">🧱 Small Concrete Slab / Pad ($250)</button>
+            <button class="opt-btn" onclick="setSimpleJob(130, 'Paver & Stone Walkway Repair')">🧱 Paver & Stone Walkway Repair ($130)</button>
+        </div>
+        <div class="custom-sms-note">
+            Need a custom masonry or concrete project? <br>
+            <a href="sms:+12797582752?body=Hi%20Alex!%20I%20have%20a%20concrete%20project%20question:">📲 Text Alex details via SMS</a>
         </div>
     </div>
 
@@ -81,12 +128,12 @@
         <button class="back-btn" onclick="showStep('step-category')">← Back</button>
         <div class="step-title">Select Plumbing Service:</div>
         <div class="btn-grid">
-            <button class="opt-btn" onclick="setSimpleJob(95, 'Faucet Replacement / Repair')">🚰 Faucet Replacement / Repair ($95)</button>
+            <button class="opt-btn" onclick="askMaterial(95, 'Faucet Replacement / Repair')">🚰 Faucet Replacement / Repair ($95)</button>
             <button class="opt-btn" onclick="setSimpleJob(65, 'P-Trap Replacement & Drain Clean')">🛠️ P-Trap Replacement / Drain Clean ($65)</button>
             <button class="opt-btn" onclick="setSimpleJob(80, 'Toilet Repair (Flapper/Valve/Leak)')">🚽 Toilet Repair (Valve, Flapper, Leaks) ($80)</button>
-            <button class="opt-btn" onclick="setSimpleJob(150, 'New Toilet Installation')">🚽 New Toilet Installation ($150)</button>
-            <button class="opt-btn" onclick="setSimpleJob(110, 'Garbage Disposal Installation')">🧼 Garbage Disposal Replacement ($110)</button>
-            <button class="opt-btn" onclick="setSimpleJob(50, 'Shower Head Replacement')">🚿 Shower Head / Sprayer Replacement ($50)</button>
+            <button class="opt-btn" onclick="askMaterial(150, 'New Toilet Installation')">🚽 New Toilet Installation ($150)</button>
+            <button class="opt-btn" onclick="askMaterial(110, 'Garbage Disposal Installation')">🧼 Garbage Disposal Replacement ($110)</button>
+            <button class="opt-btn" onclick="askMaterial(50, 'Shower Head Replacement')">🚿 Shower Head / Sprayer Replacement ($50)</button>
         </div>
         <div class="custom-sms-note">
             Don't see your specific plumbing issue? <br>
@@ -100,8 +147,8 @@
         <div class="step-title">Select Painting / Drywall Service:</div>
         <div class="btn-grid">
             <button class="opt-btn" onclick="setSimpleJob(75, 'Drywall Hole Patching')">🧱 Drywall Hole Patching ($75)</button>
-            <button class="opt-btn" onclick="setSimpleJob(120, 'Touch-up / Accent Wall Paint')">🎨 Touch-Up / Accent Wall Painting ($120)</button>
-            <button class="opt-btn" onclick="setSimpleJob(250, 'Small Room Painting (Bathroom/Hall)')">🎨 Small Room Painting ($250)</button>
+            <button class="opt-btn" onclick="askMaterial(120, 'Touch-up / Accent Wall Paint')">🎨 Touch-Up / Accent Wall Painting ($120)</button>
+            <button class="opt-btn" onclick="askMaterial(250, 'Small Room Painting (Bathroom/Hall)')">🎨 Small Room Painting ($250)</button>
             <button class="opt-btn" onclick="setSimpleJob(90, 'Baseboard / Trim Repair & Paint')">🪵 Baseboard Repair & Painting ($90)</button>
         </div>
         <div class="custom-sms-note">
@@ -110,15 +157,38 @@
         </div>
     </div>
 
-    <!-- SMART HOME STEPS -->
+    <!-- DOORS & WINDOWS STEPS -->
+    <div id="step-doors-type" class="step">
+        <button class="back-btn" onclick="showStep('step-category')">← Back</button>
+        <div class="step-title">Select Door or Window Service:</div>
+        <div class="btn-grid">
+            <button class="opt-btn" onclick="setSimpleJob(85, 'Door Adjustment / Hinge Repair')">🚪 Door Adjustment & Alignment ($85)</button>
+            <button class="opt-btn" onclick="askMaterial(160, 'New Interior/Exterior Door Installation')">🚪 New Door Installation ($160)</button>
+            <button class="opt-btn" onclick="setSimpleJob(65, 'Window Latch & Screen Repair')">🪟 Window Latch & Screen Repair ($65)</button>
+            <button class="opt-btn" onclick="askMaterial(55, 'Window Blinds / Shades Installation')">🪟 Window Blinds / Shades Install ($55)</button>
+        </div>
+    </div>
+
+    <!-- SMART HOME & LOCKS STEPS -->
     <div id="step-smart-type" class="step">
         <button class="back-btn" onclick="showStep('step-category')">← Back</button>
         <div class="step-title">Select Smart Home & Lock Service:</div>
         <div class="btn-grid">
-            <button class="opt-btn" onclick="setSimpleJob(65, 'Video Doorbell (Ring/Nest) Setup')">🔔 Video Doorbell (Ring/Nest) ($65)</button>
-            <button class="opt-btn" onclick="setSimpleJob(75, 'Smart Lock / Deadbolt Replacement')">🔐 Smart Lock / Deadbolt Change ($75)</button>
-            <button class="opt-btn" onclick="setSimpleJob(85, 'Ceiling Light Fixture Replacement')">💡 Ceiling Light Fixture ($85)</button>
-            <button class="opt-btn" onclick="setSimpleJob(120, 'Ceiling Fan Installation')">🌀 Ceiling Fan Installation ($120)</button>
+            <button class="opt-btn" onclick="askMaterial(65, 'Video Doorbell (Ring/Nest) Setup')">🔔 Video Doorbell (Ring/Nest) ($65)</button>
+            <button class="opt-btn" onclick="askMaterial(75, 'Smart Lock / Deadbolt Replacement')">🔐 Smart Lock / Deadbolt Change ($75)</button>
+            <button class="opt-btn" onclick="askMaterial(85, 'Ceiling Light Fixture Replacement')">💡 Ceiling Light Fixture ($85)</button>
+            <button class="opt-btn" onclick="askMaterial(120, 'Ceiling Fan Installation')">🌀 Ceiling Fan Installation ($120)</button>
+        </div>
+    </div>
+
+    <!-- GENERAL MAINTENANCE -->
+    <div id="step-general-type" class="step">
+        <button class="back-btn" onclick="showStep('step-category')">← Back</button>
+        <div class="step-title">Select General Maintenance Service:</div>
+        <div class="btn-grid">
+            <button class="opt-btn" onclick="setSimpleJob(60, 'Weatherstripping & Door Seals')">🚪 Weatherstripping & Weather Seals ($60)</button>
+            <button class="opt-btn" onclick="setSimpleJob(50, 'Cabinet Door & Hinge Adjustment')">🗄️ Cabinet Door & Hinge Adjustment ($50)</button>
+            <button class="opt-btn" onclick="setSimpleJob(70, 'Smoke Detector / CO Alarm Battery Replacement')">🔋 Smoke Alarm Replacement / Batteries ($70)</button>
         </div>
     </div>
 
@@ -263,11 +333,12 @@
     const scriptURL = 'https://script.google.com/macros/s/AKfycbwMqNktMvIgWEfcSyubP40-_y--L9Ysvl7aUo7gAbbOG-Dk-yB4r0IwyH4jGERHRYfIrw/exec';
     
     let jobData = { category: '', details: [], totalPrice: 0 };
+    let tempPendingJob = { price: 0, title: '' };
     let isPhoneValid = false;
     let isDateValid = false;
     let autoTimer = null;
 
-    // SETUP CALENDAR LIMITS (Min 2 hrs ahead, Max 14 days ahead)
+    // SETUP CALENDAR LIMITS
     window.onload = function() {
         let dateInput = document.getElementById('bookingDate');
         let now = new Date();
@@ -282,6 +353,19 @@
         let localMax = (new Date(maxDate.getTime() - tzOffset)).toISOString().slice(0, 16);
         dateInput.max = localMax;
     };
+
+    /* ASK MATERIAL QUESTION */
+    function askMaterial(price, title) {
+        tempPendingJob = { price: price, title: title };
+        document.getElementById('matQuestionTitle').innerText = `Do you already have the required item/materials for "${title}"?`;
+        showStep('step-material-question');
+    }
+
+    function setMaterialAnswer(answerText) {
+        jobData.totalPrice = tempPendingJob.price;
+        jobData.details = [tempPendingJob.title + ' (' + answerText + ')'];
+        finishSelection();
+    }
 
     /* GEOLOCATION FUNCTION */
     function getGPSLocation() {
@@ -303,7 +387,6 @@
                     .then(data => {
                         if (data && data.display_name) {
                             let parts = data.display_name.split(',');
-                            // Take street, city, zip
                             let shortAddr = parts.slice(0, 4).join(',').trim();
                             addrInput.value = shortAddr;
                             addrInput.classList.add('valid');
@@ -341,7 +424,6 @@
             return;
         }
 
-        // Debounce requests by 300ms
         autoTimer = setTimeout(() => {
             fetch(`https://nominatim.openstreetmap.org/search?format=json&countrycodes=us&viewbox=-121.2,35.8,-120.3,34.9&bounded=1&q=${encodeURIComponent(query)}`)
                 .then(res => res.json())
@@ -350,7 +432,6 @@
                     if (data && data.length > 0) {
                         data.slice(0, 5).forEach(item => {
                             let div = document.createElement('div');
-                            // Clean up display text
                             let cleanText = item.display_name.replace(', United States', '');
                             div.innerText = cleanText;
                             div.onclick = function() {
@@ -365,7 +446,6 @@
         }, 300);
     }
 
-    // Close suggestions when clicking outside
     document.addEventListener('click', function(e) {
         if (!e.target.closest('.address-container')) {
             document.getElementById('addressSuggestions').innerHTML = '';
@@ -426,7 +506,6 @@
         checkFormValidity();
     }
 
-    // UNLOCK / LOCK SUBMIT BUTTON
     function checkFormValidity() {
         let btn = document.getElementById('submitBtn');
         if (isPhoneValid && isDateValid) {
@@ -450,10 +529,14 @@
         jobData.category = cat;
         if (cat === 'tv') showStep('step-tv-size');
         if (cat === 'plumbing') showStep('step-plumbing-type');
+        if (cat === 'fences') showStep('step-fences-type');
+        if (cat === 'concrete') showStep('step-concrete-type');
         if (cat === 'painting') showStep('step-painting-type');
+        if (cat === 'doors') showStep('step-doors-type');
         if (cat === 'smart') showStep('step-smart-type');
         if (cat === 'furniture') showStep('step-furniture-type');
         if (cat === 'hanging') showStep('step-hanging-type');
+        if (cat === 'general') showStep('step-general-type');
     }
 
     function setSimpleJob(price, text) {
