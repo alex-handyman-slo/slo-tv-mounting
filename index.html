@@ -25,7 +25,6 @@
         
         label { display: block; margin-top: 15px; margin-bottom: 5px; font-weight: 600; font-size: 14px; }
         
-        /* DYNAMIC VALIDATION INPUT STYLES */
         input[type="text"], input[type="tel"], input[type="datetime-local"], textarea { width: 100%; padding: 12px; border: 2px solid #d32f2f; border-radius: 8px; font-size: 15px; box-sizing: border-box; background: #fff; font-family: inherit; transition: border-color 0.3s; }
         input.valid, textarea.valid { border-color: #2e7d32 !important; background-color: #f1f8e9; }
         input.optional { border-color: #ccc; }
@@ -33,6 +32,9 @@
         .field-hint { font-size: 12px; color: #d32f2f; margin-top: 4px; font-weight: 500; }
         .field-hint.valid { color: #2e7d32; }
         .info-note { font-size: 12px; color: #555; background: #fff8e1; border-left: 3px solid #ffa000; padding: 8px 10px; border-radius: 4px; margin-top: 5px; line-height: 1.3; }
+
+        .custom-sms-note { background: #e3f2fd; border: 1px dashed #0288d1; border-radius: 8px; padding: 12px; margin-top: 15px; text-align: center; font-size: 13px; color: #01579b; }
+        .custom-sms-note a { color: #0288d1; font-weight: bold; text-decoration: underline; }
 
         .price-box { background: #eef7ee; border: 2px solid #2e7d32; border-radius: 8px; padding: 15px; text-align: center; margin-top: 15px; }
         .price-title { font-size: 14px; color: #2e7d32; font-weight: 600; }
@@ -58,14 +60,61 @@
         <div class="step-title">Select Service Needed:</div>
         <div class="btn-grid">
             <button class="opt-btn" onclick="selectCategory('tv')">📺 TV Mounting</button>
+            <button class="opt-btn" onclick="selectCategory('plumbing')">🚰 Plumbing Fixtures & Repairs</button>
+            <button class="opt-btn" onclick="selectCategory('painting')">🎨 Painting & Drywall Repair</button>
             <button class="opt-btn" onclick="selectCategory('furniture')">🛋️ Furniture Assembly</button>
             <button class="opt-btn" onclick="selectCategory('hanging')">🖼️ Shelves & Mirrors Hanging</button>
-            <button class="opt-btn" onclick="selectCategory('lights')">💡 Ceiling Lights & Fans</button>
-            <button class="opt-btn" onclick="selectCategory('doors')">🚪 Doors & Windows Repair</button>
+            <button class="opt-btn" onclick="selectCategory('smart')">🔒 Locks, Smart Home & Lights</button>
         </div>
     </div>
 
-    <!-- TV STEPS -->
+    <!-- ================= PLUMBING STEPS ================= -->
+    <div id="step-plumbing-type" class="step">
+        <button class="back-btn" onclick="showStep('step-category')">← Back</button>
+        <div class="step-title">Select Plumbing Service:</div>
+        <div class="btn-grid">
+            <button class="opt-btn" onclick="setSimpleJob(95, 'Faucet Replacement / Repair')">🚰 Faucet Replacement / Repair ($95)</button>
+            <button class="opt-btn" onclick="setSimpleJob(65, 'P-Trap Replacement & Drain Clean')">🛠️ P-Trap Replacement / Drain Clean ($65)</button>
+            <button class="opt-btn" onclick="setSimpleJob(80, 'Toilet Repair (Flapper/Valve/Leak)')">🚽 Toilet Repair (Valve, Flapper, Leaks) ($80)</button>
+            <button class="opt-btn" onclick="setSimpleJob(150, 'New Toilet Installation')">🚽 New Toilet Installation ($150)</button>
+            <button class="opt-btn" onclick="setSimpleJob(110, 'Garbage Disposal Installation')">🧼 Garbage Disposal Replacement ($110)</button>
+            <button class="opt-btn" onclick="setSimpleJob(50, 'Shower Head Replacement')">🚿 Shower Head / Sprayer Replacement ($50)</button>
+        </div>
+        <div class="custom-sms-note">
+            Don't see your specific plumbing issue? <br>
+            <a href="sms:+12797582752?body=Hi%20Alex!%20I%20have%20a%20plumbing%20question:">📲 Text Alex for a custom estimate</a>
+        </div>
+    </div>
+
+    <!-- ================= PAINTING & DRYWALL STEPS ================= -->
+    <div id="step-painting-type" class="step">
+        <button class="back-btn" onclick="showStep('step-category')">← Back</button>
+        <div class="step-title">Select Painting / Drywall Service:</div>
+        <div class="btn-grid">
+            <button class="opt-btn" onclick="setSimpleJob(75, 'Drywall Hole Patching')">🧱 Drywall Hole Patching ($75)</button>
+            <button class="opt-btn" onclick="setSimpleJob(120, 'Touch-up / Accent Wall Paint')">🎨 Touch-Up / Accent Wall Painting ($120)</button>
+            <button class="opt-btn" onclick="setSimpleJob(250, 'Small Room Painting (Bathroom/Hall)')">🎨 Small Room Painting ($250)</button>
+            <button class="opt-btn" onclick="setSimpleJob(90, 'Baseboard / Trim Repair & Paint')">🪵 Baseboard Repair & Painting ($90)</button>
+        </div>
+        <div class="custom-sms-note">
+            Need a full house or custom room quote? <br>
+            <a href="sms:+12797582752?body=Hi%20Alex!%20I%20need%20a%20painting%20estimate:">📲 Text Alex photos for a quick quote</a>
+        </div>
+    </div>
+
+    <!-- ================= SMART HOME & LOCKS ================= -->
+    <div id="step-smart-type" class="step">
+        <button class="back-btn" onclick="showStep('step-category')">← Back</button>
+        <div class="step-title">Select Smart Home & Lock Service:</div>
+        <div class="btn-grid">
+            <button class="opt-btn" onclick="setSimpleJob(65, 'Video Doorbell (Ring/Nest) Setup')">🔔 Video Doorbell (Ring/Nest) ($65)</button>
+            <button class="opt-btn" onclick="setSimpleJob(75, 'Smart Lock / Deadbolt Replacement')">🔐 Smart Lock / Deadbolt Change ($75)</button>
+            <button class="opt-btn" onclick="setSimpleJob(85, 'Ceiling Light Fixture Replacement')">💡 Ceiling Light Fixture ($85)</button>
+            <button class="opt-btn" onclick="setSimpleJob(120, 'Ceiling Fan Installation')">🌀 Ceiling Fan Installation ($120)</button>
+        </div>
+    </div>
+
+    <!-- ================= TV MOUNTING STEPS ================= -->
     <div id="step-tv-size" class="step">
         <button class="back-btn" onclick="showStep('step-category')">← Back</button>
         <div class="step-title">Step 1: Select TV Size</div>
@@ -106,7 +155,7 @@
         </div>
     </div>
 
-    <!-- FURNITURE STEPS -->
+    <!-- ================= FURNITURE STEPS ================= -->
     <div id="step-furniture-type" class="step">
         <button class="back-btn" onclick="showStep('step-category')">← Back</button>
         <div class="step-title">Select Furniture Size:</div>
@@ -127,7 +176,7 @@
         </div>
     </div>
 
-    <!-- HANGING STEPS -->
+    <!-- ================= HANGING STEPS ================= -->
     <div id="step-hanging-type" class="step">
         <button class="back-btn" onclick="showStep('step-category')">← Back</button>
         <div class="step-title">Select Item to Hang:</div>
@@ -149,7 +198,7 @@
         </div>
     </div>
 
-    <!-- FINAL BOOKING FORM -->
+    <!-- ================= FINAL BOOKING FORM ================= -->
     <div id="step-final" class="step">
         <button class="back-btn" onclick="resetForm()">← Start Over</button>
         
@@ -169,7 +218,7 @@
         <!-- DATE & TIME (REQUIRED) -->
         <label for="bookingDate">Preferred Date & Time * (7:00 AM – 9:00 PM)</label>
         <input type="datetime-local" id="bookingDate" onchange="validateDateTime(this)">
-        <div id="dateHint" class="field-hint">❌ Required: Select a date within 14 days (7:00 AM - 9:00 PM)</div>
+        <div id="dateHint" class="field-hint">❌ Required: Select date & time within 14 days (7:00 AM - 9:00 PM)</div>
 
         <!-- ADDRESS (OPTIONAL WITH HINT) -->
         <label for="clientAddress">Service Address (Optional)</label>
@@ -304,18 +353,17 @@
     function selectCategory(cat) {
         jobData.category = cat;
         if (cat === 'tv') showStep('step-tv-size');
+        if (cat === 'plumbing') showStep('step-plumbing-type');
+        if (cat === 'painting') showStep('step-painting-type');
+        if (cat === 'smart') showStep('step-smart-type');
         if (cat === 'furniture') showStep('step-furniture-type');
         if (cat === 'hanging') showStep('step-hanging-type');
-        if (cat === 'lights') {
-            jobData.totalPrice = 85;
-            jobData.details = ['Ceiling Light / Fan Service'];
-            finishSelection();
-        }
-        if (cat === 'doors') {
-            jobData.totalPrice = 80;
-            jobData.details = ['Door / Window Repair Service'];
-            finishSelection();
-        }
+    }
+
+    function setSimpleJob(price, text) {
+        jobData.totalPrice = price;
+        jobData.details = [text];
+        finishSelection();
     }
 
     /* TV HANDLERS */
