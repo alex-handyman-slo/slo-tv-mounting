@@ -12,7 +12,6 @@
         
         .step-title { font-size: 16px; font-weight: 700; margin-bottom: 12px; color: #1b5e20; text-align: center; }
         
-        /* SCROLLABLE CATEGORY LIST */
         .btn-grid { display: grid; grid-template-columns: 1fr; gap: 10px; margin-bottom: 15px; }
         .btn-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 15px; }
         
@@ -36,7 +35,6 @@
         .field-hint.valid { color: #2e7d32; }
         .info-note { font-size: 12px; color: #555; background: #fff8e1; border-left: 3px solid #ffa000; padding: 8px 10px; border-radius: 4px; margin-top: 5px; line-height: 1.3; }
 
-        /* ADDRESS AUTOCOMPLETE & GEOLOCATION STYLES */
         .address-container { position: relative; }
         .geo-btn { width: 100%; background: #0288d1; color: #fff; border: none; padding: 10px; border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer; margin-bottom: 8px; display: flex; align-items: center; justify-content: center; gap: 6px; }
         .geo-btn:hover { background: #0277bd; }
@@ -66,7 +64,7 @@
     <h1>Alex Handyman Services</h1>
     <p class="subtitle">San Luis Obispo County • Quick Button Booking</p>
 
-    <!-- STEP 1: ALL CATEGORIES (FULL LIST) -->
+    <!-- STEP 1: ALL CATEGORIES -->
     <div id="step-category" class="step active">
         <div class="step-title">Select Service Needed:</div>
         <div class="btn-grid">
@@ -338,11 +336,16 @@
     let isDateValid = false;
     let autoTimer = null;
 
-    // SETUP CALENDAR LIMITS
+    // RIGID CALENDAR MIN/MAX SETUP (+2 Hours Min)
     window.onload = function() {
+        setupCalendarLimits();
+    };
+
+    function setupCalendarLimits() {
         let dateInput = document.getElementById('bookingDate');
         let now = new Date();
-        now.setHours(now.getHours() + 2);
+        // Add 2 hours from current time
+        now.setMinutes(now.getMinutes() + 120);
         
         let tzOffset = now.getTimezoneOffset() * 60000;
         let localMin = (new Date(now.getTime() - tzOffset)).toISOString().slice(0, 16);
@@ -352,7 +355,7 @@
         maxDate.setDate(maxDate.getDate() + 14);
         let localMax = (new Date(maxDate.getTime() - tzOffset)).toISOString().slice(0, 16);
         dateInput.max = localMax;
-    };
+    }
 
     /* ASK MATERIAL QUESTION */
     function askMaterial(price, title) {
@@ -490,9 +493,17 @@
         }
 
         let selected = new Date(input.value);
+        let minTime = new Date();
+        minTime.setMinutes(minTime.getMinutes() + 115); // Must be at least ~2 hrs ahead
+
         let hour = selected.getHours();
 
-        if (hour < 7 || hour >= 21) {
+        if (selected < minTime) {
+            input.classList.remove('valid');
+            hint.innerText = '❌ Please select a time at least 2 hours in advance';
+            hint.className = 'field-hint';
+            isDateValid = false;
+        } else if (hour < 7 || hour >= 21) {
             input.classList.remove('valid');
             hint.innerText = '❌ Please select a working time between 7:00 AM and 9:00 PM';
             hint.className = 'field-hint';
@@ -518,6 +529,9 @@
     function showStep(stepId) {
         document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
         document.getElementById(stepId).classList.add('active');
+        if(stepId === 'step-final') {
+            setupCalendarLimits();
+        }
     }
 
     function resetForm() {
