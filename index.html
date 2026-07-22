@@ -13,13 +13,10 @@
         .step-title { font-size: 16px; font-weight: 700; margin-bottom: 12px; color: #1b5e20; text-align: center; }
         
         .btn-grid { display: grid; grid-template-columns: 1fr; gap: 10px; margin-bottom: 15px; }
-        .btn-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
         .btn-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 15px; }
         
         .opt-btn { background: #2e7d32; color: #fff; border: none; padding: 14px; border-radius: 8px; font-weight: 600; font-size: 15px; cursor: pointer; text-align: center; transition: background 0.2s; }
         .opt-btn:hover { background: #1b5e20; }
-        .opt-btn.secondary { background: #0288d1; }
-        .opt-btn.secondary:hover { background: #0277bd; }
         
         .back-btn { background: #e0e0e0; color: #333; border: none; padding: 8px 15px; border-radius: 6px; font-size: 13px; cursor: pointer; margin-bottom: 15px; }
         
@@ -35,10 +32,12 @@
         .price-amount { font-size: 36px; font-weight: bold; color: #1b5e20; }
         .disclaimer { font-size: 11px; color: #777; margin-top: 5px; }
 
-        .submit-btn { width: 100%; background: #2e7d32; color: #fff; border: none; padding: 16px; font-size: 18px; font-weight: bold; border-radius: 8px; margin-top: 20px; cursor: pointer; }
+        .submit-btn { width: 100%; background: #2e7d32; color: #fff; border: none; padding: 16px; font-size: 18px; font-weight: bold; border-radius: 8px; margin-top: 15px; cursor: pointer; }
         .submit-btn:hover { background: #1b5e20; }
+        .submit-btn:disabled { background: #a5d6a7; cursor: not-allowed; }
 
-        /* FLOATING SMS QUESTION BUTTON */
+        .verification-note { font-size: 12px; color: #555; background: #fff8e1; border: 1px solid #ffe082; padding: 10px; border-radius: 6px; margin-top: 15px; text-align: center; line-height: 1.4; }
+
         .floating-sms { background: #e3f2fd; border: 1px solid #90caf9; border-radius: 10px; padding: 12px; margin-top: 25px; text-align: center; }
         .sms-btn { width: 100%; padding: 12px; border-radius: 8px; text-decoration: none; color: #fff; background: #0288d1; font-weight: bold; font-size: 14px; text-align: center; display: block; box-sizing: border-box; }
     </style>
@@ -61,7 +60,7 @@
         </div>
     </div>
 
-    <!-- ================= TV MOUNTING STEPS ================= -->
+    <!-- TV STEPS -->
     <div id="step-tv-size" class="step">
         <button class="back-btn" onclick="showStep('step-category')">← Back</button>
         <div class="step-title">Step 1: Select TV Size</div>
@@ -102,7 +101,7 @@
         </div>
     </div>
 
-    <!-- ================= FURNITURE STEPS ================= -->
+    <!-- FURNITURE STEPS -->
     <div id="step-furniture-type" class="step">
         <button class="back-btn" onclick="showStep('step-category')">← Back</button>
         <div class="step-title">Select Furniture Size:</div>
@@ -123,7 +122,7 @@
         </div>
     </div>
 
-    <!-- ================= HANGING STEPS ================= -->
+    <!-- HANGING STEPS -->
     <div id="step-hanging-type" class="step">
         <button class="back-btn" onclick="showStep('step-category')">← Back</button>
         <div class="step-title">Select Item to Hang:</div>
@@ -145,7 +144,7 @@
         </div>
     </div>
 
-    <!-- ================= FINAL BOOKING / ADDRESS FORM ================= -->
+    <!-- FINAL BOOKING FORM -->
     <div id="step-final" class="step">
         <button class="back-btn" onclick="resetForm()">← Start Over</button>
         
@@ -156,22 +155,26 @@
             <div class="disclaimer">*Final price confirmed upon on-site inspection if scope changes.</div>
         </div>
 
-        <label for="clientName">Your Name:</label>
-        <input type="text" id="clientName" placeholder="John Doe">
+        <label for="clientName">Your Full Name *</label>
+        <input type="text" id="clientName" placeholder="e.g. John Smith">
 
-        <label for="clientPhone">Phone Number:</label>
-        <input type="tel" id="clientPhone" placeholder="(279) 758-2752">
+        <label for="clientPhone">Phone Number * (10 digits required)</label>
+        <input type="tel" id="clientPhone" placeholder="(805) 000-0000" maxlength="14" oninput="formatPhone(this)">
 
-        <label for="clientAddress">Service Address:</label>
-        <input type="text" id="clientAddress" placeholder="123 Main St, San Luis Obispo, CA">
+        <label for="clientAddress">Service Address * (Street, City, Zip)</label>
+        <input type="text" id="clientAddress" placeholder="e.g. 123 Main St, San Luis Obispo, CA">
 
-        <label for="bookingDate">Preferred Date & Time:</label>
+        <label for="bookingDate">Preferred Date & Time * (7:00 AM – 9:00 PM)</label>
         <input type="datetime-local" id="bookingDate">
 
         <label for="clientMessage">Gate Code / Notes / Details (Optional):</label>
-        <textarea id="clientMessage" placeholder="Enter gate code, parking notes, or specific requests..."></textarea>
+        <textarea id="clientMessage" placeholder="Enter gate code, parking notes, or job details..."></textarea>
 
         <button class="submit-btn" id="submitBtn" onclick="submitBooking()">Book Appointment</button>
+
+        <div class="verification-note">
+            📌 <strong>Confirmation Policy:</strong> All appointments require a quick phone or SMS confirmation. Alex will text or call you shortly after booking to confirm project details before arrival.
+        </div>
     </div>
 
     <!-- FLOATING SMS QUESTION BOX -->
@@ -190,6 +193,39 @@
         details: [],
         totalPrice: 0
     };
+
+    // SETUP CALENDAR CONSTRAINTS (Max 14 days ahead, Min 2 hours ahead)
+    window.onload = function() {
+        let dateInput = document.getElementById('bookingDate');
+        let now = new Date();
+        
+        // Min date: now + 2 hours
+        now.setHours(now.getHours() + 2);
+        let minIso = now.toISOString().slice(0, 16);
+        dateInput.min = minIso;
+
+        // Max date: now + 14 days
+        let maxDate = new Date();
+        maxDate.setDate(maxDate.getDate() + 14);
+        let maxIso = maxDate.toISOString().slice(0, 16);
+        dateInput.max = maxIso;
+    };
+
+    // AUTOMATIC PHONE FORMATTING
+    function formatPhone(input) {
+        let numbers = input.value.replace(/\D/g, '');
+        if (numbers.length > 10) numbers = numbers.substring(0, 10);
+        
+        if (numbers.length === 0) {
+            input.value = '';
+        } else if (numbers.length <= 3) {
+            input.value = '(' + numbers;
+        } else if (numbers.length <= 6) {
+            input.value = '(' + numbers.substring(0, 3) + ') ' + numbers.substring(3);
+        } else {
+            input.value = '(' + numbers.substring(0, 3) + ') ' + numbers.substring(3, 6) + '-' + numbers.substring(6);
+        }
+    }
 
     function showStep(stepId) {
         document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
@@ -271,30 +307,59 @@
     }
 
     function submitBooking() {
-        let name = document.getElementById('clientName').value;
-        let phone = document.getElementById('clientPhone').value;
-        let address = document.getElementById('clientAddress').value;
-        let date = document.getElementById('bookingDate').value;
-        let message = document.getElementById('clientMessage').value;
-        let price = '$' + jobData.totalPrice;
+        let nameInput = document.getElementById('clientName').value.trim();
+        let phoneInput = document.getElementById('clientPhone').value.trim();
+        let addressInput = document.getElementById('clientAddress').value.trim();
+        let dateInput = document.getElementById('bookingDate').value;
+        let message = document.getElementById('clientMessage').value.trim();
         let btn = document.getElementById('submitBtn');
 
-        if (!name || !phone || !address || !date) {
-            alert('Please enter your name, phone number, address, and select a date/time.');
+        // 1. VALIDATE NAME
+        if (nameInput.length < 2) {
+            alert('Please enter your full name.');
             return;
         }
 
-        btn.innerText = 'Processing...';
+        // 2. VALIDATE PHONE (Must have 10 digits)
+        let phoneDigits = phoneInput.replace(/\D/g, '');
+        if (phoneDigits.length !== 10) {
+            alert('Please enter a valid 10-digit US phone number, e.g. (805) 123-4567');
+            return;
+        }
+
+        // 3. VALIDATE ADDRESS
+        if (addressInput.length < 7) {
+            alert('Please enter a complete service address (e.g., 123 Main St, San Luis Obispo).');
+            return;
+        }
+
+        // 4. VALIDATE DATE & WORKING HOURS (7 AM - 9 PM)
+        if (!dateInput) {
+            alert('Please select a date and time for your appointment.');
+            return;
+        }
+
+        let selectedDate = new Date(dateInput);
+        let selectedHour = selectedDate.getHours();
+
+        if (selectedHour < 7 || selectedHour >= 21) {
+            alert('Please select a time between 7:00 AM and 9:00 PM.');
+            return;
+        }
+
+        // BLOCK BUTTON AGAINST MULTIPLE CLICKS
+        btn.innerText = 'Submitting Request...';
         btn.disabled = true;
 
+        let price = '$' + jobData.totalPrice;
         let fullNote = jobData.details.join(' | ') + (message ? ' [Notes: ' + message + ']' : '');
 
         let payload = {
             type: 'booking',
-            name: name,
-            phone: phone,
-            address: address,
-            bookingDate: date,
+            name: nameInput,
+            phone: phoneInput,
+            address: addressInput,
+            bookingDate: dateInput,
             message: fullNote,
             price: price
         };
@@ -306,12 +371,11 @@
             body: JSON.stringify(payload)
         })
         .then(() => {
-            alert('Thank you, ' + name + '! Your booking request has been submitted successfully.');
-            btn.innerText = 'Book Appointment';
-            btn.disabled = false;
+            alert('Thank you, ' + nameInput + '! Your booking request has been submitted. Alex will text or call you shortly to confirm!');
+            btn.innerText = '✓ Request Sent!';
         })
         .catch(error => {
-            alert('Error submitting request. Please try again.');
+            alert('Error submitting request. Please try again or text us directly.');
             btn.innerText = 'Book Appointment';
             btn.disabled = false;
         });
