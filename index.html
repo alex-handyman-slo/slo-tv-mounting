@@ -3,232 +3,299 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Professional Handyman Services | San Luis Obispo County</title>
+    <title>Alex Handyman Services | San Luis Obispo County</title>
     <style>
         body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; margin: 0; padding: 15px; background: #f4f6f8; color: #333; }
-        .card { background: #fff; border-radius: 12px; padding: 20px; max-width: 550px; margin: 0 auto; box-shadow: 0 4px 15px rgba(0,0,0,0.08); }
+        .card { background: #fff; border-radius: 12px; padding: 20px; max-width: 500px; margin: 0 auto; box-shadow: 0 4px 15px rgba(0,0,0,0.08); position: relative; }
         h1 { font-size: 22px; text-align: center; margin-bottom: 5px; color: #1a1a1a; }
         p.subtitle { text-align: center; color: #666; font-size: 14px; margin-top: 0; margin-bottom: 20px; }
         
-        .service-btn { width: 100%; text-align: left; background: #f8f9fa; border: 1px solid #ddd; padding: 14px; margin-top: 8px; border-radius: 8px; font-weight: 600; font-size: 15px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
-        .service-btn:hover { background: #e9ecef; }
+        .step-title { font-size: 16px; font-weight: 700; margin-bottom: 12px; color: #1b5e20; text-align: center; }
         
-        .service-options { display: none; background: #fafafa; border: 1px solid #eee; border-radius: 8px; padding: 15px; margin-top: 5px; margin-bottom: 10px; }
-        .service-options.active { display: block; }
+        .btn-grid { display: grid; grid-template-columns: 1fr; gap: 10px; margin-bottom: 15px; }
+        .btn-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
+        .btn-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 15px; }
         
-        label { display: block; margin-top: 10px; margin-bottom: 5px; font-weight: 500; font-size: 14px; }
-        select, input[type="text"], input[type="tel"], input[type="datetime-local"] { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 8px; font-size: 15px; box-sizing: border-box; background: #fff; }
+        .opt-btn { background: #2e7d32; color: #fff; border: none; padding: 14px; border-radius: 8px; font-weight: 600; font-size: 15px; cursor: pointer; text-align: center; transition: background 0.2s; }
+        .opt-btn:hover { background: #1b5e20; }
+        .opt-btn.secondary { background: #0288d1; }
+        .opt-btn.secondary:hover { background: #0277bd; }
         
-        .checkbox-label { display: flex; align-items: center; font-weight: normal; margin-top: 8px; cursor: pointer; }
-        .checkbox-label input { width: auto; margin-right: 10px; transform: scale(1.2); }
-
-        .discount-block { background: #fff8e1; border: 1px dashed #ffa000; padding: 12px; border-radius: 8px; margin-top: 15px; text-align: center; }
-        .discount-btn { background: #ffa000; color: #fff; border: none; padding: 8px 15px; border-radius: 6px; font-weight: bold; cursor: pointer; margin-top: 5px; }
-        .discount-btn:hover { background: #ff8f00; }
-
-        .price-box { background: #eef7ee; border: 2px solid #2e7d32; border-radius: 8px; padding: 15px; text-align: center; margin-top: 20px; }
+        .back-btn { background: #e0e0e0; color: #333; border: none; padding: 8px 15px; border-radius: 6px; font-size: 13px; cursor: pointer; margin-bottom: 15px; }
+        
+        .step { display: none; }
+        .step.active { display: block; }
+        
+        label { display: block; margin-top: 12px; margin-bottom: 5px; font-weight: 600; font-size: 14px; }
+        input[type="text"], input[type="tel"], input[type="datetime-local"], textarea { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 8px; font-size: 15px; box-sizing: border-box; background: #fff; font-family: inherit; }
+        textarea { resize: vertical; min-height: 70px; }
+        
+        .price-box { background: #eef7ee; border: 2px solid #2e7d32; border-radius: 8px; padding: 15px; text-align: center; margin-top: 15px; }
         .price-title { font-size: 14px; color: #2e7d32; font-weight: 600; }
-        .price-amount { font-size: 34px; font-weight: bold; color: #1b5e20; }
+        .price-amount { font-size: 36px; font-weight: bold; color: #1b5e20; }
         .disclaimer { font-size: 11px; color: #777; margin-top: 5px; }
 
         .submit-btn { width: 100%; background: #2e7d32; color: #fff; border: none; padding: 16px; font-size: 18px; font-weight: bold; border-radius: 8px; margin-top: 20px; cursor: pointer; }
         .submit-btn:hover { background: #1b5e20; }
-        .submit-btn:disabled { background: #888; cursor: not-allowed; }
+
+        /* FLOATING SMS QUESTION BUTTON */
+        .floating-sms { background: #e3f2fd; border: 1px solid #90caf9; border-radius: 10px; padding: 12px; margin-top: 25px; text-align: center; }
+        .sms-btn { width: 100%; padding: 12px; border-radius: 8px; text-decoration: none; color: #fff; background: #0288d1; font-weight: bold; font-size: 14px; text-align: center; display: block; box-sizing: border-box; }
     </style>
 </head>
 <body>
 
 <div class="card">
-    <h1>Handyman Services</h1>
-    <p class="subtitle">San Luis Obispo County • Instant Estimate</p>
+    <h1>Alex Handyman Services</h1>
+    <p class="subtitle">San Luis Obispo County • Quick Button Booking</p>
 
-    <!-- TV MOUNTING -->
-    <button class="service-btn" onclick="toggleService('tvMounting')">📺 TV Mounting <span>▼</span></button>
-    <div id="tvMounting" class="service-options">
-        <label>TV Size:</label>
-        <select id="tvSize" onchange="calculatePrice()">
-            <option value="0">None selected</option>
-            <option value="80">Up to 55" ($80)</option>
-            <option value="100">56" – 75" ($100)</option>
-            <option value="120">76"+ ($120)</option>
-        </select>
-        <label>Bracket & Wall Type:</label>
-        <label class="checkbox-label"><input type="checkbox" id="tvMountNeeded" value="30" onchange="calculatePrice()"> Need Mount Bracket (+$30)</label>
-        <label class="checkbox-label"><input type="checkbox" id="tvHighWall" value="25" onchange="calculatePrice()"> Above 5 ft / Over Fireplace (+$25)</label>
-        <label class="checkbox-label"><input type="checkbox" id="tvBrickTile" value="35" onchange="calculatePrice()"> Brick, Concrete or Tile Wall (+$35)</label>
+    <!-- STEP 1: SELECT CATEGORY -->
+    <div id="step-category" class="step active">
+        <div class="step-title">Select Service Needed:</div>
+        <div class="btn-grid">
+            <button class="opt-btn" onclick="selectCategory('tv')">📺 TV Mounting</button>
+            <button class="opt-btn" onclick="selectCategory('furniture')">🛋️ Furniture Assembly</button>
+            <button class="opt-btn" onclick="selectCategory('hanging')">🖼️ Shelves & Mirrors Hanging</button>
+            <button class="opt-btn" onclick="selectCategory('lights')">💡 Ceiling Lights & Fans</button>
+            <button class="opt-btn" onclick="selectCategory('doors')">🚪 Doors & Windows Repair</button>
+        </div>
     </div>
 
-    <!-- FURNITURE ASSEMBLY -->
-    <button class="service-btn" onclick="toggleService('furniture')">🛋️ Furniture Assembly <span>▼</span></button>
-    <div id="furniture" class="service-options">
-        <label>Select Item Size / Complexity:</label>
-        <select id="furnitureType" onchange="calculatePrice()">
-            <option value="0">None selected</option>
-            <option value="45">Small Item (Chair, Nightstand, End Table) - $45</option>
-            <option value="85">Medium Item (Desk, Bookshelf, TV Stand, Bed Frame) - $85</option>
-            <option value="150">Large / Complex Item (Large Dresser, Wardrobe, Bunk Bed) - $150</option>
-        </select>
+    <!-- ================= TV MOUNTING STEPS ================= -->
+    <div id="step-tv-size" class="step">
+        <button class="back-btn" onclick="showStep('step-category')">← Back</button>
+        <div class="step-title">Step 1: Select TV Size</div>
+        <div class="btn-grid">
+            <button class="opt-btn" onclick="setTvSize(80, 'Up to 50&quot;')">Up to 50" ($80)</button>
+            <button class="opt-btn" onclick="setTvSize(100, '51&quot; – 65&quot;')">51" – 65" ($100)</button>
+            <button class="opt-btn" onclick="setTvSize(120, '66&quot; – 100&quot;')">66" – 100" ($120)</button>
+        </div>
     </div>
 
-    <!-- HANGING & MOUNTING -->
-    <button class="service-btn" onclick="toggleService('hanging')">🖼️ Shelves, Mirrors & Blinds <span>▼</span></button>
-    <div id="hanging" class="service-options">
-        <label class="checkbox-label"><input type="checkbox" id="hangShelves" value="40" onchange="calculatePrice()"> Wall Shelves Installation ($40)</label>
-        <label class="checkbox-label"><input type="checkbox" id="hangMirror" value="50" onchange="calculatePrice()"> Heavy Mirror / Picture Hanging ($50)</label>
-        <label class="checkbox-label"><input type="checkbox" id="hangBlinds" value="35" onchange="calculatePrice()"> Window Blinds / Curtain Rods ($35 per window)</label>
+    <div id="step-tv-wall" class="step">
+        <button class="back-btn" onclick="showStep('step-tv-size')">← Back</button>
+        <div class="step-title">Step 2: Select Wall Type</div>
+        <div class="btn-grid">
+            <button class="opt-btn" onclick="setTvWall(0, 'Drywall')">Drywall / Sheetrock</button>
+            <button class="opt-btn" onclick="setTvWall(15, 'Wood Studs')">Wood Wall / Studs (+$15)</button>
+            <button class="opt-btn" onclick="setTvWall(30, 'Brick / Concrete')">Brick / Concrete (+$30)</button>
+            <button class="opt-btn" onclick="setTvWall(45, 'Tile / Marble')">Tile / Marble Wall (+$45)</button>
+        </div>
     </div>
 
-    <!-- LIGHTING & FANS -->
-    <button class="service-btn" onclick="toggleService('electrical')">💡 Ceiling Lights & Fans <span>▼</span></button>
-    <div id="electrical" class="service-options">
-        <label class="checkbox-label"><input type="checkbox" id="lightFixture" value="75" onchange="calculatePrice()"> Ceiling Light Fixture Replacement ($75)</label>
-        <label class="checkbox-label"><input type="checkbox" id="ceilingFan" value="120" onchange="calculatePrice()"> Ceiling Fan Installation ($120)</label>
-        <label class="checkbox-label"><input type="checkbox" id="videoDoorbell" value="65" onchange="calculatePrice()"> Video Doorbell (Ring/Nest) Installation ($65)</label>
-        <label class="checkbox-label"><input type="checkbox" id="acRemote" value="35" onchange="calculatePrice()"> AC Remote Control Replacement/Setup ($35)</label>
+    <div id="step-tv-height" class="step">
+        <button class="back-btn" onclick="showStep('step-tv-wall')">← Back</button>
+        <div class="step-title">Step 3: Mounting Height</div>
+        <div class="btn-grid">
+            <button class="opt-btn" onclick="setTvHeight(0, 'Standard Height')">Standard Eye Level (Up to 5 ft)</button>
+            <button class="opt-btn" onclick="setTvHeight(25, 'Above Fireplace / High Wall')">Above Fireplace / High Wall (+$25)</button>
+        </div>
     </div>
 
-    <!-- PLUMBING -->
-    <button class="service-btn" onclick="toggleService('plumbing')">🚰 Plumbing & Fixtures <span>▼</span></button>
-    <div id="plumbing" class="service-options">
-        <label class="checkbox-label"><input type="checkbox" id="faucetReplace" value="95" onchange="calculatePrice()"> Faucet / Sink Replacement ($95)</label>
-        <label class="checkbox-label"><input type="checkbox" id="pTrapReplace" value="60" onchange="calculatePrice()"> P-Trap / Drain Pipe Replacement ($60)</label>
-        <label class="checkbox-label"><input type="checkbox" id="grabBars" value="50" onchange="calculatePrice()"> Shower / Bathroom Safety Grab Bar ($50)</label>
+    <div id="step-tv-extras" class="step">
+        <button class="back-btn" onclick="showStep('step-tv-height')">← Back</button>
+        <div class="step-title">Step 4: Bracket & Wiring Options</div>
+        <div class="btn-grid">
+            <button class="opt-btn" onclick="setTvExtras(0, 0, 'Customer Bracket')">I have my own mount bracket</button>
+            <button class="opt-btn" onclick="setTvExtras(30, 0, 'Need Mount Bracket')">Provide Tilting Bracket (+$30)</button>
+            <button class="opt-btn" onclick="setTvExtras(30, 40, 'Bracket + In-Wall Cable Hiding')">Provide Bracket & Hide Wires In Wall (+$70)</button>
+        </div>
     </div>
 
-    <!-- DOORS & WINDOWS -->
-    <button class="service-btn" onclick="toggleService('doorsWindows')">🚪 Doors & Windows Repair <span>▼</span></button>
-    <div id="doorsWindows" class="service-options">
-        <label class="checkbox-label"><input type="checkbox" id="doorRepair" value="75" onchange="calculatePrice()"> Door Repair / Realignment / Lock Change ($75)</label>
-        <label class="checkbox-label"><input type="checkbox" id="windowRepair" value="80" onchange="calculatePrice()"> Window Repair / Screen Replacement ($80)</label>
-        <label class="checkbox-label"><input type="checkbox" id="windowInstall" value="200" onchange="calculatePrice()"> New Window Installation ($200)</label>
+    <!-- ================= FURNITURE STEPS ================= -->
+    <div id="step-furniture-type" class="step">
+        <button class="back-btn" onclick="showStep('step-category')">← Back</button>
+        <div class="step-title">Select Furniture Size:</div>
+        <div class="btn-grid">
+            <button class="opt-btn" onclick="setFurnitureType(45, 'Small Item (Chair, Nightstand)')">Small (Chair, Nightstand, Table) - $45</button>
+            <button class="opt-btn" onclick="setFurnitureType(85, 'Medium Item (Desk, Bed, TV Stand)')">Medium (Desk, Bed Frame, TV Stand) - $85</button>
+            <button class="opt-btn" onclick="setFurnitureType(150, 'Large Item (Dresser, Wardrobe)')">Large (Large Dresser, Wardrobe) - $150</button>
+        </div>
     </div>
 
-    <!-- PAINTING & DRYWALL -->
-    <button class="service-btn" onclick="toggleService('painting')">🎨 Interior Painting & Drywall Patch <span>▼</span></button>
-    <div id="painting" class="service-options">
-        <label>Room Painting (Includes Minor Drywall Patching):</label>
-        <select id="paintingType" onchange="calculatePrice()">
-            <option value="0">None selected</option>
-            <option value="120">Touch-up / Accent Wall ($120)</option>
-            <option value="250">Small Room (Bathroom / Hallway) ($250)</option>
-            <option value="450">Medium Room (Bedroom / Kitchen) ($450)</option>
-        </select>
+    <div id="step-furniture-qty" class="step">
+        <button class="back-btn" onclick="showStep('step-furniture-type')">← Back</button>
+        <div class="step-title">Select Quantity:</div>
+        <div class="btn-grid-3">
+            <button class="opt-btn" onclick="setFurnitureQty(1)">1 Item</button>
+            <button class="opt-btn" onclick="setFurnitureQty(2)">2 Items</button>
+            <button class="opt-btn" onclick="setFurnitureQty(3)">3+ Items</button>
+        </div>
     </div>
 
-    <!-- PROMO DISCOUNT -->
-    <div class="discount-block">
-        <strong>First-Time Client?</strong>
-        <div style="font-size: 13px; color: #555;">Get $15 OFF your first booking!</div>
-        <button class="discount-btn" id="promoBtn" onclick="applyDiscount()">Claim $15 Discount</button>
+    <!-- ================= HANGING STEPS ================= -->
+    <div id="step-hanging-type" class="step">
+        <button class="back-btn" onclick="showStep('step-category')">← Back</button>
+        <div class="step-title">Select Item to Hang:</div>
+        <div class="btn-grid">
+            <button class="opt-btn" onclick="setHangingType(40, 'Wall Shelf')">Wall Shelves ($40 ea)</button>
+            <button class="opt-btn" onclick="setHangingType(50, 'Heavy Mirror / Large Picture')">Heavy Mirror / Large Picture ($50 ea)</button>
+            <button class="opt-btn" onclick="setHangingType(35, 'Blinds / Curtain Rod')">Window Blinds / Curtain Rods ($35 ea)</button>
+        </div>
     </div>
 
-    <!-- PRICE BOX -->
-    <div class="price-box">
-        <div class="price-title">Estimated Total:</div>
-        <div class="price-amount" id="totalPrice">$0</div>
-        <div class="disclaimer">*Note: Final price may vary if project scope or item dimensions differ upon inspection.</div>
+    <div id="step-hanging-qty" class="step">
+        <button class="back-btn" onclick="showStep('step-hanging-type')">← Back</button>
+        <div class="step-title">How many items?</div>
+        <div class="btn-grid-3">
+            <button class="opt-btn" onclick="setHangingQty(1)">1</button>
+            <button class="opt-btn" onclick="setHangingQty(2)">2</button>
+            <button class="opt-btn" onclick="setHangingQty(3)">3</button>
+            <button class="opt-btn" onclick="setHangingQty(4)">4+</button>
+        </div>
     </div>
 
-    <!-- CLIENT INFO -->
-    <label for="clientName">Your Name:</label>
-    <input type="text" id="clientName" placeholder="John Doe">
+    <!-- ================= FINAL BOOKING / ADDRESS FORM ================= -->
+    <div id="step-final" class="step">
+        <button class="back-btn" onclick="resetForm()">← Start Over</button>
+        
+        <div class="price-box">
+            <div class="price-title">Calculated Estimate:</div>
+            <div class="price-amount" id="totalPrice">$0</div>
+            <div id="summaryText" style="font-size: 13px; color: #444; margin-top: 8px; font-weight: 600;"></div>
+            <div class="disclaimer">*Final price confirmed upon on-site inspection if scope changes.</div>
+        </div>
 
-    <label for="clientPhone">Phone Number:</label>
-    <input type="tel" id="clientPhone" placeholder="(805) 000-0000">
+        <label for="clientName">Your Name:</label>
+        <input type="text" id="clientName" placeholder="John Doe">
 
-    <label for="bookingDate">Preferred Date & Time:</label>
-    <input type="datetime-local" id="bookingDate">
+        <label for="clientPhone">Phone Number:</label>
+        <input type="tel" id="clientPhone" placeholder="(279) 758-2752">
 
-    <button class="submit-btn" id="submitBtn" onclick="submitBooking()">Book Appointment</button>
+        <label for="clientAddress">Service Address:</label>
+        <input type="text" id="clientAddress" placeholder="123 Main St, San Luis Obispo, CA">
+
+        <label for="bookingDate">Preferred Date & Time:</label>
+        <input type="datetime-local" id="bookingDate">
+
+        <label for="clientMessage">Gate Code / Notes / Details (Optional):</label>
+        <textarea id="clientMessage" placeholder="Enter gate code, parking notes, or specific requests..."></textarea>
+
+        <button class="submit-btn" id="submitBtn" onclick="submitBooking()">Book Appointment</button>
+    </div>
+
+    <!-- FLOATING SMS QUESTION BOX -->
+    <div class="floating-sms">
+        <div style="font-size: 13px; font-weight: 600; color: #0d47a1; margin-bottom: 8px;">Have a question or need a custom quote?</div>
+        <a href="sms:+12797582752?body=Hi%20Alex!%20I%20have%20a%20question%20about%20a%20handyman%20project:" class="sms-btn">📱 Text Alex Directly via SMS</a>
+    </div>
+
 </div>
 
 <script>
     const scriptURL = 'https://script.google.com/macros/s/AKfycbwMqNktMvIgWEfcSyubP40-_y--L9Ysvl7aUo7gAbbOG-Dk-yB4r0IwyH4jGERHRYfIrw/exec';
-    let discountAmount = 0;
+    
+    let jobData = {
+        category: '',
+        details: [],
+        totalPrice: 0
+    };
 
-    function toggleService(id) {
-        let element = document.getElementById(id);
-        element.classList.toggle('active');
+    function showStep(stepId) {
+        document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
+        document.getElementById(stepId).classList.add('active');
     }
 
-    function applyDiscount() {
-        if (discountAmount === 0) {
-            discountAmount = 15;
-            document.getElementById('promoBtn').innerText = '✓ $15 Discount Applied!';
-            document.getElementById('promoBtn').style.background = '#2e7d32';
-            document.getElementById('promoBtn').disabled = true;
-            calculatePrice();
+    function resetForm() {
+        jobData = { category: '', details: [], totalPrice: 0 };
+        showStep('step-category');
+    }
+
+    function selectCategory(cat) {
+        jobData.category = cat;
+        if (cat === 'tv') showStep('step-tv-size');
+        if (cat === 'furniture') showStep('step-furniture-type');
+        if (cat === 'hanging') showStep('step-hanging-type');
+        if (cat === 'lights') {
+            jobData.totalPrice = 85;
+            jobData.details = ['Ceiling Light / Fan Service'];
+            finishSelection();
+        }
+        if (cat === 'doors') {
+            jobData.totalPrice = 80;
+            jobData.details = ['Door / Window Repair Service'];
+            finishSelection();
         }
     }
 
-    function calculatePrice() {
-        let total = 0;
+    /* TV HANDLERS */
+    function setTvSize(price, text) {
+        jobData.totalPrice = price;
+        jobData.details = ['TV Size: ' + text];
+        showStep('step-tv-wall');
+    }
+    function setTvWall(price, text) {
+        jobData.totalPrice += price;
+        jobData.details.push('Wall: ' + text);
+        showStep('step-tv-height');
+    }
+    function setTvHeight(price, text) {
+        jobData.totalPrice += price;
+        jobData.details.push('Height: ' + text);
+        showStep('step-tv-extras');
+    }
+    function setTvExtras(bPrice, wPrice, text) {
+        jobData.totalPrice += (bPrice + wPrice);
+        jobData.details.push('Extras: ' + text);
+        finishSelection();
+    }
 
-        // TV Mounting
-        total += parseInt(document.getElementById('tvSize').value);
-        if (document.getElementById('tvMountNeeded').checked) total += 30;
-        if (document.getElementById('tvHighWall').checked) total += 25;
-        if (document.getElementById('tvBrickTile').checked) total += 35;
+    /* FURNITURE HANDLERS */
+    function setFurnitureType(price, text) {
+        jobData.basePrice = price;
+        jobData.details = ['Item: ' + text];
+        showStep('step-furniture-qty');
+    }
+    function setFurnitureQty(qty) {
+        jobData.totalPrice = jobData.basePrice * qty;
+        jobData.details.push('Qty: ' + qty);
+        finishSelection();
+    }
 
-        // Furniture
-        total += parseInt(document.getElementById('furnitureType').value);
+    /* HANGING HANDLERS */
+    function setHangingType(price, text) {
+        jobData.basePrice = price;
+        jobData.details = ['Item: ' + text];
+        showStep('step-hanging-qty');
+    }
+    function setHangingQty(qty) {
+        jobData.totalPrice = jobData.basePrice * qty;
+        jobData.details.push('Qty: ' + qty);
+        finishSelection();
+    }
 
-        // Hanging
-        if (document.getElementById('hangShelves').checked) total += 40;
-        if (document.getElementById('hangMirror').checked) total += 50;
-        if (document.getElementById('hangBlinds').checked) total += 35;
-
-        // Lighting
-        if (document.getElementById('lightFixture').checked) total += 75;
-        if (document.getElementById('ceilingFan').checked) total += 120;
-        if (document.getElementById('videoDoorbell').checked) total += 65;
-        if (document.getElementById('acRemote').checked) total += 35;
-
-        // Plumbing
-        if (document.getElementById('faucetReplace').checked) total += 95;
-        if (document.getElementById('pTrapReplace').checked) total += 60;
-        if (document.getElementById('grabBars').checked) total += 50;
-
-        // Doors/Windows
-        if (document.getElementById('doorRepair').checked) total += 75;
-        if (document.getElementById('windowRepair').checked) total += 80;
-        if (document.getElementById('windowInstall').checked) total += 200;
-
-        // Painting
-        total += parseInt(document.getElementById('paintingType').value);
-
-        // Apply Discount
-        if (total > 0) {
-            total = Math.max(0, total - discountAmount);
-        }
-
-        document.getElementById('totalPrice').innerText = '$' + total;
+    function finishSelection() {
+        document.getElementById('totalPrice').innerText = '$' + jobData.totalPrice;
+        document.getElementById('summaryText').innerText = jobData.details.join(' | ');
+        showStep('step-final');
     }
 
     function submitBooking() {
         let name = document.getElementById('clientName').value;
         let phone = document.getElementById('clientPhone').value;
+        let address = document.getElementById('clientAddress').value;
         let date = document.getElementById('bookingDate').value;
-        let price = document.getElementById('totalPrice').innerText;
+        let message = document.getElementById('clientMessage').value;
+        let price = '$' + jobData.totalPrice;
         let btn = document.getElementById('submitBtn');
 
-        if (price === '$0') {
-            alert('Please select at least one service.');
-            return;
-        }
-
-        if (!name || !phone || !date) {
-            alert('Please enter your name, phone number, and select a date/time.');
+        if (!name || !phone || !address || !date) {
+            alert('Please enter your name, phone number, address, and select a date/time.');
             return;
         }
 
         btn.innerText = 'Processing...';
         btn.disabled = true;
 
+        let fullNote = jobData.details.join(' | ') + (message ? ' [Notes: ' + message + ']' : '');
+
         let payload = {
+            type: 'booking',
             name: name,
             phone: phone,
+            address: address,
             bookingDate: date,
+            message: fullNote,
             price: price
         };
 
