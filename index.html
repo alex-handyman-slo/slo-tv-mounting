@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TV Mounting Services & Handyman</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; margin: 0; padding: 15px; background: #f4f6f8; color: #333; }
+        .card { background: #fff; border-radius: 12px; padding: 20px; max-width: 500px; margin: 0 auto; box-shadow: 0 4px 15px rgba(0,0,0,0.08); }
+        h1 { font-size: 22px; text-align: center; margin-bottom: 20px; color: #1a1a1a; }
+        label { font-weight: 600; display: block; margin-top: 15px; margin-bottom: 5px; font-size: 14px; }
+        select, input { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 8px; font-size: 16px; box-sizing: border-box; background: #fff; }
+        .price-box { background: #eef7ee; border: 2px solid #2e7d32; border-radius: 8px; padding: 15px; text-align: center; margin-top: 20px; }
+        .price-title { font-size: 14px; color: #2e7d32; font-weight: 600; }
+        .price-amount { font-size: 32px; font-weight: bold; color: #1b5e20; }
+        button { width: 100%; background: #2e7d32; color: #fff; border: none; padding: 15px; font-size: 18px; font-weight: bold; border-radius: 8px; margin-top: 20px; cursor: pointer; }
+        button:hover { background: #1b5e20; }
+        button:disabled { background: #888; cursor: not-allowed; }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h1>TV Mounting Service</h1>
+    
+    <label for="tvSize">TV Size:</label>
+    <select id="tvSize" onchange="calculatePrice()">
+        <option value="0">Up to 55" (Standard)</option>
+        <option value="20">56" – 75" (+$20)</option>
+        <option value="40">76"+ (+$40)</option>
+    </select>
+
+    <label for="mount">TV Mount Bracket:</label>
+    <select id="mount" onchange="calculatePrice()">
+        <option value="0">I have my own mount</option>
+        <option value="30">Need Tilting Mount (+$30)</option>
+        <option value="50">Need Full-Motion / Swivel Mount (+$50)</option>
+    </select>
+
+    <label for="wallType">Wall Type:</label>
+    <select id="wallType" onchange="calculatePrice()">
+        <option value="0">Drywall / Sheetrock</option>
+        <option value="15">Wood Studs / Wood Wall (+$15)</option>
+        <option value="30">Brick / Concrete (+$30)</option>
+        <option value="45">Tile / Marble (+$45)</option>
+    </select>
+
+    <label for="height">Mounting Height:</label>
+    <select id="height" onchange="calculatePrice()">
+        <option value="0">Standard Height (Up to 5 ft)</option>
+        <option value="25">Above 5 ft / Over Fireplace (+$25)</option>
+    </select>
+
+    <div class="price-box">
+        <div class="price-title">Estimated Price:</div>
+        <div class="price-amount" id="totalPrice">$80</div>
+    </div>
+
+    <label for="clientName">Your Name:</label>
+    <input type="text" id="clientName" placeholder="John Doe">
+
+    <label for="clientPhone">Phone Number:</label>
+    <input type="tel" id="clientPhone" placeholder="(805) 000-0000">
+
+    <label for="bookingDate">Preferred Date & Time:</label>
+    <input type="datetime-local" id="bookingDate">
+
+    <button id="submitBtn" onclick="submitBooking()">Book Appointment</button>
+</div>
+
+<script>
+    const basePrice = 80;
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbwMqNktMvIgWEfcSyubP40-_y--L9Ysvl7aUo7gAbbOG-Dk-yB4r0IwyH4jGERHRYfIrw/exec';
+
+    function calculatePrice() {
+        let size = parseInt(document.getElementById('tvSize').value);
+        let mount = parseInt(document.getElementById('mount').value);
+        let wall = parseInt(document.getElementById('wallType').value);
+        let height = parseInt(document.getElementById('height').value);
+
+        let total = basePrice + size + mount + wall + height;
+        document.getElementById('totalPrice').innerText = '$' + total;
+    }
+
+    function submitBooking() {
+        let name = document.getElementById('clientName').value;
+        let phone = document.getElementById('clientPhone').value;
+        let date = document.getElementById('bookingDate').value;
+        let price = document.getElementById('totalPrice').innerText;
+        let btn = document.getElementById('submitBtn');
+
+        if (!name || !phone || !date) {
+            alert('Please enter your name, phone number, and select a date/time.');
+            return;
+        }
+
+        btn.innerText = 'Processing...';
+        btn.disabled = true;
+
+        let payload = {
+            name: name,
+            phone: phone,
+            bookingDate: date,
+            price: price
+        };
+
+        fetch(scriptURL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        })
+        .then(() => {
+            alert('Thank you, ' + name + '! Your booking request has been submitted successfully.');
+            btn.innerText = 'Book Appointment';
+            btn.disabled = false;
+        })
+        .catch(error => {
+            alert('Error submitting request. Please try again.');
+            btn.innerText = 'Book Appointment';
+            btn.disabled = false;
+        });
+    }
+</script>
+
+</body>
+</html>
