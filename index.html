@@ -34,6 +34,7 @@
         .field-hint { font-size: 12px; color: #d32f2f; margin-top: 4px; font-weight: 500; }
         .field-hint.valid { color: #2e7d32; }
         .info-note { font-size: 12px; color: #555; background: #fff8e1; border-left: 3px solid #ffa000; padding: 8px 10px; border-radius: 4px; margin-top: 5px; line-height: 1.3; }
+        .warning-note { font-size: 12px; color: #b71c1c; background: #ffebee; border-left: 3px solid #d32f2f; padding: 8px 10px; border-radius: 4px; margin-top: 5px; line-height: 1.3; font-weight: 600; }
 
         .address-container { position: relative; }
         .geo-btn { width: 100%; background: #0288d1; color: #fff; border: none; padding: 10px; border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer; margin-bottom: 8px; display: flex; align-items: center; justify-content: center; gap: 6px; }
@@ -48,7 +49,7 @@
         .price-box { background: #eef7ee; border: 2px solid #2e7d32; border-radius: 8px; padding: 15px; text-align: center; margin-top: 15px; }
         .price-title { font-size: 14px; color: #2e7d32; font-weight: 600; }
         .price-amount { font-size: 36px; font-weight: bold; color: #1b5e20; }
-        .disclaimer { font-size: 11px; color: #777; margin-top: 5px; }
+        .disclaimer { font-size: 11px; color: #555; margin-top: 5px; font-weight: 600; }
 
         .submit-btn { width: 100%; background: #2e7d32; color: #fff; border: none; padding: 16px; font-size: 18px; font-weight: bold; border-radius: 8px; margin-top: 20px; cursor: pointer; transition: background 0.3s; }
         .submit-btn:disabled { background: #b0bec5; cursor: not-allowed; opacity: 0.7; }
@@ -78,6 +79,55 @@
             <button class="opt-btn" onclick="selectCategory('hanging')">🖼️ Shelves & Mirrors Hanging</button>
             <button class="opt-btn" onclick="selectCategory('smart')">🔒 Locks, Smart Home & Lights</button>
             <button class="opt-btn" onclick="selectCategory('general')">🧹 General Home Maintenance</button>
+            <button class="opt-btn-sub" onclick="setSimpleJob(30, 'On-Site Measurement & Project Estimate Visit')">📐 Need On-Site Measurement / Visit ($30)</button>
+        </div>
+    </div>
+
+    <!-- TV STEPS -->
+    <div id="step-tv-size" class="step">
+        <button class="back-btn" onclick="showStep('step-category')">← Back</button>
+        <div class="step-title">Step 1: Select TV Size</div>
+        <div class="btn-grid">
+            <button class="opt-btn" onclick="setTvSize(80, 'Up to 50&quot;')">Up to 50" ($80)</button>
+            <button class="opt-btn" onclick="setTvSize(100, '51&quot; – 65&quot;')">51" – 65" ($100)</button>
+            <button class="opt-btn" onclick="setTvSize(120, '66&quot; – 100&quot;')">66" – 100" ($120)</button>
+        </div>
+    </div>
+
+    <div id="step-tv-wall" class="step">
+        <button class="back-btn" onclick="showStep('step-tv-size')">← Back</button>
+        <div class="step-title">Step 2: Select Wall Type</div>
+        <div class="btn-grid">
+            <button class="opt-btn" onclick="setTvWall(0, 'Drywall')">Drywall / Sheetrock</button>
+            <button class="opt-btn" onclick="setTvWall(30, 'Brick / Concrete')">Brick / Concrete (+$30)</button>
+            <button class="opt-btn" onclick="setTvWall(45, 'Tile / Marble')">Tile / Marble Wall (+$45)</button>
+        </div>
+    </div>
+
+    <div id="step-tv-height" class="step">
+        <button class="back-btn" onclick="showStep('step-tv-wall')">← Back</button>
+        <div class="step-title">Step 3: Mounting Height</div>
+        <div class="btn-grid">
+            <button class="opt-btn" onclick="setTvHeight(0, 'Standard Height')">Standard Eye Level (Up to 5 ft)</button>
+            <button class="opt-btn" onclick="setTvHeight(25, 'High Wall (Above 5 ft / Over Fireplace)')">High Wall Mounting (Above 5 ft / Over Fireplace) (+$25)</button>
+        </div>
+    </div>
+
+    <div id="step-tv-bracket" class="step">
+        <button class="back-btn" onclick="showStep('step-tv-height')">← Back</button>
+        <div class="step-title">Step 4: Do you need a TV Mount Bracket?</div>
+        <div class="btn-grid">
+            <button class="opt-btn" onclick="setTvBracket(0, 'Customer Bracket')">I have my own TV bracket</button>
+            <button class="opt-btn" onclick="setTvBracket(30, 'Provide Tilting Bracket')">Provide Tilting TV Bracket (+$30)</button>
+        </div>
+    </div>
+
+    <div id="step-tv-wiring" class="step">
+        <button class="back-btn" onclick="showStep('step-tv-bracket')">← Back</button>
+        <div class="step-title">Step 5: Cable Hiding Option</div>
+        <div class="btn-grid">
+            <button class="opt-btn" onclick="setTvWiring(0, 'No Cable Hiding')">Standard Wires (No In-Wall Hiding)</button>
+            <button class="opt-btn" onclick="setTvWiring(40, 'In-Wall Cable Hiding')">Hide Cables Inside Wall (+$40)</button>
         </div>
     </div>
 
@@ -101,8 +151,8 @@
             <button class="opt-btn" onclick="askMaterial(350, 'New Shed Kit Assembly / Construction')">🛖 New Shed Assembly / Construction ($350)</button>
         </div>
         <div class="custom-sms-note">
-            Need a custom fence rebuild or large shed quote? <br>
-            <a href="sms:+12797582752?body=Hi%20Alex!%20I%20need%20a%20custom%20fence/shed%20quote:">📲 Text Alex photos for a custom quote</a>
+            Need a custom fence rebuild or large shed quote? Free SMS Consultation! <br>
+            <a href="sms:+12797582752?body=Hi%20Alex!%20I%20need%20a%20custom%20fence/shed%20quote:">📲 Text Alex photos for a free quote</a>
         </div>
     </div>
 
@@ -114,10 +164,6 @@
             <button class="opt-btn" onclick="setSimpleJob(95, 'Concrete Crack / Step Repair')">🧱 Concrete Crack & Step Patching ($95)</button>
             <button class="opt-btn" onclick="setSimpleJob(250, 'Small Concrete Slab / Walkway Pad')">🧱 Small Concrete Slab / Pad ($250)</button>
             <button class="opt-btn" onclick="setSimpleJob(130, 'Paver & Stone Walkway Repair')">🧱 Paver & Stone Walkway Repair ($130)</button>
-        </div>
-        <div class="custom-sms-note">
-            Need a custom masonry or concrete project? <br>
-            <a href="sms:+12797582752?body=Hi%20Alex!%20I%20have%20a%20concrete%20project%20question:">📲 Text Alex details via SMS</a>
         </div>
     </div>
 
@@ -134,8 +180,8 @@
             <button class="opt-btn" onclick="askMaterial(50, 'Shower Head Replacement')">🚿 Shower Head / Sprayer Replacement ($50)</button>
         </div>
         <div class="custom-sms-note">
-            Don't see your specific plumbing issue? <br>
-            <a href="sms:+12797582752?body=Hi%20Alex!%20I%20have%20a%20plumbing%20question:">📲 Text Alex for a custom estimate</a>
+            Don't see your specific plumbing issue? Free SMS consultation! <br>
+            <a href="sms:+12797582752?body=Hi%20Alex!%20I%20have%20a%20plumbing%20question:">📲 Text Alex for a free quote</a>
         </div>
     </div>
 
@@ -148,10 +194,6 @@
             <button class="opt-btn" onclick="askMaterial(120, 'Touch-up / Accent Wall Paint')">🎨 Touch-Up / Accent Wall Painting ($120)</button>
             <button class="opt-btn" onclick="askMaterial(250, 'Small Room Painting (Bathroom/Hall)')">🎨 Small Room Painting ($250)</button>
             <button class="opt-btn" onclick="setSimpleJob(90, 'Baseboard / Trim Repair & Paint')">🪵 Baseboard Repair & Painting ($90)</button>
-        </div>
-        <div class="custom-sms-note">
-            Need a full house or custom room quote? <br>
-            <a href="sms:+12797582752?body=Hi%20Alex!%20I%20need%20a%20painting%20estimate:">📲 Text Alex photos for a quick quote</a>
         </div>
     </div>
 
@@ -187,47 +229,6 @@
             <button class="opt-btn" onclick="setSimpleJob(60, 'Weatherstripping & Door Seals')">🚪 Weatherstripping & Weather Seals ($60)</button>
             <button class="opt-btn" onclick="setSimpleJob(50, 'Cabinet Door & Hinge Adjustment')">🗄️ Cabinet Door & Hinge Adjustment ($50)</button>
             <button class="opt-btn" onclick="setSimpleJob(70, 'Smoke Detector / CO Alarm Battery Replacement')">🔋 Smoke Alarm Replacement / Batteries ($70)</button>
-        </div>
-    </div>
-
-    <!-- TV STEPS -->
-    <div id="step-tv-size" class="step">
-        <button class="back-btn" onclick="showStep('step-category')">← Back</button>
-        <div class="step-title">Step 1: Select TV Size</div>
-        <div class="btn-grid">
-            <button class="opt-btn" onclick="setTvSize(80, 'Up to 50&quot;')">Up to 50" ($80)</button>
-            <button class="opt-btn" onclick="setTvSize(100, '51&quot; – 65&quot;')">51" – 65" ($100)</button>
-            <button class="opt-btn" onclick="setTvSize(120, '66&quot; – 100&quot;')">66" – 100" ($120)</button>
-        </div>
-    </div>
-
-    <div id="step-tv-wall" class="step">
-        <button class="back-btn" onclick="showStep('step-tv-size')">← Back</button>
-        <div class="step-title">Step 2: Select Wall Type</div>
-        <div class="btn-grid">
-            <button class="opt-btn" onclick="setTvWall(0, 'Drywall')">Drywall / Sheetrock</button>
-            <button class="opt-btn" onclick="setTvWall(15, 'Wood Studs')">Wood Wall / Studs (+$15)</button>
-            <button class="opt-btn" onclick="setTvWall(30, 'Brick / Concrete')">Brick / Concrete (+$30)</button>
-            <button class="opt-btn" onclick="setTvWall(45, 'Tile / Marble')">Tile / Marble Wall (+$45)</button>
-        </div>
-    </div>
-
-    <div id="step-tv-height" class="step">
-        <button class="back-btn" onclick="showStep('step-tv-wall')">← Back</button>
-        <div class="step-title">Step 3: Mounting Height</div>
-        <div class="btn-grid">
-            <button class="opt-btn" onclick="setTvHeight(0, 'Standard Height')">Standard Eye Level (Up to 5 ft)</button>
-            <button class="opt-btn" onclick="setTvHeight(25, 'Above Fireplace / High Wall')">Above Fireplace / High Wall (+$25)</button>
-        </div>
-    </div>
-
-    <div id="step-tv-extras" class="step">
-        <button class="back-btn" onclick="showStep('step-tv-height')">← Back</button>
-        <div class="step-title">Step 4: Bracket & Wiring Options</div>
-        <div class="btn-grid">
-            <button class="opt-btn" onclick="setTvExtras(0, 0, 'Customer Bracket')">I have my own mount bracket</button>
-            <button class="opt-btn" onclick="setTvExtras(30, 0, 'Need Mount Bracket')">Provide Tilting Bracket (+$30)</button>
-            <button class="opt-btn" onclick="setTvExtras(30, 40, 'Bracket + In-Wall Cable Hiding')">Provide Bracket & Hide Wires In Wall (+$70)</button>
         </div>
     </div>
 
@@ -279,17 +280,20 @@
         <button class="back-btn" onclick="resetForm()">← Start Over</button>
         
         <div class="price-box">
-            <div class="price-title">Calculated Estimate:</div>
+            <div class="price-title">Service Price:</div>
             <div class="price-amount" id="totalPrice">$0</div>
             <div id="summaryText" style="font-size: 13px; color: #444; margin-top: 8px; font-weight: 600;"></div>
-            <div class="disclaimer">*Final price confirmed upon on-site inspection if scope changes.</div>
+            <div class="disclaimer">Fixed service pricing. No hidden fees.</div>
         </div>
 
         <!-- PHONE (REQUIRED) -->
         <label for="clientPhone">Phone Number * (10 Digits Required)</label>
         <input type="tel" id="clientPhone" placeholder="(805) 000-0000" maxlength="14" oninput="validatePhone(this)">
         <div id="phoneHint" class="field-hint">❌ Required: Enter 10-digit US phone number</div>
-        <div class="info-note">📱 <strong>Confirmation SMS:</strong> Alex will text you at this number to confirm project details before arrival.</div>
+        
+        <div class="warning-note">
+            ⚠️ <strong>Important:</strong> If an invalid phone number is provided, your booking will be automatically cancelled as SMS confirmation is required before arrival.
+        </div>
 
         <!-- DATE & TIME (REQUIRED) -->
         <label for="bookingDate">Preferred Date & Time * (7:00 AM – 9:00 PM)</label>
@@ -321,8 +325,8 @@
 
     <!-- FLOATING SMS QUESTION BOX -->
     <div class="floating-sms">
-        <div style="font-size: 13px; font-weight: 600; color: #0d47a1; margin-bottom: 8px;">Have a question or need a custom quote?</div>
-        <a href="sms:+12797582752?body=Hi%20Alex!%20I%20have%20a%20question%20about%20a%20handyman%20project:" class="sms-btn">📱 Text Alex Directly via SMS</a>
+        <div style="font-size: 13px; font-weight: 600; color: #0d47a1; margin-bottom: 8px;">Free SMS Consultation & Custom Quotes!</div>
+        <a href="sms:+12797582752?body=Hi%20Alex!%20I%20have%20a%20question%20about%20a%20handyman%20project:" class="sms-btn">📱 Text Alex Directly via SMS (Free)</a>
     </div>
 
 </div>
@@ -344,7 +348,6 @@
     function setupCalendarLimits() {
         let dateInput = document.getElementById('bookingDate');
         let now = new Date();
-        // Add 2 hours from current time
         now.setMinutes(now.getMinutes() + 120);
         
         let tzOffset = now.getTimezoneOffset() * 60000;
@@ -494,7 +497,7 @@
 
         let selected = new Date(input.value);
         let minTime = new Date();
-        minTime.setMinutes(minTime.getMinutes() + 115); // Must be at least ~2 hrs ahead
+        minTime.setMinutes(minTime.getMinutes() + 115);
 
         let hour = selected.getHours();
 
@@ -573,11 +576,16 @@
     function setTvHeight(price, text) {
         jobData.totalPrice += price;
         jobData.details.push('Height: ' + text);
-        showStep('step-tv-extras');
+        showStep('step-tv-bracket');
     }
-    function setTvExtras(bPrice, wPrice, text) {
-        jobData.totalPrice += (bPrice + wPrice);
-        jobData.details.push('Extras: ' + text);
+    function setTvBracket(price, text) {
+        jobData.totalPrice += price;
+        jobData.details.push('Bracket: ' + text);
+        showStep('step-tv-wiring');
+    }
+    function setTvWiring(price, text) {
+        jobData.totalPrice += price;
+        jobData.details.push('Cable Hiding: ' + text);
         finishSelection();
     }
 
