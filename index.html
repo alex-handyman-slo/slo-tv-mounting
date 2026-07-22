@@ -71,15 +71,62 @@
         <div class="btn-grid">
             <button class="opt-btn" onclick="selectCategory('tv')">📺 TV Mounting</button>
             <button class="opt-btn" onclick="selectCategory('plumbing')">🚰 Plumbing Fixtures & Repairs</button>
+            <button class="opt-btn" onclick="selectCategory('gutters')">🏠 Gutter Cleaning & Roof Leak Repairs</button>
             <button class="opt-btn" onclick="selectCategory('fences')">🪵 Fences, Gates & Sheds</button>
             <button class="opt-btn" onclick="selectCategory('concrete')">🧱 Small Concrete & Masonry Patching</button>
             <button class="opt-btn" onclick="selectCategory('painting')">🎨 Painting & Drywall Repair</button>
-            <button class="opt-btn" onclick="selectCategory('doors')">🚪 Doors & Windows Repair / Replace</button>
+            <button class="opt-btn" onclick="selectCategory('doors')">🚪 Doors, Locks & Windows</button>
+            <button class="opt-btn" onclick="selectCategory('hanging')">🖼️ Blinds, Rods, Shelves & Mirrors</button>
             <button class="opt-btn" onclick="selectCategory('furniture')">🛋️ Furniture Assembly</button>
-            <button class="opt-btn" onclick="selectCategory('hanging')">🖼️ Shelves & Mirrors Hanging</button>
-            <button class="opt-btn" onclick="selectCategory('smart')">🔒 Locks, Smart Home & Lights</button>
+            <button class="opt-btn" onclick="selectCategory('smart')">🔒 Smart Home & Lighting Fixtures</button>
             <button class="opt-btn" onclick="selectCategory('general')">🧹 General Home Maintenance</button>
-            <button class="opt-btn-sub" onclick="setSimpleJob(30, 'On-Site Measurement & Project Estimate Visit')">📐 Need On-Site Measurement / Visit ($30)</button>
+            <button class="opt-btn-sub" onclick="selectCategory('large')">🏗️ Large Projects, Remodeling & ADU</button>
+        </div>
+    </div>
+
+    <!-- LARGE PROJECTS / REMODELING -->
+    <div id="step-large-type" class="step">
+        <button class="back-btn" onclick="showStep('step-category')">← Back</button>
+        <div class="step-title">Select Large Project for Free Estimate:</div>
+        <div class="btn-grid">
+            <a href="sms:+12797582752?body=Hi%20Alex!%20I'm%20interested%20in%20a%20free%20estimate%20for%20an%20ADU%20Construction:" class="opt-btn" style="text-decoration:none;">🏠 ADU Construction (Guest House)</a>
+            <a href="sms:+12797582752?body=Hi%20Alex!%20I'm%20interested%20in%20a%20free%20estimate%20for%20a%20Full%20House%20Remodel:" class="opt-btn" style="text-decoration:none;">🛋️ Full House Remodel / Addition</a>
+            <a href="sms:+12797582752?body=Hi%20Alex!%20I'm%20interested%20in%20a%20free%20estimate%20for%20a%20Kitchen%20Remodel:" class="opt-btn" style="text-decoration:none;">🍳 Full Kitchen Remodel</a>
+            <a href="sms:+12797582752?body=Hi%20Alex!%20I'm%20interested%20in%20a%20free%20estimate%20for%20a%20Bathroom%20Remodel:" class="opt-btn" style="text-decoration:none;">🛁 Full Bathroom Remodel</a>
+            <a href="sms:+12797582752?body=Hi%20Alex!%20I'm%20interested%20in%20a%20free%20estimate%20for%20a%20Garage%20Conversion:" class="opt-btn" style="text-decoration:none;">🚗 Garage Remodel / Conversion</a>
+            <a href="sms:+12797582752?body=Hi%20Alex!%20I'm%20interested%20in%20a%20free%20estimate%20for%20a%20Custom%20Deck:" class="opt-btn" style="text-decoration:none;">🪵 Custom Deck / Patio Construction</a>
+        </div>
+        <div class="custom-sms-note">
+            📲 Large projects require on-site measurement. Clicking any button opens direct SMS with Alex for a Free Estimate!
+        </div>
+    </div>
+
+    <!-- GUTTERS & ROOF LEAKS -->
+    <div id="step-gutters-type" class="step">
+        <button class="back-btn" onclick="showStep('step-category')">← Back</button>
+        <div class="step-title">Select Service Needed:</div>
+        <div class="btn-grid">
+            <button class="opt-btn" onclick="selectGutterHeight('Gutter Cleaning')">🧹 Gutter Cleaning Service</button>
+            <button class="opt-btn" onclick="showStep('step-roof-type')">🏚️ Roof Leak / Shingle Patching</button>
+        </div>
+    </div>
+
+    <div id="step-roof-type" class="step">
+        <button class="back-btn" onclick="showStep('step-gutters-type')">← Back</button>
+        <div class="step-title">Select Roof Material:</div>
+        <div class="btn-grid">
+            <button class="opt-btn" onclick="selectRoofHeight('Shingle Roof Patching')">🏠 Asphalt Shingle Roof</button>
+            <button class="opt-btn" onclick="selectRoofHeight('Flat / TPO Roof Patching')">🏢 Flat / TPO Membrane Roof</button>
+            <button class="opt-btn" onclick="selectRoofHeight('Tile Roof Repair')">🧱 Clay / Concrete Tile Roof</button>
+        </div>
+    </div>
+
+    <div id="step-gutter-stories" class="step">
+        <button class="back-btn" onclick="showStep('step-gutters-type')">← Back</button>
+        <div class="step-title">Select Building Stories:</div>
+        <div class="btn-grid">
+            <button class="opt-btn" onclick="finishGutter(110, '1-Story Building')">1-Story House ($110)</button>
+            <button class="opt-btn" onclick="finishGutter(160, '2-Story Building')">2-Story House ($160)</button>
         </div>
     </div>
 
@@ -98,9 +145,9 @@
         <button class="back-btn" onclick="showStep('step-tv-size')">← Back</button>
         <div class="step-title">Step 2: Select Wall Type</div>
         <div class="btn-grid">
-            <button class="opt-btn" onclick="setTvWall(0, 'Drywall')">Drywall / Sheetrock</button>
-            <button class="opt-btn" onclick="setTvWall(30, 'Brick / Concrete')">Brick / Concrete (+$30)</button>
-            <button class="opt-btn" onclick="setTvWall(45, 'Tile / Marble')">Tile / Marble Wall (+$45)</button>
+            <button class="opt-btn" onclick="setTvWall(0, 'Drywall', false)">Drywall / Sheetrock</button>
+            <button class="opt-btn" onclick="setTvWall(30, 'Brick / Concrete', true)">Brick / Concrete (+$30)</button>
+            <button class="opt-btn" onclick="setTvWall(45, 'Tile / Marble', true)">Tile / Marble Wall (+$45)</button>
         </div>
     </div>
 
@@ -108,8 +155,8 @@
         <button class="back-btn" onclick="showStep('step-tv-wall')">← Back</button>
         <div class="step-title">Step 3: Mounting Height</div>
         <div class="btn-grid">
-            <button class="opt-btn" onclick="setTvHeight(0, 'Standard Height')">Standard Eye Level (Up to 5 ft)</button>
-            <button class="opt-btn" onclick="setTvHeight(25, 'High Wall (Above 5 ft / Over Fireplace)')">High Wall Mounting (Above 5 ft / Over Fireplace) (+$25)</button>
+            <button class="opt-btn" onclick="setTvHeight(0, 'Standard Height', false)">Standard Eye Level (Up to 5 ft)</button>
+            <button class="opt-btn" onclick="setTvHeight(25, 'High Wall (Above 5 ft / Over Fireplace)', true)">High Wall Mounting (Above 5 ft / Over Fireplace) (+$25)</button>
         </div>
     </div>
 
@@ -127,17 +174,23 @@
         <div class="step-title">Step 5: Cable Hiding Option</div>
         <div class="btn-grid">
             <button class="opt-btn" onclick="setTvWiring(0, 'No Cable Hiding')">Standard Wires (No In-Wall Hiding)</button>
-            <button class="opt-btn" onclick="setTvWiring(40, 'In-Wall Cable Hiding')">Hide Cables Inside Wall (+$40)</button>
+            <button class="opt-btn" id="btnInWallCable" onclick="setTvWiring(40, 'In-Wall Cable Hiding (Customer Kit)')">Hide Cables In-Wall (I have cables/kit) (+$40)</button>
+            <button class="opt-btn" id="btnInWallKit" onclick="setTvWiring(70, 'In-Wall Cable Hiding + Alex Kit')">Hide Cables In-Wall (Alex Provides Extension Kit) (+$70)</button>
         </div>
     </div>
 
-    <!-- QUESTION STEP: ARE MATERIALS PURCHASED? -->
-    <div id="step-material-question" class="step">
+    <!-- PLUMBING STEPS -->
+    <div id="step-plumbing-type" class="step">
         <button class="back-btn" onclick="showStep('step-category')">← Back</button>
-        <div class="step-title" id="matQuestionTitle">Do you already have the required item / materials purchased?</div>
-        <div class="btn-grid" style="margin-top: 20px;">
-            <button class="opt-btn" onclick="setMaterialAnswer('Customer Has Materials Ready')">YES — I already bought it / ready</button>
-            <button class="opt-btn-sub" onclick="setMaterialAnswer('Needs Alex to advise or purchase')">NO — Need Alex to advise / purchase for me</button>
+        <div class="step-title">Select Plumbing Service:</div>
+        <div class="btn-grid">
+            <a href="sms:+12797582752?body=Hi%20Alex!%20I%20need%20faucet%20repair%20assistance:" class="opt-btn-sub" style="text-decoration:none;">🛠️ Faucet Repair (Text Alex details)</a>
+            <button class="opt-btn" onclick="askMaterial(95, 'Faucet Replacement')">🚰 Faucet Replacement ($95)</button>
+            <button class="opt-btn" onclick="setSimpleJob(65, 'P-Trap Drain Cleaning & Unclog')">🛠️ Drain Unclogging / P-Trap Clean ($65)</button>
+            <button class="opt-btn" onclick="askMaterial(65, 'P-Trap Pipe Replacement')">🛠️ P-Trap Replacement ($65)</button>
+            <a href="sms:+12797582752?body=Hi%20Alex!%20I%20have%20a%20toilet%20leak/repair%20question:" class="opt-btn-sub" style="text-decoration:none;">🚽 Toilet Repair (Text Alex details)</a>
+            <button class="opt-btn" onclick="askMaterial(150, 'New Toilet Installation')">🚽 New Toilet Installation ($150)</button>
+            <button class="opt-btn" onclick="askMaterial(110, 'Garbage Disposal Installation')">🧼 Garbage Disposal Replacement ($110)</button>
         </div>
     </div>
 
@@ -147,12 +200,46 @@
         <div class="step-title">Select Fence, Gate or Shed Service:</div>
         <div class="btn-grid">
             <button class="opt-btn" onclick="askMaterial(120, 'Fence Gate & Post Repair')">🪵 Fence Gate & Post Repair ($120)</button>
-            <button class="opt-btn" onclick="setSimpleJob(145, 'Shed Repair (Roof / Door / Walls)')">🛠️ Shed Repair (Roof, Door, Boards) ($145)</button>
-            <button class="opt-btn" onclick="askMaterial(350, 'New Shed Kit Assembly / Construction')">🛖 New Shed Assembly / Construction ($350)</button>
+            <button class="opt-btn" onclick="setSimpleJob(145, 'Shed Board & Door Repair')">🛠️ Shed Board & Door Repair ($145)</button>
+            <button class="opt-btn" onclick="askMaterial(220, 'Small Shed Assembly (Up to 6x4 ft)')">🛖 Small Shed Assembly (Up to 6x4 ft) ($220)</button>
+            <button class="opt-btn" onclick="askMaterial(380, 'Medium Shed Assembly (Up to 8x10 ft)')">🛖 Medium Shed Assembly (Up to 8x10 ft) ($380)</button>
+            <a href="sms:+12797582752?body=Hi%20Alex!%20I%20need%20a%20quote%20for%20a%20Large%20Shed%20assembly:" class="opt-btn-sub" style="text-decoration:none;">🛖 Large Shed (10x12 ft+) (Text Alex for Quote)</a>
+        </div>
+    </div>
+
+    <!-- PAINTING & DRYWALL STEPS -->
+    <div id="step-painting-type" class="step">
+        <button class="back-btn" onclick="showStep('step-category')">← Back</button>
+        <div class="step-title">Select Painting / Drywall Service:</div>
+        <div class="btn-grid">
+            <button class="opt-btn" onclick="setSimpleJob(75, 'Drywall Hole Patching (First Hour Included)')">🧱 Drywall Patching ($75 - Covers First Hour / Small Holes)</button>
+            <button class="opt-btn" onclick="askMaterial(120, 'Accent Wall Painting')">🎨 Accent Wall Painting ($120)</button>
+            <button class="opt-btn" onclick="askMaterial(250, 'Small Room Painting (Bathroom/Hall)')">🎨 Small Room Painting ($250)</button>
         </div>
         <div class="custom-sms-note">
-            Need a custom fence rebuild or large shed quote? Free SMS Consultation! <br>
-            <a href="sms:+12797582752?body=Hi%20Alex!%20I%20need%20a%20custom%20fence/shed%20quote:">📲 Text Alex photos for a free quote</a>
+            📌 <i>Note for Drywall: $75 covers 1st hour for small holes. Large wall damage priced by required time.</i>
+        </div>
+    </div>
+
+    <!-- HANGING & BLINDS STEPS -->
+    <div id="step-hanging-type" class="step">
+        <button class="back-btn" onclick="showStep('step-category')">← Back</button>
+        <div class="step-title">Select Item to Hang:</div>
+        <div class="btn-grid">
+            <button class="opt-btn" onclick="showStep('step-blinds-qty')">🪟 Window Blinds & Curtain Rods (Discount Tier)</button>
+            <button class="opt-btn" onclick="setSimpleJob(40, 'Wall Shelf Hanging')">🖼️ Wall Shelves ($40 ea)</button>
+            <button class="opt-btn" onclick="setSimpleJob(50, 'Heavy Mirror / Large Picture')">🖼️ Heavy Mirror / Large Picture ($50 ea)</button>
+        </div>
+    </div>
+
+    <div id="step-blinds-qty" class="step">
+        <button class="back-btn" onclick="showStep('step-hanging-type')">← Back</button>
+        <div class="step-title">Select Quantity of Blinds / Rods:</div>
+        <div class="btn-grid">
+            <button class="opt-btn" onclick="setSimpleJob(50, '1 Blinds / Curtain Rod')">1 Item ($50)</button>
+            <button class="opt-btn" onclick="setSimpleJob(70, '2 Blinds / Curtain Rods')">2 Items ($70 — Save $30!)</button>
+            <button class="opt-btn" onclick="setSimpleJob(90, '3 Blinds / Curtain Rods')">3 Items ($90 — Save $60!)</button>
+            <button class="opt-btn" onclick="setSimpleJob(110, '4 Blinds / Curtain Rods')">4+ Items ($110 tier)</button>
         </div>
     </div>
 
@@ -162,38 +249,7 @@
         <div class="step-title">Select Concrete & Masonry Service:</div>
         <div class="btn-grid">
             <button class="opt-btn" onclick="setSimpleJob(95, 'Concrete Crack / Step Repair')">🧱 Concrete Crack & Step Patching ($95)</button>
-            <button class="opt-btn" onclick="setSimpleJob(250, 'Small Concrete Slab / Walkway Pad')">🧱 Small Concrete Slab / Pad ($250)</button>
-            <button class="opt-btn" onclick="setSimpleJob(130, 'Paver & Stone Walkway Repair')">🧱 Paver & Stone Walkway Repair ($130)</button>
-        </div>
-    </div>
-
-    <!-- PLUMBING STEPS -->
-    <div id="step-plumbing-type" class="step">
-        <button class="back-btn" onclick="showStep('step-category')">← Back</button>
-        <div class="step-title">Select Plumbing Service:</div>
-        <div class="btn-grid">
-            <button class="opt-btn" onclick="askMaterial(95, 'Faucet Replacement / Repair')">🚰 Faucet Replacement / Repair ($95)</button>
-            <button class="opt-btn" onclick="setSimpleJob(65, 'P-Trap Replacement & Drain Clean')">🛠️ P-Trap Replacement / Drain Clean ($65)</button>
-            <button class="opt-btn" onclick="setSimpleJob(80, 'Toilet Repair (Flapper/Valve/Leak)')">🚽 Toilet Repair (Valve, Flapper, Leaks) ($80)</button>
-            <button class="opt-btn" onclick="askMaterial(150, 'New Toilet Installation')">🚽 New Toilet Installation ($150)</button>
-            <button class="opt-btn" onclick="askMaterial(110, 'Garbage Disposal Installation')">🧼 Garbage Disposal Replacement ($110)</button>
-            <button class="opt-btn" onclick="askMaterial(50, 'Shower Head Replacement')">🚿 Shower Head / Sprayer Replacement ($50)</button>
-        </div>
-        <div class="custom-sms-note">
-            Don't see your specific plumbing issue? Free SMS consultation! <br>
-            <a href="sms:+12797582752?body=Hi%20Alex!%20I%20have%20a%20plumbing%20question:">📲 Text Alex for a free quote</a>
-        </div>
-    </div>
-
-    <!-- PAINTING STEPS -->
-    <div id="step-painting-type" class="step">
-        <button class="back-btn" onclick="showStep('step-category')">← Back</button>
-        <div class="step-title">Select Painting / Drywall Service:</div>
-        <div class="btn-grid">
-            <button class="opt-btn" onclick="setSimpleJob(75, 'Drywall Hole Patching')">🧱 Drywall Hole Patching ($75)</button>
-            <button class="opt-btn" onclick="askMaterial(120, 'Touch-up / Accent Wall Paint')">🎨 Touch-Up / Accent Wall Painting ($120)</button>
-            <button class="opt-btn" onclick="askMaterial(250, 'Small Room Painting (Bathroom/Hall)')">🎨 Small Room Painting ($250)</button>
-            <button class="opt-btn" onclick="setSimpleJob(90, 'Baseboard / Trim Repair & Paint')">🪵 Baseboard Repair & Painting ($90)</button>
+            <a href="sms:+12797582752?body=Hi%20Alex!%20I%20need%20a%20concrete%20slab/pad%20estimate:" class="opt-btn-sub" style="text-decoration:none;">🧱 Concrete Slab / Walkway Pad (Text Alex for Quote)</a>
         </div>
     </div>
 
@@ -202,20 +258,18 @@
         <button class="back-btn" onclick="showStep('step-category')">← Back</button>
         <div class="step-title">Select Door or Window Service:</div>
         <div class="btn-grid">
-            <button class="opt-btn" onclick="setSimpleJob(85, 'Door Adjustment / Hinge Repair')">🚪 Door Adjustment & Alignment ($85)</button>
-            <button class="opt-btn" onclick="askMaterial(160, 'New Interior/Exterior Door Installation')">🚪 New Door Installation ($160)</button>
-            <button class="opt-btn" onclick="setSimpleJob(65, 'Window Latch & Screen Repair')">🪟 Window Latch & Screen Repair ($65)</button>
-            <button class="opt-btn" onclick="askMaterial(55, 'Window Blinds / Shades Installation')">🪟 Window Blinds / Shades Install ($55)</button>
+            <button class="opt-btn" onclick="setSimpleJob(85, 'Door Alignment & Hinge Repair')">🚪 Door Alignment & Hinge Repair ($85)</button>
+            <button class="opt-btn" onclick="askMaterial(160, 'New Door Installation')">🚪 New Door Installation ($160)</button>
+            <button class="opt-btn" onclick="askMaterial(75, 'Smart Lock / Deadbolt Replacement')">🔐 Smart Lock / Deadbolt Change ($75)</button>
         </div>
     </div>
 
-    <!-- SMART HOME & LOCKS STEPS -->
+    <!-- SMART HOME STEPS -->
     <div id="step-smart-type" class="step">
         <button class="back-btn" onclick="showStep('step-category')">← Back</button>
-        <div class="step-title">Select Smart Home & Lock Service:</div>
+        <div class="step-title">Select Smart Home Service:</div>
         <div class="btn-grid">
-            <button class="opt-btn" onclick="askMaterial(65, 'Video Doorbell (Ring/Nest) Setup')">🔔 Video Doorbell (Ring/Nest) ($65)</button>
-            <button class="opt-btn" onclick="askMaterial(75, 'Smart Lock / Deadbolt Replacement')">🔐 Smart Lock / Deadbolt Change ($75)</button>
+            <button class="opt-btn" onclick="askMaterial(65, 'Video Doorbell (Ring/Nest) Installation')">🔔 Video Doorbell (Ring/Nest) ($65)</button>
             <button class="opt-btn" onclick="askMaterial(85, 'Ceiling Light Fixture Replacement')">💡 Ceiling Light Fixture ($85)</button>
             <button class="opt-btn" onclick="askMaterial(120, 'Ceiling Fan Installation')">🌀 Ceiling Fan Installation ($120)</button>
         </div>
@@ -224,11 +278,11 @@
     <!-- GENERAL MAINTENANCE -->
     <div id="step-general-type" class="step">
         <button class="back-btn" onclick="showStep('step-category')">← Back</button>
-        <div class="step-title">Select General Maintenance Service:</div>
+        <div class="step-title">Select Maintenance Service:</div>
         <div class="btn-grid">
-            <button class="opt-btn" onclick="setSimpleJob(60, 'Weatherstripping & Door Seals')">🚪 Weatherstripping & Weather Seals ($60)</button>
-            <button class="opt-btn" onclick="setSimpleJob(50, 'Cabinet Door & Hinge Adjustment')">🗄️ Cabinet Door & Hinge Adjustment ($50)</button>
-            <button class="opt-btn" onclick="setSimpleJob(70, 'Smoke Detector / CO Alarm Battery Replacement')">🔋 Smoke Alarm Replacement / Batteries ($70)</button>
+            <button class="opt-btn" onclick="setSimpleJob(60, 'Weatherstripping & Door Seals')">🚪 Weatherstripping & Seals ($60)</button>
+            <button class="opt-btn" onclick="setSimpleJob(50, 'Cabinet Door & Hinge Adjustment')">🗄️ Cabinet Door Hinge Adjustment ($50)</button>
+            <button class="opt-btn" onclick="setSimpleJob(70, 'Smoke Detector Battery Replacement')">🔋 Smoke Alarm Replacement ($70)</button>
         </div>
     </div>
 
@@ -237,8 +291,8 @@
         <button class="back-btn" onclick="showStep('step-category')">← Back</button>
         <div class="step-title">Select Furniture Size:</div>
         <div class="btn-grid">
-            <button class="opt-btn" onclick="setFurnitureType(45, 'Small Item (Chair, Nightstand)')">Small (Chair, Nightstand, Table) - $45</button>
-            <button class="opt-btn" onclick="setFurnitureType(85, 'Medium Item (Desk, Bed, TV Stand)')">Medium (Desk, Bed Frame, TV Stand) - $85</button>
+            <button class="opt-btn" onclick="setFurnitureType(45, 'Small Item (Chair, Nightstand)')">Small (Chair, Nightstand) - $45</button>
+            <button class="opt-btn" onclick="setFurnitureType(85, 'Medium Item (Desk, Bed, TV Stand)')">Medium (Desk, Bed Frame) - $85</button>
             <button class="opt-btn" onclick="setFurnitureType(150, 'Large Item (Dresser, Wardrobe)')">Large (Large Dresser, Wardrobe) - $150</button>
         </div>
     </div>
@@ -253,25 +307,13 @@
         </div>
     </div>
 
-    <!-- HANGING STEPS -->
-    <div id="step-hanging-type" class="step">
+    <!-- QUESTION STEP: ARE MATERIALS PURCHASED? -->
+    <div id="step-material-question" class="step">
         <button class="back-btn" onclick="showStep('step-category')">← Back</button>
-        <div class="step-title">Select Item to Hang:</div>
-        <div class="btn-grid">
-            <button class="opt-btn" onclick="setHangingType(40, 'Wall Shelf')">Wall Shelves ($40 ea)</button>
-            <button class="opt-btn" onclick="setHangingType(50, 'Heavy Mirror / Large Picture')">Heavy Mirror / Large Picture ($50 ea)</button>
-            <button class="opt-btn" onclick="setHangingType(35, 'Blinds / Curtain Rod')">Window Blinds / Curtain Rods ($35 ea)</button>
-        </div>
-    </div>
-
-    <div id="step-hanging-qty" class="step">
-        <button class="back-btn" onclick="showStep('step-hanging-type')">← Back</button>
-        <div class="step-title">How many items?</div>
-        <div class="btn-grid-3">
-            <button class="opt-btn" onclick="setHangingQty(1)">1</button>
-            <button class="opt-btn" onclick="setHangingQty(2)">2</button>
-            <button class="opt-btn" onclick="setHangingQty(3)">3</button>
-            <button class="opt-btn" onclick="setHangingQty(4)">4+</button>
+        <div class="step-title" id="matQuestionTitle">Do you already have the required item / materials purchased?</div>
+        <div class="btn-grid" style="margin-top: 20px;">
+            <button class="opt-btn" onclick="setMaterialAnswer('Customer Has Materials Ready')">YES — I already bought it / ready</button>
+            <a id="smsMatLink" href="#" class="opt-btn-sub" style="text-decoration:none;">NO — Text Alex to advise / purchase for me</a>
         </div>
     </div>
 
@@ -325,8 +367,8 @@
 
     <!-- FLOATING SMS QUESTION BOX -->
     <div class="floating-sms">
-        <div style="font-size: 13px; font-weight: 600; color: #0d47a1; margin-bottom: 8px;">Free SMS Consultation & Custom Quotes!</div>
-        <a href="sms:+12797582752?body=Hi%20Alex!%20I%20have%20a%20question%20about%20a%20handyman%20project:" class="sms-btn">📱 Text Alex Directly via SMS (Free)</a>
+        <div style="font-size: 13px; font-weight: 600; color: #0d47a1; margin-bottom: 8px;">Need a custom price or specific repair?</div>
+        <a href="sms:+12797582752?body=Hi%20Alex!%20I%20have%20a%20question%20about%20a%20handyman%20project:" class="sms-btn">💬 Text Alex Directly for Custom Quote (Free)</a>
     </div>
 
 </div>
@@ -336,11 +378,11 @@
     
     let jobData = { category: '', details: [], totalPrice: 0 };
     let tempPendingJob = { price: 0, title: '' };
+    let isHardWall = false;
     let isPhoneValid = false;
     let isDateValid = false;
     let autoTimer = null;
 
-    // RIGID CALENDAR MIN/MAX SETUP (+2 Hours Min)
     window.onload = function() {
         setupCalendarLimits();
     };
@@ -348,7 +390,7 @@
     function setupCalendarLimits() {
         let dateInput = document.getElementById('bookingDate');
         let now = new Date();
-        now.setMinutes(now.getMinutes() + 120);
+        now.setMinutes(now.getMinutes() + 120); // +2 hours
         
         let tzOffset = now.getTimezoneOffset() * 60000;
         let localMin = (new Date(now.getTime() - tzOffset)).toISOString().slice(0, 16);
@@ -360,10 +402,30 @@
         dateInput.max = localMax;
     }
 
-    /* ASK MATERIAL QUESTION */
+    /* GUTTERS & ROOF LOGIC */
+    let pendingGutterTitle = '';
+    function selectGutterHeight(title) {
+        pendingGutterTitle = title;
+        showStep('step-gutter-stories');
+    }
+    function selectRoofHeight(title) {
+        pendingGutterTitle = title;
+        showStep('step-gutter-stories');
+    }
+    function finishGutter(price, storyText) {
+        jobData.totalPrice = price;
+        jobData.details = [pendingGutterTitle + ' (' + storyText + ')'];
+        finishSelection();
+    }
+
+    /* MATERIAL QUESTION LOGIC */
     function askMaterial(price, title) {
         tempPendingJob = { price: price, title: title };
         document.getElementById('matQuestionTitle').innerText = `Do you already have the required item/materials for "${title}"?`;
+        
+        let smsLink = document.getElementById('smsMatLink');
+        smsLink.href = `sms:+12797582752?body=Hi%20Alex!%20I%20need%20advice/help%20buying%20materials%20for%20${encodeURIComponent(title)}:`;
+        
         showStep('step-material-question');
     }
 
@@ -373,7 +435,46 @@
         finishSelection();
     }
 
-    /* GEOLOCATION FUNCTION */
+    /* TV LOGIC */
+    function setTvSize(price, text) {
+        jobData.totalPrice = price;
+        jobData.details = ['TV Size: ' + text];
+        isHardWall = false;
+        showStep('step-tv-wall');
+    }
+    function setTvWall(price, text, hardWallFlag) {
+        jobData.totalPrice += price;
+        jobData.details.push('Wall: ' + text);
+        if(hardWallFlag) isHardWall = true;
+        showStep('step-tv-height');
+    }
+    function setTvHeight(price, text, hardWallFlag) {
+        jobData.totalPrice += price;
+        jobData.details.push('Height: ' + text);
+        if(hardWallFlag) isHardWall = true;
+        
+        if(isHardWall) {
+            // Disable in-wall hiding for hard/high walls
+            document.getElementById('btnInWallCable').style.display = 'none';
+            document.getElementById('btnInWallKit').style.display = 'none';
+        } else {
+            document.getElementById('btnInWallCable').style.display = 'block';
+            document.getElementById('btnInWallKit').style.display = 'block';
+        }
+        showStep('step-tv-bracket');
+    }
+    function setTvBracket(price, text) {
+        jobData.totalPrice += price;
+        jobData.details.push('Bracket: ' + text);
+        showStep('step-tv-wiring');
+    }
+    function setTvWiring(price, text) {
+        jobData.totalPrice += price;
+        jobData.details.push('Wiring: ' + text);
+        finishSelection();
+    }
+
+    /* GEOLOCATION */
     function getGPSLocation() {
         let addrInput = document.getElementById('clientAddress');
         if (!navigator.geolocation) {
@@ -413,7 +514,7 @@
         );
     }
 
-    /* AUTOCOMPLETE ADDRESS INPUT */
+    /* AUTOCOMPLETE */
     function handleAddressInput(input) {
         clearTimeout(autoTimer);
         let query = input.value.trim();
@@ -458,7 +559,7 @@
         }
     });
 
-    // PHONE VALIDATION
+    /* VALIDATION */
     function validatePhone(input) {
         let numbers = input.value.replace(/\D/g, '');
         if (numbers.length > 10) numbers = numbers.substring(0, 10);
@@ -483,7 +584,6 @@
         checkFormValidity();
     }
 
-    // DATE & TIME VALIDATION
     function validateDateTime(input) {
         let hint = document.getElementById('dateHint');
         if (!input.value) {
@@ -546,6 +646,7 @@
         jobData.category = cat;
         if (cat === 'tv') showStep('step-tv-size');
         if (cat === 'plumbing') showStep('step-plumbing-type');
+        if (cat === 'gutters') showStep('step-gutters-type');
         if (cat === 'fences') showStep('step-fences-type');
         if (cat === 'concrete') showStep('step-concrete-type');
         if (cat === 'painting') showStep('step-painting-type');
@@ -554,38 +655,12 @@
         if (cat === 'furniture') showStep('step-furniture-type');
         if (cat === 'hanging') showStep('step-hanging-type');
         if (cat === 'general') showStep('step-general-type');
+        if (cat === 'large') showStep('step-large-type');
     }
 
     function setSimpleJob(price, text) {
         jobData.totalPrice = price;
         jobData.details = [text];
-        finishSelection();
-    }
-
-    /* TV HANDLERS */
-    function setTvSize(price, text) {
-        jobData.totalPrice = price;
-        jobData.details = ['TV Size: ' + text];
-        showStep('step-tv-wall');
-    }
-    function setTvWall(price, text) {
-        jobData.totalPrice += price;
-        jobData.details.push('Wall: ' + text);
-        showStep('step-tv-height');
-    }
-    function setTvHeight(price, text) {
-        jobData.totalPrice += price;
-        jobData.details.push('Height: ' + text);
-        showStep('step-tv-bracket');
-    }
-    function setTvBracket(price, text) {
-        jobData.totalPrice += price;
-        jobData.details.push('Bracket: ' + text);
-        showStep('step-tv-wiring');
-    }
-    function setTvWiring(price, text) {
-        jobData.totalPrice += price;
-        jobData.details.push('Cable Hiding: ' + text);
         finishSelection();
     }
 
@@ -596,18 +671,6 @@
         showStep('step-furniture-qty');
     }
     function setFurnitureQty(qty) {
-        jobData.totalPrice = jobData.basePrice * qty;
-        jobData.details.push('Qty: ' + qty);
-        finishSelection();
-    }
-
-    /* HANGING HANDLERS */
-    function setHangingType(price, text) {
-        jobData.basePrice = price;
-        jobData.details = ['Item: ' + text];
-        showStep('step-hanging-qty');
-    }
-    function setHangingQty(qty) {
         jobData.totalPrice = jobData.basePrice * qty;
         jobData.details.push('Qty: ' + qty);
         finishSelection();
