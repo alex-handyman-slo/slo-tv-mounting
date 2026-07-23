@@ -42,29 +42,9 @@
     <h1>Alex Handyman Services</h1>
     <p class="subtitle">San Luis Obispo County • Quick Button Booking</p>
 
-    <!-- STEP 0: SELECT CITY FIRST -->
-    <div id="step-city" class="step active">
-        <div class="step-title">Step 1: Select Your City:</div>
-        <div class="btn-grid-2">
-            <button class="opt-btn" onclick="selectCity('Pismo Beach', 0, false)">Pismo Beach</button>
-            <button class="opt-btn" onclick="selectCity('Shell Beach', 0, false)">Shell Beach</button>
-            <button class="opt-btn" onclick="selectCity('Grover Beach', 0, false)">Grover Beach</button>
-            <button class="opt-btn" onclick="selectCity('Arroyo Grande', 0, false)">Arroyo Grande</button>
-            <button class="opt-btn" onclick="selectCity('Oceano', 0, false)">Oceano</button>
-            <button class="opt-btn" onclick="selectCity('Avila Beach', 0, false)">Avila Beach</button>
-            <button class="opt-btn" onclick="selectCity('San Luis Obispo (SLO)', 15, true)">San Luis Obispo (+$15)</button>
-            <button class="opt-btn" onclick="selectCity('Nipomo', 15, true)">Nipomo (+$15)</button>
-            <button class="opt-btn" onclick="selectCity('Los Osos', 20, true)">Los Osos (+$20)</button>
-            <button class="opt-btn" onclick="selectCity('Morro Bay', 20, true)">Morro Bay (+$20)</button>
-            <button class="opt-btn" onclick="selectCity('Atascadero', 25, true)">Atascadero (+$25)</button>
-            <button class="opt-btn" onclick="selectCity('Santa Maria', 25, true)">Santa Maria (+$25)</button>
-        </div>
-    </div>
-
-    <!-- STEP 1: ALL CATEGORIES -->
-    <div id="step-category" class="step">
-        <button class="back-btn" onclick="showStep('step-city')">← Change City</button>
-        <div class="step-title">Step 2: Select Service Needed:</div>
+    <!-- STEP 1: SELECT CATEGORY FIRST -->
+    <div id="step-category" class="step active">
+        <div class="step-title">Step 1: Select Service Needed:</div>
         <div class="btn-grid">
             <button class="opt-btn" onclick="selectCategory('tv')">📺 TV Mounting</button>
             <button class="opt-btn" onclick="selectCategory('plumbing')">🚰 Plumbing Fixtures & Repairs</button>
@@ -78,6 +58,26 @@
             <button class="opt-btn" onclick="selectCategory('smart')">🔒 Smart Home & Lighting Fixtures</button>
             <button class="opt-btn" onclick="selectCategory('general')">🧹 General Home Maintenance</button>
             <button class="opt-btn-sub" onclick="selectCategory('large')">🏗️ Large Projects, Remodeling & ADU</button>
+        </div>
+    </div>
+
+    <!-- STEP 2: SELECT CITY SECOND (CLEAN BUTTONS, NO +$15 TEXT) -->
+    <div id="step-city" class="step">
+        <button class="back-btn" onclick="showStep('step-category')">← Back to Services</button>
+        <div class="step-title">Step 2: Select Your City:</div>
+        <div class="btn-grid-2">
+            <button class="opt-btn" onclick="selectCity('Pismo Beach', 0, false)">Pismo Beach</button>
+            <button class="opt-btn" onclick="selectCity('Shell Beach', 0, false)">Shell Beach</button>
+            <button class="opt-btn" onclick="selectCity('Grover Beach', 0, false)">Grover Beach</button>
+            <button class="opt-btn" onclick="selectCity('Arroyo Grande', 0, false)">Arroyo Grande</button>
+            <button class="opt-btn" onclick="selectCity('Oceano', 0, false)">Oceano</button>
+            <button class="opt-btn" onclick="selectCity('Avila Beach', 0, false)">Avila Beach</button>
+            <button class="opt-btn" onclick="selectCity('San Luis Obispo', 15, true)">San Luis Obispo</button>
+            <button class="opt-btn" onclick="selectCity('Nipomo', 15, true)">Nipomo</button>
+            <button class="opt-btn" onclick="selectCity('Los Osos', 20, true)">Los Osos</button>
+            <button class="opt-btn" onclick="selectCity('Morro Bay', 20, true)">Morro Bay</button>
+            <button class="opt-btn" onclick="selectCity('Atascadero', 25, true)">Atascadero</button>
+            <button class="opt-btn" onclick="selectCity('Santa Maria', 25, true)">Santa Maria</button>
         </div>
     </div>
 
@@ -97,7 +97,7 @@
 
     <!-- GUTTERS & ROOF LEAKS -->
     <div id="step-gutters-type" class="step">
-        <button class="back-btn" onclick="showStep('step-category')">← Back</button>
+        <button class="back-btn" onclick="showStep('step-city')">← Back</button>
         <div class="step-title">Select Service Needed:</div>
         <div class="btn-grid">
             <button class="opt-btn" onclick="selectGutterHeight('Gutter Cleaning')">🧹 Gutter Cleaning Service</button>
@@ -126,8 +126,8 @@
 
     <!-- TV STEPS -->
     <div id="step-tv-size" class="step">
-        <button class="back-btn" onclick="showStep('step-category')">← Back</button>
-        <div class="step-title">Step 1: Select TV Size</div>
+        <button class="back-btn" onclick="showStep('step-city')">← Back</button>
+        <div class="step-title">Step 3: Select TV Size</div>
         <div class="btn-grid">
             <button class="opt-btn" onclick="setTvSize(80, 'Up to 50&quot;')">Up to 50" ($80)</button>
             <button class="opt-btn" onclick="setTvSize(100, '51&quot; – 65&quot;')">51" – 65" ($100)</button>
@@ -137,7 +137,7 @@
 
     <div id="step-tv-wall" class="step">
         <button class="back-btn" onclick="showStep('step-tv-size')">← Back</button>
-        <div class="step-title">Step 2: Select Wall Type</div>
+        <div class="step-title">Step 4: Select Wall Type</div>
         <div class="btn-grid">
             <button class="opt-btn" onclick="setTvWall(0, 'Drywall', false)">Drywall / Sheetrock</button>
             <button class="opt-btn" onclick="setTvWall(30, 'Brick / Concrete', true)">Brick / Concrete (+$30)</button>
@@ -147,7 +147,7 @@
 
     <div id="step-tv-height" class="step">
         <button class="back-btn" onclick="showStep('step-tv-wall')">← Back</button>
-        <div class="step-title">Step 3: Mounting Height</div>
+        <div class="step-title">Step 5: Mounting Height</div>
         <div class="btn-grid">
             <button class="opt-btn" onclick="setTvHeight(0, 'Standard Height', false)">Standard Eye Level (Up to 5 ft)</button>
             <button class="opt-btn" onclick="setTvHeight(25, 'High Wall (Above 5 ft / Over Fireplace)', true)">High Wall Mounting (Above 5 ft / Over Fireplace) (+$25)</button>
@@ -156,7 +156,7 @@
 
     <div id="step-tv-bracket" class="step">
         <button class="back-btn" onclick="showStep('step-tv-height')">← Back</button>
-        <div class="step-title">Step 4: Do you need a TV Mount Bracket?</div>
+        <div class="step-title">Step 6: Do you need a TV Mount Bracket?</div>
         <div class="btn-grid">
             <button class="opt-btn" onclick="setTvBracket(0, 'Customer Bracket')">I have my own TV bracket</button>
             <button class="opt-btn" onclick="setTvBracket(30, 'Provide Tilting Bracket')">Provide Tilting TV Bracket (+$30)</button>
@@ -165,7 +165,7 @@
 
     <div id="step-tv-wiring" class="step">
         <button class="back-btn" onclick="showStep('step-tv-bracket')">← Back</button>
-        <div class="step-title">Step 5: Cable Hiding Option</div>
+        <div class="step-title">Step 7: Cable Hiding Option</div>
         <div class="btn-grid">
             <button class="opt-btn" onclick="setTvWiring(0, 'No Cable Hiding')">Standard Wires (No In-Wall Hiding)</button>
             <button class="opt-btn" id="btnInWallCable" onclick="setTvWiring(40, 'In-Wall Cable Hiding (Customer Kit)')">Hide Cables In-Wall (I have kit) (+$40)</button>
@@ -175,7 +175,7 @@
 
     <!-- PLUMBING STEPS -->
     <div id="step-plumbing-type" class="step">
-        <button class="back-btn" onclick="showStep('step-category')">← Back</button>
+        <button class="back-btn" onclick="showStep('step-city')">← Back</button>
         <div class="step-title">Select Plumbing Service:</div>
         <div class="btn-grid">
             <a href="sms:+12797582752?body=Hi%20Alex!%20I%20need%20faucet%20repair%20assistance:" class="opt-btn-sub" style="text-decoration:none;">🛠️ Faucet Repair (Text Alex)</a>
@@ -190,7 +190,7 @@
 
     <!-- FENCES & SHEDS STEPS -->
     <div id="step-fences-type" class="step">
-        <button class="back-btn" onclick="showStep('step-category')">← Back</button>
+        <button class="back-btn" onclick="showStep('step-city')">← Back</button>
         <div class="step-title">Select Fence, Gate or Shed Service:</div>
         <div class="btn-grid">
             <button class="opt-btn" onclick="askMaterial(120, 'Fence Gate & Post Repair')">🪵 Fence Gate & Post Repair ($120)</button>
@@ -203,7 +203,7 @@
 
     <!-- PAINTING & DRYWALL STEPS -->
     <div id="step-painting-type" class="step">
-        <button class="back-btn" onclick="showStep('step-category')">← Back</button>
+        <button class="back-btn" onclick="showStep('step-city')">← Back</button>
         <div class="step-title">Select Painting / Drywall Service:</div>
         <div class="btn-grid">
             <button class="opt-btn" onclick="setSimpleJob(75, 'Drywall Hole Patching (First Hour Included)')">🧱 Drywall Patching ($75 - Covers First Hour)</button>
@@ -214,7 +214,7 @@
 
     <!-- HANGING & BLINDS STEPS -->
     <div id="step-hanging-type" class="step">
-        <button class="back-btn" onclick="showStep('step-category')">← Back</button>
+        <button class="back-btn" onclick="showStep('step-city')">← Back</button>
         <div class="step-title">Select Item to Hang:</div>
         <div class="btn-grid">
             <button class="opt-btn" onclick="showStep('step-blinds-qty')">🪟 Window Blinds & Curtain Rods (Discount Tier)</button>
@@ -236,7 +236,7 @@
 
     <!-- CONCRETE STEPS -->
     <div id="step-concrete-type" class="step">
-        <button class="back-btn" onclick="showStep('step-category')">← Back</button>
+        <button class="back-btn" onclick="showStep('step-city')">← Back</button>
         <div class="step-title">Select Concrete & Masonry Service:</div>
         <div class="btn-grid">
             <button class="opt-btn" onclick="setSimpleJob(95, 'Concrete Crack / Step Repair')">🧱 Concrete Crack & Step Patching ($95)</button>
@@ -246,7 +246,7 @@
 
     <!-- DOORS & WINDOWS STEPS -->
     <div id="step-doors-type" class="step">
-        <button class="back-btn" onclick="showStep('step-category')">← Back</button>
+        <button class="back-btn" onclick="showStep('step-city')">← Back</button>
         <div class="step-title">Select Door or Window Service:</div>
         <div class="btn-grid">
             <button class="opt-btn" onclick="setSimpleJob(85, 'Door Alignment & Hinge Repair')">🚪 Door Alignment & Hinge Repair ($85)</button>
@@ -257,7 +257,7 @@
 
     <!-- SMART HOME STEPS -->
     <div id="step-smart-type" class="step">
-        <button class="back-btn" onclick="showStep('step-category')">← Back</button>
+        <button class="back-btn" onclick="showStep('step-city')">← Back</button>
         <div class="step-title">Select Smart Home Service:</div>
         <div class="btn-grid">
             <button class="opt-btn" onclick="askMaterial(65, 'Video Doorbell (Ring/Nest) Installation')">🔔 Video Doorbell (Ring/Nest) ($65)</button>
@@ -268,7 +268,7 @@
 
     <!-- GENERAL MAINTENANCE -->
     <div id="step-general-type" class="step">
-        <button class="back-btn" onclick="showStep('step-category')">← Back</button>
+        <button class="back-btn" onclick="showStep('step-city')">← Back</button>
         <div class="step-title">Select Maintenance Service:</div>
         <div class="btn-grid">
             <button class="opt-btn" onclick="setSimpleJob(60, 'Weatherstripping & Door Seals')">🚪 Weatherstripping & Seals ($60)</button>
@@ -279,7 +279,7 @@
 
     <!-- FURNITURE STEPS -->
     <div id="step-furniture-type" class="step">
-        <button class="back-btn" onclick="showStep('step-category')">← Back</button>
+        <button class="back-btn" onclick="showStep('step-city')">← Back</button>
         <div class="step-title">Select Furniture Size:</div>
         <div class="btn-grid">
             <button class="opt-btn" onclick="setFurnitureType(45, 'Small Item (Chair, Nightstand)')">Small (Chair, Nightstand) - $45</button>
@@ -300,7 +300,7 @@
 
     <!-- QUESTION STEP: ARE MATERIALS PURCHASED? -->
     <div id="step-material-question" class="step">
-        <button class="back-btn" onclick="showStep('step-category')">← Back</button>
+        <button class="back-btn" onclick="showStep('step-city')">← Back</button>
         <div class="step-title" id="matQuestionTitle">Do you already have the required item / materials purchased?</div>
         <div class="btn-grid" style="margin-top: 20px;">
             <button class="opt-btn" onclick="setMaterialAnswer('Customer Has Materials Ready')">YES — I already bought it / ready</button>
@@ -334,9 +334,32 @@
     let tempPendingJob = { price: 0, title: '' };
     let isHardWall = false;
 
+    /* STEP 1: CATEGORY SELECTION */
+    function selectCategory(cat) {
+        jobData.category = cat;
+        if (cat === 'large') {
+            showStep('step-large-type');
+        } else {
+            showStep('step-city');
+        }
+    }
+
+    /* STEP 2: CITY SELECTION */
     function selectCity(cityName, travelFee, travelZoneFlag) {
         selectedCity = { name: cityName, fee: travelFee, isTravelZone: travelZoneFlag };
-        showStep('step-category');
+        
+        let cat = jobData.category;
+        if (cat === 'tv') showStep('step-tv-size');
+        if (cat === 'plumbing') showStep('step-plumbing-type');
+        if (cat === 'gutters') showStep('step-gutters-type');
+        if (cat === 'fences') showStep('step-fences-type');
+        if (cat === 'concrete') showStep('step-concrete-type');
+        if (cat === 'painting') showStep('step-painting-type');
+        if (cat === 'doors') showStep('step-doors-type');
+        if (cat === 'smart') showStep('step-smart-type');
+        if (cat === 'furniture') showStep('step-furniture-type');
+        if (cat === 'hanging') showStep('step-hanging-type');
+        if (cat === 'general') showStep('step-general-type');
     }
 
     /* GUTTERS & ROOF LOGIC */
@@ -417,23 +440,7 @@
 
     function resetForm() {
         jobData = { category: '', details: [], totalPrice: 0 };
-        showStep('step-city');
-    }
-
-    function selectCategory(cat) {
-        jobData.category = cat;
-        if (cat === 'tv') showStep('step-tv-size');
-        if (cat === 'plumbing') showStep('step-plumbing-type');
-        if (cat === 'gutters') showStep('step-gutters-type');
-        if (cat === 'fences') showStep('step-fences-type');
-        if (cat === 'concrete') showStep('step-concrete-type');
-        if (cat === 'painting') showStep('step-painting-type');
-        if (cat === 'doors') showStep('step-doors-type');
-        if (cat === 'smart') showStep('step-smart-type');
-        if (cat === 'furniture') showStep('step-furniture-type');
-        if (cat === 'hanging') showStep('step-hanging-type');
-        if (cat === 'general') showStep('step-general-type');
-        if (cat === 'large') showStep('step-large-type');
+        showStep('step-category');
     }
 
     function setSimpleJob(price, text) {
@@ -467,15 +474,7 @@
 
         document.getElementById('totalPrice').innerText = '$' + finalPrice;
         
-        let detailsString = jobData.details.join(' | ');
-        if (isMinAdjusted) {
-            detailsString += ` [$60 Minimum Visit for ${selectedCity.name}]`;
-        } else if (selectedCity.fee > 0) {
-            detailsString += ` (Includes $${selectedCity.fee} travel fee for ${selectedCity.name})`;
-        } else {
-            detailsString += ` [Location: ${selectedCity.name}]`;
-        }
-        
+        let detailsString = jobData.details.join(' | ') + ` [Location: ${selectedCity.name}]`;
         document.getElementById('summaryText').innerText = detailsString;
 
         // GENERATE DIRECT SMS LINK WITH "BOOK NOW ($XXX)" BUTTON
