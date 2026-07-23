@@ -13,7 +13,7 @@
         .step-title { font-size: 16px; font-weight: 700; margin-bottom: 12px; color: #1b5e20; text-align: center; }
         
         .btn-grid { display: grid; grid-template-columns: 1fr; gap: 10px; margin-bottom: 15px; }
-        .btn-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 15px; }
+        .btn-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
         
         .opt-btn { background: #2e7d32; color: #fff; border: none; padding: 14px; border-radius: 8px; font-weight: 600; font-size: 15px; cursor: pointer; text-align: center; transition: background 0.2s; }
         .opt-btn:hover { background: #1b5e20; }
@@ -24,39 +24,16 @@
         
         .step { display: none; }
         .step.active { display: block; }
-        
-        label { display: block; margin-top: 15px; margin-bottom: 5px; font-weight: 600; font-size: 14px; }
-        
-        input[type="text"], input[type="tel"], input[type="datetime-local"], textarea { width: 100%; padding: 12px; border: 2px solid #d32f2f; border-radius: 8px; font-size: 15px; box-sizing: border-box; background: #fff; font-family: inherit; transition: border-color 0.3s; }
-        input.valid, textarea.valid { border-color: #2e7d32 !important; background-color: #f1f8e9; }
-        input.optional { border-color: #ccc; }
-
-        .field-hint { font-size: 12px; color: #d32f2f; margin-top: 4px; font-weight: 500; }
-        .field-hint.valid { color: #2e7d32; }
-        .info-note { font-size: 12px; color: #555; background: #fff8e1; border-left: 3px solid #ffa000; padding: 8px 10px; border-radius: 4px; margin-top: 5px; line-height: 1.3; }
-        .warning-note { font-size: 12px; color: #b71c1c; background: #ffebee; border-left: 3px solid #d32f2f; padding: 8px 10px; border-radius: 4px; margin-top: 5px; line-height: 1.3; font-weight: 600; }
-
-        .address-container { position: relative; }
-        .geo-btn { width: 100%; background: #0288d1; color: #fff; border: none; padding: 10px; border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer; margin-bottom: 8px; display: flex; align-items: center; justify-content: center; gap: 6px; }
-        .geo-btn:hover { background: #0277bd; }
-        .autocomplete-items { position: absolute; border: 1px solid #ccc; border-top: none; z-index: 99; top: 100%; left: 0; right: 0; background-color: #fff; border-radius: 0 0 8px 8px; max-height: 180px; overflow-y: auto; box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
-        .autocomplete-items div { padding: 10px; cursor: pointer; font-size: 13px; border-bottom: 1px solid #eee; }
-        .autocomplete-items div:hover { background-color: #e8f5e9; color: #1b5e20; }
-
-        .custom-sms-note { background: #e3f2fd; border: 1px dashed #0288d1; border-radius: 8px; padding: 12px; margin-top: 15px; text-align: center; font-size: 13px; color: #01579b; }
-        .custom-sms-note a { color: #0288d1; font-weight: bold; text-decoration: underline; }
 
         .price-box { background: #eef7ee; border: 2px solid #2e7d32; border-radius: 8px; padding: 15px; text-align: center; margin-top: 15px; }
         .price-title { font-size: 14px; color: #2e7d32; font-weight: 600; }
-        .price-amount { font-size: 36px; font-weight: bold; color: #1b5e20; }
-        .disclaimer { font-size: 11px; color: #555; margin-top: 5px; font-weight: 600; }
+        .price-amount { font-size: 38px; font-weight: bold; color: #1b5e20; }
+        .disclaimer { font-size: 12px; color: #555; margin-top: 5px; font-weight: 600; }
 
-        .submit-btn { width: 100%; background: #2e7d32; color: #fff; border: none; padding: 16px; font-size: 18px; font-weight: bold; border-radius: 8px; margin-top: 20px; cursor: pointer; transition: background 0.3s; }
-        .submit-btn:disabled { background: #b0bec5; cursor: not-allowed; opacity: 0.7; }
-        .submit-btn:not(:disabled):hover { background: #1b5e20; }
+        .sms-submit-btn { width: 100%; background: #0288d1; color: #fff; border: none; padding: 18px; font-size: 18px; font-weight: bold; border-radius: 8px; margin-top: 20px; cursor: pointer; text-decoration: none; display: block; text-align: center; box-sizing: border-box; transition: background 0.3s; }
+        .sms-submit-btn:hover { background: #01579b; }
 
-        .floating-sms { background: #e3f2fd; border: 1px solid #90caf9; border-radius: 10px; padding: 12px; margin-top: 25px; text-align: center; }
-        .sms-btn { width: 100%; padding: 12px; border-radius: 8px; text-decoration: none; color: #fff; background: #0288d1; font-weight: bold; font-size: 14px; text-align: center; display: block; box-sizing: border-box; }
+        .info-note { font-size: 13px; color: #01579b; background: #e3f2fd; border-left: 4px solid #0288d1; padding: 10px; border-radius: 4px; margin-top: 15px; line-height: 1.4; }
     </style>
 </head>
 <body>
@@ -65,9 +42,29 @@
     <h1>Alex Handyman Services</h1>
     <p class="subtitle">San Luis Obispo County • Quick Button Booking</p>
 
+    <!-- STEP 0: SELECT CITY FIRST -->
+    <div id="step-city" class="step active">
+        <div class="step-title">Step 1: Select Your City:</div>
+        <div class="btn-grid-2">
+            <button class="opt-btn" onclick="selectCity('Pismo Beach', 0, false)">Pismo Beach</button>
+            <button class="opt-btn" onclick="selectCity('Shell Beach', 0, false)">Shell Beach</button>
+            <button class="opt-btn" onclick="selectCity('Grover Beach', 0, false)">Grover Beach</button>
+            <button class="opt-btn" onclick="selectCity('Arroyo Grande', 0, false)">Arroyo Grande</button>
+            <button class="opt-btn" onclick="selectCity('Oceano', 0, false)">Oceano</button>
+            <button class="opt-btn" onclick="selectCity('Avila Beach', 0, false)">Avila Beach</button>
+            <button class="opt-btn" onclick="selectCity('San Luis Obispo (SLO)', 15, true)">San Luis Obispo (+$15)</button>
+            <button class="opt-btn" onclick="selectCity('Nipomo', 15, true)">Nipomo (+$15)</button>
+            <button class="opt-btn" onclick="selectCity('Los Osos', 20, true)">Los Osos (+$20)</button>
+            <button class="opt-btn" onclick="selectCity('Morro Bay', 20, true)">Morro Bay (+$20)</button>
+            <button class="opt-btn" onclick="selectCity('Atascadero', 25, true)">Atascadero (+$25)</button>
+            <button class="opt-btn" onclick="selectCity('Santa Maria', 25, true)">Santa Maria (+$25)</button>
+        </div>
+    </div>
+
     <!-- STEP 1: ALL CATEGORIES -->
-    <div id="step-category" class="step active">
-        <div class="step-title">Select Service Needed:</div>
+    <div id="step-category" class="step">
+        <button class="back-btn" onclick="showStep('step-city')">← Change City</button>
+        <div class="step-title">Step 2: Select Service Needed:</div>
         <div class="btn-grid">
             <button class="opt-btn" onclick="selectCategory('tv')">📺 TV Mounting</button>
             <button class="opt-btn" onclick="selectCategory('plumbing')">🚰 Plumbing Fixtures & Repairs</button>
@@ -84,7 +81,7 @@
         </div>
     </div>
 
-    <!-- LARGE PROJECTS / REMODELING -->
+    <!-- LARGE PROJECTS -->
     <div id="step-large-type" class="step">
         <button class="back-btn" onclick="showStep('step-category')">← Back</button>
         <div class="step-title">Select Large Project for Free Estimate:</div>
@@ -96,9 +93,6 @@
             <a href="sms:+12797582752?body=Hi%20Alex!%20I'm%20interested%20in%20a%20free%20estimate%20for%20a%20Garage%20Conversion:" class="opt-btn" style="text-decoration:none;">🚗 Garage Remodel / Conversion</a>
             <a href="sms:+12797582752?body=Hi%20Alex!%20I'm%20interested%20in%20a%20free%20estimate%20for%20a%20Custom%20Deck:" class="opt-btn" style="text-decoration:none;">🪵 Custom Deck / Patio Construction</a>
         </div>
-        <div class="custom-sms-note">
-            📲 Large projects require on-site measurement. Clicking any button opens direct SMS with Alex for a Free Estimate!
-        </div>
     </div>
 
     <!-- GUTTERS & ROOF LEAKS -->
@@ -107,7 +101,7 @@
         <div class="step-title">Select Service Needed:</div>
         <div class="btn-grid">
             <button class="opt-btn" onclick="selectGutterHeight('Gutter Cleaning')">🧹 Gutter Cleaning Service</button>
-            <button class="opt-btn" onclick="showStep('step-roof-type')">🏚️ Roof Leak / Shingle Patching</button>
+            <button class="opt-btn" onclick="showStep('step-roof-type')">🏚️ Roof Leak / Patching</button>
         </div>
     </div>
 
@@ -174,8 +168,8 @@
         <div class="step-title">Step 5: Cable Hiding Option</div>
         <div class="btn-grid">
             <button class="opt-btn" onclick="setTvWiring(0, 'No Cable Hiding')">Standard Wires (No In-Wall Hiding)</button>
-            <button class="opt-btn" id="btnInWallCable" onclick="setTvWiring(40, 'In-Wall Cable Hiding (Customer Kit)')">Hide Cables In-Wall (I have cables/kit) (+$40)</button>
-            <button class="opt-btn" id="btnInWallKit" onclick="setTvWiring(70, 'In-Wall Cable Hiding + Alex Kit')">Hide Cables In-Wall (Alex Provides Extension Kit) (+$70)</button>
+            <button class="opt-btn" id="btnInWallCable" onclick="setTvWiring(40, 'In-Wall Cable Hiding (Customer Kit)')">Hide Cables In-Wall (I have kit) (+$40)</button>
+            <button class="opt-btn" id="btnInWallKit" onclick="setTvWiring(70, 'In-Wall Cable Hiding + Alex Kit')">Hide Cables In-Wall (Alex Provides Kit) (+$70)</button>
         </div>
     </div>
 
@@ -184,11 +178,11 @@
         <button class="back-btn" onclick="showStep('step-category')">← Back</button>
         <div class="step-title">Select Plumbing Service:</div>
         <div class="btn-grid">
-            <a href="sms:+12797582752?body=Hi%20Alex!%20I%20need%20faucet%20repair%20assistance:" class="opt-btn-sub" style="text-decoration:none;">🛠️ Faucet Repair (Text Alex details)</a>
+            <a href="sms:+12797582752?body=Hi%20Alex!%20I%20need%20faucet%20repair%20assistance:" class="opt-btn-sub" style="text-decoration:none;">🛠️ Faucet Repair (Text Alex)</a>
             <button class="opt-btn" onclick="askMaterial(95, 'Faucet Replacement')">🚰 Faucet Replacement ($95)</button>
             <button class="opt-btn" onclick="setSimpleJob(65, 'P-Trap Drain Cleaning & Unclog')">🛠️ Drain Unclogging / P-Trap Clean ($65)</button>
             <button class="opt-btn" onclick="askMaterial(65, 'P-Trap Pipe Replacement')">🛠️ P-Trap Replacement ($65)</button>
-            <a href="sms:+12797582752?body=Hi%20Alex!%20I%20have%20a%20toilet%20leak/repair%20question:" class="opt-btn-sub" style="text-decoration:none;">🚽 Toilet Repair (Text Alex details)</a>
+            <a href="sms:+12797582752?body=Hi%20Alex!%20I%20have%20a%20toilet%20leak/repair%20question:" class="opt-btn-sub" style="text-decoration:none;">🚽 Toilet Repair (Text Alex)</a>
             <button class="opt-btn" onclick="askMaterial(150, 'New Toilet Installation')">🚽 New Toilet Installation ($150)</button>
             <button class="opt-btn" onclick="askMaterial(110, 'Garbage Disposal Installation')">🧼 Garbage Disposal Replacement ($110)</button>
         </div>
@@ -212,12 +206,9 @@
         <button class="back-btn" onclick="showStep('step-category')">← Back</button>
         <div class="step-title">Select Painting / Drywall Service:</div>
         <div class="btn-grid">
-            <button class="opt-btn" onclick="setSimpleJob(75, 'Drywall Hole Patching (First Hour Included)')">🧱 Drywall Patching ($75 - Covers First Hour / Small Holes)</button>
+            <button class="opt-btn" onclick="setSimpleJob(75, 'Drywall Hole Patching (First Hour Included)')">🧱 Drywall Patching ($75 - Covers First Hour)</button>
             <button class="opt-btn" onclick="askMaterial(120, 'Accent Wall Painting')">🎨 Accent Wall Painting ($120)</button>
             <button class="opt-btn" onclick="askMaterial(250, 'Small Room Painting (Bathroom/Hall)')">🎨 Small Room Painting ($250)</button>
-        </div>
-        <div class="custom-sms-note">
-            📌 <i>Note for Drywall: $75 covers 1st hour for small holes. Large wall damage priced by required time.</i>
         </div>
     </div>
 
@@ -228,7 +219,7 @@
         <div class="btn-grid">
             <button class="opt-btn" onclick="showStep('step-blinds-qty')">🪟 Window Blinds & Curtain Rods (Discount Tier)</button>
             <button class="opt-btn" onclick="setSimpleJob(40, 'Wall Shelf Hanging')">🖼️ Wall Shelves ($40 ea)</button>
-            <button class="opt-btn" onclick="setSimpleJob(50, 'Heavy Mirror / Large Picture')">🖼️ Heavy Mirror / Large Picture ($50 ea)</button>
+            <button class="opt-btn" onclick="setSimpleJob(35, 'Picture Hanging (Single Item)')">🖼️ Picture / Mirror Hanging ($35 ea)</button>
         </div>
     </div>
 
@@ -236,10 +227,10 @@
         <button class="back-btn" onclick="showStep('step-hanging-type')">← Back</button>
         <div class="step-title">Select Quantity of Blinds / Rods:</div>
         <div class="btn-grid">
-            <button class="opt-btn" onclick="setSimpleJob(50, '1 Blinds / Curtain Rod')">1 Item ($50)</button>
-            <button class="opt-btn" onclick="setSimpleJob(70, '2 Blinds / Curtain Rods')">2 Items ($70 — Save $30!)</button>
-            <button class="opt-btn" onclick="setSimpleJob(90, '3 Blinds / Curtain Rods')">3 Items ($90 — Save $60!)</button>
-            <button class="opt-btn" onclick="setSimpleJob(110, '4 Blinds / Curtain Rods')">4+ Items ($110 tier)</button>
+            <button class="opt-btn" onclick="setSimpleJob(35, '1 Blinds / Curtain Rod')">1 Item ($35)</button>
+            <button class="opt-btn" onclick="setSimpleJob(60, '2 Blinds / Curtain Rods')">2 Items ($60 — Save $10!)</button>
+            <button class="opt-btn" onclick="setSimpleJob(80, '3 Blinds / Curtain Rods')">3 Items ($80 — Save $25!)</button>
+            <button class="opt-btn" onclick="setSimpleJob(100, '4 Blinds / Curtain Rods')">4+ Items ($100 tier)</button>
         </div>
     </div>
 
@@ -300,7 +291,7 @@
     <div id="step-furniture-qty" class="step">
         <button class="back-btn" onclick="showStep('step-furniture-type')">← Back</button>
         <div class="step-title">Select Quantity:</div>
-        <div class="btn-grid-3">
+        <div class="btn-grid-2">
             <button class="opt-btn" onclick="setFurnitureQty(1)">1 Item</button>
             <button class="opt-btn" onclick="setFurnitureQty(2)">2 Items</button>
             <button class="opt-btn" onclick="setFurnitureQty(3)">3+ Items</button>
@@ -317,89 +308,35 @@
         </div>
     </div>
 
-    <!-- FINAL BOOKING FORM -->
+    <!-- FINAL BOOKING SUMMARY -->
     <div id="step-final" class="step">
         <button class="back-btn" onclick="resetForm()">← Start Over</button>
         
         <div class="price-box">
-            <div class="price-title">Service Price:</div>
+            <div class="price-title">Total Service Price:</div>
             <div class="price-amount" id="totalPrice">$0</div>
-            <div id="summaryText" style="font-size: 13px; color: #444; margin-top: 8px; font-weight: 600;"></div>
-            <div class="disclaimer">Fixed service pricing. No hidden fees.</div>
+            <div id="summaryText" style="font-size: 14px; color: #333; margin-top: 8px; font-weight: 600;"></div>
+            <div class="disclaimer">Fixed service price. No hidden fees.</div>
         </div>
 
-        <!-- PHONE (REQUIRED) -->
-        <label for="clientPhone">Phone Number * (10 Digits Required)</label>
-        <input type="tel" id="clientPhone" placeholder="(805) 000-0000" maxlength="14" oninput="validatePhone(this)">
-        <div id="phoneHint" class="field-hint">❌ Required: Enter 10-digit US phone number</div>
-        
-        <div class="warning-note">
-            ⚠️ <strong>Important:</strong> If an invalid phone number is provided, your booking will be automatically cancelled as SMS confirmation is required before arrival.
+        <a id="directSmsBtn" href="#" class="sms-submit-btn">Book Now</a>
+
+        <div class="info-note">
+            💬 <strong>How it works:</strong> Clicking "Book Now" opens your Messaging app with your booking details pre-filled. Just hit send, and Alex will text back shortly to confirm your address & preferred time!
         </div>
-
-        <!-- DATE & TIME (REQUIRED) -->
-        <label for="bookingDate">Preferred Date & Time * (7:00 AM – 9:00 PM)</label>
-        <input type="datetime-local" id="bookingDate" onchange="validateDateTime(this)">
-        <div id="dateHint" class="field-hint">❌ Required: Select date & time within 14 days (7:00 AM - 9:00 PM)</div>
-
-        <!-- ADDRESS (GEOLOCATION + AUTOCOMPLETE) -->
-        <label for="clientAddress">Service Address (Optional)</label>
-        
-        <button type="button" class="geo-btn" onclick="getGPSLocation()">📍 Use My Current Location</button>
-        
-        <div class="address-container">
-            <input type="text" id="clientAddress" class="optional" placeholder="Type street name or house number..." oninput="handleAddressInput(this)" autocomplete="off">
-            <div id="addressSuggestions" class="autocomplete-items"></div>
-        </div>
-        
-        <div class="info-note">📍 <strong>Note:</strong> If you skip the address now, Alex will ask for your address via SMS before arrival.</div>
-
-        <!-- NAME (OPTIONAL) -->
-        <label for="clientName">Your Name (Optional)</label>
-        <input type="text" id="clientName" class="optional" placeholder="e.g. John Smith">
-
-        <!-- NOTES -->
-        <label for="clientMessage">Gate Code / Notes (Optional)</label>
-        <textarea id="clientMessage" class="optional" placeholder="Enter gate code, parking notes, or extra requests..."></textarea>
-
-        <button class="submit-btn" id="submitBtn" disabled onclick="submitBooking()">Book Appointment</button>
-    </div>
-
-    <!-- FLOATING SMS QUESTION BOX -->
-    <div class="floating-sms">
-        <div style="font-size: 13px; font-weight: 600; color: #0d47a1; margin-bottom: 8px;">Need a custom price or specific repair?</div>
-        <a href="sms:+12797582752?body=Hi%20Alex!%20I%20have%20a%20question%20about%20a%20handyman%20project:" class="sms-btn">💬 Text Alex Directly for Custom Quote (Free)</a>
     </div>
 
 </div>
 
 <script>
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbwMqNktMvIgWEfcSyubP40-_y--L9Ysvl7aUo7gAbbOG-Dk-yB4r0IwyH4jGERHRYfIrw/exec';
-    
+    let selectedCity = { name: '', fee: 0, isTravelZone: false };
     let jobData = { category: '', details: [], totalPrice: 0 };
     let tempPendingJob = { price: 0, title: '' };
     let isHardWall = false;
-    let isPhoneValid = false;
-    let isDateValid = false;
-    let autoTimer = null;
 
-    window.onload = function() {
-        setupCalendarLimits();
-    };
-
-    function setupCalendarLimits() {
-        let dateInput = document.getElementById('bookingDate');
-        let now = new Date();
-        now.setMinutes(now.getMinutes() + 120); // +2 hours
-        
-        let tzOffset = now.getTimezoneOffset() * 60000;
-        let localMin = (new Date(now.getTime() - tzOffset)).toISOString().slice(0, 16);
-        dateInput.min = localMin;
-
-        let maxDate = new Date();
-        maxDate.setDate(maxDate.getDate() + 14);
-        let localMax = (new Date(maxDate.getTime() - tzOffset)).toISOString().slice(0, 16);
-        dateInput.max = localMax;
+    function selectCity(cityName, travelFee, travelZoneFlag) {
+        selectedCity = { name: cityName, fee: travelFee, isTravelZone: travelZoneFlag };
+        showStep('step-category');
     }
 
     /* GUTTERS & ROOF LOGIC */
@@ -424,7 +361,7 @@
         document.getElementById('matQuestionTitle').innerText = `Do you already have the required item/materials for "${title}"?`;
         
         let smsLink = document.getElementById('smsMatLink');
-        smsLink.href = `sms:+12797582752?body=Hi%20Alex!%20I%20need%20advice/help%20buying%20materials%20for%20${encodeURIComponent(title)}:`;
+        smsLink.href = `sms:+12797582752?body=Hi%20Alex!%20I%20need%20advice/help%20buying%20materials%20for%20${encodeURIComponent(title)}%20in%20${encodeURIComponent(selectedCity.name)}:`;
         
         showStep('step-material-question');
     }
@@ -454,7 +391,6 @@
         if(hardWallFlag) isHardWall = true;
         
         if(isHardWall) {
-            // Disable in-wall hiding for hard/high walls
             document.getElementById('btnInWallCable').style.display = 'none';
             document.getElementById('btnInWallKit').style.display = 'none';
         } else {
@@ -474,172 +410,14 @@
         finishSelection();
     }
 
-    /* GEOLOCATION */
-    function getGPSLocation() {
-        let addrInput = document.getElementById('clientAddress');
-        if (!navigator.geolocation) {
-            alert('Geolocation is not supported by your browser.');
-            return;
-        }
-
-        addrInput.placeholder = 'Locating...';
-
-        navigator.geolocation.getCurrentPosition(
-            (position) => {
-                let lat = position.coords.latitude;
-                let lon = position.coords.longitude;
-
-                fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`)
-                    .then(res => res.json())
-                    .then(data => {
-                        if (data && data.display_name) {
-                            let parts = data.display_name.split(',');
-                            let shortAddr = parts.slice(0, 4).join(',').trim();
-                            addrInput.value = shortAddr;
-                            addrInput.classList.add('valid');
-                        } else {
-                            addrInput.value = `GPS: ${lat.toFixed(4)}, ${lon.toFixed(4)}`;
-                            addrInput.classList.add('valid');
-                        }
-                    })
-                    .catch(() => {
-                        addrInput.value = `GPS: ${lat.toFixed(4)}, ${lon.toFixed(4)}`;
-                        addrInput.classList.add('valid');
-                    });
-            },
-            () => {
-                alert('Could not access location. Please type your address manually.');
-                addrInput.placeholder = 'e.g. 123 Main St, San Luis Obispo';
-            }
-        );
-    }
-
-    /* AUTOCOMPLETE */
-    function handleAddressInput(input) {
-        clearTimeout(autoTimer);
-        let query = input.value.trim();
-        let box = document.getElementById('addressSuggestions');
-
-        if (query.length >= 5) {
-            input.classList.add('valid');
-        } else {
-            input.classList.remove('valid');
-        }
-
-        if (query.length < 3) {
-            box.innerHTML = '';
-            return;
-        }
-
-        autoTimer = setTimeout(() => {
-            fetch(`https://nominatim.openstreetmap.org/search?format=json&countrycodes=us&viewbox=-121.2,35.8,-120.3,34.9&bounded=1&q=${encodeURIComponent(query)}`)
-                .then(res => res.json())
-                .then(data => {
-                    box.innerHTML = '';
-                    if (data && data.length > 0) {
-                        data.slice(0, 5).forEach(item => {
-                            let div = document.createElement('div');
-                            let cleanText = item.display_name.replace(', United States', '');
-                            div.innerText = cleanText;
-                            div.onclick = function() {
-                                input.value = cleanText;
-                                input.classList.add('valid');
-                                box.innerHTML = '';
-                            };
-                            box.appendChild(div);
-                        });
-                    }
-                });
-        }, 300);
-    }
-
-    document.addEventListener('click', function(e) {
-        if (!e.target.closest('.address-container')) {
-            document.getElementById('addressSuggestions').innerHTML = '';
-        }
-    });
-
-    /* VALIDATION */
-    function validatePhone(input) {
-        let numbers = input.value.replace(/\D/g, '');
-        if (numbers.length > 10) numbers = numbers.substring(0, 10);
-        
-        if (numbers.length === 0) input.value = '';
-        else if (numbers.length <= 3) input.value = '(' + numbers;
-        else if (numbers.length <= 6) input.value = '(' + numbers.substring(0, 3) + ') ' + numbers.substring(3);
-        else input.value = '(' + numbers.substring(0, 3) + ') ' + numbers.substring(3, 6) + '-' + numbers.substring(6);
-
-        let hint = document.getElementById('phoneHint');
-        if (numbers.length === 10) {
-            input.classList.add('valid');
-            hint.innerText = '✓ Valid 10-digit phone number';
-            hint.className = 'field-hint valid';
-            isPhoneValid = true;
-        } else {
-            input.classList.remove('valid');
-            hint.innerText = '❌ Required: Enter 10-digit US phone number';
-            hint.className = 'field-hint';
-            isPhoneValid = false;
-        }
-        checkFormValidity();
-    }
-
-    function validateDateTime(input) {
-        let hint = document.getElementById('dateHint');
-        if (!input.value) {
-            input.classList.remove('valid');
-            hint.innerText = '❌ Required: Select date & time';
-            hint.className = 'field-hint';
-            isDateValid = false;
-            checkFormValidity();
-            return;
-        }
-
-        let selected = new Date(input.value);
-        let minTime = new Date();
-        minTime.setMinutes(minTime.getMinutes() + 115);
-
-        let hour = selected.getHours();
-
-        if (selected < minTime) {
-            input.classList.remove('valid');
-            hint.innerText = '❌ Please select a time at least 2 hours in advance';
-            hint.className = 'field-hint';
-            isDateValid = false;
-        } else if (hour < 7 || hour >= 21) {
-            input.classList.remove('valid');
-            hint.innerText = '❌ Please select a working time between 7:00 AM and 9:00 PM';
-            hint.className = 'field-hint';
-            isDateValid = false;
-        } else {
-            input.classList.add('valid');
-            hint.innerText = '✓ Valid appointment time';
-            hint.className = 'field-hint valid';
-            isDateValid = true;
-        }
-        checkFormValidity();
-    }
-
-    function checkFormValidity() {
-        let btn = document.getElementById('submitBtn');
-        if (isPhoneValid && isDateValid) {
-            btn.disabled = false;
-        } else {
-            btn.disabled = true;
-        }
-    }
-
     function showStep(stepId) {
         document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
         document.getElementById(stepId).classList.add('active');
-        if(stepId === 'step-final') {
-            setupCalendarLimits();
-        }
     }
 
     function resetForm() {
         jobData = { category: '', details: [], totalPrice: 0 };
-        showStep('step-category');
+        showStep('step-city');
     }
 
     function selectCategory(cat) {
@@ -677,50 +455,37 @@
     }
 
     function finishSelection() {
-        document.getElementById('totalPrice').innerText = '$' + jobData.totalPrice;
-        document.getElementById('summaryText').innerText = jobData.details.join(' | ');
+        let rawPrice = jobData.totalPrice + selectedCity.fee;
+        
+        let finalPrice = rawPrice;
+        let isMinAdjusted = false;
+        
+        if (selectedCity.isTravelZone && rawPrice < 60) {
+            finalPrice = 60;
+            isMinAdjusted = true;
+        }
+
+        document.getElementById('totalPrice').innerText = '$' + finalPrice;
+        
+        let detailsString = jobData.details.join(' | ');
+        if (isMinAdjusted) {
+            detailsString += ` [$60 Minimum Visit for ${selectedCity.name}]`;
+        } else if (selectedCity.fee > 0) {
+            detailsString += ` (Includes $${selectedCity.fee} travel fee for ${selectedCity.name})`;
+        } else {
+            detailsString += ` [Location: ${selectedCity.name}]`;
+        }
+        
+        document.getElementById('summaryText').innerText = detailsString;
+
+        // GENERATE DIRECT SMS LINK WITH "BOOK NOW ($XXX)" BUTTON
+        let smsText = `Hi Alex! I would like to book a service in ${selectedCity.name}.\n\nProject: ${jobData.details.join(' | ')}\nTotal Price: $${finalPrice}.\n\nPlease let me know your availability!`;
+        
+        let smsBtn = document.getElementById('directSmsBtn');
+        smsBtn.innerText = `Book Now ($${finalPrice})`;
+        smsBtn.href = `sms:+12797582752?body=${encodeURIComponent(smsText)}`;
+
         showStep('step-final');
-    }
-
-    function submitBooking() {
-        let phoneInput = document.getElementById('clientPhone').value.trim();
-        let dateInput = document.getElementById('bookingDate').value;
-        let addressInput = document.getElementById('clientAddress').value.trim() || 'Address Not Provided (Will Confirm via SMS)';
-        let nameInput = document.getElementById('clientName').value.trim() || 'Valued Client';
-        let message = document.getElementById('clientMessage').value.trim();
-        let btn = document.getElementById('submitBtn');
-
-        btn.innerText = 'Submitting Request...';
-        btn.disabled = true;
-
-        let price = '$' + jobData.totalPrice;
-        let fullNote = jobData.details.join(' | ') + (message ? ' [Notes: ' + message + ']' : '');
-
-        let payload = {
-            type: 'booking',
-            name: nameInput,
-            phone: phoneInput,
-            address: addressInput,
-            bookingDate: dateInput,
-            message: fullNote,
-            price: price
-        };
-
-        fetch(scriptURL, {
-            method: 'POST',
-            mode: 'no-cors',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
-        })
-        .then(() => {
-            alert('Thank you! Your booking request has been submitted. Alex will text or call you shortly to confirm!');
-            btn.innerText = '✓ Request Sent!';
-        })
-        .catch(error => {
-            alert('Error submitting request. Please try again or text us directly.');
-            btn.innerText = 'Book Appointment';
-            btn.disabled = false;
-        });
     }
 </script>
 
