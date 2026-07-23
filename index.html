@@ -468,19 +468,32 @@
         fetch(scriptURL)
         .then(res => res.json())
         .then(data => {
-            // LOAD PROJECTS (NEWEST FIRST ON THE LEFT)
+            // LOAD PROJECTS (UPDATED FLEXIBLE PARSER)
             let pContainer = document.getElementById('projectsCarousel');
+            let projects = [];
+            
             if (data.result === 'success' && data.projects && data.projects.length > 0) {
+                projects = data.projects;
+            } else if (Array.isArray(data) && data.length > 0) {
+                projects = data;
+            }
+
+            if (projects.length > 0) {
                 pContainer.innerHTML = '';
-                // Reverse to display newest projects first
-                data.projects.reverse().forEach(p => {
-                    let card = document.createElement('div');
-                    card.className = 'project-card';
-                    card.innerHTML = `
-                        <img src="${p.photo}" alt="${p.caption}">
-                        <div class="caption">${p.caption}</div>
-                    `;
-                    pContainer.appendChild(card);
+                // Display newest projects first
+                [...projects].reverse().forEach(p => {
+                    let photoUrl = p.photo || p.photoBase64 || p.image || p.url || p.link || p.src || '';
+                    let captionText = p.caption || p.title || p.description || p.text || p.details || 'Recent Project';
+                    
+                    if (photoUrl) {
+                        let card = document.createElement('div');
+                        card.className = 'project-card';
+                        card.innerHTML = `
+                            <img src="${photoUrl}" alt="${captionText}" onerror="this.src='https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=400&q=80'">
+                            <div class="caption">${captionText}</div>
+                        `;
+                        pContainer.appendChild(card);
+                    }
                 });
             } else {
                 pContainer.innerHTML = `
@@ -503,10 +516,10 @@
             let rContainer = document.getElementById('reviewsContainer');
             if (data.result === 'success' && data.reviews && data.reviews.length > 0) {
                 rContainer.innerHTML = '';
-                data.reviews.reverse().forEach(r => {
-                    let avatarSrc = r.avatar || 'https://via.placeholder.com/32?text=User';
+                [...data.reviews].reverse().forEach(r => {
+                    let avatarSrc = r.avatar || r.avatarBase64 || 'https://via.placeholder.com/32?text=User';
                     let stars = '⭐'.repeat(r.rating || 5);
-                    let photoHtml = r.photo ? `<img src="${r.photo}" class="review-work-img">` : '';
+                    let photoHtml = (r.photo || r.photoBase64) ? `<img src="${r.photo || r.photoBase64}" class="review-work-img">` : '';
                     
                     let card = document.createElement('div');
                     card.className = 'review-card';
@@ -514,11 +527,11 @@
                         <div class="review-header">
                             <img src="${avatarSrc}" class="review-avatar">
                             <div>
-                                <div class="review-author">${r.name} (${r.city})</div>
+                                <div class="review-author">${r.name || 'Customer'} (${r.city || 'SLO'})</div>
                                 <div style="font-size:10px;">${stars}</div>
                             </div>
                         </div>
-                        <div>"${r.text}"</div>
+                        <div>"${r.text || r.reviewText || ''}"</div>
                         ${photoHtml}
                     `;
                     rContainer.appendChild(card);
@@ -536,7 +549,9 @@
                 `;
             }
         })
-        .catch(() => {});
+        .catch(err => {
+            console.log('Data load error:', err);
+        });
     }
 
     function toggleProjectModal() {
@@ -588,10 +603,12 @@
         })
         .then(() => {
             alert('Project photo uploaded successfully!');
+            document.getElementById('projCaption').value = '';
+            document.getElementById('projPhoto').value = '';
             toggleProjectModal();
             btn.innerText = 'Upload Project';
             btn.disabled = false;
-            loadData();
+            setTimeout(loadData, 1500);
         })
         .catch(() => {
             alert('Error uploading photo. Please try again.');
@@ -644,7 +661,7 @@
             toggleReviewModal();
             btn.innerText = 'Submit Review';
             btn.disabled = false;
-            loadData();
+            setTimeout(loadData, 1500);
         })
         .catch(() => {
             alert('Error submitting review. Please try again.');
