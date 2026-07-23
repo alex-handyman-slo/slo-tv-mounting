@@ -7,8 +7,11 @@
     <style>
         body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; margin: 0; padding: 15px; background: #f4f6f8; color: #333; }
         .card { background: #fff; border-radius: 12px; padding: 20px; max-width: 500px; margin: 0 auto; box-shadow: 0 4px 15px rgba(0,0,0,0.08); position: relative; }
-        h1 { font-size: 22px; text-align: center; margin-bottom: 5px; color: #1a1a1a; }
-        p.subtitle { text-align: center; color: #666; font-size: 14px; margin-top: 0; margin-bottom: 20px; }
+        h1 { font-size: 22px; text-align: center; margin-bottom: 3px; color: #1a1a1a; }
+        p.subtitle { text-align: center; color: #666; font-size: 14px; margin-top: 0; margin-bottom: 15px; }
+
+        .trust-badges { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 20px; background: #f9fbe7; padding: 10px; border-radius: 8px; border: 1px solid #c0ca33; }
+        .badge-item { font-size: 11px; font-weight: 600; color: #33691e; display: flex; align-items: center; gap: 5px; }
         
         .step-title { font-size: 16px; font-weight: 700; margin-bottom: 12px; color: #1b5e20; text-align: center; }
         
@@ -25,7 +28,6 @@
         .step { display: none; }
         .step.active { display: block; }
 
-        /* LIVE PRICE BAR */
         .live-price-bar { display: none; background: #e8f5e9; border: 2px solid #2e7d32; border-radius: 8px; padding: 10px 15px; margin-bottom: 15px; text-align: center; font-weight: bold; color: #1b5e20; font-size: 18px; }
 
         .price-box { background: #eef7ee; border: 2px solid #2e7d32; border-radius: 8px; padding: 15px; text-align: center; margin-top: 15px; }
@@ -37,13 +39,46 @@
         .sms-submit-btn:hover { background: #01579b; }
 
         .info-note { font-size: 13px; color: #01579b; background: #e3f2fd; border-left: 4px solid #0288d1; padding: 10px; border-radius: 4px; margin-top: 15px; line-height: 1.4; }
+
+        /* PORTFOLIO & REVIEWS */
+        .portfolio-section { margin-top: 25px; border-top: 1px solid #eee; padding-top: 15px; }
+        .section-title { font-size: 14px; font-weight: 700; color: #444; margin-bottom: 10px; text-align: center; text-transform: uppercase; letter-spacing: 0.5px; }
+        .portfolio-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+        .portfolio-item { background: #eceff1; border-radius: 6px; padding: 15px 5px; text-align: center; font-size: 11px; font-weight: bold; color: #455a64; border: 1px dashed #cfd8dc; }
+
+        .reviews-section { margin-top: 20px; border-top: 1px solid #eee; padding-top: 15px; }
+        .review-card { background: #fafafa; border-left: 3px solid #2e7d32; padding: 10px 12px; border-radius: 6px; margin-bottom: 10px; font-size: 12px; line-height: 1.4; }
+        .review-header { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+        .review-avatar { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; background: #ccc; }
+        .review-author { font-weight: bold; color: #2e7d32; font-size: 12px; }
+        .review-work-img { max-width: 100%; max-height: 150px; border-radius: 6px; margin-top: 8px; display: block; border: 1px solid #ddd; }
+
+        /* LEAVE REVIEW FORM */
+        .leave-review-btn { width: 100%; background: #eceff1; color: #37474f; border: 1px solid #b0bec5; padding: 10px; border-radius: 6px; font-weight: bold; font-size: 13px; cursor: pointer; margin-top: 10px; text-align: center; }
+        .leave-review-btn:hover { background: #cfd8dc; }
+        
+        .review-modal { display: none; background: #fff; border: 1px solid #ccc; border-radius: 8px; padding: 15px; margin-top: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .review-modal label { display: block; font-size: 12px; font-weight: bold; margin-top: 10px; color: #444; }
+        .review-modal input, .review-modal textarea, .review-modal select { width: 100%; padding: 8px; margin-top: 3px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-size: 13px; }
+        .review-submit-btn { width: 100%; background: #2e7d32; color: #fff; border: none; padding: 12px; font-weight: bold; border-radius: 6px; margin-top: 12px; cursor: pointer; }
+
+        .payment-methods { text-align: center; font-size: 12px; color: #666; margin-top: 20px; padding-top: 10px; border-top: 1px solid #eee; font-weight: 600; }
+        .seo-footer { text-align: center; font-size: 10px; color: #999; margin-top: 15px; line-height: 1.4; }
     </style>
 </head>
 <body>
 
 <div class="card">
     <h1>Alex Handyman Services</h1>
-    <p class="subtitle">San Luis Obispo County • Quick Button Booking</p>
+    <p class="subtitle">San Luis Obispo County • Direct SMS Booking</p>
+
+    <!-- TRUST BADGES -->
+    <div class="trust-badges">
+        <div class="badge-item">🛡️ Fully Insured Local Master</div>
+        <div class="badge-item">⭐ 5.0 Star Rated Quality</div>
+        <div class="badge-item">⏱️ On-Time Guarantee</div>
+        <div class="badge-item">🧹 Clean Work Guarantee</div>
+    </div>
 
     <!-- LIVE RUNNING PRICE BAR -->
     <div id="livePriceBar" class="live-price-bar">
@@ -331,16 +366,196 @@
 
         <div class="info-note">
             💬 <strong>How it works:</strong> Clicking "Book Now" opens your Messaging app with your booking details pre-filled. Just hit send, and Alex will text back shortly to confirm your address & preferred time!
+            <br><br>📸 <i>Tip: Feel free to attach photos of your project directly in the SMS!</i>
         </div>
+    </div>
+
+    <!-- PORTFOLIO / RECENT WORK -->
+    <div class="portfolio-section">
+        <div class="section-title">Recent Jobs Completed</div>
+        <div class="portfolio-grid">
+            <div class="portfolio-item">📺 Clean TV Mounting</div>
+            <div class="portfolio-item">🧱 Drywall Repair</div>
+            <div class="portfolio-item">🚪 Smart Lock Install</div>
+        </div>
+    </div>
+
+    <!-- RECENT REVIEWS FROM GOOGLE SHEETS -->
+    <div class="reviews-section">
+        <div class="section-title">Local Customer Reviews</div>
+        <div id="reviewsContainer">
+            <div style="font-size: 11px; text-align: center; color: #888;">Loading reviews...</div>
+        </div>
+
+        <button class="leave-review-btn" onclick="toggleReviewModal()">✍️ Leave a Review</button>
+
+        <div id="reviewModal" class="review-modal">
+            <div style="font-weight: bold; font-size: 14px; color: #1b5e20; text-align: center;">Share Your Experience</div>
+            
+            <label for="revName">Your Name *</label>
+            <input type="text" id="revName" placeholder="e.g. Sarah M.">
+
+            <label for="revCity">Your City *</label>
+            <input type="text" id="revCity" placeholder="e.g. Pismo Beach">
+
+            <label for="revPhone">Phone Number * (Internal verification, never published)</label>
+            <input type="tel" id="revPhone" placeholder="(805) 000-0000">
+
+            <label for="revRating">Rating *</label>
+            <select id="revRating">
+                <option value="5">⭐⭐⭐⭐⭐ 5 Stars (Excellent)</option>
+                <option value="4">⭐⭐⭐⭐ 4 Stars (Good)</option>
+                <option value="3">⭐⭐⭐ 3 Stars (Average)</option>
+            </select>
+
+            <label for="revText">Your Review *</label>
+            <textarea id="revText" rows="3" placeholder="Tell us about the job completed..."></textarea>
+
+            <label for="revAvatar">Your Profile Photo / Avatar (Optional)</label>
+            <input type="file" id="revAvatar" accept="image/*">
+
+            <label for="revPhoto">Completed Work Photo (Optional)</label>
+            <input type="file" id="revPhoto" accept="image/*">
+
+            <button class="review-submit-btn" id="revSubmitBtn" onclick="submitReview()">Submit Review</button>
+        </div>
+    </div>
+
+    <!-- PAYMENT METHODS -->
+    <div class="payment-methods">
+        💳 Accepted Payments: Zelle • Venmo • Cash • Credit Card / Apple Pay
+    </div>
+
+    <!-- SEO FOOTER -->
+    <div class="seo-footer">
+        Alex Handyman & TV Mounting Services<br>
+        Serving Pismo Beach, Shell Beach, Grover Beach, Arroyo Grande, Oceano, Avila Beach, San Luis Obispo, Nipomo, Los Osos, Morro Bay, Atascadero, and Santa Maria.
     </div>
 
 </div>
 
 <script>
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbwMqNktMvIgWEfcSyubP40-_y--L9Ysvl7aUo7gAbbOG-Dk-yB4r0IwyH4jGERHRYfIrw/exec';
+    
     let selectedCity = { name: '', isTravelZone: false };
     let jobData = { category: '', details: [], totalPrice: 0 };
     let tempPendingJob = { price: 0, title: '' };
     let isHardWall = false;
+
+    window.onload = function() {
+        loadReviews();
+    };
+
+    function loadReviews() {
+        fetch(scriptURL)
+        .then(res => res.json())
+        .then(data => {
+            let container = document.getElementById('reviewsContainer');
+            if (data.result === 'success' && data.reviews && data.reviews.length > 0) {
+                container.innerHTML = '';
+                data.reviews.forEach(r => {
+                    let avatarSrc = r.avatar || 'https://via.placeholder.com/32?text=User';
+                    let stars = '⭐'.repeat(r.rating || 5);
+                    let photoHtml = r.photo ? `<img src="${r.photo}" class="review-work-img">` : '';
+                    
+                    let card = document.createElement('div');
+                    card.className = 'review-card';
+                    card.innerHTML = `
+                        <div class="review-header">
+                            <img src="${avatarSrc}" class="review-avatar">
+                            <div>
+                                <div class="review-author">${r.name} (${r.city})</div>
+                                <div style="font-size:10px;">${stars}</div>
+                            </div>
+                        </div>
+                        <div>"${r.text}"</div>
+                        ${photoHtml}
+                    `;
+                    container.appendChild(card);
+                });
+            } else {
+                container.innerHTML = `
+                    <div class="review-card">
+                        "Alex mounted two 65\\" TVs over our fireplace in Arroyo Grande. Cleaned up all dust and hid all wires. Highly recommend!"
+                        <div class="review-author">⭐⭐⭐⭐⭐ — Sarah M., Arroyo Grande</div>
+                    </div>
+                    <div class="review-card">
+                        "Fast response via SMS, fair price for hanging our heavy mirrors and blinds. Excellent work."
+                        <div class="review-author">⭐⭐⭐⭐⭐ — David K., San Luis Obispo</div>
+                    </div>
+                `;
+            }
+        })
+        .catch(() => {});
+    }
+
+    function toggleReviewModal() {
+        let modal = document.getElementById('reviewModal');
+        modal.style.display = modal.style.display === 'block' ? 'none' : 'block';
+    }
+
+    async function fileToBase64(file) {
+        return new Promise((resolve, reject) => {
+            if (!file) resolve('');
+            let reader = new FileReader();
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = error => reject(error);
+            reader.readAsDataURL(file);
+        });
+    }
+
+    async function submitReview() {
+        let name = document.getElementById('revName').value.trim();
+        let city = document.getElementById('revCity').value.trim();
+        let phone = document.getElementById('revPhone').value.trim();
+        let rating = document.getElementById('revRating').value;
+        let text = document.getElementById('revText').value.trim();
+        
+        let avatarFile = document.getElementById('revAvatar').files[0];
+        let photoFile = document.getElementById('revPhoto').files[0];
+
+        if (!name || !city || !phone || !text) {
+            alert('Please fill in all required fields (Name, City, Phone, Review)');
+            return;
+        }
+
+        let btn = document.getElementById('revSubmitBtn');
+        btn.innerText = 'Submitting...';
+        btn.disabled = true;
+
+        let avatarBase64 = avatarFile ? await fileToBase64(avatarFile) : '';
+        let photoBase64 = photoFile ? await fileToBase64(photoFile) : '';
+
+        let payload = {
+            type: 'review',
+            name: name,
+            city: city,
+            phone: phone,
+            rating: rating,
+            reviewText: text,
+            avatarBase64: avatarBase64,
+            photoBase64: photoBase64
+        };
+
+        fetch(scriptURL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        })
+        .then(() => {
+            alert('Thank you for your review! It has been submitted for verification.');
+            toggleReviewModal();
+            btn.innerText = 'Submit Review';
+            btn.disabled = false;
+            loadReviews();
+        })
+        .catch(() => {
+            alert('Error submitting review. Please try again.');
+            btn.innerText = 'Submit Review';
+            btn.disabled = false;
+        });
+    }
 
     function updateLivePriceDisplay() {
         let currentCalc = jobData.totalPrice;
@@ -359,7 +574,6 @@
         }
     }
 
-    /* STEP 1: CATEGORY SELECTION */
     function selectCategory(cat, basePrice) {
         jobData.category = cat;
         jobData.totalPrice = basePrice;
@@ -370,7 +584,6 @@
         }
     }
 
-    /* STEP 2: CITY SELECTION */
     function selectCity(cityName, travelZoneFlag) {
         selectedCity = { name: cityName, isTravelZone: travelZoneFlag };
         updateLivePriceDisplay();
@@ -389,7 +602,6 @@
         if (cat === 'general') showStep('step-general-type');
     }
 
-    /* GUTTERS & ROOF LOGIC */
     let pendingGutterTitle = '';
     function selectGutterHeight(title) {
         pendingGutterTitle = title;
@@ -405,7 +617,6 @@
         finishSelection();
     }
 
-    /* MATERIAL QUESTION LOGIC */
     function askMaterial(price, title) {
         tempPendingJob = { price: price, title: title };
         document.getElementById('matQuestionTitle').innerText = `Do you already have the required item/materials for "${title}"?`;
@@ -422,7 +633,6 @@
         finishSelection();
     }
 
-    /* TV LOGIC */
     function setTvSize(price, text) {
         jobData.totalPrice = price;
         jobData.details = ['TV Size: ' + text];
@@ -482,7 +692,6 @@
         finishSelection();
     }
 
-    /* FURNITURE HANDLERS */
     function setFurnitureType(price, text) {
         jobData.basePrice = price;
         jobData.details = ['Item: ' + text];
@@ -514,14 +723,12 @@
         
         document.getElementById('summaryText').innerText = detailsString;
 
-        // GENERATE DIRECT SMS LINK
         let smsText = `Hi Alex! I would like to book a service in ${selectedCity.name}.\n\nProject: ${jobData.details.join(' | ')}\nTotal Price: $${finalPrice}.\n\nPlease let me know your availability!`;
         
         let smsBtn = document.getElementById('directSmsBtn');
         smsBtn.innerText = `Book Now ($${finalPrice})`;
         smsBtn.href = `sms:+12797582752?body=${encodeURIComponent(smsText)}`;
 
-        // Hide top live bar on final summary to avoid duplication
         document.getElementById('livePriceBar').style.display = 'none';
 
         showStep('step-final');
