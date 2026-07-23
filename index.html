@@ -25,6 +25,9 @@
         .step { display: none; }
         .step.active { display: block; }
 
+        /* LIVE PRICE BAR */
+        .live-price-bar { display: none; background: #e8f5e9; border: 2px solid #2e7d32; border-radius: 8px; padding: 10px 15px; margin-bottom: 15px; text-align: center; font-weight: bold; color: #1b5e20; font-size: 18px; }
+
         .price-box { background: #eef7ee; border: 2px solid #2e7d32; border-radius: 8px; padding: 15px; text-align: center; margin-top: 15px; }
         .price-title { font-size: 14px; color: #2e7d32; font-weight: 600; }
         .price-amount { font-size: 38px; font-weight: bold; color: #1b5e20; }
@@ -42,42 +45,47 @@
     <h1>Alex Handyman Services</h1>
     <p class="subtitle">San Luis Obispo County • Quick Button Booking</p>
 
+    <!-- LIVE RUNNING PRICE BAR -->
+    <div id="livePriceBar" class="live-price-bar">
+        Current Total: <span id="livePriceAmount">$0</span>
+    </div>
+
     <!-- STEP 1: SELECT CATEGORY FIRST -->
     <div id="step-category" class="step active">
         <div class="step-title">Step 1: Select Service Needed:</div>
         <div class="btn-grid">
-            <button class="opt-btn" onclick="selectCategory('tv')">📺 TV Mounting</button>
-            <button class="opt-btn" onclick="selectCategory('plumbing')">🚰 Plumbing Fixtures & Repairs</button>
-            <button class="opt-btn" onclick="selectCategory('gutters')">🏠 Gutter Cleaning & Roof Leak Repairs</button>
-            <button class="opt-btn" onclick="selectCategory('fences')">🪵 Fences, Gates & Sheds</button>
-            <button class="opt-btn" onclick="selectCategory('concrete')">🧱 Small Concrete & Masonry Patching</button>
-            <button class="opt-btn" onclick="selectCategory('painting')">🎨 Painting & Drywall Repair</button>
-            <button class="opt-btn" onclick="selectCategory('doors')">🚪 Doors, Locks & Windows</button>
-            <button class="opt-btn" onclick="selectCategory('hanging')">🖼️ Blinds, Rods, Shelves & Mirrors</button>
-            <button class="opt-btn" onclick="selectCategory('furniture')">🛋️ Furniture Assembly</button>
-            <button class="opt-btn" onclick="selectCategory('smart')">🔒 Smart Home & Lighting Fixtures</button>
-            <button class="opt-btn" onclick="selectCategory('general')">🧹 General Home Maintenance</button>
-            <button class="opt-btn-sub" onclick="selectCategory('large')">🏗️ Large Projects, Remodeling & ADU</button>
+            <button class="opt-btn" onclick="selectCategory('tv', 80)">📺 TV Mounting (From $80)</button>
+            <button class="opt-btn" onclick="selectCategory('plumbing', 95)">🚰 Plumbing Fixtures & Repairs</button>
+            <button class="opt-btn" onclick="selectCategory('gutters', 110)">🏠 Gutter Cleaning & Roof Leak Repairs</button>
+            <button class="opt-btn" onclick="selectCategory('fences', 120)">🪵 Fences, Gates & Sheds</button>
+            <button class="opt-btn" onclick="selectCategory('concrete', 95)">🧱 Small Concrete & Masonry Patching</button>
+            <button class="opt-btn" onclick="selectCategory('painting', 75)">🎨 Painting & Drywall Repair</button>
+            <button class="opt-btn" onclick="selectCategory('doors', 85)">🚪 Doors, Locks & Windows</button>
+            <button class="opt-btn" onclick="selectCategory('hanging', 35)">🖼️ Blinds, Rods, Shelves & Mirrors</button>
+            <button class="opt-btn" onclick="selectCategory('furniture', 45)">🛋️ Furniture Assembly</button>
+            <button class="opt-btn" onclick="selectCategory('smart', 65)">🔒 Smart Home & Lighting Fixtures</button>
+            <button class="opt-btn" onclick="selectCategory('general', 50)">🧹 General Home Maintenance</button>
+            <button class="opt-btn-sub" onclick="selectCategory('large', 0)">🏗️ Large Projects, Remodeling & ADU</button>
         </div>
     </div>
 
-    <!-- STEP 2: SELECT CITY SECOND (CLEAN BUTTONS, NO +$15 TEXT) -->
+    <!-- STEP 2: SELECT CITY SECOND -->
     <div id="step-city" class="step">
         <button class="back-btn" onclick="showStep('step-category')">← Back to Services</button>
         <div class="step-title">Step 2: Select Your City:</div>
         <div class="btn-grid-2">
-            <button class="opt-btn" onclick="selectCity('Pismo Beach', 0, false)">Pismo Beach</button>
-            <button class="opt-btn" onclick="selectCity('Shell Beach', 0, false)">Shell Beach</button>
-            <button class="opt-btn" onclick="selectCity('Grover Beach', 0, false)">Grover Beach</button>
-            <button class="opt-btn" onclick="selectCity('Arroyo Grande', 0, false)">Arroyo Grande</button>
-            <button class="opt-btn" onclick="selectCity('Oceano', 0, false)">Oceano</button>
-            <button class="opt-btn" onclick="selectCity('Avila Beach', 0, false)">Avila Beach</button>
-            <button class="opt-btn" onclick="selectCity('San Luis Obispo', 15, true)">San Luis Obispo</button>
-            <button class="opt-btn" onclick="selectCity('Nipomo', 15, true)">Nipomo</button>
-            <button class="opt-btn" onclick="selectCity('Los Osos', 20, true)">Los Osos</button>
-            <button class="opt-btn" onclick="selectCity('Morro Bay', 20, true)">Morro Bay</button>
-            <button class="opt-btn" onclick="selectCity('Atascadero', 25, true)">Atascadero</button>
-            <button class="opt-btn" onclick="selectCity('Santa Maria', 25, true)">Santa Maria</button>
+            <button class="opt-btn" onclick="selectCity('Pismo Beach', false)">Pismo Beach</button>
+            <button class="opt-btn" onclick="selectCity('Shell Beach', false)">Shell Beach</button>
+            <button class="opt-btn" onclick="selectCity('Grover Beach', false)">Grover Beach</button>
+            <button class="opt-btn" onclick="selectCity('Arroyo Grande', false)">Arroyo Grande</button>
+            <button class="opt-btn" onclick="selectCity('Oceano', false)">Oceano</button>
+            <button class="opt-btn" onclick="selectCity('Avila Beach', false)">Avila Beach</button>
+            <button class="opt-btn" onclick="selectCity('San Luis Obispo', true)">San Luis Obispo</button>
+            <button class="opt-btn" onclick="selectCity('Nipomo', true)">Nipomo</button>
+            <button class="opt-btn" onclick="selectCity('Los Osos', true)">Los Osos</button>
+            <button class="opt-btn" onclick="selectCity('Morro Bay', true)">Morro Bay</button>
+            <button class="opt-btn" onclick="selectCity('Atascadero', true)">Atascadero</button>
+            <button class="opt-btn" onclick="selectCity('Santa Maria', true)">Santa Maria</button>
         </div>
     </div>
 
@@ -139,7 +147,7 @@
         <button class="back-btn" onclick="showStep('step-tv-size')">← Back</button>
         <div class="step-title">Step 4: Select Wall Type</div>
         <div class="btn-grid">
-            <button class="opt-btn" onclick="setTvWall(0, 'Drywall', false)">Drywall / Sheetrock</button>
+            <button class="opt-btn" onclick="setTvWall(0, 'Drywall', false)">Drywall / Sheetrock ($0)</button>
             <button class="opt-btn" onclick="setTvWall(30, 'Brick / Concrete', true)">Brick / Concrete (+$30)</button>
             <button class="opt-btn" onclick="setTvWall(45, 'Tile / Marble', true)">Tile / Marble Wall (+$45)</button>
         </div>
@@ -149,7 +157,7 @@
         <button class="back-btn" onclick="showStep('step-tv-wall')">← Back</button>
         <div class="step-title">Step 5: Mounting Height</div>
         <div class="btn-grid">
-            <button class="opt-btn" onclick="setTvHeight(0, 'Standard Height', false)">Standard Eye Level (Up to 5 ft)</button>
+            <button class="opt-btn" onclick="setTvHeight(0, 'Standard Height', false)">Standard Eye Level (Up to 5 ft) ($0)</button>
             <button class="opt-btn" onclick="setTvHeight(25, 'High Wall (Above 5 ft / Over Fireplace)', true)">High Wall Mounting (Above 5 ft / Over Fireplace) (+$25)</button>
         </div>
     </div>
@@ -158,7 +166,7 @@
         <button class="back-btn" onclick="showStep('step-tv-height')">← Back</button>
         <div class="step-title">Step 6: Do you need a TV Mount Bracket?</div>
         <div class="btn-grid">
-            <button class="opt-btn" onclick="setTvBracket(0, 'Customer Bracket')">I have my own TV bracket</button>
+            <button class="opt-btn" onclick="setTvBracket(0, 'Customer Bracket')">I have my own TV bracket ($0)</button>
             <button class="opt-btn" onclick="setTvBracket(30, 'Provide Tilting Bracket')">Provide Tilting TV Bracket (+$30)</button>
         </div>
     </div>
@@ -167,7 +175,7 @@
         <button class="back-btn" onclick="showStep('step-tv-bracket')">← Back</button>
         <div class="step-title">Step 7: Cable Hiding Option</div>
         <div class="btn-grid">
-            <button class="opt-btn" onclick="setTvWiring(0, 'No Cable Hiding')">Standard Wires (No In-Wall Hiding)</button>
+            <button class="opt-btn" onclick="setTvWiring(0, 'No Cable Hiding')">Standard Wires (No In-Wall Hiding) ($0)</button>
             <button class="opt-btn" id="btnInWallCable" onclick="setTvWiring(40, 'In-Wall Cable Hiding (Customer Kit)')">Hide Cables In-Wall (I have kit) (+$40)</button>
             <button class="opt-btn" id="btnInWallKit" onclick="setTvWiring(70, 'In-Wall Cable Hiding + Alex Kit')">Hide Cables In-Wall (Alex Provides Kit) (+$70)</button>
         </div>
@@ -303,7 +311,7 @@
         <button class="back-btn" onclick="showStep('step-city')">← Back</button>
         <div class="step-title" id="matQuestionTitle">Do you already have the required item / materials purchased?</div>
         <div class="btn-grid" style="margin-top: 20px;">
-            <button class="opt-btn" onclick="setMaterialAnswer('Customer Has Materials Ready')">YES — I already bought it / ready</button>
+            <button class="opt-btn" onclick="setMaterialAnswer('Customer Has Materials Ready')">YES — I already bought it / ready ($0)</button>
             <a id="smsMatLink" href="#" class="opt-btn-sub" style="text-decoration:none;">NO — Text Alex to advise / purchase for me</a>
         </div>
     </div>
@@ -329,14 +337,32 @@
 </div>
 
 <script>
-    let selectedCity = { name: '', fee: 0, isTravelZone: false };
+    let selectedCity = { name: '', isTravelZone: false };
     let jobData = { category: '', details: [], totalPrice: 0 };
     let tempPendingJob = { price: 0, title: '' };
     let isHardWall = false;
 
+    function updateLivePriceDisplay() {
+        let currentCalc = jobData.totalPrice;
+        if (selectedCity.isTravelZone && currentCalc < 60) {
+            currentCalc = 60;
+        }
+        
+        let bar = document.getElementById('livePriceBar');
+        let amountSpan = document.getElementById('livePriceAmount');
+        
+        if (selectedCity.name !== '') {
+            bar.style.display = 'block';
+            amountSpan.innerText = '$' + currentCalc;
+        } else {
+            bar.style.display = 'none';
+        }
+    }
+
     /* STEP 1: CATEGORY SELECTION */
-    function selectCategory(cat) {
+    function selectCategory(cat, basePrice) {
         jobData.category = cat;
+        jobData.totalPrice = basePrice;
         if (cat === 'large') {
             showStep('step-large-type');
         } else {
@@ -345,8 +371,9 @@
     }
 
     /* STEP 2: CITY SELECTION */
-    function selectCity(cityName, travelFee, travelZoneFlag) {
-        selectedCity = { name: cityName, fee: travelFee, isTravelZone: travelZoneFlag };
+    function selectCity(cityName, travelZoneFlag) {
+        selectedCity = { name: cityName, isTravelZone: travelZoneFlag };
+        updateLivePriceDisplay();
         
         let cat = jobData.category;
         if (cat === 'tv') showStep('step-tv-size');
@@ -400,12 +427,14 @@
         jobData.totalPrice = price;
         jobData.details = ['TV Size: ' + text];
         isHardWall = false;
+        updateLivePriceDisplay();
         showStep('step-tv-wall');
     }
     function setTvWall(price, text, hardWallFlag) {
         jobData.totalPrice += price;
         jobData.details.push('Wall: ' + text);
         if(hardWallFlag) isHardWall = true;
+        updateLivePriceDisplay();
         showStep('step-tv-height');
     }
     function setTvHeight(price, text, hardWallFlag) {
@@ -420,11 +449,13 @@
             document.getElementById('btnInWallCable').style.display = 'block';
             document.getElementById('btnInWallKit').style.display = 'block';
         }
+        updateLivePriceDisplay();
         showStep('step-tv-bracket');
     }
     function setTvBracket(price, text) {
         jobData.totalPrice += price;
         jobData.details.push('Bracket: ' + text);
+        updateLivePriceDisplay();
         showStep('step-tv-wiring');
     }
     function setTvWiring(price, text) {
@@ -440,6 +471,8 @@
 
     function resetForm() {
         jobData = { category: '', details: [], totalPrice: 0 };
+        selectedCity = { name: '', isTravelZone: false };
+        updateLivePriceDisplay();
         showStep('step-category');
     }
 
@@ -462,27 +495,34 @@
     }
 
     function finishSelection() {
-        let rawPrice = jobData.totalPrice + selectedCity.fee;
-        
-        let finalPrice = rawPrice;
+        let finalPrice = jobData.totalPrice;
         let isMinAdjusted = false;
         
-        if (selectedCity.isTravelZone && rawPrice < 60) {
+        if (selectedCity.isTravelZone && finalPrice < 60) {
             finalPrice = 60;
             isMinAdjusted = true;
         }
 
         document.getElementById('totalPrice').innerText = '$' + finalPrice;
         
-        let detailsString = jobData.details.join(' | ') + ` [Location: ${selectedCity.name}]`;
+        let detailsString = jobData.details.join(' | ');
+        if (isMinAdjusted) {
+            detailsString += ` [$60 Minimum Visit for ${selectedCity.name}]`;
+        } else {
+            detailsString += ` [Location: ${selectedCity.name}]`;
+        }
+        
         document.getElementById('summaryText').innerText = detailsString;
 
-        // GENERATE DIRECT SMS LINK WITH "BOOK NOW ($XXX)" BUTTON
+        // GENERATE DIRECT SMS LINK
         let smsText = `Hi Alex! I would like to book a service in ${selectedCity.name}.\n\nProject: ${jobData.details.join(' | ')}\nTotal Price: $${finalPrice}.\n\nPlease let me know your availability!`;
         
         let smsBtn = document.getElementById('directSmsBtn');
         smsBtn.innerText = `Book Now ($${finalPrice})`;
         smsBtn.href = `sms:+12797582752?body=${encodeURIComponent(smsText)}`;
+
+        // Hide top live bar on final summary to avoid duplication
+        document.getElementById('livePriceBar').style.display = 'none';
 
         showStep('step-final');
     }
