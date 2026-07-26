@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Alex Handyman Services - Local Quality Work & Online Estimate</title>
+  <title>Alex Handyman & Construction - San Luis Obispo County</title>
   <style>
     /* Reset & Base Styles */
     *, *::before, *::after {
@@ -20,35 +20,35 @@
 
     /* Header & Hero */
     header {
-      background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+      background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
       color: #ffffff;
       padding: 45px 20px;
       text-align: center;
     }
     header h1 {
       margin: 0 0 10px 0;
-      font-size: 2.2rem;
-      font-weight: 700;
+      font-size: 2.3rem;
+      font-weight: 800;
     }
     header p {
-      margin: 0 0 20px 0;
-      font-size: 1.1rem;
-      opacity: 0.9;
+      margin: 0 0 22px 0;
+      font-size: 1.15rem;
+      opacity: 0.95;
     }
     .cta-sms-header {
       display: inline-block;
-      background-color: #f59e0b;
+      background-color: #16a34a;
       color: #ffffff;
-      padding: 14px 28px;
+      padding: 14px 32px;
       border-radius: 30px;
       font-weight: 700;
       text-decoration: none;
-      font-size: 1.15rem;
-      box-shadow: 0 4px 12px rgba(245, 158, 11, 0.35);
+      font-size: 1.2rem;
+      box-shadow: 0 4px 14px rgba(22, 163, 74, 0.4);
       transition: background-color 0.2s, transform 0.1s;
     }
     .cta-sms-header:hover {
-      background-color: #d97706;
+      background-color: #15803d;
       transform: translateY(-2px);
     }
 
@@ -59,158 +59,171 @@
       padding: 40px 20px;
     }
 
-    /* Section Styling */
     .section-title {
       text-align: center;
-      font-size: 1.8rem;
+      font-size: 1.9rem;
       color: #0f172a;
       margin: 0 0 8px 0;
-      font-weight: 700;
+      font-weight: 800;
     }
     .section-subtitle {
       text-align: center;
       color: #64748b;
-      margin: 0 0 30px 0;
-      font-size: 1rem;
+      margin: 0 0 35px 0;
+      font-size: 1.05rem;
     }
 
-    /* Service Estimator Card */
-    .estimator-card {
+    /* Calculator Card Container */
+    .calculator-card {
       background: #ffffff;
       border: 1px solid #e2e8f0;
-      border-radius: 16px;
-      padding: 30px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+      border-radius: 20px;
+      padding: 35px;
+      box-shadow: 0 6px 25px rgba(0, 0, 0, 0.06);
       margin-bottom: 60px;
     }
 
-    /* Category Buttons Grid */
-    .service-categories {
+    /* Green Service Buttons Row */
+    .services-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 15px;
-      margin-bottom: 25px;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      margin-bottom: 30px;
     }
 
-    .category-btn {
-      background-color: #f1f5f9;
-      border: 2px solid #e2e8f0;
+    .service-green-btn {
+      background-color: #16a34a;
+      color: #ffffff;
+      border: none;
       border-radius: 12px;
-      padding: 15px;
+      padding: 14px;
       font-size: 1rem;
-      font-weight: 600;
-      color: #334155;
+      font-weight: 700;
       cursor: pointer;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 8px;
+      justify-content: center;
+      gap: 6px;
+      box-shadow: 0 3px 10px rgba(22, 163, 74, 0.2);
       transition: all 0.2s;
     }
 
-    .category-btn span.icon {
-      font-size: 1.8rem;
+    .service-green-btn:hover {
+      background-color: #15803d;
+      transform: translateY(-2px);
     }
 
-    .category-btn:hover {
-      background-color: #e2e8f0;
+    .service-green-btn.active {
+      background-color: #0f766e;
+      box-shadow: 0 0 0 4px rgba(15, 118, 110, 0.25);
     }
 
-    .category-btn.active {
-      border-color: #2563eb;
-      background-color: #eff6ff;
-      color: #1d4ed8;
+    .service-green-btn span.icon {
+      font-size: 1.6rem;
     }
 
-    /* Estimator Form Steps */
-    .form-step {
-      display: none;
-      animation: fadeIn 0.3s ease-in-out;
-    }
-
-    .form-step.active {
-      display: block;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(5px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .form-group {
+    /* Options Form Blocks */
+    .option-block {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 14px;
+      padding: 20px;
       margin-bottom: 20px;
     }
 
-    .form-group label {
-      display: block;
-      margin-bottom: 8px;
+    .option-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #0f172a;
+      margin-bottom: 12px;
+    }
+
+    .option-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .opt-btn {
+      background: #ffffff;
+      border: 2px solid #cbd5e1;
+      border-radius: 10px;
+      padding: 10px 16px;
       font-size: 0.95rem;
       font-weight: 600;
       color: #334155;
+      cursor: pointer;
+      transition: all 0.2s;
     }
 
-    .form-group select,
-    .form-group input,
-    .form-group textarea {
+    .opt-btn:hover {
+      border-color: #2563eb;
+      color: #2563eb;
+    }
+
+    .opt-btn.selected {
+      background-color: #eff6ff;
+      border-color: #2563eb;
+      color: #1d4ed8;
+    }
+
+    /* Custom Input Box */
+    .custom-size-input {
+      display: none;
+      margin-top: 12px;
+    }
+
+    .custom-size-input input {
       width: 100%;
-      padding: 12px;
+      padding: 10px 14px;
       border: 1px solid #cbd5e1;
       border-radius: 8px;
-      font-size: 1rem;
-      font-family: inherit;
-      background-color: #fff;
+      font-size: 0.95rem;
     }
 
-    .form-group select:focus,
-    .form-group input:focus,
-    .form-group textarea:focus {
-      outline: none;
-      border-color: #2563eb;
-      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
-    }
-
-    /* Price Box */
+    /* Price Result Box */
     .price-box {
       background: #f0fdf4;
       border: 2px solid #86efac;
-      border-radius: 12px;
-      padding: 20px;
+      border-radius: 16px;
+      padding: 25px;
       text-align: center;
-      margin-top: 25px;
+      margin-top: 30px;
     }
 
     .price-box h3 {
-      margin: 0 0 5px 0;
+      margin: 0 0 6px 0;
       color: #166534;
-      font-size: 1.1rem;
+      font-size: 1.15rem;
     }
 
     .price-amount {
-      font-size: 2rem;
+      font-size: 2.3rem;
       font-weight: 800;
       color: #15803d;
       margin-bottom: 15px;
     }
 
-    .sms-btn {
+    .sms-btn-price {
       display: inline-block;
       width: 100%;
       background-color: #16a34a;
       color: #ffffff;
-      padding: 14px 20px;
-      border-radius: 10px;
+      padding: 15px 20px;
+      border-radius: 12px;
       font-weight: 700;
       text-decoration: none;
-      font-size: 1.1rem;
-      box-shadow: 0 4px 12px rgba(22, 163, 74, 0.25);
+      font-size: 1.15rem;
+      box-shadow: 0 4px 14px rgba(22, 163, 74, 0.3);
       transition: background-color 0.2s;
     }
 
-    .sms-btn:hover {
+    .sms-btn-price:hover {
       background-color: #15803d;
     }
 
-    /* Reels Grid (2x2 Layout) */
+    /* Reels Video Grid */
     .reels-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -223,7 +236,6 @@
       }
     }
 
-    /* Reel Card */
     .reel-card {
       background: #ffffff;
       border: 1px solid #e2e8f0;
@@ -234,11 +246,10 @@
       flex-direction: column;
     }
 
-    /* Vertical Video Container (9:16) */
     .video-wrapper {
       position: relative;
       width: 100%;
-      padding-top: 177.78%; /* 9:16 aspect ratio */
+      padding-top: 177.78%; /* 9:16 Aspect Ratio */
       background: #000000;
     }
 
@@ -251,7 +262,6 @@
       object-fit: cover;
     }
 
-    /* Reel Info Content */
     .reel-info {
       padding: 20px;
       display: flex;
@@ -273,7 +283,6 @@
       margin: 0;
     }
 
-    /* Price Tag under Video */
     .work-price-tag {
       background-color: #eff6ff;
       border-left: 4px solid #3b82f6;
@@ -291,7 +300,6 @@
       color: #1d4ed8;
     }
 
-    /* Client Review Block */
     .client-review {
       border-top: 1px solid #f1f5f9;
       padding-top: 14px;
@@ -318,7 +326,6 @@
       font-weight: 600;
     }
 
-    /* Action Buttons */
     .action-buttons {
       display: flex;
       justify-content: center;
@@ -355,7 +362,7 @@
       background-color: #cbd5e1;
     }
 
-    /* Modal Styling */
+    /* Modal */
     .modal-overlay {
       display: none;
       position: fixed;
@@ -380,26 +387,11 @@
 
     .modal-close {
       position: absolute;
-      top: 15px;
-      right: 20px;
-      border: none;
-      background: none;
-      font-size: 1.8rem;
-      cursor: pointer;
-      color: #94a3b8;
+      top: 15px; right: 20px;
+      border: none; background: none;
+      font-size: 1.8rem; cursor: pointer; color: #94a3b8;
     }
 
-    .modal-close:hover {
-      color: #0f172a;
-    }
-
-    .modal-content h3 {
-      margin-top: 0;
-      margin-bottom: 20px;
-      color: #0f172a;
-    }
-
-    /* Footer */
     footer {
       text-align: center;
       padding: 30px 20px;
@@ -412,281 +404,389 @@
 </head>
 <body>
 
-  <!-- Header & Phone CTA -->
+  <!-- Header -->
   <header>
-    <h1>Call Alex for a Free Estimate</h1>
-    <p>Professional Handyman Services | San Luis Obispo County & Surrounding Areas</p>
-    <!-- Кнопка отправки SMS с готовым текстом -->
-    <a href="sms:2797582752?body=%D0%9F%D1%80%D0%B8%D0%B2%D0%B5%D1%82%2C%20%D0%90%D0%BB%D0%B5%D0%BA%D1%81%21%20%D0%AF%20%D0%B1%D1%8B%20%D1%85%D0%BE%D1%82%D0%B5%D0%BB%20%D0%B7%D0%B0%D0%BA%D0%B0%D0%B7%D0%B0%D1%82%D1%8C%20%D1%83%D1%81%D0%BB%D1%83%D0%B3%D1%83." class="cta-sms-header">💬 Написать SMS Алексу</a>
+    <h1>Get an Estimate & Contact Alex</h1>
+    <p>Handyman, Framing, Pergolas, Sheds & ADU Construction | San Luis Obispo County</p>
+    <a href="sms:2797582752?body=Hello%20Alex%2C%20I%20would%20like%20to%20get%20an%20estimate%20for%20a%20project." class="cta-sms-header">💬 Contact Alex via SMS</a>
   </header>
 
   <!-- Main Container -->
   <main class="container">
 
-    <!-- SECTION 1: SERVICE ESTIMATOR (CALCULATOR) -->
-    <section id="services-section">
-      <h2 class="section-title">Рассчитайте стоимость работы</h2>
-      <p class="section-subtitle">Выберите нужную услугу, ответьте на пару вопросов и сразу узнайте ориентировочную цену</p>
+    <!-- CALCULATOR SECTION -->
+    <section>
+      <h2 class="section-title">Instant Service Estimator</h2>
+      <p class="section-subtitle">Select a service, choose your location, and customize options to get a competitive estimate.</p>
 
-      <div class="estimator-card">
-        <!-- Buttons for Selecting Category -->
-        <div class="service-categories">
-          <button class="category-btn active" onclick="selectService('tv', this)">
-            <span class="icon">📺</span>
-            <span>Монтаж ТВ</span>
+      <div class="calculator-card">
+        
+        <!-- STEP 1: Green Service Buttons Row -->
+        <div class="option-title">1. Select Service Category:</div>
+        <div class="services-grid">
+          <button class="service-green-btn active" onclick="selectServiceCategory('adu', this)">
+            <span class="icon">🏠</span>
+            <span>ADU Construction</span>
           </button>
-          <button class="category-btn" onclick="selectService('furniture', this)">
-            <span class="icon">🛋️</span>
-            <span>Сборка мебели</span>
+          <button class="service-green-btn" onclick="selectServiceCategory('pergola', this)">
+            <span class="icon">🏛️</span>
+            <span>Pergolas & Covers</span>
           </button>
-          <button class="category-btn" onclick="selectService('plumbing', this)">
+          <button class="service-green-btn" onclick="selectServiceCategory('shed', this)">
+            <span class="icon">🏚️</span>
+            <span>Sheds</span>
+          </button>
+          <button class="service-green-btn" onclick="selectServiceCategory('plumbing', this)">
             <span class="icon">🚰</span>
-            <span>Сантехника</span>
+            <span>Plumbing</span>
+          </button>
+          <button class="service-green-btn" onclick="selectServiceCategory('electrical', this)">
+            <span class="icon">⚡</span>
+            <span>Electrical</span>
+          </button>
+          <button class="service-green-btn" onclick="selectServiceCategory('furniture', this)">
+            <span class="icon">🛋️</span>
+            <span>Furniture Assembly</span>
+          </button>
+          <button class="service-green-btn" onclick="selectServiceCategory('tv', this)">
+            <span class="icon">📺</span>
+            <span>TV Mounting</span>
           </button>
         </div>
 
-        <!-- TV Mounting Options -->
-        <div id="step-tv" class="form-step active">
-          <div class="form-group">
-            <label for="tvSize">Диагональ телевизора:</label>
-            <select id="tvSize" onchange="calculatePrice()">
-              <option value="80">До 43 дюймов ($80)</option>
-              <option value="100" selected>44 – 65 дюймов ($100)</option>
-              <option value="130">66 – 85 дюймов ($130)</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="wallType">Материал стены:</label>
-            <select id="wallType" onchange="calculatePrice()">
-              <option value="0">Гипсокартон / Дерево (обычный монтаж)</option>
-              <option value="25">Бетон / Кирпич (+$25)</option>
-              <option value="35">Камин / Плитка (+$35)</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="tvMount">Наличие кронштейна:</label>
-            <select id="tvMount" onchange="calculatePrice()">
-              <option value="0">У меня уже есть свой кронштейн</option>
-              <option value="35">Нужен кронштейн от мастера (+$35)</option>
-            </select>
+        <!-- STEP 2: City Selection -->
+        <div class="option-block">
+          <div class="option-title">2. Select Your City (San Luis Obispo County):</div>
+          <div class="option-buttons" id="cityButtons">
+            <button class="opt-btn selected" onclick="selectCity('Pismo Beach', 0, this)">Pismo Beach</button>
+            <button class="opt-btn" onclick="selectCity('Grover Beach', 0, this)">Grover Beach</button>
+            <button class="opt-btn" onclick="selectCity('Arroyo Grande', 0, this)">Arroyo Grande</button>
+            <button class="opt-btn" onclick="selectCity('San Luis Obispo', 0, this)">San Luis Obispo</button>
+            <button class="opt-btn" onclick="selectCity('Avila Beach', 0, this)">Avila Beach</button>
+            <button class="opt-btn" onclick="selectCity('Nipomo', 15, this)">Nipomo (+15 mi)</button>
+            <button class="opt-btn" onclick="selectCity('Morro Bay', 15, this)">Morro Bay (+15 mi)</button>
+            <button class="opt-btn" onclick="selectCity('Atascadero', 15, this)">Atascadero (+15 mi)</button>
+            <button class="opt-btn" onclick="selectCity('Paso Robles', 15, this)">Paso Robles (+15 mi)</button>
           </div>
         </div>
 
-        <!-- Furniture Assembly Options -->
-        <div id="step-furniture" class="form-step">
-          <div class="form-group">
-            <label for="furnitureType">Что нужно собрать?</label>
-            <select id="furnitureType" onchange="calculatePrice()">
-              <option value="60">Стул / Тумбочка / Полка ($60)</option>
-              <option value="90">Комод / Письменный стол ($90)</option>
-              <option value="130">Кровать / Обеденный стол ($130)</option>
-              <option value="180">Большой шкаф / Гардероб ($180)</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="furnitureQty">Количество предметов:</label>
-            <select id="furnitureQty" onchange="calculatePrice()">
-              <option value="1">1 предмет</option>
-              <option value="2">2 предмета</option>
-              <option value="3">3 предмета</option>
-            </select>
-          </div>
-        </div>
+        <!-- STEP 3: Dynamic Options Container -->
+        <div id="dynamicOptions"></div>
 
-        <!-- Plumbing Options -->
-        <div id="step-plumbing" class="form-step">
-          <div class="form-group">
-            <label for="plumbingType">Вид работы:</label>
-            <select id="plumbingType" onchange="calculatePrice()">
-              <option value="95">Замена / установка смесителя ($95)</option>
-              <option value="85">Устранение протечки / замена сифона ($85)</option>
-              <option value="120">Установка / замена унитаза ($120)</option>
-              <option value="110">Подключение стиральной/посудомоечной машины ($110)</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="faucetBought">Смеситель/детали куплены?</label>
-            <select id="faucetBought" onchange="calculatePrice()">
-              <option value="0">Да, всё куплено и готово к установке</option>
-              <option value="20">Нет, требуется помощь с закупкой (+$20)</option>
-            </select>
-          </div>
-        </div>
-
-        <!-- Calculated Price Result Box -->
+        <!-- STEP 4: Price Output & SMS Button -->
         <div class="price-box">
-          <h3>Предварительная стоимость:</h3>
-          <div class="price-amount" id="totalPrice">$100</div>
-          <a href="#" id="smsLink" class="sms-btn">📱 Отправить заявку по SMS Алексу</a>
+          <h3>Estimated Cost:</h3>
+          <div class="price-amount" id="totalPrice">$0</div>
+          <a href="#" id="smsSendBtn" class="sms-btn-price">💬 Send Request via SMS to Alex</a>
         </div>
+
       </div>
     </section>
 
-    <!-- SECTION 2: REELS VIDEO GALLERY & REVIEWS -->
-    <section id="videos-section">
-      <h2 class="section-title">Видео последних выполненных работ</h2>
-      <p class="section-subtitle">Смотрите, как мы выполняем проекты, и читайте честные отзывы заказчиков</p>
+    <!-- REELS VIDEO GALLERY -->
+    <section>
+      <h2 class="section-title">Recent Completed Projects</h2>
+      <p class="section-subtitle">Watch short vertical videos of our craftsmanship and read customer reviews</p>
 
-      <!-- Reels Grid -->
-      <div class="reels-grid" id="reelsGrid">
+      <div class="reels-grid">
 
-        <!-- Card 1: Concrete Pad -->
+        <!-- Reel 1: Concrete Pad -->
         <div class="reel-card">
           <div class="video-wrapper">
             <video controls preload="metadata">
               <source src="beton.mp4" type="video/mp4">
-              Ваш браузер не поддерживает видео.
             </video>
           </div>
           <div class="reel-info">
-            <h3 class="work-title">Заливка бетонной площадки (8×15)</h3>
-            <p class="work-description">Подготовка территории, выравнивание грунта, установка опалубки и качественная заливка бетонной площадки под ключ.</p>
+            <h3 class="work-title">Concrete Pad Pouring (8×15 ft)</h3>
+            <p class="work-description">Ground grading, formwork setup, mesh reinforcement, and smooth concrete finishing turnkey.</p>
             
             <div class="work-price-tag">
-              <span>Стоимость работы с материалом:</span>
+              <span>Total with Materials:</span>
               <strong>$1,800</strong>
             </div>
 
             <div class="client-review">
               <div class="stars">★★★★★</div>
-              <p class="review-text">«Площадка получилась идеально ровная! Работа выполнена очень аккуратно, быстро и вместе со всем материалом. Большое спасибо!»</p>
-              <span class="client-name">— Отзыв клиента</span>
+              <p class="review-text">“The concrete slab is super smooth and level! Alex worked fast, clean, and brought all materials. Highly recommend!”</p>
+              <span class="client-name">— Verified Customer</span>
             </div>
           </div>
         </div>
 
-        <!-- Card 2: Pergola Assembly -->
+        <!-- Reel 2: Pergola -->
         <div class="reel-card">
           <div class="video-wrapper">
             <video controls preload="metadata">
               <source src="Pergola.mp4" type="video/mp4">
-              Ваш браузер не поддерживает видео.
             </video>
           </div>
           <div class="reel-info">
-            <h3 class="work-title">Сборка и установка перголы / навеса</h3>
-            <p class="work-description">Сборка металлического навеса с крышей над деревянным деком, точная подгонка и надежная фиксация конструкции.</p>
+            <h3 class="work-title">Patio Pergola & Cover Installation</h3>
+            <p class="work-description">Assembly and anchoring of a heavy-duty patio pergola frame over a wooden deck.</p>
             
             <div class="work-price-tag">
-              <span>Стоимость установки:</span>
+              <span>Installation Cost:</span>
               <strong>$500</strong>
             </div>
 
             <div class="client-review">
               <div class="stars">★★★★★</div>
-              <p class="review-text">«Ребята собрали перголу быстро и слаженно. Все стоит ровно и крепко, навес выглядит отлично. Очень довольны сервисом!»</p>
-              <span class="client-name">— Отзыв клиента</span>
+              <p class="review-text">“Great teamwork and rock-solid installation. The patio shelter looks amazing!”</p>
+              <span class="client-name">— Verified Customer</span>
             </div>
           </div>
         </div>
 
       </div>
 
-      <!-- Action Buttons -->
       <div class="action-buttons">
-        <button class="btn btn-secondary" onclick="alert('Больше видео пока нет. Новые работы добавляются регулярно!')">Загрузить еще видео</button>
-        <button class="btn btn-primary" onclick="openReviewModal()">Оставить отзыв</button>
+        <button class="btn btn-secondary" onclick="alert('More videos coming soon!')">Load More Videos</button>
+        <button class="btn btn-primary" onclick="openReviewModal()">Leave a Review</button>
       </div>
     </section>
 
   </main>
 
-  <!-- Modal for Client Reviews -->
+  <!-- Review Modal -->
   <div class="modal-overlay" id="reviewModal">
     <div class="modal-content">
       <button class="modal-close" onclick="closeReviewModal()">&times;</button>
-      <h3>Оставить отзыв</h3>
-      <form id="addReviewForm" onsubmit="handleReviewSubmit(event)">
-        <div class="form-group">
-          <label for="clientName">Ваше имя:</label>
-          <input type="text" id="clientName" required placeholder="Введите ваше имя">
+
+      <h3>Leave a Review</h3>
+      <form onsubmit="handleReviewSubmit(event)">
+        <div style="margin-bottom: 15px;">
+          <label style="display:block; margin-bottom:5px; font-weight:600;">Your Name:</label>
+          <input type="text" required placeholder="John Doe" style="width:100%; padding:10px; border:1px solid #ccc; border-radius:8px;">
         </div>
-        <div class="form-group">
-          <label for="rating">Оценка:</label>
-          <select id="rating" required>
-            <option value="5">★★★★★ (5 из 5)</option>
-            <option value="4">★★★★☆ (4 из 5)</option>
-            <option value="3">★★★☆☆ (3 из 5)</option>
+        <div style="margin-bottom: 15px;">
+          <label style="display:block; margin-bottom:5px; font-weight:600;">Rating:</label>
+          <select style="width:100%; padding:10px; border:1px solid #ccc; border-radius:8px;">
+            <option value="5">★★★★★ (5 / 5)</option>
+            <option value="4">★★★★☆ (4 / 5)</option>
           </select>
         </div>
-        <div class="form-group">
-          <label for="reviewComment">Ваш отзыв:</label>
-          <textarea id="reviewComment" rows="4" required placeholder="Расскажите, какую работу мы вам делали и понравилось ли вам качество..."></textarea>
+        <div style="margin-bottom: 15px;">
+          <label style="display:block; margin-bottom:5px; font-weight:600;">Review Details:</label>
+          <textarea rows="4" required placeholder="Describe the job performed..." style="width:100%; padding:10px; border:1px solid #ccc; border-radius:8px;"></textarea>
         </div>
-        <button type="submit" class="btn btn-primary" style="width: 100%;">Отправить отзыв</button>
+        <button type="submit" class="btn btn-primary" style="width:100%;">Submit Review</button>
       </form>
     </div>
   </div>
 
-  <!-- Footer -->
   <footer>
-    <p>&copy; 2026 Alex Handyman Services. Call or SMS Alex: (279) 758-2752</p>
+    <p>&copy; 2026 Alex Handyman & Construction. Contact Alex: (279) 758-2752</p>
   </footer>
 
   <script>
-    let currentService = 'tv';
+    let currentCategory = 'adu';
+    let currentCity = 'Pismo Beach';
+    let isFarCity = false;
 
-    function selectService(service, btnElement) {
-      currentService = service;
-      
-      // Toggle category button styles
-      document.querySelectorAll('.category-btn').forEach(btn => btn.classList.remove('active'));
-      btnElement.classList.add('active');
+    // Selections state
+    let state = {
+      basePrice: 0,
+      subType: '',
+      wallOrDetail: '',
+      customDimensions: ''
+    };
 
-      // Toggle form steps
-      document.querySelectorAll('.form-step').forEach(step => step.classList.remove('active'));
-      document.getElementById('step-' + service).classList.add('active');
+    const categoryData = {
+      adu: {
+        title: '3. Select ADU Project Type:',
+        options: [
+          { name: 'Studio ADU (400 sq ft)', price: 38000 },
+          { name: '1-Bedroom ADU (600 sq ft)', price: 54000 },
+          { name: '2-Bedroom ADU (800 sq ft)', price: 72000 },
+          { name: 'Custom ADU Size', price: 45000, isCustom: true }
+        ]
+      },
+      pergola: {
+        title: '3. Select Pergola / Cover Type & Size:',
+        options: [
+          { name: 'Standard Pergola (10×10 ft)', price: 450 },
+          { name: 'Large Patio Pergola (12×16 ft)', price: 650 },
+          { name: 'Attached Deck Shelter', price: 550 },
+          { name: 'Custom Size Pergola', price: 500, isCustom: true }
+        ]
+      },
+      shed: {
+        title: '3. Select Shed Size:',
+        options: [
+          { name: 'Small Shed (8×8 ft)', price: 400 },
+          { name: 'Medium Shed (10×12 ft)', price: 650 },
+          { name: 'Large Utility Shed (12×16 ft)', price: 950 },
+          { name: 'Custom Dimensions Shed', price: 600, isCustom: true }
+        ]
+      },
+      plumbing: {
+        title: '3. Select Plumbing Job:',
+        options: [
+          { name: 'Faucet Replacement', price: 80 },
+          { name: 'Showerhead / Valve Repair', price: 90 },
+          { name: 'Sink Trap / P-Trap Drain', price: 70 },
+          { name: 'Bathtub / Toilet Install', price: 110 }
+        ]
+      },
+      electrical: {
+        title: '3. Select Light Electrical Job:',
+        options: [
+          { name: 'Outlet / Switch Replace', price: 40 },
+          { name: 'Light Fixture Installation', price: 65 },
+          { name: 'Ceiling Fan Installation', price: 90 }
+        ]
+      },
+      furniture: {
+        title: '3. Select Furniture Assembly Item:',
+        options: [
+          { name: 'Chair / Small Table / Shelf', price: 45 },
+          { name: 'Dresser / Desk Assembly', price: 75 },
+          { name: 'Bed Frame Assembly', price: 95 },
+          { name: 'Large Wardrobe / Closet System', price: 150 }
+        ]
+      },
+      tv: {
+        title: '3. Select TV Size:',
+        options: [
+          { name: 'Up to 43″ Screen', price: 65 },
+          { name: '44″ – 65″ Screen', price: 85 },
+          { name: '66″ – 85″ Screen', price: 110 }
+        ],
+        extraStep: {
+          title: '4. Select Wall Surface Material:',
+          options: [
+            { name: 'Drywall / Wood Studs', price: 0 },
+            { name: 'Concrete / Brick (+$20)', price: 20 },
+            { name: 'Tile / Fireplace (+$30)', price: 30 }
+          ]
+        }
+      }
+    };
 
-      calculatePrice();
+    function selectServiceCategory(cat, btn) {
+      currentCategory = cat;
+      document.querySelectorAll('.service-green-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderDynamicOptions();
     }
 
-    function calculatePrice() {
-      let total = 0;
-      let serviceName = '';
-      let details = '';
+    function selectCity(city, distancePenalty, btn) {
+      currentCity = city;
+      isFarCity = (distancePenalty > 0);
+      
+      const parent = btn.parentElement;
+      parent.querySelectorAll('.opt-btn').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
 
-      if (currentService === 'tv') {
-        serviceName = 'Монтаж ТВ';
-        let sizeVal = parseInt(document.getElementById('tvSize').value);
-        let wallVal = parseInt(document.getElementById('wallType').value);
-        let mountVal = parseInt(document.getElementById('tvMount').value);
-        
-        total = sizeVal + wallVal + mountVal;
-        
-        let sizeText = document.getElementById('tvSize').options[document.getElementById('tvSize').selectedIndex].text;
-        details = `Услуга: ${serviceName} (${sizeText})`;
-      } 
-      else if (currentService === 'furniture') {
-        serviceName = 'Сборка мебели';
-        let itemVal = parseInt(document.getElementById('furnitureType').value);
-        let qtyVal = parseInt(document.getElementById('furnitureQty').value);
-        
-        total = itemVal * qtyVal;
-        
-        let itemText = document.getElementById('furnitureType').options[document.getElementById('furnitureType').selectedIndex].text;
-        details = `Услуга: ${serviceName} (${itemText}, кол-во: ${qtyVal})`;
-      } 
-      else if (currentService === 'plumbing') {
-        serviceName = 'Сантехника';
-        let typeVal = parseInt(document.getElementById('plumbingType').value);
-        let faucetVal = parseInt(document.getElementById('faucetBought').value);
-        
-        total = typeVal + faucetVal;
-        
-        let typeText = document.getElementById('plumbingType').options[document.getElementById('plumbingType').selectedIndex].text;
-        details = `Услуга: ${serviceName} (${typeText})`;
+      recalculatePrice();
+    }
+
+    function renderDynamicOptions() {
+      const container = document.getElementById('dynamicOptions');
+      container.innerHTML = '';
+
+      const data = categoryData[currentCategory];
+      if (!data) return;
+
+      // Primary Service Option Block
+      const block1 = document.createElement('div');
+      block1.className = 'option-block';
+
+      let html = `<div class="option-title">${data.title}</div><div class="option-buttons">`;
+      data.options.forEach((opt, idx) => {
+        const isSel = idx === 0 ? 'selected' : '';
+        if (idx === 0) {
+          state.basePrice = opt.price;
+          state.subType = opt.name;
+        }
+        html += `<button class="opt-btn ${isSel}" onclick="selectSubOption(${opt.price}, '${opt.name}', ${!!opt.isCustom}, this)">${opt.name}</button>`;
+      });
+      html += `</div>`;
+
+      // Custom Input Box placeholder
+      html += `<div class="custom-size-input" id="customInputBox">
+                <input type="text" placeholder="Enter custom dimensions (e.g. 14×20 ft)..." oninput="state.customDimensions = this.value; recalculatePrice();">
+               </div>`;
+
+      block1.innerHTML = html;
+      container.appendChild(block1);
+
+      // Extra Step (e.g., Wall type for TV)
+      if (data.extraStep) {
+        const block2 = document.createElement('div');
+        block2.className = 'option-block';
+
+        let extraHtml = `<div class="option-title">${data.extraStep.title}</div><div class="option-buttons">`;
+        data.extraStep.options.forEach((opt, idx) => {
+          const isSel = idx === 0 ? 'selected' : '';
+          if (idx === 0) {
+            state.wallOrDetail = opt.name;
+            state.extraPrice = opt.price;
+          }
+          extraHtml += `<button class="opt-btn ${isSel}" onclick="selectExtraOption(${opt.price}, '${opt.name}', this)">${opt.name}</button>`;
+        });
+        extraHtml += `</div>`;
+        block2.innerHTML = extraHtml;
+        container.appendChild(block2);
+      } else {
+        state.extraPrice = 0;
+        state.wallOrDetail = '';
       }
 
-      // Update UI Price Display
-      document.getElementById('totalPrice').innerText = '$' + total;
-
-      // Update SMS link text & URL
-      let phone = '2797582752';
-      let message = encodeURIComponent(`Привет, Алекс! Я бы хотел заказать у тебя услугу: ${details}. Ориентировочная цена на сайте: $${total}. Когда вы сможете приехать?`);
-      document.getElementById('smsLink').href = `sms:${phone}?body=${message}`;
+      recalculatePrice();
     }
 
-    // Modal Functions
+    function selectSubOption(price, name, isCustom, btn) {
+      state.basePrice = price;
+      state.subType = name;
+
+      const parent = btn.parentElement;
+      parent.querySelectorAll('.opt-btn').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+
+      const inputBox = document.getElementById('customInputBox');
+      if (inputBox) {
+        inputBox.style.display = isCustom ? 'block' : 'none';
+      }
+
+      recalculatePrice();
+    }
+
+    function selectExtraOption(price, name, btn) {
+      state.extraPrice = price;
+      state.wallOrDetail = name;
+
+      const parent = btn.parentElement;
+      parent.querySelectorAll('.opt-btn').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+
+      recalculatePrice();
+    }
+
+    function recalculatePrice() {
+      let calcPrice = state.basePrice + (state.extraPrice || 0);
+
+      // Business Rule: Far city logic & minimum $50 floor
+      if (isFarCity) {
+        if (calcPrice < 50) {
+          calcPrice = 50; // Set minimum job floor to $50 if under $50
+        }
+      }
+
+      document.getElementById('totalPrice').innerText = '$' + calcPrice.toLocaleString();
+
+      // Formulate pre-filled SMS
+      let phone = '2797582752';
+      let text = `Hello Alex! I need an estimate for: ${state.subType}`;
+      if (state.wallOrDetail) text += ` (${state.wallOrDetail})`;
+      if (state.customDimensions) text += ` - Custom size: ${state.customDimensions}`;
+      text += `. Location: ${currentCity}. Estimated quote on site: $${calcPrice.toLocaleString()}. When are you available?`;
+
+      let smsLink = `sms:${phone}?body=${encodeURIComponent(text)}`;
+      document.getElementById('smsSendBtn').href = `sms:${phone}?body=${encodeURIComponent(text)}`;
+    }
+
     function openReviewModal() {
       document.getElementById('reviewModal').style.display = 'flex';
     }
@@ -697,13 +797,12 @@
 
     function handleReviewSubmit(e) {
       e.preventDefault();
-      alert('Спасибо за ваш отзыв! Он появится на сайте после проверки.');
+      alert('Thank you for your review!');
       closeReviewModal();
-      document.getElementById('addReviewForm').reset();
     }
 
-    // Initialize price calculation on load
-    calculatePrice();
+    // Initialize on load
+    renderDynamicOptions();
   </script>
 </body>
 </html>
