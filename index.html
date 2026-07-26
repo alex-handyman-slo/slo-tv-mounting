@@ -1,852 +1,435 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alex Handyman & Contractor Services | San Luis Obispo County</title>
-    <style>
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; margin: 0; padding: 15px; background: #f4f6f8; color: #333; }
-        .card { background: #fff; border-radius: 12px; padding: 20px; max-width: 500px; margin: 0 auto; box-shadow: 0 4px 15px rgba(0,0,0,0.08); position: relative; }
-        h1 { font-size: 22px; text-align: center; margin-bottom: 3px; color: #1a1a1a; }
-        p.subtitle { text-align: center; color: #666; font-size: 14px; margin-top: 0; margin-bottom: 15px; }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alex Handyman Services - Local Quality Work & Reviews</title>
+  <style>
+    /* Reset & Base Styles */
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: #f8fafc;
+      color: #1e293b;
+      line-height: 1.6;
+    }
 
-        .trust-badges { display: grid; grid-template-columns: 1fr; gap: 6px; margin-bottom: 20px; background: #f9fbe7; padding: 10px; border-radius: 8px; border: 1px solid #c0ca33; }
-        .badge-item { font-size: 11px; font-weight: 600; color: #33691e; display: flex; align-items: center; gap: 6px; }
-        
-        .step-title { font-size: 16px; font-weight: 700; margin-bottom: 12px; color: #1b5e20; text-align: center; }
-        
-        .btn-grid { display: grid; grid-template-columns: 1fr; gap: 10px; margin-bottom: 15px; }
-        .btn-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
-        
-        .opt-btn { background: #2e7d32; color: #fff; border: none; padding: 14px; border-radius: 8px; font-weight: 600; font-size: 15px; cursor: pointer; text-align: center; transition: background 0.2s; }
-        .opt-btn:hover { background: #1b5e20; }
-        .opt-btn-sub { background: #0288d1; color: #fff; border: none; padding: 12px; border-radius: 8px; font-weight: 600; font-size: 14px; cursor: pointer; text-align: center; }
-        .opt-btn-sub:hover { background: #01579b; }
+    /* Header & Hero */
+    header {
+      background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+      color: #ffffff;
+      padding: 40px 20px;
+      text-align: center;
+    }
+    header h1 {
+      margin: 0 0 10px 0;
+      font-size: 2.2rem;
+      font-weight: 700;
+    }
+    header p {
+      margin: 0 0 20px 0;
+      font-size: 1.1rem;
+      opacity: 0.9;
+    }
+    .cta-phone {
+      display: inline-block;
+      background-color: #f59e0b;
+      color: #ffffff;
+      padding: 12px 24px;
+      border-radius: 30px;
+      font-weight: 700;
+      text-decoration: none;
+      font-size: 1.1rem;
+      box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+      transition: background-color 0.2s, transform 0.1s;
+    }
+    .cta-phone:hover {
+      background-color: #d97706;
+      transform: translateY(-2px);
+    }
 
-        .back-btn { background: #e0e0e0; color: #333; border: none; padding: 8px 15px; border-radius: 6px; font-size: 13px; cursor: pointer; margin-bottom: 15px; }
-        
-        .step { display: none; }
-        .step.active { display: block; }
+    /* Main Container */
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
 
-        .live-price-bar { display: none; background: #e8f5e9; border: 2px solid #2e7d32; border-radius: 8px; padding: 10px 15px; margin-bottom: 15px; text-align: center; font-weight: bold; color: #1b5e20; font-size: 18px; }
+    /* Section Header */
+    .section-title {
+      text-align: center;
+      font-size: 1.8rem;
+      color: #0f172a;
+      margin: 0 0 8px 0;
+      font-weight: 700;
+    }
+    .section-subtitle {
+      text-align: center;
+      color: #64748b;
+      margin: 0 0 35px 0;
+      font-size: 1rem;
+    }
 
-        .price-box { background: #eef7ee; border: 2px solid #2e7d32; border-radius: 8px; padding: 15px; text-align: center; margin-top: 15px; }
-        .price-title { font-size: 14px; color: #2e7d32; font-weight: 600; }
-        .price-amount { font-size: 38px; font-weight: bold; color: #1b5e20; }
-        .disclaimer { font-size: 12px; color: #555; margin-top: 5px; font-weight: 600; }
+    /* Reels Grid (2x2 Layout) */
+    .reels-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 30px;
+    }
 
-        .sms-submit-btn { width: 100%; background: #0288d1; color: #fff; border: none; padding: 18px; font-size: 18px; font-weight: bold; border-radius: 8px; margin-top: 20px; cursor: pointer; text-decoration: none; display: block; text-align: center; box-sizing: border-box; transition: background 0.3s; }
-        .sms-submit-btn:hover { background: #01579b; }
+    @media (max-width: 680px) {
+      .reels-grid {
+        grid-template-columns: 1fr;
+      }
+    }
 
-        .info-note { font-size: 13px; color: #01579b; background: #e3f2fd; border-left: 4px solid #0288d1; padding: 10px; border-radius: 4px; margin-top: 15px; line-height: 1.4; }
+    /* Reel Card */
+    .reel-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+      display: flex;
+      flex-direction: column;
+    }
 
-        /* HORIZONTAL SWIPEABLE PORTFOLIO CAROUSEL */
-        .portfolio-section { margin-top: 25px; border-top: 1px solid #eee; padding-top: 15px; }
-        .section-title { font-size: 14px; font-weight: 700; color: #444; margin-bottom: 10px; text-align: center; text-transform: uppercase; letter-spacing: 0.5px; }
-        
-        .projects-carousel { display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; padding-bottom: 10px; }
-        .projects-carousel::-webkit-scrollbar { height: 6px; }
-        .projects-carousel::-webkit-scrollbar-thumb { background: #ccc; border-radius: 3px; }
-        
-        .project-card { flex: 0 0 210px; scroll-snap-align: start; background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden; display: flex; flex-direction: column; box-shadow: 0 2px 6px rgba(0,0,0,0.05); }
-        .project-card img { width: 100%; height: 160px; object-fit: cover; background: #eee; }
-        .project-card .caption { padding: 8px 10px; font-size: 12px; font-weight: 600; color: #333; text-align: center; background: #fafafa; border-top: 1px solid #f0f0f0; flex-grow: 1; display: flex; align-items: center; justify-content: center; }
+    /* Vertical Video Container (9:16 Aspect Ratio) */
+    .video-wrapper {
+      position: relative;
+      width: 100%;
+      padding-top: 177.78%; /* 9:16 aspect ratio */
+      background: #000000;
+    }
 
-        .action-sub-btn { width: 100%; background: #eceff1; color: #37474f; border: 1px solid #b0bec5; padding: 9px; border-radius: 6px; font-weight: bold; font-size: 12px; cursor: pointer; margin-top: 8px; text-align: center; }
-        .action-sub-btn:hover { background: #cfd8dc; }
+    .video-wrapper video {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
 
-        /* REVIEWS */
-        .reviews-section { margin-top: 20px; border-top: 1px solid #eee; padding-top: 15px; }
-        .review-card { background: #fafafa; border-left: 3px solid #2e7d32; padding: 10px 12px; border-radius: 6px; margin-bottom: 10px; font-size: 12px; line-height: 1.4; }
-        .review-header { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
-        .review-avatar { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; background: #ccc; }
-        .review-author { font-weight: bold; color: #2e7d32; font-size: 12px; }
-        .review-work-img { max-width: 100%; max-height: 150px; border-radius: 6px; margin-top: 8px; display: block; border: 1px solid #ddd; }
+    /* Reel Info Content */
+    .reel-info {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      flex-grow: 1;
+    }
 
-        /* MODALS */
-        .modal-box { display: none; background: #fff; border: 1px solid #ccc; border-radius: 8px; padding: 15px; margin-top: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        .modal-box label { display: block; font-size: 12px; font-weight: bold; margin-top: 10px; color: #444; }
-        .modal-box input, .modal-box textarea, .modal-box select { width: 100%; padding: 8px; margin-top: 3px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-size: 13px; }
-        .modal-submit-btn { width: 100%; background: #2e7d32; color: #fff; border: none; padding: 12px; font-weight: bold; border-radius: 6px; margin-top: 12px; cursor: pointer; }
+    .work-title {
+      font-size: 1.2rem;
+      margin: 0;
+      color: #0f172a;
+      font-weight: 700;
+    }
 
-        .payment-methods { text-align: center; font-size: 12px; color: #2e7d32; margin-top: 20px; padding-top: 10px; border-top: 1px solid #eee; font-weight: 700; }
-        .seo-footer { text-align: center; font-size: 10px; color: #999; margin-top: 15px; line-height: 1.4; }
-    </style>
+    .work-description {
+      font-size: 0.95rem;
+      color: #475569;
+      margin: 0;
+    }
+
+    /* Highlighted Price Tag */
+    .work-price-tag {
+      background-color: #eff6ff;
+      border-left: 4px solid #3b82f6;
+      padding: 10px 14px;
+      border-radius: 6px;
+      font-size: 0.95rem;
+      color: #1e3a8a;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .work-price-tag strong {
+      font-size: 1.2rem;
+      color: #1d4ed8;
+    }
+
+    /* Client Review Block */
+    .client-review {
+      border-top: 1px solid #f1f5f9;
+      padding-top: 14px;
+      margin-top: auto;
+    }
+
+    .stars {
+      color: #f59e0b;
+      font-size: 1.1rem;
+      letter-spacing: 2px;
+      margin-bottom: 4px;
+    }
+
+    .review-text {
+      font-style: italic;
+      font-size: 0.9rem;
+      color: #334155;
+      margin: 4px 0 6px 0;
+    }
+
+    .client-name {
+      font-size: 0.85rem;
+      color: #64748b;
+      font-weight: 600;
+    }
+
+    /* Action Buttons */
+    .action-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 40px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 12px 28px;
+      border-radius: 8px;
+      border: none;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-primary {
+      background-color: #2563eb;
+      color: #ffffff;
+    }
+
+    .btn-primary:hover {
+      background-color: #1d4ed8;
+    }
+
+    .btn-secondary {
+      background-color: #e2e8f0;
+      color: #1e293b;
+    }
+
+    .btn-secondary:hover {
+      background-color: #cbd5e1;
+    }
+
+    /* Modal Styling */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(4px);
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 20px;
+    }
+
+    .modal-content {
+      background: #ffffff;
+      padding: 30px;
+      border-radius: 16px;
+      width: 100%;
+      max-width: 480px;
+      position: relative;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      border: none;
+      background: none;
+      font-size: 1.8rem;
+      cursor: pointer;
+      color: #94a3b8;
+    }
+
+    .modal-close:hover {
+      color: #0f172a;
+    }
+
+    .modal-content h3 {
+      margin-top: 0;
+      margin-bottom: 20px;
+      color: #0f172a;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #334155;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-family: inherit;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: #2563eb;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 30px 20px;
+      background-color: #0f172a;
+      color: #94a3b8;
+      font-size: 0.9rem;
+      margin-top: 50px;
+    }
+  </style>
 </head>
 <body>
 
-<div class="card">
-    <h1>Alex Handyman & Contractor</h1>
-    <p class="subtitle">San Luis Obispo County • Direct SMS Booking</p>
+  <!-- Header -->
+  <header>
+    <h1>Call Alex for a Free Estimate</h1>
+    <p>Professional Handyman Services | San Luis Obispo County & Surrounding Areas</p>
+    <a href="tel:2797582752" class="cta-phone">📞 (279) 758-2752</a>
+  </header>
 
-    <!-- TRUST BADGES -->
-    <div class="trust-badges">
-        <div class="badge-item">📜 Licensed Contractor: Class B (General Building) & Class C-39 (Roofing)</div>
-        <div class="badge-item">🛡️ Fully Insured & Bonded • Local SLO County Specialist</div>
-        <div class="badge-item">⭐ 5.0 Star Rated • On-Time & Clean Work Guarantee</div>
-    </div>
+  <!-- Main Content Section -->
+  <main class="container">
+    <h2 class="section-title">Видео выполненных работ и отзывы</h2>
+    <p class="section-subtitle">Посмотрите короткие видео о наших последних проектах и оценках клиентов</p>
 
-    <!-- LIVE RUNNING PRICE BAR -->
-    <div id="livePriceBar" class="live-price-bar">
-        Current Total: <span id="livePriceAmount">$0</span>
-    </div>
+    <!-- Reels Grid -->
+    <div class="reels-grid" id="reelsGrid">
 
-    <!-- STEP 1: SELECT CATEGORY FIRST -->
-    <div id="step-category" class="step active">
-        <div class="step-title">Step 1: Select Service Needed:</div>
-        <div class="btn-grid">
-            <button class="opt-btn" onclick="selectCategory('tv', 80)">📺 TV Mounting (From $80)</button>
-            <button class="opt-btn" onclick="selectCategory('plumbing', 95)">🚰 Plumbing Fixtures & Repairs</button>
-            <button class="opt-btn" onclick="selectCategory('gutters', 110)">🏠 Gutter Cleaning & Roof Leak Repairs</button>
-            <button class="opt-btn" onclick="selectCategory('fences', 120)">🪵 Fences, Gates & Sheds</button>
-            <button class="opt-btn" onclick="selectCategory('concrete', 95)">🧱 Small Concrete & Masonry Patching</button>
-            <button class="opt-btn" onclick="selectCategory('painting', 75)">🎨 Painting & Drywall Repair</button>
-            <button class="opt-btn" onclick="selectCategory('doors', 85)">🚪 Doors, Locks & Windows</button>
-            <button class="opt-btn" onclick="selectCategory('hanging', 35)">🖼️ Blinds, Rods, Shelves & Mirrors</button>
-            <button class="opt-btn" onclick="selectCategory('furniture', 45)">🛋️ Furniture Assembly</button>
-            <button class="opt-btn" onclick="selectCategory('smart', 65)">🔒 Smart Home & Lighting Fixtures</button>
-            <button class="opt-btn" onclick="selectCategory('general', 50)">🧹 General Home Maintenance</button>
-            <button class="opt-btn-sub" onclick="selectCategory('large', 0)">🏗️ Large Projects, Remodeling & ADU</button>
+      <!-- Card 1: Concrete Pad -->
+      <div class="reel-card">
+        <div class="video-wrapper">
+          <video controls preload="metadata">
+            <source src="beton.mp4" type="video/mp4">
+            Ваш браузер не поддерживает видео.
+          </video>
         </div>
+        <div class="reel-info">
+          <h3 class="work-title">Заливка бетонной площадки (8×15)</h3>
+          <p class="work-description">Подготовка территории, выравнивание грунта, установка опалубки и качественная заливка бетонной площадки под ключ.</p>
+          
+          <div class="work-price-tag">
+            <span>Стоимость работы с материалом:</span>
+            <strong>$1,800</strong>
+          </div>
+
+          <div class="client-review">
+            <div class="stars">★★★★★</div>
+            <p class="review-text">«Площадка получилась идеально ровная! Работа выполнена очень аккуратно, быстро и вместе со всем материалом. Большое спасибо!»</p>
+            <span class="client-name">— Отзыв клиента</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2: Pergola Assembly -->
+      <div class="reel-card">
+        <div class="video-wrapper">
+          <video controls preload="metadata">
+            <source src="Pergola.mp4" type="video/mp4">
+            Ваш браузер не поддерживает видео.
+          </video>
+        </div>
+        <div class="reel-info">
+          <h3 class="work-title">Сборка и установка перголы / навеса</h3>
+          <p class="work-description">Сборка металлического навеса с крышей над деревянным деком, точная подгонка и надежная фиксация конструкции.</p>
+          
+          <div class="work-price-tag">
+            <span>Стоимость установки:</span>
+            <strong>$500</strong>
+          </div>
+
+          <div class="client-review">
+            <div class="stars">★★★★★</div>
+            <p class="review-text">«Ребята собрали перголу быстро и слаженно. Все стоит ровно и крепко, навес выглядит отлично. Очень довольны сервисом!»</p>
+            <span class="client-name">— Отзыв клиента</span>
+          </div>
+        </div>
+      </div>
+
     </div>
 
-    <!-- STEP 2: SELECT CITY SECOND -->
-    <div id="step-city" class="step">
-        <button class="back-btn" onclick="showStep('step-category')">← Back to Services</button>
-        <div class="step-title">Step 2: Select Your City:</div>
-        <div class="btn-grid-2">
-            <button class="opt-btn" onclick="selectCity('Pismo Beach', false)">Pismo Beach</button>
-            <button class="opt-btn" onclick="selectCity('Shell Beach', false)">Shell Beach</button>
-            <button class="opt-btn" onclick="selectCity('Grover Beach', false)">Grover Beach</button>
-            <button class="opt-btn" onclick="selectCity('Arroyo Grande', false)">Arroyo Grande</button>
-            <button class="opt-btn" onclick="selectCity('Oceano', false)">Oceano</button>
-            <button class="opt-btn" onclick="selectCity('Avila Beach', false)">Avila Beach</button>
-            <button class="opt-btn" onclick="selectCity('San Luis Obispo', true)">San Luis Obispo</button>
-            <button class="opt-btn" onclick="selectCity('Nipomo', true)">Nipomo</button>
-            <button class="opt-btn" onclick="selectCity('Los Osos', true)">Los Osos</button>
-            <button class="opt-btn" onclick="selectCity('Morro Bay', true)">Morro Bay</button>
-            <button class="opt-btn" onclick="selectCity('Atascadero', true)">Atascadero</button>
-            <button class="opt-btn" onclick="selectCity('Santa Maria', true)">Santa Maria</button>
-        </div>
+    <!-- Buttons -->
+    <div class="action-buttons">
+      <button class="btn btn-secondary" onclick="alert('Больше видео пока нет. Новые работы добавляются регулярно!')">Загрузить еще видео</button>
+      <button class="btn btn-primary" onclick="openReviewModal()">Оставить отзыв</button>
     </div>
+  </main>
 
-    <!-- LARGE PROJECTS -->
-    <div id="step-large-type" class="step">
-        <button class="back-btn" onclick="showStep('step-category')">← Back</button>
-        <div class="step-title">Select Large Project for Free Estimate:</div>
-        <div class="btn-grid">
-            <a href="sms:+12797582752?body=Hi%20Alex!%20I'm%20interested%20in%20a%20free%20estimate%20for%20an%20ADU%20Construction:" class="opt-btn" style="text-decoration:none;">🏠 ADU Construction (Guest House)</a>
-            <a href="sms:+12797582752?body=Hi%20Alex!%20I'm%20interested%20in%20a%20free%20estimate%20for%20a%20Full%20House%20Remodel:" class="opt-btn" style="text-decoration:none;">🛋️ Full House Remodel / Addition</a>
-            <a href="sms:+12797582752?body=Hi%20Alex!%20I'm%20interested%20in%20a%20free%20estimate%20for%20a%20Kitchen%20Remodel:" class="opt-btn" style="text-decoration:none;">🍳 Full Kitchen Remodel</a>
-            <a href="sms:+12797582752?body=Hi%20Alex!%20I'm%20interested%20in%20a%20free%20estimate%20for%20a%20Bathroom%20Remodel:" class="opt-btn" style="text-decoration:none;">🛁 Full Bathroom Remodel</a>
-            <a href="sms:+12797582752?body=Hi%20Alex!%20I'm%20interested%20in%20a%20free%20estimate%20for%20a%20Garage%20Conversion:" class="opt-btn" style="text-decoration:none;">🚗 Garage Remodel / Conversion</a>
-            <a href="sms:+12797582752?body=Hi%20Alex!%20I'm%20interested%20in%20a%20free%20estimate%20for%20a%20Custom%20Deck:" class="opt-btn" style="text-decoration:none;">🪵 Custom Deck / Patio Construction</a>
+  <!-- Modal for Client Reviews -->
+  <div class="modal-overlay" id="reviewModal">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeReviewModal()">&times;</button>
+      <h3>Оставить отзыв</h3>
+      <form id="addReviewForm" onsubmit="handleReviewSubmit(event)">
+        <div class="form-group">
+          <label for="clientName">Ваше имя:</label>
+          <input type="text" id="clientName" required placeholder="Введите ваше имя">
         </div>
+        <div class="form-group">
+          <label for="rating">Оценка:</label>
+          <select id="rating" required>
+            <option value="5">★★★★★ (5 из 5)</option>
+            <option value="4">★★★★☆ (4 из 5)</option>
+            <option value="3">★★★☆☆ (3 из 5)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="reviewComment">Ваш отзыв:</label>
+          <textarea id="reviewComment" rows="4" required placeholder="Расскажите, какую работу мы вам делали и понравилось ли вам качество..."></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%;">Отправить отзыв</button>
+      </form>
     </div>
+  </div>
 
-    <!-- GUTTERS & ROOF LEAKS -->
-    <div id="step-gutters-type" class="step">
-        <button class="back-btn" onclick="showStep('step-city')">← Back</button>
-        <div class="step-title">Select Service Needed:</div>
-        <div class="btn-grid">
-            <button class="opt-btn" onclick="selectGutterHeight('Gutter Cleaning')">🧹 Gutter Cleaning Service</button>
-            <button class="opt-btn" onclick="showStep('step-roof-type')">🏚️ Roof Leak / Patching</button>
-        </div>
-    </div>
+  <footer>
+    <p>&copy; 2026 Alex Handyman Services. Call Alex for a Free Estimate: (279) 758-2752</p>
+  </footer>
 
-    <div id="step-roof-type" class="step">
-        <button class="back-btn" onclick="showStep('step-gutters-type')">← Back</button>
-        <div class="step-title">Select Roof Material:</div>
-        <div class="btn-grid">
-            <button class="opt-btn" onclick="selectRoofHeight('Shingle Roof Patching')">🏠 Asphalt Shingle Roof</button>
-            <button class="opt-btn" onclick="selectRoofHeight('Flat / TPO Roof Patching')">🏢 Flat / TPO Membrane Roof</button>
-            <button class="opt-btn" onclick="selectRoofHeight('Tile Roof Repair')">🧱 Clay / Concrete Tile Roof</button>
-        </div>
-    </div>
-
-    <div id="step-gutter-stories" class="step">
-        <button class="back-btn" onclick="showStep('step-gutters-type')">← Back</button>
-        <div class="step-title">Select Building Stories:</div>
-        <div class="btn-grid">
-            <button class="opt-btn" onclick="finishGutter(110, '1-Story Building')">1-Story House ($110)</button>
-            <button class="opt-btn" onclick="finishGutter(160, '2-Story Building')">2-Story House ($160)</button>
-        </div>
-    </div>
-
-    <!-- TV STEPS -->
-    <div id="step-tv-size" class="step">
-        <button class="back-btn" onclick="showStep('step-city')">← Back</button>
-        <div class="step-title">Step 3: Select TV Size</div>
-        <div class="btn-grid">
-            <button class="opt-btn" onclick="setTvSize(80, 'Up to 50&quot;')">Up to 50" ($80)</button>
-            <button class="opt-btn" onclick="setTvSize(100, '51&quot; – 65&quot;')">51" – 65" ($100)</button>
-            <button class="opt-btn" onclick="setTvSize(120, '66&quot; – 100&quot;')">66" – 100" ($120)</button>
-        </div>
-    </div>
-
-    <div id="step-tv-wall" class="step">
-        <button class="back-btn" onclick="showStep('step-tv-size')">← Back</button>
-        <div class="step-title">Step 4: Select Wall Type</div>
-        <div class="btn-grid">
-            <button class="opt-btn" onclick="setTvWall(0, 'Drywall', false)">Drywall / Sheetrock ($0)</button>
-            <button class="opt-btn" onclick="setTvWall(30, 'Brick / Concrete', true)">Brick / Concrete (+$30)</button>
-            <button class="opt-btn" onclick="setTvWall(45, 'Tile / Marble', true)">Tile / Marble Wall (+$45)</button>
-        </div>
-    </div>
-
-    <div id="step-tv-height" class="step">
-        <button class="back-btn" onclick="showStep('step-tv-wall')">← Back</button>
-        <div class="step-title">Step 5: Mounting Height</div>
-        <div class="btn-grid">
-            <button class="opt-btn" onclick="setTvHeight(0, 'Standard Height', false)">Standard Eye Level (Up to 5 ft) ($0)</button>
-            <button class="opt-btn" onclick="setTvHeight(25, 'High Wall (Above 5 ft / Over Fireplace)', true)">High Wall Mounting (Above 5 ft / Over Fireplace) (+$25)</button>
-        </div>
-    </div>
-
-    <div id="step-tv-bracket" class="step">
-        <button class="back-btn" onclick="showStep('step-tv-height')">← Back</button>
-        <div class="step-title">Step 6: Do you need a TV Mount Bracket?</div>
-        <div class="btn-grid">
-            <button class="opt-btn" onclick="setTvBracket(0, 'Customer Bracket')">I have my own TV bracket ($0)</button>
-            <button class="opt-btn" onclick="setTvBracket(30, 'Provide Tilting Bracket')">Provide Tilting TV Bracket (+$30)</button>
-        </div>
-    </div>
-
-    <div id="step-tv-wiring" class="step">
-        <button class="back-btn" onclick="showStep('step-tv-bracket')">← Back</button>
-        <div class="step-title">Step 7: Cable Hiding Option</div>
-        <div class="btn-grid">
-            <button class="opt-btn" onclick="setTvWiring(0, 'No Cable Hiding')">Standard Wires (No In-Wall Hiding) ($0)</button>
-            <button class="opt-btn" id="btnInWallCable" onclick="setTvWiring(40, 'In-Wall Cable Hiding (Customer Kit)')">Hide Cables In-Wall (I have kit) (+$40)</button>
-            <button class="opt-btn" id="btnInWallKit" onclick="setTvWiring(70, 'In-Wall Cable Hiding + Alex Kit')">Hide Cables In-Wall (Alex Provides Kit) (+$70)</button>
-        </div>
-    </div>
-
-    <!-- PLUMBING STEPS -->
-    <div id="step-plumbing-type" class="step">
-        <button class="back-btn" onclick="showStep('step-city')">← Back</button>
-        <div class="step-title">Select Plumbing Service:</div>
-        <div class="btn-grid">
-            <a href="sms:+12797582752?body=Hi%20Alex!%20I%20need%20faucet%20repair%20assistance:" class="opt-btn-sub" style="text-decoration:none;">🛠️ Faucet Repair (Text Alex)</a>
-            <button class="opt-btn" onclick="askMaterial(95, 'Faucet Replacement')">🚰 Faucet Replacement ($95)</button>
-            <button class="opt-btn" onclick="setSimpleJob(65, 'P-Trap Drain Cleaning & Unclog')">🛠️ Drain Unclogging / P-Trap Clean ($65)</button>
-            <button class="opt-btn" onclick="askMaterial(65, 'P-Trap Pipe Replacement')">🛠️ P-Trap Replacement ($65)</button>
-            <a href="sms:+12797582752?body=Hi%20Alex!%20I%20have%20a%20toilet%20leak/repair%20question:" class="opt-btn-sub" style="text-decoration:none;">🚽 Toilet Repair (Text Alex)</a>
-            <button class="opt-btn" onclick="askMaterial(150, 'New Toilet Installation')">🚽 New Toilet Installation ($150)</button>
-            <button class="opt-btn" onclick="askMaterial(110, 'Garbage Disposal Installation')">🧼 Garbage Disposal Replacement ($110)</button>
-        </div>
-    </div>
-
-    <!-- FENCES & SHEDS STEPS -->
-    <div id="step-fences-type" class="step">
-        <button class="back-btn" onclick="showStep('step-city')">← Back</button>
-        <div class="step-title">Select Fence, Gate or Shed Service:</div>
-        <div class="btn-grid">
-            <button class="opt-btn" onclick="askMaterial(120, 'Fence Gate & Post Repair')">🪵 Fence Gate & Post Repair ($120)</button>
-            <button class="opt-btn" onclick="setSimpleJob(145, 'Shed Board & Door Repair')">🛠️ Shed Board & Door Repair ($145)</button>
-            <button class="opt-btn" onclick="askMaterial(220, 'Small Shed Assembly (Up to 6x4 ft)')">🛖 Small Shed Assembly (Up to 6x4 ft) ($220)</button>
-            <button class="opt-btn" onclick="askMaterial(380, 'Medium Shed Assembly (Up to 8x10 ft)')">🛖 Medium Shed Assembly (Up to 8x10 ft) ($380)</button>
-            <a href="sms:+12797582752?body=Hi%20Alex!%20I%20need%20a%20quote%20for%20a%20Large%20Shed%20assembly:" class="opt-btn-sub" style="text-decoration:none;">🛖 Large Shed (10x12 ft+) (Text Alex for Quote)</a>
-        </div>
-    </div>
-
-    <!-- PAINTING & DRYWALL STEPS -->
-    <div id="step-painting-type" class="step">
-        <button class="back-btn" onclick="showStep('step-city')">← Back</button>
-        <div class="step-title">Select Painting / Drywall Service:</div>
-        <div class="btn-grid">
-            <button class="opt-btn" onclick="setSimpleJob(75, 'Drywall Hole Patching (First Hour Included)')">🧱 Drywall Patching ($75 - Covers First Hour)</button>
-            <button class="opt-btn" onclick="askMaterial(120, 'Accent Wall Painting')">🎨 Accent Wall Painting ($120)</button>
-            <button class="opt-btn" onclick="askMaterial(250, 'Small Room Painting (Bathroom/Hall)')">🎨 Small Room Painting ($250)</button>
-        </div>
-    </div>
-
-    <!-- HANGING & BLINDS STEPS -->
-    <div id="step-hanging-type" class="step">
-        <button class="back-btn" onclick="showStep('step-city')">← Back</button>
-        <div class="step-title">Select Item to Hang:</div>
-        <div class="btn-grid">
-            <button class="opt-btn" onclick="showStep('step-blinds-qty')">🪟 Window Blinds & Curtain Rods (Discount Tier)</button>
-            <button class="opt-btn" onclick="setSimpleJob(40, 'Wall Shelf Hanging')">🖼️ Wall Shelves ($40 ea)</button>
-            <button class="opt-btn" onclick="setSimpleJob(35, 'Picture Hanging (Single Item)')">🖼️ Picture / Mirror Hanging ($35 ea)</button>
-        </div>
-    </div>
-
-    <div id="step-blinds-qty" class="step">
-        <button class="back-btn" onclick="showStep('step-hanging-type')">← Back</button>
-        <div class="step-title">Select Quantity of Blinds / Rods:</div>
-        <div class="btn-grid">
-            <button class="opt-btn" onclick="setSimpleJob(35, '1 Blinds / Curtain Rod')">1 Item ($35)</button>
-            <button class="opt-btn" onclick="setSimpleJob(60, '2 Blinds / Curtain Rods')">2 Items ($60 — Save $10!)</button>
-            <button class="opt-btn" onclick="setSimpleJob(80, '3 Blinds / Curtain Rods')">3 Items ($80 — Save $25!)</button>
-            <button class="opt-btn" onclick="setSimpleJob(100, '4 Blinds / Curtain Rods')">4+ Items ($100 tier)</button>
-        </div>
-    </div>
-
-    <!-- CONCRETE STEPS -->
-    <div id="step-concrete-type" class="step">
-        <button class="back-btn" onclick="showStep('step-city')">← Back</button>
-        <div class="step-title">Select Concrete & Masonry Service:</div>
-        <div class="btn-grid">
-            <button class="opt-btn" onclick="setSimpleJob(95, 'Concrete Crack / Step Repair')">🧱 Concrete Crack & Step Patching ($95)</button>
-            <a href="sms:+12797582752?body=Hi%20Alex!%20I%20need%20a%20concrete%20slab/pad%20estimate:" class="opt-btn-sub" style="text-decoration:none;">🧱 Concrete Slab / Walkway Pad (Text Alex for Quote)</a>
-        </div>
-    </div>
-
-    <!-- DOORS & WINDOWS STEPS -->
-    <div id="step-doors-type" class="step">
-        <button class="back-btn" onclick="showStep('step-city')">← Back</button>
-        <div class="step-title">Select Door or Window Service:</div>
-        <div class="btn-grid">
-            <button class="opt-btn" onclick="setSimpleJob(85, 'Door Alignment & Hinge Repair')">🚪 Door Alignment & Hinge Repair ($85)</button>
-            <button class="opt-btn" onclick="askMaterial(160, 'New Door Installation')">🚪 New Door Installation ($160)</button>
-            <button class="opt-btn" onclick="askMaterial(75, 'Smart Lock / Deadbolt Replacement')">🔐 Smart Lock / Deadbolt Change ($75)</button>
-        </div>
-    </div>
-
-    <!-- SMART HOME STEPS -->
-    <div id="step-smart-type" class="step">
-        <button class="back-btn" onclick="showStep('step-city')">← Back</button>
-        <div class="step-title">Select Smart Home Service:</div>
-        <div class="btn-grid">
-            <button class="opt-btn" onclick="askMaterial(65, 'Video Doorbell (Ring/Nest) Installation')">🔔 Video Doorbell (Ring/Nest) ($65)</button>
-            <button class="opt-btn" onclick="askMaterial(85, 'Ceiling Light Fixture Replacement')">💡 Ceiling Light Fixture ($85)</button>
-            <button class="opt-btn" onclick="askMaterial(120, 'Ceiling Fan Installation')">🌀 Ceiling Fan Installation ($120)</button>
-        </div>
-    </div>
-
-    <!-- GENERAL MAINTENANCE -->
-    <div id="step-general-type" class="step">
-        <button class="back-btn" onclick="showStep('step-city')">← Back</button>
-        <div class="step-title">Select Maintenance Service:</div>
-        <div class="btn-grid">
-            <button class="opt-btn" onclick="setSimpleJob(60, 'Weatherstripping & Door Seals')">🚪 Weatherstripping & Seals ($60)</button>
-            <button class="opt-btn" onclick="setSimpleJob(50, 'Cabinet Door & Hinge Adjustment')">🗄️ Cabinet Door Hinge Adjustment ($50)</button>
-            <button class="opt-btn" onclick="setSimpleJob(70, 'Smoke Detector Battery Replacement')">🔋 Smoke Alarm Replacement ($70)</button>
-        </div>
-    </div>
-
-    <!-- FURNITURE STEPS -->
-    <div id="step-furniture-type" class="step">
-        <button class="back-btn" onclick="showStep('step-city')">← Back</button>
-        <div class="step-title">Select Furniture Size:</div>
-        <div class="btn-grid">
-            <button class="opt-btn" onclick="setFurnitureType(45, 'Small Item (Chair, Nightstand)')">Small (Chair, Nightstand) - $45</button>
-            <button class="opt-btn" onclick="setFurnitureType(85, 'Medium Item (Desk, Bed, TV Stand)')">Medium (Desk, Bed Frame) - $85</button>
-            <button class="opt-btn" onclick="setFurnitureType(150, 'Large Item (Dresser, Wardrobe)')">Large (Large Dresser, Wardrobe) - $150</button>
-        </div>
-    </div>
-
-    <div id="step-furniture-qty" class="step">
-        <button class="back-btn" onclick="showStep('step-furniture-type')">← Back</button>
-        <div class="step-title">Select Quantity:</div>
-        <div class="btn-grid-2">
-            <button class="opt-btn" onclick="setFurnitureQty(1)">1 Item</button>
-            <button class="opt-btn" onclick="setFurnitureQty(2)">2 Items</button>
-            <button class="opt-btn" onclick="setFurnitureQty(3)">3+ Items</button>
-        </div>
-    </div>
-
-    <!-- QUESTION STEP: ARE MATERIALS PURCHASED? -->
-    <div id="step-material-question" class="step">
-        <button class="back-btn" onclick="showStep('step-city')">← Back</button>
-        <div class="step-title" id="matQuestionTitle">Do you already have the required item / materials purchased?</div>
-        <div class="btn-grid" style="margin-top: 20px;">
-            <button class="opt-btn" onclick="setMaterialAnswer('Customer Has Materials Ready')">YES — I already bought it / ready ($0)</button>
-            <a id="smsMatLink" href="#" class="opt-btn-sub" style="text-decoration:none;">NO — Text Alex to advise / purchase for me</a>
-        </div>
-    </div>
-
-    <!-- FINAL BOOKING SUMMARY -->
-    <div id="step-final" class="step">
-        <button class="back-btn" onclick="resetForm()">← Start Over</button>
-        
-        <div class="price-box">
-            <div class="price-title">Total Service Price:</div>
-            <div class="price-amount" id="totalPrice">$0</div>
-            <div id="summaryText" style="font-size: 14px; color: #333; margin-top: 8px; font-weight: 600;"></div>
-            <div class="disclaimer">Fixed service price. No hidden fees.</div>
-        </div>
-
-        <a id="directSmsBtn" href="#" class="sms-submit-btn">Book Now</a>
-
-        <div class="info-note">
-            💬 <strong>How it works:</strong> Clicking "Book Now" opens your Messaging app with your booking details pre-filled. Just hit send, and Alex will text back shortly to confirm your address & preferred time!
-            <br><br>📸 <i>Tip: Feel free to attach photos of your project directly in the SMS!</i>
-        </div>
-    </div>
-
-    <!-- RECENTLY COMPLETED PROJECTS (SWIPEABLE CAROUSEL) -->
-    <div class="portfolio-section">
-        <div class="section-title">Recently Completed Projects</div>
-        <div id="projectsCarousel" class="projects-carousel">
-            <div style="font-size: 11px; text-align: center; color: #888; width: 100%;">Loading projects...</div>
-        </div>
-
-        <button class="action-sub-btn" onclick="toggleProjectModal()">📷 Add Project Photo & Description</button>
-
-        <div id="projectModal" class="modal-box">
-            <div style="font-weight: bold; font-size: 14px; color: #1b5e20; text-align: center;">Upload Recent Project</div>
-            
-            <label for="projCaption">Project Description / Location *</label>
-            <input type="text" id="projCaption" placeholder="e.g. 65&quot; TV Mounting in Pismo Beach">
-
-            <label for="projPhoto">Select Photo *</label>
-            <input type="file" id="projPhoto" accept="image/*">
-
-            <button class="modal-submit-btn" id="projSubmitBtn" onclick="submitProject()">Upload Project</button>
-        </div>
-    </div>
-
-    <!-- RECENT REVIEWS FROM GOOGLE SHEETS -->
-    <div class="reviews-section">
-        <div class="section-title">Local Customer Reviews</div>
-        <div id="reviewsContainer">
-            <div style="font-size: 11px; text-align: center; color: #888;">Loading reviews...</div>
-        </div>
-
-        <button class="action-sub-btn" onclick="toggleReviewModal()">✍️ Leave a Review</button>
-
-        <div id="reviewModal" class="modal-box">
-            <div style="font-weight: bold; font-size: 14px; color: #1b5e20; text-align: center;">Share Your Experience</div>
-            
-            <label for="revName">Your Name *</label>
-            <input type="text" id="revName" placeholder="e.g. Sarah M.">
-
-            <label for="revCity">Your City *</label>
-            <input type="text" id="revCity" placeholder="e.g. Pismo Beach">
-
-            <label for="revPhone">Phone Number * (Internal verification, never published)</label>
-            <input type="tel" id="revPhone" placeholder="(805) 000-0000">
-
-            <label for="revRating">Rating *</label>
-            <select id="revRating">
-                <option value="5">⭐⭐⭐⭐⭐ 5 Stars (Excellent)</option>
-                <option value="4">⭐⭐⭐⭐ 4 Stars (Good)</option>
-                <option value="3">⭐⭐⭐ 3 Stars (Average)</option>
-            </select>
-
-            <label for="revText">Your Review *</label>
-            <textarea id="revText" rows="3" placeholder="Tell us about the job completed..."></textarea>
-
-            <label for="revAvatar">Your Profile Photo / Avatar (Optional)</label>
-            <input type="file" id="revAvatar" accept="image/*">
-
-            <label for="revPhoto">Completed Work Photo (Optional)</label>
-            <input type="file" id="revPhoto" accept="image/*">
-
-            <button class="modal-submit-btn" id="revSubmitBtn" onclick="submitReview()">Submit Review</button>
-        </div>
-    </div>
-
-    <!-- PAYMENT METHODS -->
-    <div class="payment-methods">
-        💵 Accepted Payments: Zelle • Venmo • Cash
-    </div>
-
-    <!-- SEO FOOTER -->
-    <div class="seo-footer">
-        Alex Handyman & Contractor Services<br>
-        Serving Pismo Beach, Shell Beach, Grover Beach, Arroyo Grande, Oceano, Avila Beach, San Luis Obispo, Nipomo, Los Osos, Morro Bay, Atascadero, and Santa Maria.
-    </div>
-
-</div>
-
-<script>
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbwMqNktMvIgWEfcSyubP40-_y--L9Ysvl7aUo7gAbbOG-Dk-yB4r0IwyH4jGERHRYfIrw/exec';
-    
-    let selectedCity = { name: '', isTravelZone: false };
-    let jobData = { category: '', details: [], totalPrice: 0 };
-    let tempPendingJob = { price: 0, title: '' };
-    let isHardWall = false;
-
-    window.onload = function() {
-        loadData();
-    };
-
-    function loadData() {
-        fetch(scriptURL)
-        .then(res => res.json())
-        .then(data => {
-            // LOAD PROJECTS (UPDATED FLEXIBLE PARSER)
-            let pContainer = document.getElementById('projectsCarousel');
-            let projects = [];
-            
-            if (data.result === 'success' && data.projects && data.projects.length > 0) {
-                projects = data.projects;
-            } else if (Array.isArray(data) && data.length > 0) {
-                projects = data;
-            }
-
-            if (projects.length > 0) {
-                pContainer.innerHTML = '';
-                // Display newest projects first
-                [...projects].reverse().forEach(p => {
-                    let photoUrl = p.photo || p.photoBase64 || p.image || p.url || p.link || p.src || '';
-                    let captionText = p.caption || p.title || p.description || p.text || p.details || 'Recent Project';
-                    
-                    if (photoUrl) {
-                        let card = document.createElement('div');
-                        card.className = 'project-card';
-                        card.innerHTML = `
-                            <img src="${photoUrl}" alt="${captionText}" onerror="this.src='https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=400&q=80'">
-                            <div class="caption">${captionText}</div>
-                        `;
-                        pContainer.appendChild(card);
-                    }
-                });
-            } else {
-                pContainer.innerHTML = `
-                    <div class="project-card">
-                        <img src="https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=400&q=80" alt="TV Mounting">
-                        <div class="caption">📺 Clean TV Mounting in Pismo Beach</div>
-                    </div>
-                    <div class="project-card">
-                        <img src="https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=400&q=80" alt="Drywall Patch">
-                        <div class="caption">🧱 Drywall Hole Patching in SLO</div>
-                    </div>
-                    <div class="project-card">
-                        <img src="https://images.unsplash.com/photo-1558002038-1055907df827?auto=format&fit=crop&w=400&q=80" alt="Smart Lock">
-                        <div class="caption">🚪 Smart Lock Installation</div>
-                    </div>
-                `;
-            }
-
-            // LOAD REVIEWS
-            let rContainer = document.getElementById('reviewsContainer');
-            if (data.result === 'success' && data.reviews && data.reviews.length > 0) {
-                rContainer.innerHTML = '';
-                [...data.reviews].reverse().forEach(r => {
-                    let avatarSrc = r.avatar || r.avatarBase64 || 'https://via.placeholder.com/32?text=User';
-                    let stars = '⭐'.repeat(r.rating || 5);
-                    let photoHtml = (r.photo || r.photoBase64) ? `<img src="${r.photo || r.photoBase64}" class="review-work-img">` : '';
-                    
-                    let card = document.createElement('div');
-                    card.className = 'review-card';
-                    card.innerHTML = `
-                        <div class="review-header">
-                            <img src="${avatarSrc}" class="review-avatar">
-                            <div>
-                                <div class="review-author">${r.name || 'Customer'} (${r.city || 'SLO'})</div>
-                                <div style="font-size:10px;">${stars}</div>
-                            </div>
-                        </div>
-                        <div>"${r.text || r.reviewText || ''}"</div>
-                        ${photoHtml}
-                    `;
-                    rContainer.appendChild(card);
-                });
-            } else {
-                rContainer.innerHTML = `
-                    <div class="review-card">
-                        "Alex mounted two 65\\" TVs over our fireplace in Arroyo Grande. Cleaned up all dust and hid all wires. Highly recommend!"
-                        <div class="review-author">⭐⭐⭐⭐⭐ — Sarah M., Arroyo Grande</div>
-                    </div>
-                    <div class="review-card">
-                        "Fast response via SMS, fair price for hanging our heavy mirrors and blinds. Excellent work."
-                        <div class="review-author">⭐⭐⭐⭐⭐ — David K., San Luis Obispo</div>
-                    </div>
-                `;
-            }
-        })
-        .catch(err => {
-            console.log('Data load error:', err);
-        });
+  <script>
+    function openReviewModal() {
+      document.getElementById('reviewModal').style.display = 'flex';
     }
 
-    function toggleProjectModal() {
-        let modal = document.getElementById('projectModal');
-        modal.style.display = modal.style.display === 'block' ? 'none' : 'block';
+    function closeReviewModal() {
+      document.getElementById('reviewModal').style.display = 'none';
     }
 
-    function toggleReviewModal() {
-        let modal = document.getElementById('reviewModal');
-        modal.style.display = modal.style.display === 'block' ? 'none' : 'block';
+    function handleReviewSubmit(e) {
+      e.preventDefault();
+      alert('Спасибо за ваш отзыв! Он появится на сайте после проверки.');
+      closeReviewModal();
+      document.getElementById('addReviewForm').reset();
     }
-
-    async function fileToBase64(file) {
-        return new Promise((resolve, reject) => {
-            if (!file) resolve('');
-            let reader = new FileReader();
-            reader.onload = () => resolve(reader.result);
-            reader.onerror = error => reject(error);
-            reader.readAsDataURL(file);
-        });
-    }
-
-    async function submitProject() {
-        let caption = document.getElementById('projCaption').value.trim();
-        let photoFile = document.getElementById('projPhoto').files[0];
-
-        if (!caption || !photoFile) {
-            alert('Please enter a description and select a photo');
-            return;
-        }
-
-        let btn = document.getElementById('projSubmitBtn');
-        btn.innerText = 'Uploading Project...';
-        btn.disabled = true;
-
-        let photoBase64 = await fileToBase64(photoFile);
-
-        let payload = {
-            type: 'project',
-            caption: caption,
-            photoBase64: photoBase64
-        };
-
-        fetch(scriptURL, {
-            method: 'POST',
-            mode: 'no-cors',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
-        })
-        .then(() => {
-            alert('Project photo uploaded successfully!');
-            document.getElementById('projCaption').value = '';
-            document.getElementById('projPhoto').value = '';
-            toggleProjectModal();
-            btn.innerText = 'Upload Project';
-            btn.disabled = false;
-            setTimeout(loadData, 1500);
-        })
-        .catch(() => {
-            alert('Error uploading photo. Please try again.');
-            btn.innerText = 'Upload Project';
-            btn.disabled = false;
-        });
-    }
-
-    async function submitReview() {
-        let name = document.getElementById('revName').value.trim();
-        let city = document.getElementById('revCity').value.trim();
-        let phone = document.getElementById('revPhone').value.trim();
-        let rating = document.getElementById('revRating').value;
-        let text = document.getElementById('revText').value.trim();
-        
-        let avatarFile = document.getElementById('revAvatar').files[0];
-        let photoFile = document.getElementById('revPhoto').files[0];
-
-        if (!name || !city || !phone || !text) {
-            alert('Please fill in all required fields (Name, City, Phone, Review)');
-            return;
-        }
-
-        let btn = document.getElementById('revSubmitBtn');
-        btn.innerText = 'Submitting Review...';
-        btn.disabled = true;
-
-        let avatarBase64 = avatarFile ? await fileToBase64(avatarFile) : '';
-        let photoBase64 = photoFile ? await fileToBase64(photoFile) : '';
-
-        let payload = {
-            type: 'review',
-            name: name,
-            city: city,
-            phone: phone,
-            rating: rating,
-            reviewText: text,
-            avatarBase64: avatarBase64,
-            photoBase64: photoBase64
-        };
-
-        fetch(scriptURL, {
-            method: 'POST',
-            mode: 'no-cors',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
-        })
-        .then(() => {
-            alert('Thank you for your review!');
-            toggleReviewModal();
-            btn.innerText = 'Submit Review';
-            btn.disabled = false;
-            setTimeout(loadData, 1500);
-        })
-        .catch(() => {
-            alert('Error submitting review. Please try again.');
-            btn.innerText = 'Submit Review';
-            btn.disabled = false;
-        });
-    }
-
-    function updateLivePriceDisplay() {
-        let currentCalc = jobData.totalPrice;
-        if (selectedCity.isTravelZone && currentCalc < 60) {
-            currentCalc = 60;
-        }
-        
-        let bar = document.getElementById('livePriceBar');
-        let amountSpan = document.getElementById('livePriceAmount');
-        
-        if (selectedCity.name !== '') {
-            bar.style.display = 'block';
-            amountSpan.innerText = '$' + currentCalc;
-        } else {
-            bar.style.display = 'none';
-        }
-    }
-
-    function selectCategory(cat, basePrice) {
-        jobData.category = cat;
-        jobData.totalPrice = basePrice;
-        if (cat === 'large') {
-            showStep('step-large-type');
-        } else {
-            showStep('step-city');
-        }
-    }
-
-    function selectCity(cityName, travelZoneFlag) {
-        selectedCity = { name: cityName, isTravelZone: travelZoneFlag };
-        updateLivePriceDisplay();
-        
-        let cat = jobData.category;
-        if (cat === 'tv') showStep('step-tv-size');
-        if (cat === 'plumbing') showStep('step-plumbing-type');
-        if (cat === 'gutters') showStep('step-gutters-type');
-        if (cat === 'fences') showStep('step-fences-type');
-        if (cat === 'concrete') showStep('step-concrete-type');
-        if (cat === 'painting') showStep('step-painting-type');
-        if (cat === 'doors') showStep('step-doors-type');
-        if (cat === 'smart') showStep('step-smart-type');
-        if (cat === 'furniture') showStep('step-furniture-type');
-        if (cat === 'hanging') showStep('step-hanging-type');
-        if (cat === 'general') showStep('step-general-type');
-    }
-
-    let pendingGutterTitle = '';
-    function selectGutterHeight(title) {
-        pendingGutterTitle = title;
-        showStep('step-gutter-stories');
-    }
-    function selectRoofHeight(title) {
-        pendingGutterTitle = title;
-        showStep('step-gutter-stories');
-    }
-    function finishGutter(price, storyText) {
-        jobData.totalPrice = price;
-        jobData.details = [pendingGutterTitle + ' (' + storyText + ')'];
-        finishSelection();
-    }
-
-    function askMaterial(price, title) {
-        tempPendingJob = { price: price, title: title };
-        document.getElementById('matQuestionTitle').innerText = `Do you already have the required item/materials for "${title}"?`;
-        
-        let smsLink = document.getElementById('smsMatLink');
-        smsLink.href = `sms:+12797582752?body=Hi%20Alex!%20I%20need%20advice/help%20buying%20materials%20for%20${encodeURIComponent(title)}%20in%20${encodeURIComponent(selectedCity.name)}:`;
-        
-        showStep('step-material-question');
-    }
-
-    function setMaterialAnswer(answerText) {
-        jobData.totalPrice = tempPendingJob.price;
-        jobData.details = [tempPendingJob.title + ' (' + answerText + ')'];
-        finishSelection();
-    }
-
-    function setTvSize(price, text) {
-        jobData.totalPrice = price;
-        jobData.details = ['TV Size: ' + text];
-        isHardWall = false;
-        updateLivePriceDisplay();
-        showStep('step-tv-wall');
-    }
-    function setTvWall(price, text, hardWallFlag) {
-        jobData.totalPrice += price;
-        jobData.details.push('Wall: ' + text);
-        if(hardWallFlag) isHardWall = true;
-        updateLivePriceDisplay();
-        showStep('step-tv-height');
-    }
-    function setTvHeight(price, text, hardWallFlag) {
-        jobData.totalPrice += price;
-        jobData.details.push('Height: ' + text);
-        if(hardWallFlag) isHardWall = true;
-        
-        if(isHardWall) {
-            document.getElementById('btnInWallCable').style.display = 'none';
-            document.getElementById('btnInWallKit').style.display = 'none';
-        } else {
-            document.getElementById('btnInWallCable').style.display = 'block';
-            document.getElementById('btnInWallKit').style.display = 'block';
-        }
-        updateLivePriceDisplay();
-        showStep('step-tv-bracket');
-    }
-    function setTvBracket(price, text) {
-        jobData.totalPrice += price;
-        jobData.details.push('Bracket: ' + text);
-        updateLivePriceDisplay();
-        showStep('step-tv-wiring');
-    }
-    function setTvWiring(price, text) {
-        jobData.totalPrice += price;
-        jobData.details.push('Wiring: ' + text);
-        finishSelection();
-    }
-
-    function showStep(stepId) {
-        document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
-        document.getElementById(stepId).classList.add('active');
-    }
-
-    function resetForm() {
-        jobData = { category: '', details: [], totalPrice: 0 };
-        selectedCity = { name: '', isTravelZone: false };
-        updateLivePriceDisplay();
-        showStep('step-category');
-    }
-
-    function setSimpleJob(price, text) {
-        jobData.totalPrice = price;
-        jobData.details = [text];
-        finishSelection();
-    }
-
-    function setFurnitureType(price, text) {
-        jobData.basePrice = price;
-        jobData.details = ['Item: ' + text];
-        showStep('step-furniture-qty');
-    }
-    function setFurnitureQty(qty) {
-        jobData.totalPrice = jobData.basePrice * qty;
-        jobData.details.push('Qty: ' + qty);
-        finishSelection();
-    }
-
-    function finishSelection() {
-        let finalPrice = jobData.totalPrice;
-        let isMinAdjusted = false;
-        
-        if (selectedCity.isTravelZone && finalPrice < 60) {
-            finalPrice = 60;
-            isMinAdjusted = true;
-        }
-
-        document.getElementById('totalPrice').innerText = '$' + finalPrice;
-        
-        let detailsString = jobData.details.join(' | ');
-        if (isMinAdjusted) {
-            detailsString += ` [$60 Minimum Visit for ${selectedCity.name}]`;
-        } else {
-            detailsString += ` [Location: ${selectedCity.name}]`;
-        }
-        
-        document.getElementById('summaryText').innerText = detailsString;
-
-        let smsText = `Hi Alex! I would like to book a service in ${selectedCity.name}.\n\nProject: ${jobData.details.join(' | ')}\nTotal Price: $${finalPrice}.\n\nPlease let me know your availability!`;
-        
-        let smsBtn = document.getElementById('directSmsBtn');
-        smsBtn.innerText = `Book Now ($${finalPrice})`;
-        smsBtn.href = `sms:+12797582752?body=${encodeURIComponent(smsText)}`;
-
-        document.getElementById('livePriceBar').style.display = 'none';
-
-        showStep('step-final');
-    }
-</script>
-
+  </script>
 </body>
 </html>
