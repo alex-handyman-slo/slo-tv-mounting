@@ -15,35 +15,35 @@
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       background-color: #f8fafc;
       color: #1e293b;
-      line-height: 1.6;
+      line-height: 1.5;
     }
 
     /* Header & Hero */
     header {
       background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
       color: #ffffff;
-      padding: 45px 20px;
+      padding: 40px 20px;
       text-align: center;
     }
     header h1 {
-      margin: 0 0 10px 0;
-      font-size: 2.3rem;
+      margin: 0 0 8px 0;
+      font-size: 2.2rem;
       font-weight: 800;
     }
     header p {
-      margin: 0 0 22px 0;
-      font-size: 1.15rem;
+      margin: 0 0 20px 0;
+      font-size: 1.1rem;
       opacity: 0.95;
     }
     .cta-sms-header {
       display: inline-block;
       background-color: #16a34a;
       color: #ffffff;
-      padding: 14px 32px;
+      padding: 14px 30px;
       border-radius: 30px;
       font-weight: 700;
       text-decoration: none;
-      font-size: 1.2rem;
+      font-size: 1.15rem;
       box-shadow: 0 4px 14px rgba(22, 163, 74, 0.4);
       transition: background-color 0.2s, transform 0.1s;
     }
@@ -54,23 +54,23 @@
 
     /* Main Container */
     .container {
-      max-width: 1000px;
+      max-width: 960px;
       margin: 0 auto;
-      padding: 40px 20px;
+      padding: 35px 18px;
     }
 
     .section-title {
       text-align: center;
-      font-size: 1.9rem;
+      font-size: 1.8rem;
       color: #0f172a;
-      margin: 0 0 8px 0;
+      margin: 0 0 6px 0;
       font-weight: 800;
     }
     .section-subtitle {
       text-align: center;
       color: #64748b;
-      margin: 0 0 35px 0;
-      font-size: 1.05rem;
+      margin: 0 0 30px 0;
+      font-size: 1rem;
     }
 
     /* Calculator Card */
@@ -78,19 +78,18 @@
       background: #ffffff;
       border: 1px solid #e2e8f0;
       border-radius: 20px;
-      padding: 35px;
-      box-shadow: 0 6px 25px rgba(0, 0, 0, 0.06);
-      margin-bottom: 60px;
-      position: relative;
+      padding: 30px;
+      box-shadow: 0 6px 25px rgba(0, 0, 0, 0.05);
+      margin-bottom: 50px;
     }
 
-    /* Header inside Wizard */
+    /* Wizard Header */
     .wizard-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding-bottom: 20px;
-      margin-bottom: 25px;
+      padding-bottom: 18px;
+      margin-bottom: 22px;
       border-bottom: 2px solid #f1f5f9;
     }
 
@@ -99,60 +98,50 @@
       color: #334155;
       border: none;
       border-radius: 10px;
-      padding: 10px 18px;
+      padding: 9px 16px;
       font-size: 0.95rem;
       font-weight: 700;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
-      gap: 6px;
+      gap: 5px;
       transition: all 0.2s;
     }
 
-    .back-btn:hover {
-      background-color: #cbd5e1;
-    }
-
-    .back-btn:disabled {
-      opacity: 0.4;
-      cursor: not-allowed;
-    }
+    .back-btn:hover { background-color: #cbd5e1; }
+    .back-btn:disabled { opacity: 0.35; cursor: not-allowed; }
 
     .total-tracker {
-      font-size: 1.25rem;
+      font-size: 1.2rem;
       font-weight: 800;
       color: #166534;
       background: #f0fdf4;
       border: 1px solid #bbf7d0;
-      padding: 8px 18px;
+      padding: 7px 16px;
       border-radius: 30px;
     }
 
-    /* Step Title */
     .step-question {
-      font-size: 1.25rem;
+      font-size: 1.2rem;
       font-weight: 700;
       color: #0f172a;
-      margin-bottom: 20px;
+      margin-bottom: 18px;
     }
 
-    /* Main Categories Grid (4 big green buttons) */
+    /* Grids */
     .main-categories-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 16px;
+      gap: 14px;
     }
 
-    @media (max-width: 600px) {
-      .main-categories-grid {
-        grid-template-columns: 1fr;
-      }
+    @media (max-width: 580px) {
+      .main-categories-grid { grid-template-columns: 1fr; }
     }
 
-    /* Sub-options Grid */
     .sub-buttons-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
       gap: 12px;
     }
 
@@ -161,7 +150,7 @@
       color: #ffffff;
       border: none;
       border-radius: 14px;
-      padding: 20px 16px;
+      padding: 18px 14px;
       font-size: 1.05rem;
       font-weight: 700;
       cursor: pointer;
@@ -170,28 +159,20 @@
       align-items: center;
       justify-content: center;
       text-align: center;
-      gap: 8px;
-      box-shadow: 0 4px 12px rgba(22, 163, 74, 0.2);
+      gap: 6px;
+      box-shadow: 0 4px 12px rgba(22, 163, 74, 0.18);
       transition: all 0.2s;
     }
 
     .green-opt-btn:hover {
       background-color: #15803d;
       transform: translateY(-2px);
-      box-shadow: 0 6px 16px rgba(22, 163, 74, 0.3);
+      box-shadow: 0 6px 16px rgba(22, 163, 74, 0.28);
     }
 
-    .green-opt-btn span.icon {
-      font-size: 2rem;
-    }
+    .green-opt-btn span.icon { font-size: 1.8rem; }
+    .green-opt-btn span.subtext { font-size: 0.85rem; font-weight: 500; opacity: 0.9; }
 
-    .green-opt-btn span.subtext {
-      font-size: 0.85rem;
-      font-weight: 500;
-      opacity: 0.9;
-    }
-
-    /* Custom Dimensions Input Step */
     .custom-input-group {
       margin-top: 15px;
       display: flex;
@@ -219,34 +200,33 @@
       transition: background-color 0.2s;
     }
 
-    .next-step-btn:hover {
-      background-color: #1d4ed8;
-    }
+    .next-step-btn:hover { background-color: #1d4ed8; }
 
-    /* Final Summary Box */
+    /* Clean Final Summary Box */
     .summary-box {
       background: #f0fdf4;
       border: 2px solid #86efac;
       border-radius: 16px;
-      padding: 30px;
+      padding: 25px;
       text-align: center;
-    }
-
-    .summary-box h3 {
-      margin: 0 0 10px 0;
-      color: #166534;
-      font-size: 1.3rem;
     }
 
     .summary-details {
       color: #334155;
       font-size: 1rem;
-      margin-bottom: 20px;
+      margin-bottom: 18px;
       text-align: left;
       background: #ffffff;
-      padding: 15px;
+      padding: 14px;
       border-radius: 10px;
       border: 1px solid #cbd5e1;
+    }
+
+    .price-headline {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: #15803d;
+      margin-bottom: 18px;
     }
 
     .sms-btn-final {
@@ -259,25 +239,21 @@
       font-weight: 800;
       text-decoration: none;
       font-size: 1.2rem;
-      box-shadow: 0 4px 14px rgba(22, 163, 74, 0.35);
+      box-shadow: 0 4px 14px rgba(22, 163, 74, 0.3);
       transition: background-color 0.2s;
     }
 
-    .sms-btn-final:hover {
-      background-color: #15803d;
-    }
+    .sms-btn-final:hover { background-color: #15803d; }
 
-    /* REELS VIDEO GRID - FIXED 2x2 LAYOUT FOR DESKTOP & MOBILE */
+    /* REELS VIDEO GRID - 2x2 Clean Layout */
     .reels-grid {
       display: grid;
-      grid-template-columns: repeat(2, 1fr); /* Always 2 in a row */
-      gap: 20px;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px;
     }
 
-    @media (max-width: 500px) {
-      .reels-grid {
-        gap: 12px; /* Tighten gaps slightly on small screens while keeping 2 columns */
-      }
+    @media (max-width: 520px) {
+      .reels-grid { gap: 12px; }
     }
 
     .reel-card {
@@ -285,7 +261,7 @@
       border: 1px solid #e2e8f0;
       border-radius: 16px;
       overflow: hidden;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
       display: flex;
       flex-direction: column;
     }
@@ -293,8 +269,9 @@
     .video-wrapper {
       position: relative;
       width: 100%;
-      padding-top: 177.78%; /* 9:16 Vertical Reel Ratio */
+      padding-top: 177.78%; /* 9:16 vertical ratio */
       background: #0f172a;
+      cursor: pointer;
     }
 
     .video-wrapper video {
@@ -304,19 +281,41 @@
       object-fit: cover;
     }
 
-    .reel-info {
-      padding: 16px;
+    /* Minimal Card Header: Only Title & Price initially */
+    .reel-main-bar {
+      padding: 12px 14px;
+      background: #ffffff;
       display: flex;
-      flex-direction: column;
-      gap: 10px;
-      flex-grow: 1;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #f1f5f9;
     }
 
     .work-title {
-      font-size: 1.05rem;
+      font-size: 1rem;
       margin: 0;
       color: #0f172a;
       font-weight: 700;
+    }
+
+    .work-price-badge {
+      background-color: #eff6ff;
+      color: #1d4ed8;
+      font-weight: 800;
+      font-size: 1.05rem;
+      padding: 4px 10px;
+      border-radius: 8px;
+      white-space: nowrap;
+    }
+
+    /* Details reveal when video is playing */
+    .reel-expanded-info {
+      padding: 12px 14px;
+      display: none; /* hidden until play */
+      background: #f8fafc;
+      flex-direction: column;
+      gap: 8px;
+      border-top: 1px solid #e2e8f0;
     }
 
     .work-description {
@@ -325,47 +324,17 @@
       margin: 0;
     }
 
-    .work-price-tag {
-      background-color: #eff6ff;
-      border-left: 4px solid #3b82f6;
-      padding: 8px 12px;
-      border-radius: 6px;
-      font-size: 0.88rem;
-      color: #1e3a8a;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .work-price-tag strong {
-      font-size: 1.1rem;
-      color: #1d4ed8;
-    }
-
-    .client-review {
-      border-top: 1px solid #f1f5f9;
-      padding-top: 10px;
-      margin-top: auto;
-    }
-
     .stars {
       color: #f59e0b;
-      font-size: 0.95rem;
+      font-size: 0.9rem;
       letter-spacing: 1px;
-      margin-bottom: 2px;
     }
 
     .review-text {
       font-style: italic;
       font-size: 0.85rem;
       color: #334155;
-      margin: 2px 0 4px 0;
-    }
-
-    .client-name {
-      font-size: 0.8rem;
-      color: #64748b;
-      font-weight: 600;
+      margin: 2px 0;
     }
 
     .action-buttons {
@@ -377,7 +346,7 @@
     }
 
     .btn {
-      padding: 12px 28px;
+      padding: 12px 26px;
       border-radius: 8px;
       border: none;
       font-weight: 600;
@@ -434,132 +403,107 @@
   <header>
     <h1>Get an Estimate & Contact Alex</h1>
     <p>Handyman, Framing, Pergolas, Sheds & ADU Construction | San Luis Obispo County</p>
-    <a href="sms:2797582752?body=Hello%20Alex%2C%20I%20would%20like%20to%20get%20an%20estimate%20for%20a%20project." class="cta-sms-header">💬 Contact Alex via SMS</a>
+    <a href="sms:2797582752?body=Hello%20Alex%2C%20I%20would%20like%20to%20get%20an%20estimate%20for%20a%20project." class="cta-sms-header">💬 Contact Alex</a>
   </header>
 
   <!-- Main Container -->
   <main class="container">
 
-    <!-- STEP-BY-STEP CALCULATOR WIZARD -->
+    <!-- CALCULATOR WIZARD -->
     <section>
       <h2 class="section-title">Interactive Service Estimator</h2>
-      <p class="section-subtitle">Select a service category below to customize options and calculate your estimate.</p>
+      <p class="section-subtitle">Select options below to calculate your service quote.</p>
 
       <div class="calculator-card">
         
-        <!-- Header: Back Button & Running Price Tracker -->
+        <!-- Header: Back Button & Price Tracker -->
         <div class="wizard-header">
           <button class="back-btn" id="backBtn" onclick="goBackStep()" disabled>← Back</button>
-          <div class="total-tracker" id="runningTotalDisplay">Estimated: $0</div>
+          <div class="total-tracker" id="runningTotalDisplay">Price for you: $0</div>
         </div>
 
-        <!-- Dynamic Container for Current Step -->
         <div id="stepContainer"></div>
 
       </div>
     </section>
 
-    <!-- REELS VIDEO GALLERY (FIXED 2x2 GRID WITH PRELOAD PREVIEW) -->
+    <!-- REELS VIDEO GALLERY (2x2 GRID, Minimal Card Front) -->
     <section>
       <h2 class="section-title">Recent Completed Projects</h2>
-      <p class="section-subtitle">Watch short vertical videos of our craftsmanship and read customer reviews</p>
+      <p class="section-subtitle">Tap any video to play craftsmanship reels and view job details.</p>
 
       <div class="reels-grid">
 
-        <!-- Card 1: Concrete Pad -->
+        <!-- Card 1: Concrete Pouring -->
         <div class="reel-card">
+          <div class="reel-main-bar">
+            <h3 class="work-title">Concrete Pouring</h3>
+            <span class="work-price-badge">$1,800</span>
+          </div>
           <div class="video-wrapper">
-            <!-- preload="metadata" ensures video frame/poster is preloaded instead of black box -->
-            <video controls preload="metadata" playsinline poster="beton-thumb.jpg">
+            <!-- Poster thumbnail image added + preload to prevent black screen -->
+            <video controls preload="metadata" playsinline poster="beton-thumb.jpg" onplay="showDetails('details1')">
               <source src="beton.mp4#t=0.5" type="video/mp4">
             </video>
           </div>
-          <div class="reel-info">
-            <h3 class="work-title">Concrete Pad Pouring (8×15 ft)</h3>
-            <p class="work-description">Ground grading, formwork setup, mesh reinforcement, and smooth concrete finishing turnkey.</p>
-            
-            <div class="work-price-tag">
-              <span>Total with Materials:</span>
-              <strong>$1,800</strong>
-            </div>
-
-            <div class="client-review">
-              <div class="stars">★★★★★</div>
-              <p class="review-text">“The concrete slab is super smooth and level! Alex worked fast, clean, and brought all materials.”</p>
-              <span class="client-name">— Verified Customer</span>
-            </div>
+          <div class="reel-expanded-info" id="details1">
+            <p class="work-description">Ground grading, formwork setup, mesh reinforcement, and smooth concrete slab finishing turnkey.</p>
+            <div class="stars">★★★★★</div>
+            <p class="review-text">“Super smooth concrete slab! Alex worked fast, clean, and brought all materials.”</p>
           </div>
         </div>
 
-        <!-- Card 2: Pergola Cover -->
+        <!-- Card 2: Pergola Installation -->
         <div class="reel-card">
+          <div class="reel-main-bar">
+            <h3 class="work-title">Patio Pergola</h3>
+            <span class="work-price-badge">$500</span>
+          </div>
           <div class="video-wrapper">
-            <video controls preload="metadata" playsinline poster="pergola-thumb.jpg">
+            <video controls preload="metadata" playsinline poster="pergola-thumb.jpg" onplay="showDetails('details2')">
               <source src="Pergola.mp4#t=0.5" type="video/mp4">
             </video>
           </div>
-          <div class="reel-info">
-            <h3 class="work-title">Patio Pergola & Cover Install</h3>
-            <p class="work-description">Assembly and anchoring of a heavy-duty patio pergola frame over a wooden deck.</p>
-            
-            <div class="work-price-tag">
-              <span>Installation Cost:</span>
-              <strong>$500</strong>
-            </div>
-
-            <div class="client-review">
-              <div class="stars">★★★★★</div>
-              <p class="review-text">“Great teamwork and rock-solid installation. The patio shelter looks amazing!”</p>
-              <span class="client-name">— Verified Customer</span>
-            </div>
+          <div class="reel-expanded-info" id="details2">
+            <p class="work-description">Assembly and heavy-duty anchoring of outdoor patio pergola frame over deck.</p>
+            <div class="stars">★★★★★</div>
+            <p class="review-text">“Great teamwork and rock-solid installation. Looks amazing!”</p>
           </div>
         </div>
 
-        <!-- Card 3: Placeholder for Future Reel -->
+        <!-- Card 3: Drywall & Painting -->
         <div class="reel-card">
+          <div class="reel-main-bar">
+            <h3 class="work-title">Drywall & Painting</h3>
+            <span class="work-price-badge">$450</span>
+          </div>
           <div class="video-wrapper">
-            <video controls preload="metadata" playsinline>
+            <video controls preload="metadata" playsinline poster="drywall-thumb.jpg" onplay="showDetails('details3')">
               <source src="video3.mp4#t=0.5" type="video/mp4">
             </video>
           </div>
-          <div class="reel-info">
-            <h3 class="work-title">Drywall & Interior Painting</h3>
-            <p class="work-description">Drywall patching, texture matching, and full interior wall painting.</p>
-            
-            <div class="work-price-tag">
-              <span>Cost:</span>
-              <strong>$450</strong>
-            </div>
-
-            <div class="client-review">
-              <div class="stars">★★★★★</div>
-              <p class="review-text">“Smooth finish, no seams visible, and completely cleaned up after the job.”</p>
-              <span class="client-name">— Verified Customer</span>
-            </div>
+          <div class="reel-expanded-info" id="details3">
+            <p class="work-description">Drywall patching, texture matching, and full interior room painting.</p>
+            <div class="stars">★★★★★</div>
+            <p class="review-text">“Smooth finish, no seams visible, completely cleaned up after.”</p>
           </div>
         </div>
 
-        <!-- Card 4: Placeholder for Future Reel -->
+        <!-- Card 4: Storage Shed Build -->
         <div class="reel-card">
+          <div class="reel-main-bar">
+            <h3 class="work-title">Storage Shed Framing</h3>
+            <span class="work-price-badge">$750</span>
+          </div>
           <div class="video-wrapper">
-            <video controls preload="metadata" playsinline>
+            <video controls preload="metadata" playsinline poster="shed-thumb.jpg" onplay="showDetails('details4')">
               <source src="video4.mp4#t=0.5" type="video/mp4">
             </video>
           </div>
-          <div class="reel-info">
-            <h3 class="work-title">Shed & Outbuilding Framing</h3>
-            <p class="work-description">Custom 10×12 ft wooden storage shed framing and roof trusses assembly.</p>
-            
-            <div class="work-price-tag">
-              <span>Cost:</span>
-              <strong>$750</strong>
-            </div>
-
-            <div class="client-review">
-              <div class="stars">★★★★★</div>
-              <p class="review-text">“Sturdy construction built exactly to specifications. Highly skilled craftsman!”</p>
-              <span class="client-name">— Verified Customer</span>
-            </div>
+          <div class="reel-expanded-info" id="details4">
+            <p class="work-description">Custom wooden storage shed framing, wall studs, and roof trusses assembly.</p>
+            <div class="stars">★★★★★</div>
+            <p class="review-text">“Sturdy construction built exactly to specifications!”</p>
           </div>
         </div>
 
@@ -609,14 +553,13 @@
     let selections = [];
     let totalPrice = 0;
 
-    // Wizard Data Configuration (4 main root categories)
+    // Wizard Tree Data Configuration
     const wizardTree = {
-      // STEP 1: Main 4 Categories
       root: {
         isRoot: true,
-        question: "Select a Category:",
+        question: "Select Category:",
         options: [
-          { label: "Home Services & Mounting", icon: "🛠️", subtext: "TV mounting, shelf hanging, mirror, furniture assembly", next: "home_services" },
+          { label: "Home Services & Mounting", icon: "🛠️", subtext: "TV mounting, furniture assembly, shelves, mirrors, locks", next: "home_services" },
           { label: "Home Repairs & Maintenance", icon: "🔧", subtext: "Drywall, painting, appliances, flooring, plumbing, electric", next: "home_repairs" },
           { label: "Sheds, Pergolas & Covers", icon: "🏚️", subtext: "Custom sheds, outdoor patio covers, gazebos", next: "sheds_pergolas" },
           { label: "ADU Construction", icon: "🏠", subtext: "Accessory Dwelling Units & living spaces", next: "adu_scope" }
@@ -625,7 +568,7 @@
 
       // CATEGORY 1: Home Services
       home_services: {
-        question: "Select Home Service / Mounting Task:",
+        question: "Select Home Service Task:",
         options: [
           { label: "TV Mounting", icon: "📺", next: "tv_size" },
           { label: "Furniture Assembly", icon: "🛋️", next: "furniture_type" },
@@ -635,7 +578,6 @@
         ]
       },
 
-      // TV Sub-branch
       tv_size: {
         question: "Select TV Screen Size:",
         options: [
@@ -645,7 +587,7 @@
         ]
       },
       tv_wall: {
-        question: "Select Wall Material for Mounting:",
+        question: "Select Wall Material:",
         options: [
           { label: "Drywall / Wood Studs", price: 0, next: "finish" },
           { label: "Concrete / Brick Wall (+$20)", price: 20, next: "finish" },
@@ -653,20 +595,28 @@
         ]
       },
 
-      // Furniture Sub-branch
+      // Furniture Sub-branch (Expanded for Bed Frame Selection)
       furniture_type: {
-        question: "Select Item for Assembly:",
+        question: "Select Furniture Item to Assemble:",
         options: [
-          { label: "Chair / Nightstand / Shelf", price: 45, next: "finish" },
+          { label: "Bed Frame Assembly", next: "bed_type" },
           { label: "Dresser / Desk Assembly", price: 75, next: "finish" },
-          { label: "Bed Frame Assembly", price: 95, next: "finish" },
+          { label: "Chair / Nightstand / Small Table", price: 45, next: "finish" },
           { label: "Large Wardrobe / Closet System", price: 150, next: "finish" }
         ]
       },
+      bed_type: {
+        question: "Select Bed Frame Type & Size:",
+        options: [
+          { label: "Twin / Full Bed Frame", price: 80, next: "finish" },
+          { label: "Queen / King Bed Frame", price: 100, next: "finish" },
+          { label: "Storage Bed / Bunk Bed Frame", price: 140, next: "finish" }
+        ]
+      },
 
-      // CATEGORY 2: Home Repairs & Maintenance
+      // CATEGORY 2: Home Repairs
       home_repairs: {
-        question: "Select Repair & Maintenance Category:",
+        question: "Select Repair Category:",
         options: [
           { label: "Drywall Repair & Patching", next: "drywall_type" },
           { label: "Interior / Exterior Painting", next: "painting_type" },
@@ -678,11 +628,11 @@
       },
 
       drywall_type: {
-        question: "Select Drywall Repair Size:",
+        question: "Select Drywall Patch Size:",
         options: [
           { label: "Small Hole Patching (Doorknob size)", price: 75, next: "finish" },
-          { label: "Medium Drywall Patch (up to 2×2 ft)", price: 120, next: "finish" },
-          { label: "Full Wall / Ceiling Sheet Replacement", price: 250, next: "finish" }
+          { label: "Medium Patch (up to 2×2 ft)", price: 120, next: "finish" },
+          { label: "Full Wall / Ceiling Sheet Replace", price: 250, next: "finish" }
         ]
       },
 
@@ -706,9 +656,9 @@
       },
 
       flooring_type: {
-        question: "Select Flooring Option:",
+        question: "Select Flooring Task:",
         options: [
-          { label: "Laminate / Vinyl Plank Installation", price: 350, next: "finish" },
+          { label: "Laminate / Vinyl Plank Install", price: 350, next: "finish" },
           { label: "Baseboard Installation & Repair", price: 150, next: "finish" },
           { label: "Tile Repair & Grouting", price: 120, next: "finish" }
         ]
@@ -733,9 +683,9 @@
         ]
       },
 
-      // CATEGORY 3: Sheds, Pergolas & Covers
+      // CATEGORY 3: Outdoor Structures
       sheds_pergolas: {
-        question: "Select Outdoor Structure Type:",
+        question: "Select Structure Type:",
         options: [
           { label: "Storage Shed Construction", next: "shed_size" },
           { label: "Pergola / Patio Cover Build", next: "pergola_type" }
@@ -753,7 +703,7 @@
       },
 
       pergola_type: {
-        question: "Select Pergola / Patio Shelter Size:",
+        question: "Select Pergola / Patio Cover Size:",
         options: [
           { label: "Standard Pergola (10×10 ft)", price: 450, next: "finish" },
           { label: "Large Patio Pergola (12×16 ft)", price: 650, next: "finish" },
@@ -762,12 +712,12 @@
         ]
       },
 
-      // CATEGORY 4: ADU Construction
+      // CATEGORY 4: ADU
       adu_scope: {
-        question: "Select ADU Project Scope:",
+        question: "Select ADU Scope:",
         options: [
           { label: "Full Turnkey ADU", subtext: "Permits, blueprints, utilities connection & full build", price: 18000, next: "adu_size_turnkey" },
-          { label: "Construction Only", subtext: "Building only (permits already approved by client)", price: 0, next: "adu_size_build" }
+          { label: "Construction Only", subtext: "Building only (permits already approved)", price: 0, next: "adu_size_build" }
         ]
       },
       adu_size_turnkey: {
@@ -794,30 +744,26 @@
       const container = document.getElementById('stepContainer');
       container.innerHTML = '';
 
-      // Update Back Button status
       document.getElementById('backBtn').disabled = (historyStack.length === 0);
 
-      // Final Summary Screen
       if (stepKey === 'finish') {
         let detailsHtml = selections.map(s => `• <strong>${s.label}</strong> ${s.price ? '(+$' + s.price.toLocaleString() + ')' : ''}`).join('<br>');
         
         container.innerHTML = `
           <div class="summary-box">
-            <h3>Estimate Summary</h3>
             <div class="summary-details">
               ${detailsHtml}
             </div>
-            <div style="font-size: 2rem; font-weight:800; color:#15803d; margin-bottom: 20px;">
-              Total Estimated Price: $${totalPrice.toLocaleString()}
+            <div class="price-headline">
+              Price for you: $${totalPrice.toLocaleString()}
             </div>
-            <a href="#" id="finalSmsBtn" class="sms-btn-final">💬 Send Request via SMS to Alex</a>
+            <a href="#" id="finalSmsBtn" class="sms-btn-final">💬 Order Service with Alex</a>
           </div>
         `;
 
-        // Generate pre-filled SMS
         let phone = '2797582752';
         let itemsText = selections.map(s => s.label).join(' -> ');
-        let msg = `Hello Alex! I generated an estimate on your website:\nOptions: ${itemsText}\nEstimated Total: $${totalPrice.toLocaleString()}.\nWhen are you available for a project?`;
+        let msg = `Hello Alex! I would like to order service:\nOptions: ${itemsText}\nPrice for me: $${totalPrice.toLocaleString()}.\nWhen are you available?`;
         
         document.getElementById('finalSmsBtn').href = `sms:${phone}?body=${encodeURIComponent(msg)}`;
         return;
@@ -852,23 +798,20 @@
       const stepData = wizardTree[currentStepKey];
       const selectedOpt = stepData.options[optionIndex];
 
-      // Push to history stack for Back button functionality
       historyStack.push({
         stepKey: currentStepKey,
         choice: selectedOpt,
         prevPrice: totalPrice
       });
 
-      // Update selections and total price
       selections.push({
         label: selectedOpt.label,
         price: selectedOpt.price || 0
       });
 
       totalPrice += (selectedOpt.price || 0);
-      document.getElementById('runningTotalDisplay').innerText = `Estimated: $${totalPrice.toLocaleString()}`;
+      document.getElementById('runningTotalDisplay').innerText = `Price for you: $${totalPrice.toLocaleString()}`;
 
-      // Handle custom size entry if needed
       if (selectedOpt.isCustom) {
         promptCustomInput(selectedOpt.next);
       } else {
@@ -899,13 +842,15 @@
       if (historyStack.length === 0) return;
 
       const lastState = historyStack.pop();
-      
-      // Revert selections & price
       selections.pop();
       totalPrice = lastState.prevPrice;
-      document.getElementById('runningTotalDisplay').innerText = `Estimated: $${totalPrice.toLocaleString()}`;
+      document.getElementById('runningTotalDisplay').innerText = `Price for you: $${lastState.prevPrice.toLocaleString()}`;
 
       renderCurrentStep(lastState.stepKey);
+    }
+
+    function showDetails(id) {
+      document.getElementById(id).style.display = 'flex';
     }
 
     // Initialize wizard at root
