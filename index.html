@@ -73,7 +73,7 @@
       font-size: 1.05rem;
     }
 
-    /* Calculator Card Container */
+    /* Calculator Card */
     .calculator-card {
       background: #ffffff;
       border: 1px solid #e2e8f0;
@@ -81,158 +81,202 @@
       padding: 35px;
       box-shadow: 0 6px 25px rgba(0, 0, 0, 0.06);
       margin-bottom: 60px;
+      position: relative;
     }
 
-    /* Green Service Buttons Row */
-    .services-grid {
+    /* Header inside Wizard */
+    .wizard-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 20px;
+      margin-bottom: 25px;
+      border-bottom: 2px solid #f1f5f9;
+    }
+
+    .back-btn {
+      background-color: #e2e8f0;
+      color: #334155;
+      border: none;
+      border-radius: 10px;
+      padding: 10px 18px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+
+    .back-btn:hover {
+      background-color: #cbd5e1;
+    }
+
+    .back-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    .total-tracker {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: #166534;
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      padding: 8px 18px;
+      border-radius: 30px;
+    }
+
+    /* Step Title */
+    .step-question {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #0f172a;
+      margin-bottom: 20px;
+    }
+
+    /* Main Categories Grid (4 big green buttons) */
+    .main-categories-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 12px;
-      margin-bottom: 30px;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
     }
 
-    .service-green-btn {
+    @media (max-width: 600px) {
+      .main-categories-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Sub-options Grid */
+    .sub-buttons-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+    }
+
+    .green-opt-btn {
       background-color: #16a34a;
       color: #ffffff;
       border: none;
-      border-radius: 12px;
-      padding: 14px;
-      font-size: 1rem;
+      border-radius: 14px;
+      padding: 20px 16px;
+      font-size: 1.05rem;
       font-weight: 700;
       cursor: pointer;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 6px;
-      box-shadow: 0 3px 10px rgba(22, 163, 74, 0.2);
+      text-align: center;
+      gap: 8px;
+      box-shadow: 0 4px 12px rgba(22, 163, 74, 0.2);
       transition: all 0.2s;
     }
 
-    .service-green-btn:hover {
+    .green-opt-btn:hover {
       background-color: #15803d;
       transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(22, 163, 74, 0.3);
     }
 
-    .service-green-btn.active {
-      background-color: #0f766e;
-      box-shadow: 0 0 0 4px rgba(15, 118, 110, 0.25);
+    .green-opt-btn span.icon {
+      font-size: 2rem;
     }
 
-    .service-green-btn span.icon {
-      font-size: 1.6rem;
+    .green-opt-btn span.subtext {
+      font-size: 0.85rem;
+      font-weight: 500;
+      opacity: 0.9;
     }
 
-    /* Options Form Blocks */
-    .option-block {
-      background: #f8fafc;
-      border: 1px solid #e2e8f0;
-      border-radius: 14px;
-      padding: 20px;
-      margin-bottom: 20px;
-    }
-
-    .option-title {
-      font-size: 1.05rem;
-      font-weight: 700;
-      color: #0f172a;
-      margin-bottom: 12px;
-    }
-
-    .option-buttons {
+    /* Custom Dimensions Input Step */
+    .custom-input-group {
+      margin-top: 15px;
       display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
+      flex-direction: column;
+      gap: 12px;
     }
 
-    .opt-btn {
-      background: #ffffff;
+    .custom-input-group input {
+      padding: 14px;
       border: 2px solid #cbd5e1;
       border-radius: 10px;
-      padding: 10px 16px;
-      font-size: 0.95rem;
-      font-weight: 600;
-      color: #334155;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-
-    .opt-btn:hover {
-      border-color: #2563eb;
-      color: #2563eb;
-    }
-
-    .opt-btn.selected {
-      background-color: #eff6ff;
-      border-color: #2563eb;
-      color: #1d4ed8;
-    }
-
-    /* Custom Input Box */
-    .custom-size-input {
-      display: none;
-      margin-top: 12px;
-    }
-
-    .custom-size-input input {
+      font-size: 1rem;
       width: 100%;
-      padding: 10px 14px;
-      border: 1px solid #cbd5e1;
-      border-radius: 8px;
-      font-size: 0.95rem;
     }
 
-    /* Price Result Box */
-    .price-box {
+    .next-step-btn {
+      background-color: #2563eb;
+      color: #ffffff;
+      border: none;
+      border-radius: 10px;
+      padding: 14px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .next-step-btn:hover {
+      background-color: #1d4ed8;
+    }
+
+    /* Final Summary Box */
+    .summary-box {
       background: #f0fdf4;
       border: 2px solid #86efac;
       border-radius: 16px;
-      padding: 25px;
+      padding: 30px;
       text-align: center;
-      margin-top: 30px;
     }
 
-    .price-box h3 {
-      margin: 0 0 6px 0;
+    .summary-box h3 {
+      margin: 0 0 10px 0;
       color: #166534;
-      font-size: 1.15rem;
+      font-size: 1.3rem;
     }
 
-    .price-amount {
-      font-size: 2.3rem;
-      font-weight: 800;
-      color: #15803d;
-      margin-bottom: 15px;
+    .summary-details {
+      color: #334155;
+      font-size: 1rem;
+      margin-bottom: 20px;
+      text-align: left;
+      background: #ffffff;
+      padding: 15px;
+      border-radius: 10px;
+      border: 1px solid #cbd5e1;
     }
 
-    .sms-btn-price {
+    .sms-btn-final {
       display: inline-block;
       width: 100%;
       background-color: #16a34a;
       color: #ffffff;
-      padding: 15px 20px;
+      padding: 16px;
       border-radius: 12px;
-      font-weight: 700;
+      font-weight: 800;
       text-decoration: none;
-      font-size: 1.15rem;
-      box-shadow: 0 4px 14px rgba(22, 163, 74, 0.3);
+      font-size: 1.2rem;
+      box-shadow: 0 4px 14px rgba(22, 163, 74, 0.35);
       transition: background-color 0.2s;
     }
 
-    .sms-btn-price:hover {
+    .sms-btn-final:hover {
       background-color: #15803d;
     }
 
-    /* Reels Video Grid */
+    /* REELS VIDEO GRID - FIXED 2x2 LAYOUT FOR DESKTOP & MOBILE */
     .reels-grid {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 30px;
+      grid-template-columns: repeat(2, 1fr); /* Always 2 in a row */
+      gap: 20px;
     }
 
-    @media (max-width: 680px) {
+    @media (max-width: 500px) {
       .reels-grid {
-        grid-template-columns: 1fr;
+        gap: 12px; /* Tighten gaps slightly on small screens while keeping 2 columns */
       }
     }
 
@@ -249,36 +293,34 @@
     .video-wrapper {
       position: relative;
       width: 100%;
-      padding-top: 177.78%; /* 9:16 Aspect Ratio */
-      background: #000000;
+      padding-top: 177.78%; /* 9:16 Vertical Reel Ratio */
+      background: #0f172a;
     }
 
     .video-wrapper video {
       position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
       object-fit: cover;
     }
 
     .reel-info {
-      padding: 20px;
+      padding: 16px;
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 10px;
       flex-grow: 1;
     }
 
     .work-title {
-      font-size: 1.2rem;
+      font-size: 1.05rem;
       margin: 0;
       color: #0f172a;
       font-weight: 700;
     }
 
     .work-description {
-      font-size: 0.95rem;
+      font-size: 0.88rem;
       color: #475569;
       margin: 0;
     }
@@ -286,9 +328,9 @@
     .work-price-tag {
       background-color: #eff6ff;
       border-left: 4px solid #3b82f6;
-      padding: 10px 14px;
+      padding: 8px 12px;
       border-radius: 6px;
-      font-size: 0.95rem;
+      font-size: 0.88rem;
       color: #1e3a8a;
       display: flex;
       justify-content: space-between;
@@ -296,32 +338,32 @@
     }
 
     .work-price-tag strong {
-      font-size: 1.2rem;
+      font-size: 1.1rem;
       color: #1d4ed8;
     }
 
     .client-review {
       border-top: 1px solid #f1f5f9;
-      padding-top: 14px;
+      padding-top: 10px;
       margin-top: auto;
     }
 
     .stars {
       color: #f59e0b;
-      font-size: 1.1rem;
-      letter-spacing: 2px;
-      margin-bottom: 4px;
+      font-size: 0.95rem;
+      letter-spacing: 1px;
+      margin-bottom: 2px;
     }
 
     .review-text {
       font-style: italic;
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       color: #334155;
-      margin: 4px 0 6px 0;
+      margin: 2px 0 4px 0;
     }
 
     .client-name {
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       color: #64748b;
       font-weight: 600;
     }
@@ -330,7 +372,7 @@
       display: flex;
       justify-content: center;
       gap: 15px;
-      margin-top: 40px;
+      margin-top: 35px;
       flex-wrap: wrap;
     }
 
@@ -344,23 +386,8 @@
       transition: all 0.2s;
     }
 
-    .btn-primary {
-      background-color: #2563eb;
-      color: #ffffff;
-    }
-
-    .btn-primary:hover {
-      background-color: #1d4ed8;
-    }
-
-    .btn-secondary {
-      background-color: #e2e8f0;
-      color: #1e293b;
-    }
-
-    .btn-secondary:hover {
-      background-color: #cbd5e1;
-    }
+    .btn-primary { background-color: #2563eb; color: #ffffff; }
+    .btn-secondary { background-color: #e2e8f0; color: #1e293b; }
 
     /* Modal */
     .modal-overlay {
@@ -382,7 +409,6 @@
       width: 100%;
       max-width: 480px;
       position: relative;
-      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
     }
 
     .modal-close {
@@ -414,87 +440,38 @@
   <!-- Main Container -->
   <main class="container">
 
-    <!-- CALCULATOR SECTION -->
+    <!-- STEP-BY-STEP CALCULATOR WIZARD -->
     <section>
-      <h2 class="section-title">Instant Service Estimator</h2>
-      <p class="section-subtitle">Select a service, choose your location, and customize options to get a competitive estimate.</p>
+      <h2 class="section-title">Interactive Service Estimator</h2>
+      <p class="section-subtitle">Select a service category below to customize options and calculate your estimate.</p>
 
       <div class="calculator-card">
         
-        <!-- STEP 1: Green Service Buttons Row -->
-        <div class="option-title">1. Select Service Category:</div>
-        <div class="services-grid">
-          <button class="service-green-btn active" onclick="selectServiceCategory('adu', this)">
-            <span class="icon">🏠</span>
-            <span>ADU Construction</span>
-          </button>
-          <button class="service-green-btn" onclick="selectServiceCategory('pergola', this)">
-            <span class="icon">🏛️</span>
-            <span>Pergolas & Covers</span>
-          </button>
-          <button class="service-green-btn" onclick="selectServiceCategory('shed', this)">
-            <span class="icon">🏚️</span>
-            <span>Sheds</span>
-          </button>
-          <button class="service-green-btn" onclick="selectServiceCategory('plumbing', this)">
-            <span class="icon">🚰</span>
-            <span>Plumbing</span>
-          </button>
-          <button class="service-green-btn" onclick="selectServiceCategory('electrical', this)">
-            <span class="icon">⚡</span>
-            <span>Electrical</span>
-          </button>
-          <button class="service-green-btn" onclick="selectServiceCategory('furniture', this)">
-            <span class="icon">🛋️</span>
-            <span>Furniture Assembly</span>
-          </button>
-          <button class="service-green-btn" onclick="selectServiceCategory('tv', this)">
-            <span class="icon">📺</span>
-            <span>TV Mounting</span>
-          </button>
+        <!-- Header: Back Button & Running Price Tracker -->
+        <div class="wizard-header">
+          <button class="back-btn" id="backBtn" onclick="goBackStep()" disabled>← Back</button>
+          <div class="total-tracker" id="runningTotalDisplay">Estimated: $0</div>
         </div>
 
-        <!-- STEP 2: City Selection -->
-        <div class="option-block">
-          <div class="option-title">2. Select Your City (San Luis Obispo County):</div>
-          <div class="option-buttons" id="cityButtons">
-            <button class="opt-btn selected" onclick="selectCity('Pismo Beach', 0, this)">Pismo Beach</button>
-            <button class="opt-btn" onclick="selectCity('Grover Beach', 0, this)">Grover Beach</button>
-            <button class="opt-btn" onclick="selectCity('Arroyo Grande', 0, this)">Arroyo Grande</button>
-            <button class="opt-btn" onclick="selectCity('San Luis Obispo', 0, this)">San Luis Obispo</button>
-            <button class="opt-btn" onclick="selectCity('Avila Beach', 0, this)">Avila Beach</button>
-            <button class="opt-btn" onclick="selectCity('Nipomo', 15, this)">Nipomo (+15 mi)</button>
-            <button class="opt-btn" onclick="selectCity('Morro Bay', 15, this)">Morro Bay (+15 mi)</button>
-            <button class="opt-btn" onclick="selectCity('Atascadero', 15, this)">Atascadero (+15 mi)</button>
-            <button class="opt-btn" onclick="selectCity('Paso Robles', 15, this)">Paso Robles (+15 mi)</button>
-          </div>
-        </div>
-
-        <!-- STEP 3: Dynamic Options Container -->
-        <div id="dynamicOptions"></div>
-
-        <!-- STEP 4: Price Output & SMS Button -->
-        <div class="price-box">
-          <h3>Estimated Cost:</h3>
-          <div class="price-amount" id="totalPrice">$0</div>
-          <a href="#" id="smsSendBtn" class="sms-btn-price">💬 Send Request via SMS to Alex</a>
-        </div>
+        <!-- Dynamic Container for Current Step -->
+        <div id="stepContainer"></div>
 
       </div>
     </section>
 
-    <!-- REELS VIDEO GALLERY -->
+    <!-- REELS VIDEO GALLERY (FIXED 2x2 GRID WITH PRELOAD PREVIEW) -->
     <section>
       <h2 class="section-title">Recent Completed Projects</h2>
       <p class="section-subtitle">Watch short vertical videos of our craftsmanship and read customer reviews</p>
 
       <div class="reels-grid">
 
-        <!-- Reel 1: Concrete Pad -->
+        <!-- Card 1: Concrete Pad -->
         <div class="reel-card">
           <div class="video-wrapper">
-            <video controls preload="metadata">
-              <source src="beton.mp4" type="video/mp4">
+            <!-- preload="metadata" ensures video frame/poster is preloaded instead of black box -->
+            <video controls preload="metadata" playsinline poster="beton-thumb.jpg">
+              <source src="beton.mp4#t=0.5" type="video/mp4">
             </video>
           </div>
           <div class="reel-info">
@@ -508,21 +485,21 @@
 
             <div class="client-review">
               <div class="stars">★★★★★</div>
-              <p class="review-text">“The concrete slab is super smooth and level! Alex worked fast, clean, and brought all materials. Highly recommend!”</p>
+              <p class="review-text">“The concrete slab is super smooth and level! Alex worked fast, clean, and brought all materials.”</p>
               <span class="client-name">— Verified Customer</span>
             </div>
           </div>
         </div>
 
-        <!-- Reel 2: Pergola -->
+        <!-- Card 2: Pergola Cover -->
         <div class="reel-card">
           <div class="video-wrapper">
-            <video controls preload="metadata">
-              <source src="Pergola.mp4" type="video/mp4">
+            <video controls preload="metadata" playsinline poster="pergola-thumb.jpg">
+              <source src="Pergola.mp4#t=0.5" type="video/mp4">
             </video>
           </div>
           <div class="reel-info">
-            <h3 class="work-title">Patio Pergola & Cover Installation</h3>
+            <h3 class="work-title">Patio Pergola & Cover Install</h3>
             <p class="work-description">Assembly and anchoring of a heavy-duty patio pergola frame over a wooden deck.</p>
             
             <div class="work-price-tag">
@@ -533,6 +510,54 @@
             <div class="client-review">
               <div class="stars">★★★★★</div>
               <p class="review-text">“Great teamwork and rock-solid installation. The patio shelter looks amazing!”</p>
+              <span class="client-name">— Verified Customer</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 3: Placeholder for Future Reel -->
+        <div class="reel-card">
+          <div class="video-wrapper">
+            <video controls preload="metadata" playsinline>
+              <source src="video3.mp4#t=0.5" type="video/mp4">
+            </video>
+          </div>
+          <div class="reel-info">
+            <h3 class="work-title">Drywall & Interior Painting</h3>
+            <p class="work-description">Drywall patching, texture matching, and full interior wall painting.</p>
+            
+            <div class="work-price-tag">
+              <span>Cost:</span>
+              <strong>$450</strong>
+            </div>
+
+            <div class="client-review">
+              <div class="stars">★★★★★</div>
+              <p class="review-text">“Smooth finish, no seams visible, and completely cleaned up after the job.”</p>
+              <span class="client-name">— Verified Customer</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 4: Placeholder for Future Reel -->
+        <div class="reel-card">
+          <div class="video-wrapper">
+            <video controls preload="metadata" playsinline>
+              <source src="video4.mp4#t=0.5" type="video/mp4">
+            </video>
+          </div>
+          <div class="reel-info">
+            <h3 class="work-title">Shed & Outbuilding Framing</h3>
+            <p class="work-description">Custom 10×12 ft wooden storage shed framing and roof trusses assembly.</p>
+            
+            <div class="work-price-tag">
+              <span>Cost:</span>
+              <strong>$750</strong>
+            </div>
+
+            <div class="client-review">
+              <div class="stars">★★★★★</div>
+              <p class="review-text">“Sturdy construction built exactly to specifications. Highly skilled craftsman!”</p>
               <span class="client-name">— Verified Customer</span>
             </div>
           </div>
@@ -552,7 +577,6 @@
   <div class="modal-overlay" id="reviewModal">
     <div class="modal-content">
       <button class="modal-close" onclick="closeReviewModal()">&times;</button>
-
       <h3>Leave a Review</h3>
       <form onsubmit="handleReviewSubmit(event)">
         <div style="margin-bottom: 15px;">
@@ -580,212 +604,312 @@
   </footer>
 
   <script>
-    let currentCategory = 'adu';
-    let currentCity = 'Pismo Beach';
-    let isFarCity = false;
+    // State Management
+    let historyStack = [];
+    let selections = [];
+    let totalPrice = 0;
 
-    // Selections state
-    let state = {
-      basePrice: 0,
-      subType: '',
-      wallOrDetail: '',
-      customDimensions: ''
-    };
+    // Wizard Data Configuration (4 main root categories)
+    const wizardTree = {
+      // STEP 1: Main 4 Categories
+      root: {
+        isRoot: true,
+        question: "Select a Category:",
+        options: [
+          { label: "Home Services & Mounting", icon: "🛠️", subtext: "TV mounting, shelf hanging, mirror, furniture assembly", next: "home_services" },
+          { label: "Home Repairs & Maintenance", icon: "🔧", subtext: "Drywall, painting, appliances, flooring, plumbing, electric", next: "home_repairs" },
+          { label: "Sheds, Pergolas & Covers", icon: "🏚️", subtext: "Custom sheds, outdoor patio covers, gazebos", next: "sheds_pergolas" },
+          { label: "ADU Construction", icon: "🏠", subtext: "Accessory Dwelling Units & living spaces", next: "adu_scope" }
+        ]
+      },
 
-    const categoryData = {
-      adu: {
-        title: '3. Select ADU Project Type:',
+      // CATEGORY 1: Home Services
+      home_services: {
+        question: "Select Home Service / Mounting Task:",
         options: [
-          { name: 'Studio ADU (400 sq ft)', price: 38000 },
-          { name: '1-Bedroom ADU (600 sq ft)', price: 54000 },
-          { name: '2-Bedroom ADU (800 sq ft)', price: 72000 },
-          { name: 'Custom ADU Size', price: 45000, isCustom: true }
+          { label: "TV Mounting", icon: "📺", next: "tv_size" },
+          { label: "Furniture Assembly", icon: "🛋️", next: "furniture_type" },
+          { label: "Hanging Shelves / Artwork / Mirrors", price: 50, next: "finish" },
+          { label: "Curtain Rods & Blinds Installation", price: 55, next: "finish" },
+          { label: "Door Lock & Handle Replacement", price: 60, next: "finish" }
         ]
       },
-      pergola: {
-        title: '3. Select Pergola / Cover Type & Size:',
+
+      // TV Sub-branch
+      tv_size: {
+        question: "Select TV Screen Size:",
         options: [
-          { name: 'Standard Pergola (10×10 ft)', price: 450 },
-          { name: 'Large Patio Pergola (12×16 ft)', price: 650 },
-          { name: 'Attached Deck Shelter', price: 550 },
-          { name: 'Custom Size Pergola', price: 500, isCustom: true }
+          { label: "Up to 43″ Screen", price: 65, next: "tv_wall" },
+          { label: "44″ – 65″ Screen", price: 85, next: "tv_wall" },
+          { label: "66″ – 85″ Screen", price: 110, next: "tv_wall" }
         ]
       },
-      shed: {
-        title: '3. Select Shed Size:',
+      tv_wall: {
+        question: "Select Wall Material for Mounting:",
         options: [
-          { name: 'Small Shed (8×8 ft)', price: 400 },
-          { name: 'Medium Shed (10×12 ft)', price: 650 },
-          { name: 'Large Utility Shed (12×16 ft)', price: 950 },
-          { name: 'Custom Dimensions Shed', price: 600, isCustom: true }
+          { label: "Drywall / Wood Studs", price: 0, next: "finish" },
+          { label: "Concrete / Brick Wall (+$20)", price: 20, next: "finish" },
+          { label: "Tile / Fireplace Surface (+$30)", price: 30, next: "finish" }
         ]
       },
-      plumbing: {
-        title: '3. Select Plumbing Job:',
+
+      // Furniture Sub-branch
+      furniture_type: {
+        question: "Select Item for Assembly:",
         options: [
-          { name: 'Faucet Replacement', price: 80 },
-          { name: 'Showerhead / Valve Repair', price: 90 },
-          { name: 'Sink Trap / P-Trap Drain', price: 70 },
-          { name: 'Bathtub / Toilet Install', price: 110 }
+          { label: "Chair / Nightstand / Shelf", price: 45, next: "finish" },
+          { label: "Dresser / Desk Assembly", price: 75, next: "finish" },
+          { label: "Bed Frame Assembly", price: 95, next: "finish" },
+          { label: "Large Wardrobe / Closet System", price: 150, next: "finish" }
         ]
       },
-      electrical: {
-        title: '3. Select Light Electrical Job:',
+
+      // CATEGORY 2: Home Repairs & Maintenance
+      home_repairs: {
+        question: "Select Repair & Maintenance Category:",
         options: [
-          { name: 'Outlet / Switch Replace', price: 40 },
-          { name: 'Light Fixture Installation', price: 65 },
-          { name: 'Ceiling Fan Installation', price: 90 }
+          { label: "Drywall Repair & Patching", next: "drywall_type" },
+          { label: "Interior / Exterior Painting", next: "painting_type" },
+          { label: "Home Appliance Repair & Replacement", next: "appliance_type" },
+          { label: "Flooring Installation & Repair", next: "flooring_type" },
+          { label: "Plumbing Repairs", next: "plumbing_type" },
+          { label: "Electrical Repairs", next: "electrical_type" }
         ]
       },
-      furniture: {
-        title: '3. Select Furniture Assembly Item:',
+
+      drywall_type: {
+        question: "Select Drywall Repair Size:",
         options: [
-          { name: 'Chair / Small Table / Shelf', price: 45 },
-          { name: 'Dresser / Desk Assembly', price: 75 },
-          { name: 'Bed Frame Assembly', price: 95 },
-          { name: 'Large Wardrobe / Closet System', price: 150 }
+          { label: "Small Hole Patching (Doorknob size)", price: 75, next: "finish" },
+          { label: "Medium Drywall Patch (up to 2×2 ft)", price: 120, next: "finish" },
+          { label: "Full Wall / Ceiling Sheet Replacement", price: 250, next: "finish" }
         ]
       },
-      tv: {
-        title: '3. Select TV Size:',
+
+      painting_type: {
+        question: "Select Painting Scope:",
         options: [
-          { name: 'Up to 43″ Screen', price: 65 },
-          { name: '44″ – 65″ Screen', price: 85 },
-          { name: '66″ – 85″ Screen', price: 110 }
-        ],
-        extraStep: {
-          title: '4. Select Wall Surface Material:',
-          options: [
-            { name: 'Drywall / Wood Studs', price: 0 },
-            { name: 'Concrete / Brick (+$20)', price: 20 },
-            { name: 'Tile / Fireplace (+$30)', price: 30 }
-          ]
-        }
+          { label: "Accent Wall / Touch-up Painting", price: 150, next: "finish" },
+          { label: "Full Room Painting", price: 350, next: "finish" },
+          { label: "Exterior Trim / Door Painting", price: 200, next: "finish" }
+        ]
+      },
+
+      appliance_type: {
+        question: "Select Appliance Service:",
+        options: [
+          { label: "Refrigerator Repair / Maintenance", price: 95, next: "finish" },
+          { label: "Washing Machine / Dryer Install & Repair", price: 90, next: "finish" },
+          { label: "Dishwasher Installation / Repair", price: 100, next: "finish" },
+          { label: "Garbage Disposal Replacement", price: 85, next: "finish" }
+        ]
+      },
+
+      flooring_type: {
+        question: "Select Flooring Option:",
+        options: [
+          { label: "Laminate / Vinyl Plank Installation", price: 350, next: "finish" },
+          { label: "Baseboard Installation & Repair", price: 150, next: "finish" },
+          { label: "Tile Repair & Grouting", price: 120, next: "finish" }
+        ]
+      },
+
+      plumbing_type: {
+        question: "Select Plumbing Task:",
+        options: [
+          { label: "Faucet Replacement", price: 80, next: "finish" },
+          { label: "Showerhead / Valve Repair", price: 90, next: "finish" },
+          { label: "Sink Trap / P-Trap Drain Replace", price: 70, next: "finish" },
+          { label: "Bathtub or Toilet Installation", price: 120, next: "finish" }
+        ]
+      },
+
+      electrical_type: {
+        question: "Select Electrical Task:",
+        options: [
+          { label: "Outlet / Wall Switch Replacement", price: 45, next: "finish" },
+          { label: "Light Fixture Installation", price: 65, next: "finish" },
+          { label: "Ceiling Fan Installation", price: 95, next: "finish" }
+        ]
+      },
+
+      // CATEGORY 3: Sheds, Pergolas & Covers
+      sheds_pergolas: {
+        question: "Select Outdoor Structure Type:",
+        options: [
+          { label: "Storage Shed Construction", next: "shed_size" },
+          { label: "Pergola / Patio Cover Build", next: "pergola_type" }
+        ]
+      },
+
+      shed_size: {
+        question: "Select Shed Dimensions:",
+        options: [
+          { label: "Small Utility Shed (8×8 ft)", price: 400, next: "finish" },
+          { label: "Medium Shed (10×12 ft)", price: 650, next: "finish" },
+          { label: "Large Storage Shed (12×16 ft)", price: 950, next: "finish" },
+          { label: "Custom Size Shed", price: 600, isCustom: true, next: "finish" }
+        ]
+      },
+
+      pergola_type: {
+        question: "Select Pergola / Patio Shelter Size:",
+        options: [
+          { label: "Standard Pergola (10×10 ft)", price: 450, next: "finish" },
+          { label: "Large Patio Pergola (12×16 ft)", price: 650, next: "finish" },
+          { label: "Attached Deck Shelter", price: 550, next: "finish" },
+          { label: "Custom Dimensions Pergola", price: 500, isCustom: true, next: "finish" }
+        ]
+      },
+
+      // CATEGORY 4: ADU Construction
+      adu_scope: {
+        question: "Select ADU Project Scope:",
+        options: [
+          { label: "Full Turnkey ADU", subtext: "Permits, blueprints, utilities connection & full build", price: 18000, next: "adu_size_turnkey" },
+          { label: "Construction Only", subtext: "Building only (permits already approved by client)", price: 0, next: "adu_size_build" }
+        ]
+      },
+      adu_size_turnkey: {
+        question: "Select Turnkey ADU Size:",
+        options: [
+          { label: "Studio ADU (400 sq ft)", price: 140000, next: "finish" },
+          { label: "1-Bedroom ADU (600 sq ft)", price: 180000, next: "finish" },
+          { label: "2-Bedroom ADU (800 sq ft)", price: 230000, next: "finish" },
+          { label: "Custom ADU Dimensions", price: 160000, isCustom: true, next: "finish" }
+        ]
+      },
+      adu_size_build: {
+        question: "Select Construction-Only ADU Size:",
+        options: [
+          { label: "Studio ADU (400 sq ft)", price: 55000, next: "finish" },
+          { label: "1-Bedroom ADU (600 sq ft)", price: 75000, next: "finish" },
+          { label: "2-Bedroom ADU (800 sq ft)", price: 95000, next: "finish" },
+          { label: "Custom ADU Dimensions", price: 65000, isCustom: true, next: "finish" }
+        ]
       }
     };
 
-    function selectServiceCategory(cat, btn) {
-      currentCategory = cat;
-      document.querySelectorAll('.service-green-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      renderDynamicOptions();
-    }
-
-    function selectCity(city, distancePenalty, btn) {
-      currentCity = city;
-      isFarCity = (distancePenalty > 0);
-      
-      const parent = btn.parentElement;
-      parent.querySelectorAll('.opt-btn').forEach(b => b.classList.remove('selected'));
-      btn.classList.add('selected');
-
-      recalculatePrice();
-    }
-
-    function renderDynamicOptions() {
-      const container = document.getElementById('dynamicOptions');
+    function renderCurrentStep(stepKey) {
+      const container = document.getElementById('stepContainer');
       container.innerHTML = '';
 
-      const data = categoryData[currentCategory];
-      if (!data) return;
+      // Update Back Button status
+      document.getElementById('backBtn').disabled = (historyStack.length === 0);
 
-      // Primary Service Option Block
-      const block1 = document.createElement('div');
-      block1.className = 'option-block';
+      // Final Summary Screen
+      if (stepKey === 'finish') {
+        let detailsHtml = selections.map(s => `• <strong>${s.label}</strong> ${s.price ? '(+$' + s.price.toLocaleString() + ')' : ''}`).join('<br>');
+        
+        container.innerHTML = `
+          <div class="summary-box">
+            <h3>Estimate Summary</h3>
+            <div class="summary-details">
+              ${detailsHtml}
+            </div>
+            <div style="font-size: 2rem; font-weight:800; color:#15803d; margin-bottom: 20px;">
+              Total Estimated Price: $${totalPrice.toLocaleString()}
+            </div>
+            <a href="#" id="finalSmsBtn" class="sms-btn-final">💬 Send Request via SMS to Alex</a>
+          </div>
+        `;
 
-      let html = `<div class="option-title">${data.title}</div><div class="option-buttons">`;
-      data.options.forEach((opt, idx) => {
-        const isSel = idx === 0 ? 'selected' : '';
-        if (idx === 0) {
-          state.basePrice = opt.price;
-          state.subType = opt.name;
-        }
-        html += `<button class="opt-btn ${isSel}" onclick="selectSubOption(${opt.price}, '${opt.name}', ${!!opt.isCustom}, this)">${opt.name}</button>`;
+        // Generate pre-filled SMS
+        let phone = '2797582752';
+        let itemsText = selections.map(s => s.label).join(' -> ');
+        let msg = `Hello Alex! I generated an estimate on your website:\nOptions: ${itemsText}\nEstimated Total: $${totalPrice.toLocaleString()}.\nWhen are you available for a project?`;
+        
+        document.getElementById('finalSmsBtn').href = `sms:${phone}?body=${encodeURIComponent(msg)}`;
+        return;
+      }
+
+      const stepData = wizardTree[stepKey];
+      if (!stepData) return;
+
+      let html = `<div class="step-question">${stepData.question}</div>`;
+      let gridClass = stepData.isRoot ? 'main-categories-grid' : 'sub-buttons-grid';
+      html += `<div class="${gridClass}">`;
+
+      stepData.options.forEach((opt, idx) => {
+        let priceTag = opt.price ? ` ($${opt.price.toLocaleString()})` : '';
+        let subText = opt.subtext ? `<span class="subtext">${opt.subtext}</span>` : '';
+        let iconTag = opt.icon ? `<span class="icon">${opt.icon}</span>` : '';
+
+        html += `
+          <button class="green-opt-btn" onclick="makeChoice('${stepKey}', ${idx})">
+            ${iconTag}
+            <span>${opt.label}${priceTag}</span>
+            ${subText}
+          </button>
+        `;
       });
+
       html += `</div>`;
+      container.innerHTML = html;
+    }
 
-      // Custom Input Box placeholder
-      html += `<div class="custom-size-input" id="customInputBox">
-                <input type="text" placeholder="Enter custom dimensions (e.g. 14×20 ft)..." oninput="state.customDimensions = this.value; recalculatePrice();">
-               </div>`;
+    function makeChoice(currentStepKey, optionIndex) {
+      const stepData = wizardTree[currentStepKey];
+      const selectedOpt = stepData.options[optionIndex];
 
-      block1.innerHTML = html;
-      container.appendChild(block1);
+      // Push to history stack for Back button functionality
+      historyStack.push({
+        stepKey: currentStepKey,
+        choice: selectedOpt,
+        prevPrice: totalPrice
+      });
 
-      // Extra Step (e.g., Wall type for TV)
-      if (data.extraStep) {
-        const block2 = document.createElement('div');
-        block2.className = 'option-block';
+      // Update selections and total price
+      selections.push({
+        label: selectedOpt.label,
+        price: selectedOpt.price || 0
+      });
 
-        let extraHtml = `<div class="option-title">${data.extraStep.title}</div><div class="option-buttons">`;
-        data.extraStep.options.forEach((opt, idx) => {
-          const isSel = idx === 0 ? 'selected' : '';
-          if (idx === 0) {
-            state.wallOrDetail = opt.name;
-            state.extraPrice = opt.price;
-          }
-          extraHtml += `<button class="opt-btn ${isSel}" onclick="selectExtraOption(${opt.price}, '${opt.name}', this)">${opt.name}</button>`;
-        });
-        extraHtml += `</div>`;
-        block2.innerHTML = extraHtml;
-        container.appendChild(block2);
+      totalPrice += (selectedOpt.price || 0);
+      document.getElementById('runningTotalDisplay').innerText = `Estimated: $${totalPrice.toLocaleString()}`;
+
+      // Handle custom size entry if needed
+      if (selectedOpt.isCustom) {
+        promptCustomInput(selectedOpt.next);
       } else {
-        state.extraPrice = 0;
-        state.wallOrDetail = '';
+        renderCurrentStep(selectedOpt.next);
       }
-
-      recalculatePrice();
     }
 
-    function selectSubOption(price, name, isCustom, btn) {
-      state.basePrice = price;
-      state.subType = name;
+    function promptCustomInput(nextStepKey) {
+      const container = document.getElementById('stepContainer');
+      container.innerHTML = `
+        <div class="step-question">Enter Your Custom Project Dimensions:</div>
+        <div class="custom-input-group">
+          <input type="text" id="customDimInput" placeholder="e.g. 14×20 ft, 2-story shelter...">
+          <button class="next-step-btn" onclick="submitCustomDimensions('${nextStepKey}')">Continue →</button>
+        </div>
+      `;
+    }
 
-      const parent = btn.parentElement;
-      parent.querySelectorAll('.opt-btn').forEach(b => b.classList.remove('selected'));
-      btn.classList.add('selected');
-
-      const inputBox = document.getElementById('customInputBox');
-      if (inputBox) {
-        inputBox.style.display = isCustom ? 'block' : 'none';
+    function submitCustomDimensions(nextStepKey) {
+      const inputVal = document.getElementById('customDimInput').value.trim();
+      if (inputVal) {
+        selections.push({ label: `Custom Size: ${inputVal}`, price: 0 });
       }
-
-      recalculatePrice();
+      renderCurrentStep(nextStepKey);
     }
 
-    function selectExtraOption(price, name, btn) {
-      state.extraPrice = price;
-      state.wallOrDetail = name;
+    function goBackStep() {
+      if (historyStack.length === 0) return;
 
-      const parent = btn.parentElement;
-      parent.querySelectorAll('.opt-btn').forEach(b => b.classList.remove('selected'));
-      btn.classList.add('selected');
+      const lastState = historyStack.pop();
+      
+      // Revert selections & price
+      selections.pop();
+      totalPrice = lastState.prevPrice;
+      document.getElementById('runningTotalDisplay').innerText = `Estimated: $${totalPrice.toLocaleString()}`;
 
-      recalculatePrice();
+      renderCurrentStep(lastState.stepKey);
     }
 
-    function recalculatePrice() {
-      let calcPrice = state.basePrice + (state.extraPrice || 0);
-
-      // Business Rule: Far city logic & minimum $50 floor
-      if (isFarCity) {
-        if (calcPrice < 50) {
-          calcPrice = 50; // Set minimum job floor to $50 if under $50
-        }
-      }
-
-      document.getElementById('totalPrice').innerText = '$' + calcPrice.toLocaleString();
-
-      // Formulate pre-filled SMS
-      let phone = '2797582752';
-      let text = `Hello Alex! I need an estimate for: ${state.subType}`;
-      if (state.wallOrDetail) text += ` (${state.wallOrDetail})`;
-      if (state.customDimensions) text += ` - Custom size: ${state.customDimensions}`;
-      text += `. Location: ${currentCity}. Estimated quote on site: $${calcPrice.toLocaleString()}. When are you available?`;
-
-      let smsLink = `sms:${phone}?body=${encodeURIComponent(text)}`;
-      document.getElementById('smsSendBtn').href = `sms:${phone}?body=${encodeURIComponent(text)}`;
-    }
+    // Initialize wizard at root
+    renderCurrentStep('root');
 
     function openReviewModal() {
       document.getElementById('reviewModal').style.display = 'flex';
@@ -800,9 +924,6 @@
       alert('Thank you for your review!');
       closeReviewModal();
     }
-
-    // Initialize on load
-    renderDynamicOptions();
   </script>
 </body>
 </html>
