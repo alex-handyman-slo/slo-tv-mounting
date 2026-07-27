@@ -112,12 +112,12 @@
     .back-btn:disabled { opacity: 0.35; cursor: not-allowed; }
 
     .total-tracker {
-      font-size: 1.2rem;
+      font-size: 1.3rem;
       font-weight: 800;
       color: #166534;
       background: #f0fdf4;
       border: 1px solid #bbf7d0;
-      padding: 7px 16px;
+      padding: 7px 18px;
       border-radius: 30px;
     }
 
@@ -207,26 +207,22 @@
       background: #f0fdf4;
       border: 2px solid #86efac;
       border-radius: 16px;
-      padding: 25px;
+      padding: 30px;
       text-align: center;
     }
 
-    .summary-details {
-      color: #334155;
-      font-size: 1rem;
-      margin-bottom: 18px;
-      text-align: left;
-      background: #ffffff;
-      padding: 14px;
-      border-radius: 10px;
-      border: 1px solid #cbd5e1;
+    .summary-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #1e293b;
+      margin-bottom: 12px;
     }
 
     .price-headline {
-      font-size: 1.8rem;
+      font-size: 2.2rem;
       font-weight: 800;
       color: #15803d;
-      margin-bottom: 18px;
+      margin-bottom: 22px;
     }
 
     .sms-btn-final {
@@ -281,7 +277,6 @@
       object-fit: cover;
     }
 
-    /* Minimal Card Header: Only Title & Price initially */
     .reel-main-bar {
       padding: 12px 14px;
       background: #ffffff;
@@ -308,10 +303,9 @@
       white-space: nowrap;
     }
 
-    /* Details reveal when video is playing */
     .reel-expanded-info {
       padding: 12px 14px;
-      display: none; /* hidden until play */
+      display: none;
       background: #f8fafc;
       flex-direction: column;
       gap: 8px;
@@ -419,7 +413,7 @@
         <!-- Header: Back Button & Price Tracker -->
         <div class="wizard-header">
           <button class="back-btn" id="backBtn" onclick="goBackStep()" disabled>← Back</button>
-          <div class="total-tracker" id="runningTotalDisplay">Price for you: $0</div>
+          <div class="total-tracker" id="runningTotalDisplay">$0</div>
         </div>
 
         <div id="stepContainer"></div>
@@ -427,21 +421,20 @@
       </div>
     </section>
 
-    <!-- REELS VIDEO GALLERY (2x2 GRID, Minimal Card Front) -->
+    <!-- REELS VIDEO GALLERY -->
     <section>
       <h2 class="section-title">Recent Completed Projects</h2>
       <p class="section-subtitle">Tap any video to play craftsmanship reels and view job details.</p>
 
       <div class="reels-grid">
 
-        <!-- Card 1: Concrete Pouring -->
+        <!-- Card 1 -->
         <div class="reel-card">
           <div class="reel-main-bar">
             <h3 class="work-title">Concrete Pouring</h3>
             <span class="work-price-badge">$1,800</span>
           </div>
           <div class="video-wrapper">
-            <!-- Poster thumbnail image added + preload to prevent black screen -->
             <video controls preload="metadata" playsinline poster="beton-thumb.jpg" onplay="showDetails('details1')">
               <source src="beton.mp4#t=0.5" type="video/mp4">
             </video>
@@ -453,7 +446,7 @@
           </div>
         </div>
 
-        <!-- Card 2: Pergola Installation -->
+        <!-- Card 2 -->
         <div class="reel-card">
           <div class="reel-main-bar">
             <h3 class="work-title">Patio Pergola</h3>
@@ -471,7 +464,7 @@
           </div>
         </div>
 
-        <!-- Card 3: Drywall & Painting -->
+        <!-- Card 3 -->
         <div class="reel-card">
           <div class="reel-main-bar">
             <h3 class="work-title">Drywall & Painting</h3>
@@ -489,7 +482,7 @@
           </div>
         </div>
 
-        <!-- Card 4: Storage Shed Build -->
+        <!-- Card 4 -->
         <div class="reel-card">
           <div class="reel-main-bar">
             <h3 class="work-title">Storage Shed Framing</h3>
@@ -551,7 +544,8 @@
     // State Management
     let historyStack = [];
     let selections = [];
-    let totalPrice = 0;
+    let currentPrice = 0;
+    let selectedServiceName = "";
 
     // Wizard Tree Data Configuration
     const wizardTree = {
@@ -570,47 +564,51 @@
       home_services: {
         question: "Select Home Service Task:",
         options: [
-          { label: "TV Mounting", icon: "📺", next: "tv_size" },
-          { label: "Furniture Assembly", icon: "🛋️", next: "furniture_type" },
-          { label: "Hanging Shelves / Artwork / Mirrors", price: 50, next: "finish" },
-          { label: "Curtain Rods & Blinds Installation", price: 55, next: "finish" },
-          { label: "Door Lock & Handle Replacement", price: 60, next: "finish" }
+          { label: "TV Mounting", icon: "📺", setBasePrice: 65, next: "tv_size" },
+          { label: "Furniture Assembly", icon: "🛋️", setBasePrice: 50, next: "furniture_type" },
+          { label: "Hanging Shelves / Artwork / Mirrors", setBasePrice: 50, next: "finish" },
+          { label: "Curtain Rods & Blinds Installation", setBasePrice: 55, next: "finish" },
+          { label: "Door Lock & Handle Replacement", setBasePrice: 60, next: "finish" }
         ]
       },
 
       tv_size: {
-        question: "Select TV Screen Size:",
+        question: "Select Screen Size:",
         options: [
-          { label: "Up to 43″ Screen", price: 65, next: "tv_wall" },
-          { label: "44″ – 65″ Screen", price: 85, next: "tv_wall" },
-          { label: "66″ – 85″ Screen", price: 110, next: "tv_wall" }
+          { label: "43″ – 65″", updatePrice: 65, next: "tv_wall" },
+          { label: "67″ – 75″", updatePrice: 85, next: "tv_wall" },
+          { label: "85″ – 100″", updatePrice: 110, next: "tv_wall" }
         ]
       },
       tv_wall: {
-        question: "Select Wall Material:",
+        question: "Select Wall Surface:",
         options: [
-          { label: "Drywall / Wood Studs", price: 0, next: "finish" },
-          { label: "Concrete / Brick Wall (+$20)", price: 20, next: "finish" },
-          { label: "Tile / Fireplace Surface (+$30)", price: 30, next: "finish" }
+          { label: "Drywall / Wood Studs", priceAdd: 0, next: "finish" },
+          { label: "Concrete / Brick", priceAdd: 20, next: "finish" },
+          { label: "Tile / Fireplace", priceAdd: 30, next: "finish" }
         ]
       },
 
-      // Furniture Sub-branch (Expanded for Bed Frame Selection)
+      // Furniture Sub-branch
       furniture_type: {
-        question: "Select Furniture Item to Assemble:",
+        question: "Select Furniture Item:",
         options: [
-          { label: "Bed Frame Assembly", next: "bed_type" },
-          { label: "Dresser / Desk Assembly", price: 75, next: "finish" },
-          { label: "Chair / Nightstand / Small Table", price: 45, next: "finish" },
-          { label: "Large Wardrobe / Closet System", price: 150, next: "finish" }
+          { label: "Bed Assembly", setBasePrice: 50, next: "bed_size" },
+          { label: "Dresser / Desk", setBasePrice: 75, next: "finish" },
+          { label: "Chair / Nightstand / Small Table", setBasePrice: 45, next: "finish" },
+          { label: "Large Wardrobe / Closet System", setBasePrice: 150, next: "finish" }
         ]
       },
-      bed_type: {
-        question: "Select Bed Frame Type & Size:",
+      bed_size: {
+        question: "Select Bed Size:",
         options: [
-          { label: "Twin / Full Bed Frame", price: 80, next: "finish" },
-          { label: "Queen / King Bed Frame", price: 100, next: "finish" },
-          { label: "Storage Bed / Bunk Bed Frame", price: 140, next: "finish" }
+          { label: "Twin", updatePrice: 50, next: "finish" },
+          { label: "Twin XL", updatePrice: 55, next: "finish" },
+          { label: "Full", updatePrice: 70, next: "finish" },
+          { label: "Queen", updatePrice: 85, next: "finish" },
+          { label: "King", updatePrice: 140, next: "finish" },
+          { label: "California King", updatePrice: 145, next: "finish" },
+          { label: "Bunk Bed / Storage Bed", updatePrice: 160, next: "finish" }
         ]
       },
 
@@ -618,68 +616,68 @@
       home_repairs: {
         question: "Select Repair Category:",
         options: [
-          { label: "Drywall Repair & Patching", next: "drywall_type" },
-          { label: "Interior / Exterior Painting", next: "painting_type" },
-          { label: "Home Appliance Repair & Replacement", next: "appliance_type" },
-          { label: "Flooring Installation & Repair", next: "flooring_type" },
-          { label: "Plumbing Repairs", next: "plumbing_type" },
-          { label: "Electrical Repairs", next: "electrical_type" }
+          { label: "Drywall Repair & Patching", setBasePrice: 75, next: "drywall_type" },
+          { label: "Interior / Exterior Painting", setBasePrice: 150, next: "painting_type" },
+          { label: "Home Appliance Repair", setBasePrice: 85, next: "appliance_type" },
+          { label: "Flooring Repair & Install", setBasePrice: 120, next: "flooring_type" },
+          { label: "Plumbing Repairs", setBasePrice: 70, next: "plumbing_type" },
+          { label: "Electrical Repairs", setBasePrice: 45, next: "electrical_type" }
         ]
       },
 
       drywall_type: {
-        question: "Select Drywall Patch Size:",
+        question: "Select Drywall Scope:",
         options: [
-          { label: "Small Hole Patching (Doorknob size)", price: 75, next: "finish" },
-          { label: "Medium Patch (up to 2×2 ft)", price: 120, next: "finish" },
-          { label: "Full Wall / Ceiling Sheet Replace", price: 250, next: "finish" }
+          { label: "Small Hole Patching", updatePrice: 75, next: "finish" },
+          { label: "Medium Patch (up to 2×2 ft)", updatePrice: 120, next: "finish" },
+          { label: "Full Sheet Replace", updatePrice: 250, next: "finish" }
         ]
       },
 
       painting_type: {
         question: "Select Painting Scope:",
         options: [
-          { label: "Accent Wall / Touch-up Painting", price: 150, next: "finish" },
-          { label: "Full Room Painting", price: 350, next: "finish" },
-          { label: "Exterior Trim / Door Painting", price: 200, next: "finish" }
+          { label: "Accent Wall / Touch-up", updatePrice: 150, next: "finish" },
+          { label: "Full Room Painting", updatePrice: 350, next: "finish" },
+          { label: "Exterior Trim / Door", updatePrice: 200, next: "finish" }
         ]
       },
 
       appliance_type: {
-        question: "Select Appliance Service:",
+        question: "Select Appliance Task:",
         options: [
-          { label: "Refrigerator Repair / Maintenance", price: 95, next: "finish" },
-          { label: "Washing Machine / Dryer Install & Repair", price: 90, next: "finish" },
-          { label: "Dishwasher Installation / Repair", price: 100, next: "finish" },
-          { label: "Garbage Disposal Replacement", price: 85, next: "finish" }
+          { label: "Refrigerator Repair", updatePrice: 95, next: "finish" },
+          { label: "Washer / Dryer Install", updatePrice: 90, next: "finish" },
+          { label: "Dishwasher Repair", updatePrice: 100, next: "finish" },
+          { label: "Garbage Disposal Replace", updatePrice: 85, next: "finish" }
         ]
       },
 
       flooring_type: {
         question: "Select Flooring Task:",
         options: [
-          { label: "Laminate / Vinyl Plank Install", price: 350, next: "finish" },
-          { label: "Baseboard Installation & Repair", price: 150, next: "finish" },
-          { label: "Tile Repair & Grouting", price: 120, next: "finish" }
+          { label: "Laminate / Vinyl Plank", updatePrice: 350, next: "finish" },
+          { label: "Baseboard Repair", updatePrice: 150, next: "finish" },
+          { label: "Tile Repair & Grouting", updatePrice: 120, next: "finish" }
         ]
       },
 
       plumbing_type: {
         question: "Select Plumbing Task:",
         options: [
-          { label: "Faucet Replacement", price: 80, next: "finish" },
-          { label: "Showerhead / Valve Repair", price: 90, next: "finish" },
-          { label: "Sink Trap / P-Trap Drain Replace", price: 70, next: "finish" },
-          { label: "Bathtub or Toilet Installation", price: 120, next: "finish" }
+          { label: "Faucet Replacement", updatePrice: 80, next: "finish" },
+          { label: "Showerhead / Valve Repair", updatePrice: 90, next: "finish" },
+          { label: "Sink Drain / P-Trap Replace", updatePrice: 70, next: "finish" },
+          { label: "Bathtub or Toilet Install", updatePrice: 120, next: "finish" }
         ]
       },
 
       electrical_type: {
         question: "Select Electrical Task:",
         options: [
-          { label: "Outlet / Wall Switch Replacement", price: 45, next: "finish" },
-          { label: "Light Fixture Installation", price: 65, next: "finish" },
-          { label: "Ceiling Fan Installation", price: 95, next: "finish" }
+          { label: "Outlet / Switch Replace", updatePrice: 45, next: "finish" },
+          { label: "Light Fixture Install", updatePrice: 65, next: "finish" },
+          { label: "Ceiling Fan Install", updatePrice: 95, next: "finish" }
         ]
       },
 
@@ -687,28 +685,28 @@
       sheds_pergolas: {
         question: "Select Structure Type:",
         options: [
-          { label: "Storage Shed Construction", next: "shed_size" },
-          { label: "Pergola / Patio Cover Build", next: "pergola_type" }
+          { label: "Storage Shed", setBasePrice: 400, next: "shed_size" },
+          { label: "Pergola / Patio Cover", setBasePrice: 450, next: "pergola_type" }
         ]
       },
 
       shed_size: {
-        question: "Select Shed Dimensions:",
+        question: "Select Shed Size:",
         options: [
-          { label: "Small Utility Shed (8×8 ft)", price: 400, next: "finish" },
-          { label: "Medium Shed (10×12 ft)", price: 650, next: "finish" },
-          { label: "Large Storage Shed (12×16 ft)", price: 950, next: "finish" },
-          { label: "Custom Size Shed", price: 600, isCustom: true, next: "finish" }
+          { label: "Small (8×8 ft)", updatePrice: 400, next: "finish" },
+          { label: "Medium (10×12 ft)", updatePrice: 650, next: "finish" },
+          { label: "Large (12×16 ft)", updatePrice: 950, next: "finish" },
+          { label: "Custom Dimensions", updatePrice: 600, isCustom: true, next: "finish" }
         ]
       },
 
       pergola_type: {
-        question: "Select Pergola / Patio Cover Size:",
+        question: "Select Pergola Size:",
         options: [
-          { label: "Standard Pergola (10×10 ft)", price: 450, next: "finish" },
-          { label: "Large Patio Pergola (12×16 ft)", price: 650, next: "finish" },
-          { label: "Attached Deck Shelter", price: 550, next: "finish" },
-          { label: "Custom Dimensions Pergola", price: 500, isCustom: true, next: "finish" }
+          { label: "Standard (10×10 ft)", updatePrice: 450, next: "finish" },
+          { label: "Large Patio (12×16 ft)", updatePrice: 650, next: "finish" },
+          { label: "Attached Deck Shelter", updatePrice: 550, next: "finish" },
+          { label: "Custom Dimensions", updatePrice: 500, isCustom: true, next: "finish" }
         ]
       },
 
@@ -716,26 +714,26 @@
       adu_scope: {
         question: "Select ADU Scope:",
         options: [
-          { label: "Full Turnkey ADU", subtext: "Permits, blueprints, utilities connection & full build", price: 18000, next: "adu_size_turnkey" },
-          { label: "Construction Only", subtext: "Building only (permits already approved)", price: 0, next: "adu_size_build" }
+          { label: "Full Turnkey ADU", subtext: "Permits, blueprints & build", setBasePrice: 18000, next: "adu_size_turnkey" },
+          { label: "Construction Only", subtext: "Building only", setBasePrice: 0, next: "adu_size_build" }
         ]
       },
       adu_size_turnkey: {
         question: "Select Turnkey ADU Size:",
         options: [
-          { label: "Studio ADU (400 sq ft)", price: 140000, next: "finish" },
-          { label: "1-Bedroom ADU (600 sq ft)", price: 180000, next: "finish" },
-          { label: "2-Bedroom ADU (800 sq ft)", price: 230000, next: "finish" },
-          { label: "Custom ADU Dimensions", price: 160000, isCustom: true, next: "finish" }
+          { label: "Studio (400 sq ft)", updatePrice: 140000, next: "finish" },
+          { label: "1-Bedroom (600 sq ft)", updatePrice: 180000, next: "finish" },
+          { label: "2-Bedroom (800 sq ft)", updatePrice: 230000, next: "finish" },
+          { label: "Custom ADU Dimensions", updatePrice: 160000, isCustom: true, next: "finish" }
         ]
       },
       adu_size_build: {
-        question: "Select Construction-Only ADU Size:",
+        question: "Select Construction Size:",
         options: [
-          { label: "Studio ADU (400 sq ft)", price: 55000, next: "finish" },
-          { label: "1-Bedroom ADU (600 sq ft)", price: 75000, next: "finish" },
-          { label: "2-Bedroom ADU (800 sq ft)", price: 95000, next: "finish" },
-          { label: "Custom ADU Dimensions", price: 65000, isCustom: true, next: "finish" }
+          { label: "Studio (400 sq ft)", updatePrice: 55000, next: "finish" },
+          { label: "1-Bedroom (600 sq ft)", updatePrice: 75000, next: "finish" },
+          { label: "2-Bedroom (800 sq ft)", updatePrice: 95000, next: "finish" },
+          { label: "Custom ADU Dimensions", updatePrice: 65000, isCustom: true, next: "finish" }
         ]
       }
     };
@@ -747,23 +745,18 @@
       document.getElementById('backBtn').disabled = (historyStack.length === 0);
 
       if (stepKey === 'finish') {
-        let detailsHtml = selections.map(s => `• <strong>${s.label}</strong> ${s.price ? '(+$' + s.price.toLocaleString() + ')' : ''}`).join('<br>');
-        
+        let optionsSummary = selections.map(s => s.label).join(' - ');
+
         container.innerHTML = `
           <div class="summary-box">
-            <div class="summary-details">
-              ${detailsHtml}
-            </div>
-            <div class="price-headline">
-              Price for you: $${totalPrice.toLocaleString()}
-            </div>
-            <a href="#" id="finalSmsBtn" class="sms-btn-final">💬 Order Service with Alex</a>
+            <div class="summary-title">${optionsSummary}</div>
+            <div class="price-headline">$${currentPrice.toLocaleString()}</div>
+            <a href="#" id="finalSmsBtn" class="sms-btn-final">💬 Order Service</a>
           </div>
         `;
 
         let phone = '2797582752';
-        let itemsText = selections.map(s => s.label).join(' -> ');
-        let msg = `Hello Alex! I would like to order service:\nOptions: ${itemsText}\nPrice for me: $${totalPrice.toLocaleString()}.\nWhen are you available?`;
+        let msg = `Hello Alex! I would like to order service:\nTask: ${optionsSummary}\nPrice: $${currentPrice.toLocaleString()}.\nWhen are you available?`;
         
         document.getElementById('finalSmsBtn').href = `sms:${phone}?body=${encodeURIComponent(msg)}`;
         return;
@@ -777,14 +770,13 @@
       html += `<div class="${gridClass}">`;
 
       stepData.options.forEach((opt, idx) => {
-        let priceTag = opt.price ? ` ($${opt.price.toLocaleString()})` : '';
         let subText = opt.subtext ? `<span class="subtext">${opt.subtext}</span>` : '';
         let iconTag = opt.icon ? `<span class="icon">${opt.icon}</span>` : '';
 
         html += `
           <button class="green-opt-btn" onclick="makeChoice('${stepKey}', ${idx})">
             ${iconTag}
-            <span>${opt.label}${priceTag}</span>
+            <span>${opt.label}</span>
             ${subText}
           </button>
         `;
@@ -801,16 +793,22 @@
       historyStack.push({
         stepKey: currentStepKey,
         choice: selectedOpt,
-        prevPrice: totalPrice
+        prevPrice: currentPrice,
+        prevServiceName: selectedServiceName
       });
 
-      selections.push({
-        label: selectedOpt.label,
-        price: selectedOpt.price || 0
-      });
+      selections.push({ label: selectedOpt.label });
 
-      totalPrice += (selectedOpt.price || 0);
-      document.getElementById('runningTotalDisplay').innerText = `Price for you: $${totalPrice.toLocaleString()}`;
+      // Dynamic price logic based on step choice
+      if (selectedOpt.setBasePrice !== undefined) {
+        currentPrice = selectedOpt.setBasePrice;
+      } else if (selectedOpt.updatePrice !== undefined) {
+        currentPrice = selectedOpt.updatePrice;
+      } else if (selectedOpt.priceAdd !== undefined) {
+        currentPrice += selectedOpt.priceAdd;
+      }
+
+      document.getElementById('runningTotalDisplay').innerText = `$${currentPrice.toLocaleString()}`;
 
       if (selectedOpt.isCustom) {
         promptCustomInput(selectedOpt.next);
@@ -822,9 +820,9 @@
     function promptCustomInput(nextStepKey) {
       const container = document.getElementById('stepContainer');
       container.innerHTML = `
-        <div class="step-question">Enter Your Custom Project Dimensions:</div>
+        <div class="step-question">Enter Your Custom Dimensions:</div>
         <div class="custom-input-group">
-          <input type="text" id="customDimInput" placeholder="e.g. 14×20 ft, 2-story shelter...">
+          <input type="text" id="customDimInput" placeholder="e.g. 14×20 ft...">
           <button class="next-step-btn" onclick="submitCustomDimensions('${nextStepKey}')">Continue →</button>
         </div>
       `;
@@ -833,7 +831,7 @@
     function submitCustomDimensions(nextStepKey) {
       const inputVal = document.getElementById('customDimInput').value.trim();
       if (inputVal) {
-        selections.push({ label: `Custom Size: ${inputVal}`, price: 0 });
+        selections.push({ label: `Custom Size: ${inputVal}` });
       }
       renderCurrentStep(nextStepKey);
     }
@@ -843,9 +841,10 @@
 
       const lastState = historyStack.pop();
       selections.pop();
-      totalPrice = lastState.prevPrice;
-      document.getElementById('runningTotalDisplay').innerText = `Price for you: $${lastState.prevPrice.toLocaleString()}`;
+      currentPrice = lastState.prevPrice;
+      selectedServiceName = lastState.prevServiceName;
 
+      document.getElementById('runningTotalDisplay').innerText = `$${currentPrice.toLocaleString()}`;
       renderCurrentStep(lastState.stepKey);
     }
 
