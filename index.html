@@ -98,7 +98,7 @@
       border-radius: 20px;
       padding: 28px;
       box-shadow: 0 6px 25px rgba(0, 0, 0, 0.05);
-      margin-bottom: 45px;
+      margin-bottom: 25px;
     }
 
     /* Dynamic Wizard Header Bar */
@@ -145,7 +145,7 @@
       margin-bottom: 16px;
     }
 
-    /* Buttons */
+    /* Buttons Grid */
     .sub-buttons-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -293,10 +293,10 @@
       border-bottom: none;
     }
 
-    .min-call-notice {
-      background: #fffbeb;
-      border: 1px solid #fde68a;
-      color: #92400e;
+    .estimate-disclaimer {
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      color: #1d4ed8;
       border-radius: 10px;
       padding: 12px;
       font-size: 0.88rem;
@@ -352,7 +352,7 @@
       border-radius: 16px;
       padding: 20px;
       text-align: center;
-      margin-top: 35px;
+      margin-top: 25px;
       box-shadow: 0 4px 15px rgba(0,0,0,0.03);
     }
 
@@ -369,74 +369,6 @@
       color: #475569;
       font-weight: 600;
     }
-
-    /* Photo Projects Grid */
-    .photo-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 18px;
-    }
-
-    .photo-card {
-      background: #ffffff;
-      border: 1px solid #e2e8f0;
-      border-radius: 16px;
-      overflow: hidden;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
-      display: flex;
-      flex-direction: column;
-    }
-
-    .photo-main-bar {
-      padding: 12px 14px;
-      background: #ffffff;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid #f1f5f9;
-    }
-
-    .work-title {
-      font-size: 1rem;
-      margin: 0;
-      color: #0f172a;
-      font-weight: 700;
-    }
-
-    .work-price-badge {
-      background-color: #eff6ff;
-      color: #1d4ed8;
-      font-weight: 800;
-      font-size: 0.95rem;
-      padding: 4px 10px;
-      border-radius: 8px;
-    }
-
-    .photo-wrapper {
-      position: relative;
-      width: 100%;
-      padding-top: 75%; /* 4:3 Aspect Ratio for clear photos */
-      background: #f1f5f9;
-    }
-
-    .photo-wrapper img {
-      position: absolute;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      object-fit: cover;
-    }
-
-    .photo-info {
-      padding: 14px;
-      background: #ffffff;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-
-    .work-description { font-size: 0.88rem; color: #475569; margin: 0; line-height: 1.4; }
-    .stars { color: #f59e0b; font-size: 0.9rem; }
-    .review-text { font-style: italic; font-size: 0.85rem; color: #334155; margin: 0; line-height: 1.4; }
 
     footer {
       text-align: center;
@@ -483,130 +415,10 @@
         <!-- Top Header Bar (Hidden on Step 1) -->
         <div class="wizard-header" id="wizardHeader" style="display: none;">
           <button class="back-btn" onclick="goBackStep()">← Back</button>
-          <div class="total-tracker" id="runningTotalDisplay">$0</div>
+          <div class="total-tracker" id="runningTotalDisplay">$60</div>
         </div>
 
         <div id="stepContainer"></div>
-
-      </div>
-    </section>
-
-    <!-- PHOTO GALLERY SECTION -->
-    <section>
-      <h2 class="section-title">Recent Completed Projects</h2>
-
-      <div class="photo-grid">
-        
-        <!-- Photo 1 & 2: Roof Renovation -->
-        <div class="photo-card">
-          <div class="photo-main-bar">
-            <h3 class="work-title">Full Roof Repair &amp; Sheathing</h3>
-            <span class="work-price-badge">$3,200</span>
-          </div>
-          <div class="photo-wrapper">
-            <img src="roof-repair.jpg" alt="Roof repair plywood installation">
-          </div>
-          <div class="photo-info">
-            <p class="work-description">Complete roof restoration: leak removal, new plywood deck installation, underlayment, and insulation replacement.</p>
-            <div class="stars">★★★★★</div>
-            <p class="review-text">“Alex completely fixed our roof leaks and replaced bad plywood. Heavy-duty quality work!”</p>
-          </div>
-        </div>
-
-        <div class="photo-card">
-          <div class="photo-main-bar">
-            <h3 class="work-title">Tile Roof Re-Laying</h3>
-            <span class="work-price-badge">Included</span>
-          </div>
-          <div class="photo-wrapper">
-            <img src="roof-finished.jpg" alt="Finished tile roof restoration">
-          </div>
-          <div class="photo-info">
-            <p class="work-description">Re-laid original tile roofing with sealed leak protection and brand-new waterproof barrier.</p>
-            <div class="stars">★★★★★</div>
-            <p class="review-text">“Clean, professional tile restoration. Kept everything neat and tight.”</p>
-          </div>
-        </div>
-
-        <!-- Photo 3: TV & Soundbar Mounting -->
-        <div class="photo-card">
-          <div class="photo-main-bar">
-            <h3 class="work-title">TV &amp; Soundbar Wall Mount</h3>
-            <span class="work-price-badge">$180</span>
-          </div>
-          <div class="photo-wrapper">
-            <img src="tv-mounting.jpg" alt="TV and Soundbar Wall Mount with concealed wires">
-          </div>
-          <div class="photo-info">
-            <p class="work-description">Mounted large smart TV and soundbar with completely concealed in-wall wiring setup.</p>
-            <div class="stars">★★★★★</div>
-            <p class="review-text">“Flawless install! No visible cords anywhere, perfectly level on the wall.”</p>
-          </div>
-        </div>
-
-        <!-- Photo 4: Concrete Pouring -->
-        <div class="photo-card">
-          <div class="photo-main-bar">
-            <h3 class="work-title">Concrete Pad (8×15 ft)</h3>
-            <span class="work-price-badge">$1,440</span>
-          </div>
-          <div class="photo-wrapper">
-            <img src="concrete-pad.jpg" alt="Concrete pad pouring 8x15">
-          </div>
-          <div class="photo-info">
-            <p class="work-description">Ground excavation, formwork framing, mesh reinforcement, and smooth broom finish concrete slab.</p>
-            <div class="stars">★★★★★</div>
-            <p class="review-text">“Solid concrete slab poured cleanly in tight side yard space.”</p>
-          </div>
-        </div>
-
-        <!-- Photo 5: Storage Shed -->
-        <div class="photo-card">
-          <div class="photo-main-bar">
-            <h3 class="work-title">Custom Storage Shed (5×10 ft)</h3>
-            <span class="work-price-badge">$850</span>
-          </div>
-          <div class="photo-wrapper">
-            <img src="shed-building.jpg" alt="Wooden storage shed build on concrete base">
-          </div>
-          <div class="photo-info">
-            <p class="work-description">Custom wooden shed construction over fresh concrete slab with double doors and trim paint.</p>
-            <div class="stars">★★★★★</div>
-            <p class="review-text">“Very sturdy shed build! Fits perfectly in our side yard.”</p>
-          </div>
-        </div>
-
-        <!-- Photo 6: Metal Pergola -->
-        <div class="photo-card">
-          <div class="photo-main-bar">
-            <h3 class="work-title">Metal Patio Pergola</h3>
-            <span class="work-price-badge">$500</span>
-          </div>
-          <div class="photo-wrapper">
-            <img src="metal-pergola.jpg" alt="Metal patio pergola frame assembly">
-          </div>
-          <div class="photo-info">
-            <p class="work-description">Assembly and heavy-duty deck anchoring of metal patio pergola shade structure.</p>
-            <div class="stars">★★★★★</div>
-            <p class="review-text">“Great assembly work. Anchored tight and looks incredible over our deck!”</p>
-          </div>
-        </div>
-
-        <!-- Photo 7: Patio Dining Set -->
-        <div class="photo-card">
-          <div class="photo-main-bar">
-            <h3 class="work-title">Outdoor Patio Dining Set</h3>
-            <span class="work-price-badge">$120</span>
-          </div>
-          <div class="photo-wrapper">
-            <img src="patio-furniture.jpg" alt="Outdoor patio table and chair assembly">
-          </div>
-          <div class="photo-info">
-            <p class="work-description">Assembled outdoor dining table and 4 swivel patio chairs with rug placement.</p>
-            <div class="stars">★★★★★</div>
-            <p class="review-text">“Fast assembly, super friendly service! Ready just in time for summer dinners.”</p>
-          </div>
-        </div>
 
       </div>
     </section>
@@ -630,10 +442,12 @@
     let historyStack = [];
     let cartItems = [];
     
+    let MINIMUM_CALL_OUT = 60; // Base service call fee
+    let activeRunningTotal = 60;
     let currentItemLabel = "";
-    let currentUnitBasePrice = 0;
+    let currentUnitBasePrice = 60;
     let selectedItemQuantity = 1;
-    let MINIMUM_CALL_OUT = 60; // Minimum service call fee $60
+    let isComplexEstimate = false;
 
     const wizardTree = {
       root: {
@@ -645,11 +459,11 @@
           { label: "Small Electrical Services", subtext: "Outlets, light fixtures, fans, hair dryers", next: "small_electrical" },
           { label: "Small Plumbing Services", subtext: "Faucets, siphons/p-traps, showerheads", next: "small_plumbing" },
           { label: "Painting Services", subtext: "Interior, exterior, doors, trims", next: "painting_services" },
-          { label: "Concrete Work", subtext: "Slabs, walkways, patio bases", next: "concrete_work" },
-          { label: "Roofing & Gutters", subtext: "Roof repairs & gutter cleaning", next: "roofing_gutters" },
-          { label: "Major Home Remodeling", subtext: "Kitchen, bathroom, bedroom & full house", next: "major_remodel" },
-          { label: "Sheds & Pergolas", subtext: "Custom sheds, pergolas, gazebos", next: "sheds_pergolas" },
-          { label: "ADU Construction", subtext: "Living space additions & detached ADUs", next: "adu_scope" }
+          { label: "Concrete Work", subtext: "Slabs, walkways, patio bases", isComplex: true, next: "concrete_work" },
+          { label: "Roofing & Gutters", subtext: "Roof repairs & gutter cleaning", isComplex: true, next: "roofing_gutters" },
+          { label: "Major Home Remodeling", subtext: "Kitchen, bathroom, bedroom & full house", isComplex: true, next: "major_remodel" },
+          { label: "Sheds & Pergolas", subtext: "Custom sheds, pergolas, gazebos", isComplex: true, next: "sheds_pergolas" },
+          { label: "ADU Construction", subtext: "Living space additions & detached ADUs", isComplex: true, next: "adu_scope" }
         ]
       },
 
@@ -675,29 +489,29 @@
         question: "Select Wall Material:",
         options: [
           { label: "Drywall / Wood Wall", priceAdd: 0, next: "tv_cord" },
-          { label: "Concrete / Brick (+$20)", priceAdd: 20, next: "tv_cord" },
-          { label: "Tile / Ceramics (+$30)", priceAdd: 30, next: "tv_cord" }
+          { label: "Concrete / Brick", priceAdd: 20, next: "tv_cord" },
+          { label: "Tile / Ceramics", priceAdd: 30, next: "tv_cord" }
         ]
       },
       tv_cord: {
         question: "In-Wall Concealed Wiring Needed?",
         options: [
           { label: "No, standard mounting", priceAdd: 0, next: "tv_mount_hardware" },
-          { label: "Yes, hide cables in wall (+$50)", priceAdd: 50, next: "tv_cord_kit" }
+          { label: "Yes, hide cables in wall", priceAdd: 50, next: "tv_cord_kit" }
         ]
       },
       tv_cord_kit: {
         question: "Do you have in-wall cord concealment kit?",
         options: [
           { label: "Yes, I have the kit", priceAdd: 0, next: "tv_mount_hardware" },
-          { label: "No, Alex provides kit (+$35)", priceAdd: 35, next: "tv_mount_hardware" }
+          { label: "No, Alex provides kit", priceAdd: 35, next: "tv_mount_hardware" }
         ]
       },
       tv_mount_hardware: {
         question: "Do you have the TV Mount Bracket?",
         options: [
           { label: "Yes, I have my own mount bracket", priceAdd: 0, enableQty: true, next: "qty_screen" },
-          { label: "No, Alex provides bracket (+$45)", priceAdd: 45, enableQty: true, next: "qty_screen" }
+          { label: "No, Alex provides bracket", priceAdd: 45, enableQty: true, next: "qty_screen" }
         ]
       },
 
@@ -858,7 +672,7 @@
         container.innerHTML = `
           <div class="interactive-input-card">
             <div class="step-question" style="margin-bottom:8px;">How many items do you need?</div>
-            <p style="color:#64748b; font-size:0.9rem; margin:0 0 12px 0;">Select quantity (15% bulk discount applied for extra units)</p>
+            <p style="color:#64748b; font-size:0.9rem; margin:0 0 12px 0;">Select quantity (bulk discount applied for extra units)</p>
             <div class="qty-selector">
               <button class="qty-btn" onclick="adjustQuantity(-1)">-</button>
               <span class="qty-val" id="qtyVal">1</span>
@@ -875,7 +689,7 @@
         container.innerHTML = `
           <div class="interactive-input-card">
             <div class="step-question" style="margin-bottom:8px;">Enter Area Size in Square Feet (Sq Ft):</div>
-            <p style="color:#64748b; font-size:0.9rem; margin:0 0 12px 0;">Calculated automatically based on project volume</p>
+            <p style="color:#64748b; font-size:0.9rem; margin:0 0 12px 0;">Rate calculated automatically based on project volume</p>
             <input type="number" id="sqFtInput" class="sqft-input-field" placeholder="e.g. 150" min="10" oninput="calculateSqFtPrice()">
             <div class="discount-badge" id="sqFtRateNote">Rate: $${currentUnitBasePrice}/sq ft</div>
             <button class="continue-btn" onclick="confirmSqFtChoice()">Add to Estimate →</button>
@@ -887,7 +701,6 @@
       if (stepKey === 'finish') {
         let rawSum = cartItems.reduce((acc, item) => acc + item.price, 0);
         let finalPayable = Math.max(rawSum, MINIMUM_CALL_OUT);
-        let isMinCallTriggered = rawSum < MINIMUM_CALL_OUT;
 
         let listHtml = `<ul class="selected-items-list">`;
         cartItems.forEach((item) => {
@@ -898,10 +711,10 @@
         });
         listHtml += `</ul>`;
 
-        let minCallNoticeHtml = isMinCallTriggered ? `
-          <div class="min-call-notice">
-            💡 <strong>Minimum Service Call Notice ($60):</strong><br>
-            Standard minimum service call out is $60. You still have room to add more small tasks (e.g. hanging another shelf, fixing an outlet or lock) for the same total price!
+        let disclaimerHtml = isComplexEstimate ? `
+          <div class="estimate-disclaimer">
+            📋 <strong>Estimated Price Notice:</strong><br>
+            This is an estimated starting price. For major project details and accurate scope, please text Alex directly for a precise estimate.
           </div>
         ` : '';
 
@@ -909,19 +722,19 @@
           <div class="summary-box">
             <div style="font-weight:700; font-size:1.1rem; margin-bottom:12px; color:#0f172a;">Selected Services:</div>
             ${listHtml}
-            ${minCallNoticeHtml}
+            ${disclaimerHtml}
             <div class="price-headline">$${finalPayable.toLocaleString()}</div>
             
             <div class="action-buttons-group">
               <button class="add-more-btn" onclick="addAnotherService()">➕ Add Another Service / Task</button>
-              <a href="#" id="finalSmsBtn" class="sms-btn-final">💬 Order Service via SMS</a>
+              <a href="#" id="finalSmsBtn" class="sms-btn-final">💬 Order Service / Text Alex</a>
             </div>
           </div>
         `;
 
         let phone = '2797582752';
         let itemsStr = cartItems.map(i => `- ${i.name} ${i.qty > 1 ? `(x${i.qty})` : ''}: $${i.price}`).join('\n');
-        let msg = `Hello! I would like to order handyman services:\n${itemsStr}\nTotal Price: $${finalPayable.toLocaleString()}.\nWhen are you available?`;
+        let msg = `Hello! I would like to get an estimate for:\n${itemsStr}\nEstimated Total: $${finalPayable.toLocaleString()}.\nWhen are you available?`;
         document.getElementById('finalSmsBtn').href = `sms:${phone}?body=${encodeURIComponent(msg)}`;
         
         updateTotalDisplay();
@@ -953,7 +766,11 @@
       const stepData = wizardTree[currentStepKey];
       const selectedOpt = stepData.options[optionIndex];
 
-      historyStack.push({ stepKey: currentStepKey });
+      historyStack.push({ stepKey: currentStepKey, priceBefore: activeRunningTotal });
+
+      if (selectedOpt.isComplex) {
+        isComplexEstimate = true;
+      }
 
       if (selectedOpt.setBasePrice !== undefined) {
         currentUnitBasePrice = selectedOpt.setBasePrice;
@@ -968,6 +785,12 @@
       }
 
       currentItemLabel = selectedOpt.label;
+
+      // Update running total display
+      let currentCartSum = cartItems.reduce((acc, item) => acc + item.price, 0);
+      activeRunningTotal = Math.max(MINIMUM_CALL_OUT, currentCartSum + currentUnitBasePrice);
+      document.getElementById('runningTotalDisplay').innerText = `$${activeRunningTotal.toLocaleString()}`;
+
       renderCurrentStep(selectedOpt.next);
     }
 
@@ -988,8 +811,13 @@
       } else {
         let discountedAdditional = (currentUnitBasePrice * 0.85) * (selectedItemQuantity - 1);
         calculatedItemPrice = Math.round(currentUnitBasePrice + discountedAdditional);
-        if (noteElem) noteElem.innerText = `15% discount applied to additional items!`;
+        if (noteElem) noteElem.innerText = `15% discount applied to extra units!`;
       }
+
+      let currentCartSum = cartItems.reduce((acc, item) => acc + item.price, 0);
+      activeRunningTotal = Math.max(MINIMUM_CALL_OUT, currentCartSum + calculatedItemPrice);
+      document.getElementById('runningTotalDisplay').innerText = `$${activeRunningTotal.toLocaleString()}`;
+
       return calculatedItemPrice;
     }
 
@@ -1005,7 +833,13 @@
 
     function calculateSqFtPrice() {
       const sqft = parseFloat(document.getElementById('sqFtInput').value) || 0;
-      return Math.round(sqft * currentUnitBasePrice);
+      let calculatedSqFtPrice = Math.round(sqft * currentUnitBasePrice);
+      
+      let currentCartSum = cartItems.reduce((acc, item) => acc + item.price, 0);
+      activeRunningTotal = Math.max(MINIMUM_CALL_OUT, currentCartSum + calculatedSqFtPrice);
+      document.getElementById('runningTotalDisplay').innerText = `$${activeRunningTotal.toLocaleString()}`;
+
+      return calculatedSqFtPrice;
     }
 
     function confirmSqFtChoice() {
@@ -1035,6 +869,10 @@
         return;
       }
       const lastState = historyStack.pop();
+      if (lastState.priceBefore !== undefined) {
+        activeRunningTotal = lastState.priceBefore;
+        document.getElementById('runningTotalDisplay').innerText = `$${activeRunningTotal.toLocaleString()}`;
+      }
       renderCurrentStep(lastState.stepKey);
     }
 
