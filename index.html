@@ -145,7 +145,7 @@
       margin-bottom: 16px;
     }
 
-    /* Standardized Uniform Green Buttons across ALL screens */
+    /* Buttons */
     .sub-buttons-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -184,7 +184,7 @@
       opacity: 0.9;
     }
 
-    /* Quantity and Square Feet Input Controls */
+    /* Inputs */
     .interactive-input-card {
       background: #f8fafc;
       border: 1px solid #e2e8f0;
@@ -269,19 +269,67 @@
       text-align: center;
     }
 
-    .summary-title {
-      font-size: 1.15rem;
-      font-weight: 700;
-      color: #1e293b;
-      margin-bottom: 12px;
+    .selected-items-list {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 15px 0;
+      text-align: left;
+      background: #ffffff;
+      border-radius: 12px;
+      border: 1px solid #e2e8f0;
+    }
+
+    .selected-items-list li {
+      padding: 10px 14px;
+      border-bottom: 1px solid #f1f5f9;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #334155;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .selected-items-list li:last-child {
+      border-bottom: none;
+    }
+
+    .min-call-notice {
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      color: #92400e;
+      border-radius: 10px;
+      padding: 12px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      margin-bottom: 15px;
+      text-align: left;
     }
 
     .price-headline {
       font-size: 2.2rem;
       font-weight: 800;
       color: #15803d;
-      margin-bottom: 20px;
+      margin-bottom: 18px;
     }
+
+    .action-buttons-group {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .add-more-btn {
+      background-color: #2563eb;
+      color: #ffffff;
+      border: none;
+      border-radius: 12px;
+      padding: 14px;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+    .add-more-btn:hover { background-color: #1d4ed8; }
 
     .sms-btn-final {
       display: inline-block;
@@ -292,7 +340,7 @@
       border-radius: 12px;
       font-weight: 800;
       text-decoration: none;
-      font-size: 1.2rem;
+      font-size: 1.15rem;
       box-shadow: 0 4px 14px rgba(22, 163, 74, 0.3);
       transition: background-color 0.2s;
     }
@@ -322,18 +370,18 @@
       font-weight: 600;
     }
 
-    /* Video Reels Grid */
-    .reels-grid {
+    /* Photo Projects Grid */
+    .photo-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 16px;
     }
 
     @media (max-width: 520px) {
-      .reels-grid { gap: 12px; }
+      .photo-grid { gap: 12px; }
     }
 
-    .reel-card {
+    .photo-card {
       background: #ffffff;
       border: 1px solid #e2e8f0;
       border-radius: 16px;
@@ -343,7 +391,7 @@
       flex-direction: column;
     }
 
-    .reel-main-bar {
+    .photo-main-bar {
       padding: 10px 12px;
       background: #ffffff;
       display: flex;
@@ -363,61 +411,36 @@
       background-color: #eff6ff;
       color: #1d4ed8;
       font-weight: 800;
-      font-size: 1rem;
+      font-size: 0.95rem;
       padding: 3px 8px;
       border-radius: 6px;
     }
 
-    
-    .video-wrapper {
+    .photo-wrapper {
       position: relative;
       width: 100%;
-      padding-top: 177.78%;
-      background: #0f172a;
-      cursor: pointer;
+      padding-top: 100%; /* Square Aspect Ratio for Photo Grid */
+      background: #f1f5f9;
     }
 
-    .video-wrapper video {
+    .photo-wrapper img {
       position: absolute;
       top: 0; left: 0;
       width: 100%; height: 100%;
       object-fit: cover;
     }
 
-    .custom-play-btn {
-      position: absolute;
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      width: 50px; height: 50px;
-      background: rgba(15, 23, 42, 0.65);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #ffffff;
-      font-size: 1.2rem;
-      pointer-events: none;
-      transition: opacity 0.2s, transform 0.2s;
-    }
-
-    .video-wrapper.playing .custom-play-btn {
-      opacity: 0;
-      transform: translate(-50%, -50%) scale(0.8);
-    }
-
-
-    .reel-expanded-info {
+    .photo-info {
       padding: 12px;
-      display: none;
-      background: #f8fafc;
+      background: #ffffff;
+      display: flex;
       flex-direction: column;
       gap: 6px;
-      border-top: 1px solid #e2e8f0;
     }
 
-    .work-description { font-size: 0.85rem; color: #475569; margin: 0; }
+    .work-description { font-size: 0.85rem; color: #475569; margin: 0; line-height: 1.3; }
     .stars { color: #f59e0b; font-size: 0.85rem; }
-    .review-text { font-style: italic; font-size: 0.82rem; color: #334155; margin: 0; }
+    .review-text { font-style: italic; font-size: 0.82rem; color: #334155; margin: 0; line-height: 1.3; }
 
     footer {
       text-align: center;
@@ -457,7 +480,7 @@
 
     <!-- CALCULATOR WIZARD -->
     <section>
-      <h2 class="section-title">Калькулятор стоимости услуг</h2>
+      <h2 class="section-title">Service Price Calculator</h2>
 
       <div class="calculator-card">
         
@@ -472,77 +495,69 @@
       </div>
     </section>
 
-    <!-- REELS VIDEO GALLERY -->
+    <!-- PHOTO GALLERY SECTION -->
     <section>
       <h2 class="section-title">Recent Completed Projects</h2>
 
-      <div class="reels-grid">
-        <div class="reel-card">
-          <div class="reel-main-bar">
-            <h3 class="work-title">Concrete Pouring</h3>
+      <div class="photo-grid">
+        <!-- Photo Item 1 -->
+        <div class="photo-card">
+          <div class="photo-main-bar">
+            <h3 class="work-title">Concrete Slab</h3>
             <span class="work-price-badge">$1,800</span>
           </div>
-          <div class="video-wrapper" onclick="togglePlayVideo(this, 'details1')">
-            <video class="auto-reel-video" autoplay muted loop playsinline preload="auto" poster="beton-thumb.jpg">
-              <source src="beton.mp4" type="video/mp4">
-            </video>
-            <div class="custom-play-btn">▶</div>
+          <div class="photo-wrapper">
+            <img src="concrete.jpg" alt="Concrete Pouring Slab" onerror="this.src='https://images.unsplash.com/photo-1584467541268-b040f83be3fd?w=500&q=80'">
           </div>
-          <div class="reel-expanded-info" id="details1">
-            <p class="work-description">Ground grading, formwork setup, mesh reinforcement, and smooth concrete slab finishing turnkey.</p>
+          <div class="photo-info">
+            <p class="work-description">Ground grading, formwork setup, mesh reinforcement, and smooth concrete slab finishing.</p>
             <div class="stars">★★★★★</div>
             <p class="review-text">“Super smooth concrete slab! Alex worked fast, clean, and brought all materials.”</p>
           </div>
         </div>
 
-        <div class="reel-card">
-          <div class="reel-main-bar">
+        <!-- Photo Item 2 -->
+        <div class="photo-card">
+          <div class="photo-main-bar">
             <h3 class="work-title">Patio Pergola</h3>
             <span class="work-price-badge">$500</span>
           </div>
-          <div class="video-wrapper" onclick="togglePlayVideo(this, 'details2')">
-            <video class="auto-reel-video" autoplay muted loop playsinline preload="auto" poster="pergola-thumb.jpg">
-              <source src="Pergola.mp4" type="video/mp4">
-            </video>
-            <div class="custom-play-btn">▶</div>
+          <div class="photo-wrapper">
+            <img src="pergola.jpg" alt="Patio Pergola Assembly" onerror="this.src='https://images.unsplash.com/photo-1591825729269-caeb344f6df2?w=500&q=80'">
           </div>
-          <div class="reel-expanded-info" id="details2">
+          <div class="photo-info">
             <p class="work-description">Assembly and heavy-duty anchoring of outdoor patio pergola frame over deck.</p>
             <div class="stars">★★★★★</div>
             <p class="review-text">“Great teamwork and rock-solid installation. Looks amazing!”</p>
           </div>
         </div>
 
-        <div class="reel-card">
-          <div class="reel-main-bar">
-            <h3 class="work-title">Drywall &amp; Painting</h3>
+        <!-- Photo Item 3 -->
+        <div class="photo-card">
+          <div class="photo-main-bar">
+            <h3 class="work-title">Drywall &amp; Paint</h3>
             <span class="work-price-badge">$450</span>
           </div>
-          <div class="video-wrapper" onclick="togglePlayVideo(this, 'details3')">
-            <video class="auto-reel-video" autoplay muted loop playsinline preload="auto" poster="drywall-thumb.jpg">
-              <source src="video3.mp4" type="video/mp4">
-            </video>
-            <div class="custom-play-btn">▶</div>
+          <div class="photo-wrapper">
+            <img src="drywall.jpg" alt="Drywall Patching and Painting" onerror="this.src='https://images.unsplash.com/photo-1562259949-e8e7689d7828?w=500&q=80'">
           </div>
-          <div class="reel-expanded-info" id="details3">
+          <div class="photo-info">
             <p class="work-description">Drywall patching, texture matching, and full interior room painting.</p>
             <div class="stars">★★★★★</div>
             <p class="review-text">“Smooth finish, no seams visible, completely cleaned up after.”</p>
           </div>
         </div>
 
-        <div class="reel-card">
-          <div class="reel-main-bar">
-            <h3 class="work-title">Storage Shed Framing</h3>
+        <!-- Photo Item 4 -->
+        <div class="photo-card">
+          <div class="photo-main-bar">
+            <h3 class="work-title">Storage Shed</h3>
             <span class="work-price-badge">$750</span>
           </div>
-          <div class="video-wrapper" onclick="togglePlayVideo(this, 'details4')">
-            <video class="auto-reel-video" autoplay muted loop playsinline poster="shed-thumb.jpg">
-              <source src="video4.mp4" type="video/mp4">
-            </video>
-            <div class="custom-play-btn">▶</div>
+          <div class="photo-wrapper">
+            <img src="shed.jpg" alt="Storage Shed Construction" onerror="this.src='https://images.unsplash.com/photo-1590725140246-20acceed112e?w=500&q=80'">
           </div>
-          <div class="reel-expanded-info" id="details4">
+          <div class="photo-info">
             <p class="work-description">Custom wooden storage shed framing, wall studs, and roof trusses assembly.</p>
             <div class="stars">★★★★★</div>
             <p class="review-text">“Sturdy construction built exactly to specifications!”</p>
@@ -568,42 +583,35 @@
   <script>
     // State Management
     let historyStack = [];
-    let selections = [];
-    let currentPrice = 0;
+    let cartItems = [];
     
-    // Multi-item Quantity State
-    let selectedUnitBasePrice = 0;
+    let currentItemLabel = "";
+    let currentUnitBasePrice = 0;
     let selectedItemQuantity = 1;
-    let activeQuantityMode = false;
-
-    // SqFt State
-    let activeSqFtMode = false;
-    let sqFtRateTier = 0; // price per sqft
+    let MINIMUM_CALL_OUT = 60; // Minimum service call fee $60
 
     const wizardTree = {
       root: {
         isRoot: true,
-        question: "Select Category:",
+        question: "Select Service Category:",
         options: [
           { label: "TV Mounting & Hanging Services", subtext: "TVs, shelves, mirrors, door locks", next: "home_services" },
-          { label: "Furniture Assembly", subtext: "Beds, dressers, desks, tables, wardrobes", next: "furniture_type" },
-          { label: "Small Electrical Services", subtext: "Outlets, light fixtures, fans, hair dryer mounts", next: "small_electrical" },
-          { label: "Small Plumbing Services", subtext: "Faucets, p-traps/siphons, showerheads, leaks", next: "small_plumbing" },
-          { label: "Painting Services", subtext: "Interior, exterior, doors, rooms by sq ft", next: "painting_services" },
+          { label: "Furniture Assembly", subtext: "Beds, dressers, desks, tables, chairs", next: "furniture_type" },
+          { label: "Small Electrical Services", subtext: "Outlets, light fixtures, fans, hair dryers", next: "small_electrical" },
+          { label: "Small Plumbing Services", subtext: "Faucets, siphons/p-traps, showerheads", next: "small_plumbing" },
+          { label: "Painting Services", subtext: "Interior, exterior, doors, trims", next: "painting_services" },
           { label: "Concrete Work", subtext: "Slabs, walkways, patio bases", next: "concrete_work" },
           { label: "Roofing & Gutters", subtext: "Roof repairs & gutter cleaning", next: "roofing_gutters" },
           { label: "Major Home Remodeling", subtext: "Kitchen, bathroom, bedroom & full house", next: "major_remodel" },
-          { label: "Sheds, Pergolas & Covers", subtext: "Custom sheds, pergolas, gazebos", next: "sheds_pergolas" },
+          { label: "Sheds & Pergolas", subtext: "Custom sheds, pergolas, gazebos", next: "sheds_pergolas" },
           { label: "ADU Construction", subtext: "Living space additions & detached ADUs", next: "adu_scope" }
         ]
       },
 
-      // CATEGORY 1: TV & Hanging Services
       home_services: {
         question: "Select Service:",
         options: [
           { label: "TV Mounting", setBasePrice: 65, next: "tv_size" },
-          { label: "Furniture Assembly", setBasePrice: 50, next: "furniture_type" },
           { label: "Hanging Shelves / Artwork / Mirrors", setBasePrice: 45, enableQty: true, next: "qty_screen" },
           { label: "Curtain Rods & Blinds Installation", setBasePrice: 45, enableQty: true, next: "qty_screen" },
           { label: "Door Lock & Handle Replacement", setBasePrice: 55, enableQty: true, next: "qty_screen" }
@@ -613,24 +621,24 @@
       tv_size: {
         question: "Select Screen Size:",
         options: [
-          { label: "30″ – 55″", updatePrice: 65, next: "tv_wall" },
-          { label: "55″ – 75″", updatePrice: 85, next: "tv_wall" },
-          { label: "75″ – 100″", updatePrice: 110, next: "tv_wall" }
+          { label: "30″ – 55″ TV Mount", updatePrice: 65, next: "tv_wall" },
+          { label: "55″ – 75″ TV Mount", updatePrice: 85, next: "tv_wall" },
+          { label: "75″ – 100″ TV Mount", updatePrice: 110, next: "tv_wall" }
         ]
       },
       tv_wall: {
         question: "Select Wall Material:",
         options: [
           { label: "Drywall / Wood Wall", priceAdd: 0, next: "tv_cord" },
-          { label: "Concrete / Brick", priceAdd: 20, next: "tv_cord" },
-          { label: "Tile / Ceramics", priceAdd: 30, next: "tv_cord" }
+          { label: "Concrete / Brick (+$20)", priceAdd: 20, next: "tv_cord" },
+          { label: "Tile / Ceramics (+$30)", priceAdd: 30, next: "tv_cord" }
         ]
       },
       tv_cord: {
         question: "In-Wall Concealed Wiring Needed?",
         options: [
           { label: "No, standard mounting", priceAdd: 0, next: "tv_mount_hardware" },
-          { label: "Yes, hide cables in wall", priceAdd: 50, next: "tv_cord_kit" }
+          { label: "Yes, hide cables in wall (+$50)", priceAdd: 50, next: "tv_cord_kit" }
         ]
       },
       tv_cord_kit: {
@@ -644,56 +652,53 @@
         question: "Do you have the TV Mount Bracket?",
         options: [
           { label: "Yes, I have my own mount bracket", priceAdd: 0, enableQty: true, next: "qty_screen" },
-          { label: "No, Alex provides TV mount bracket (+$45)", priceAdd: 45, enableQty: true, next: "qty_screen" }
+          { label: "No, Alex provides bracket (+$45)", priceAdd: 45, enableQty: true, next: "qty_screen" }
         ]
       },
 
-      // CATEGORY 2: Furniture Assembly
       furniture_type: {
         question: "Select Furniture Item:",
         options: [
           { label: "Bed Assembly", setBasePrice: 50, next: "bed_size" },
-          { label: "Dresser", setBasePrice: 70, enableQty: true, next: "qty_screen" },
-          { label: "Desk", setBasePrice: 60, enableQty: true, next: "qty_screen" },
-          { label: "Chair / Nightstand / Small Table", setBasePrice: 35, enableQty: true, next: "qty_screen" },
+          { label: "Dresser Assembly", setBasePrice: 70, enableQty: true, next: "qty_screen" },
+          { label: "Desk Assembly", setBasePrice: 60, enableQty: true, next: "qty_screen" },
+          { label: "Dining / Office Chair Assembly", setBasePrice: 35, enableQty: true, next: "qty_screen" },
+          { label: "Dining Table Assembly", setBasePrice: 55, enableQty: true, next: "qty_screen" },
           { label: "Bookcase / Shelving Unit", setBasePrice: 45, enableQty: true, next: "qty_screen" }
         ]
       },
       bed_size: {
         question: "Select Bed Size:",
         options: [
-          { label: "Twin / Twin XL", updatePrice: 50, enableQty: true, next: "qty_screen" },
-          { label: "Full / Queen", updatePrice: 75, enableQty: true, next: "qty_screen" },
-          { label: "King / California King", updatePrice: 130, enableQty: true, next: "qty_screen" },
-          { label: "Bunk Bed / Storage Bed", updatePrice: 150, enableQty: true, next: "qty_screen" }
+          { label: "Twin / Twin XL Bed Assembly", updatePrice: 50, enableQty: true, next: "qty_screen" },
+          { label: "Full / Queen Bed Assembly", updatePrice: 75, enableQty: true, next: "qty_screen" },
+          { label: "King / Cal King Bed Assembly", updatePrice: 130, enableQty: true, next: "qty_screen" },
+          { label: "Bunk Bed / Storage Bed Assembly", updatePrice: 150, enableQty: true, next: "qty_screen" }
         ]
       },
 
-      // CATEGORY 3: Small Electrical Services
       small_electrical: {
         question: "Select Electrical Task:",
         options: [
           { label: "Outlet / Switch Repair & Install", setBasePrice: 45, enableQty: true, next: "qty_screen" },
-          { label: "Light Fixture Repair & Install", setBasePrice: 65, enableQty: true, next: "qty_screen" },
+          { label: "Light Fixture Installation", setBasePrice: 65, enableQty: true, next: "qty_screen" },
           { label: "Ceiling Fan Installation", setBasePrice: 95, enableQty: true, next: "qty_screen" },
           { label: "Add New Outlet Wiring", setBasePrice: 110, enableQty: true, next: "qty_screen" },
           { label: "Wall-Mount Hair Dryer / Appliance Mount", setBasePrice: 40, enableQty: true, next: "qty_screen" }
         ]
       },
 
-      // CATEGORY 4: Small Plumbing Services
       small_plumbing: {
         question: "Select Plumbing Task:",
         options: [
           { label: "Faucet Replacement", setBasePrice: 80, enableQty: true, next: "qty_screen" },
-          { label: "Sink Drain / P-Trap (Siphon) Replacement", setBasePrice: 65, enableQty: true, next: "qty_screen" },
+          { label: "Sink Drain / P-Trap (Siphon)", setBasePrice: 65, enableQty: true, next: "qty_screen" },
           { label: "Showerhead & Valve Replacement", setBasePrice: 75, enableQty: true, next: "qty_screen" },
           { label: "Garbage Disposal Replacement", setBasePrice: 85, enableQty: true, next: "qty_screen" },
           { label: "Toilet Installation / Repair", setBasePrice: 110, enableQty: true, next: "qty_screen" }
         ]
       },
 
-      // CATEGORY 5: Painting Services
       painting_services: {
         question: "Select Painting Task:",
         options: [
@@ -703,37 +708,33 @@
         ]
       },
 
-      // CATEGORY 6: Concrete Work
       concrete_work: {
         question: "Select Concrete Scope:",
         options: [
-          { label: "Small Concrete Walkway / Pad (<100 sq ft)", setBasePrice: 0, enableSqFt: true, sqFtPrice: 20, next: "sqft_screen" },
+          { label: "Small Walkway / Pad (<100 sq ft)", setBasePrice: 0, enableSqFt: true, sqFtPrice: 20, next: "sqft_screen" },
           { label: "Standard Concrete Slab (>100 sq ft)", setBasePrice: 0, enableSqFt: true, sqFtPrice: 12, next: "sqft_screen" }
         ]
       },
 
-      // CATEGORY 7: Roofing & Gutters
       roofing_gutters: {
         question: "Select Roofing / Gutter Task:",
         options: [
-          { label: "Gutter Cleaning", setBasePrice: 120, next: "finish" },
-          { label: "Roof Leak & Shingle Repair", setBasePrice: 250, next: "finish" },
-          { label: "Flashing & Ridge Repair", setBasePrice: 300, next: "finish" }
+          { label: "Gutter Cleaning", setBasePrice: 120, next: "add_item_to_cart" },
+          { label: "Roof Leak & Shingle Repair", setBasePrice: 250, next: "add_item_to_cart" },
+          { label: "Flashing & Ridge Repair", setBasePrice: 300, next: "add_item_to_cart" }
         ]
       },
 
-      // CATEGORY 8: Major Home Remodeling
       major_remodel: {
         question: "Select Remodeling Area:",
         options: [
-          { label: "Full Kitchen Remodel", setBasePrice: 4500, next: "finish" },
-          { label: "Bathroom Remodel", setBasePrice: 3500, next: "finish" },
-          { label: "Bedroom / Room Renovation", setBasePrice: 2500, next: "finish" },
-          { label: "Full House Renovation", setBasePrice: 12000, next: "finish" }
+          { label: "Full Kitchen Remodel", setBasePrice: 4500, next: "add_item_to_cart" },
+          { label: "Bathroom Remodel", setBasePrice: 3500, next: "add_item_to_cart" },
+          { label: "Bedroom / Room Renovation", setBasePrice: 2500, next: "add_item_to_cart" },
+          { label: "Full House Renovation", setBasePrice: 12000, next: "add_item_to_cart" }
         ]
       },
 
-      // CATEGORY 9: Outdoor Structures
       sheds_pergolas: {
         question: "Select Structure Type:",
         options: [
@@ -745,21 +746,20 @@
       shed_size: {
         question: "Select Shed Size:",
         options: [
-          { label: "Small (8×8 ft)", updatePrice: 400, next: "finish" },
-          { label: "Medium (10×12 ft)", updatePrice: 650, next: "finish" },
-          { label: "Large (12×16 ft)", updatePrice: 950, next: "finish" }
+          { label: "Small Shed (8×8 ft)", updatePrice: 400, next: "add_item_to_cart" },
+          { label: "Medium Shed (10×12 ft)", updatePrice: 650, next: "add_item_to_cart" },
+          { label: "Large Shed (12×16 ft)", updatePrice: 950, next: "add_item_to_cart" }
         ]
       },
 
       pergola_type: {
         question: "Select Pergola Size:",
         options: [
-          { label: "Standard (10×10 ft)", updatePrice: 450, next: "finish" },
-          { label: "Large Patio (12×16 ft)", updatePrice: 650, next: "finish" }
+          { label: "Standard Pergola (10×10 ft)", updatePrice: 450, next: "add_item_to_cart" },
+          { label: "Large Patio Pergola (12×16 ft)", updatePrice: 650, next: "add_item_to_cart" }
         ]
       },
 
-      // CATEGORY 10: ADU
       adu_scope: {
         question: "Select ADU Scope:",
         options: [
@@ -770,17 +770,17 @@
       adu_size_turnkey: {
         question: "Select Turnkey ADU Size:",
         options: [
-          { label: "Studio (400 sq ft)", updatePrice: 140000, next: "finish" },
-          { label: "1-Bedroom (600 sq ft)", updatePrice: 180000, next: "finish" },
-          { label: "2-Bedroom (800 sq ft)", updatePrice: 230000, next: "finish" }
+          { label: "Studio ADU (400 sq ft)", updatePrice: 140000, next: "add_item_to_cart" },
+          { label: "1-Bedroom ADU (600 sq ft)", updatePrice: 180000, next: "add_item_to_cart" },
+          { label: "2-Bedroom ADU (800 sq ft)", updatePrice: 230000, next: "add_item_to_cart" }
         ]
       },
       adu_size_build: {
         question: "Select Construction Size:",
         options: [
-          { label: "Studio (400 sq ft)", updatePrice: 55000, next: "finish" },
-          { label: "1-Bedroom (600 sq ft)", updatePrice: 75000, next: "finish" },
-          { label: "2-Bedroom (800 sq ft)", updatePrice: 95000, next: "finish" }
+          { label: "Studio ADU Frame (400 sq ft)", updatePrice: 55000, next: "add_item_to_cart" },
+          { label: "1-Bed ADU Frame (600 sq ft)", updatePrice: 75000, next: "add_item_to_cart" },
+          { label: "2-Bed ADU Frame (800 sq ft)", updatePrice: 95000, next: "add_item_to_cart" }
         ]
       }
     };
@@ -796,7 +796,16 @@
         header.style.display = 'flex';
       }
 
-      // Quantity Screen Dynamic Controls (1, 2, 3, 4+)
+      if (stepKey === 'add_item_to_cart') {
+        cartItems.push({
+          name: currentItemLabel,
+          qty: 1,
+          price: currentUnitBasePrice
+        });
+        renderCurrentStep('finish');
+        return;
+      }
+
       if (stepKey === 'qty_screen') {
         selectedItemQuantity = 1;
         updateQuantityPriceDisplay();
@@ -804,48 +813,73 @@
         container.innerHTML = `
           <div class="interactive-input-card">
             <div class="step-question" style="margin-bottom:8px;">How many items do you need?</div>
-            <p style="color:#64748b; font-size:0.9rem; margin:0 0 12px 0;">Select quantity (bulk discount applied for multiple items)</p>
+            <p style="color:#64748b; font-size:0.9rem; margin:0 0 12px 0;">Select quantity (15% bulk discount applied for extra units)</p>
             <div class="qty-selector">
               <button class="qty-btn" onclick="adjustQuantity(-1)">-</button>
               <span class="qty-val" id="qtyVal">1</span>
               <button class="qty-btn" onclick="adjustQuantity(1)">+</button>
             </div>
             <div class="discount-badge" id="discountNote">Standard single item rate</div>
-            <button class="continue-btn" onclick="confirmQuantityChoice()">Confirm Quantity →</button>
+            <button class="continue-btn" onclick="confirmQuantityChoice()">Add to Estimate →</button>
           </div>
         `;
         return;
       }
 
-      // SqFt Screen Dynamic Controls
       if (stepKey === 'sqft_screen') {
         container.innerHTML = `
           <div class="interactive-input-card">
             <div class="step-question" style="margin-bottom:8px;">Enter Area Size in Square Feet (Sq Ft):</div>
-            <p style="color:#64748b; font-size:0.9rem; margin:0 0 12px 0;">Rate calculated automatically based on project volume</p>
+            <p style="color:#64748b; font-size:0.9rem; margin:0 0 12px 0;">Calculated automatically based on project volume</p>
             <input type="number" id="sqFtInput" class="sqft-input-field" placeholder="e.g. 150" min="10" oninput="calculateSqFtPrice()">
-            <div class="discount-badge" id="sqFtRateNote">Rate: $${sqFtRateTier}/sq ft</div>
-            <button class="continue-btn" onclick="confirmSqFtChoice()">Confirm Size →</button>
+            <div class="discount-badge" id="sqFtRateNote">Rate: $${currentUnitBasePrice}/sq ft</div>
+            <button class="continue-btn" onclick="confirmSqFtChoice()">Add to Estimate →</button>
           </div>
         `;
         return;
       }
 
-      // Final Order Screen
       if (stepKey === 'finish') {
-        let optionsSummary = selections.map(s => s.label).join(' - ');
+        let rawSum = cartItems.reduce((acc, item) => acc + item.price, 0);
+        let finalPayable = Math.max(rawSum, MINIMUM_CALL_OUT);
+        let isMinCallTriggered = rawSum < MINIMUM_CALL_OUT;
+
+        let listHtml = `<ul class="selected-items-list">`;
+        cartItems.forEach((item) => {
+          listHtml += `<li>
+            <span>${item.name} ${item.qty > 1 ? `(x${item.qty})` : ''}</span>
+            <span>$${item.price.toLocaleString()}</span>
+          </li>`;
+        });
+        listHtml += `</ul>`;
+
+        let minCallNoticeHtml = isMinCallTriggered ? `
+          <div class="min-call-notice">
+            💡 <strong>Minimum Service Call Notice ($60):</strong><br>
+            Standard minimum service call out is $60. You still have room to add more small tasks (e.g. hanging another shelf, fixing an outlet or lock) for the same total price!
+          </div>
+        ` : '';
 
         container.innerHTML = `
           <div class="summary-box">
-            <div class="summary-title">${optionsSummary}</div>
-            <div class="price-headline">$${currentPrice.toLocaleString()}</div>
-            <a href="#" id="finalSmsBtn" class="sms-btn-final">💬 Order Service</a>
+            <div style="font-weight:700; font-size:1.1rem; margin-bottom:12px; color:#0f172a;">Selected Services:</div>
+            ${listHtml}
+            ${minCallNoticeHtml}
+            <div class="price-headline">$${finalPayable.toLocaleString()}</div>
+            
+            <div class="action-buttons-group">
+              <button class="add-more-btn" onclick="addAnotherService()">➕ Add Another Service / Task</button>
+              <a href="#" id="finalSmsBtn" class="sms-btn-final">💬 Order Service via SMS</a>
+            </div>
           </div>
         `;
 
         let phone = '2797582752';
-        let msg = `Hello! I would like to get an estimate for a service:\nTask: ${optionsSummary}\nPrice: $${currentPrice.toLocaleString()}.\nWhen are you available?`;
+        let itemsStr = cartItems.map(i => `- ${i.name} ${i.qty > 1 ? `(x${i.qty})` : ''}: $${i.price}`).join('\n');
+        let msg = `Hello! I would like to order handyman services:\n${itemsStr}\nTotal Price: $${finalPayable.toLocaleString()}.\nWhen are you available?`;
         document.getElementById('finalSmsBtn').href = `sms:${phone}?body=${encodeURIComponent(msg)}`;
+        
+        updateTotalDisplay();
         return;
       }
 
@@ -874,36 +908,24 @@
       const stepData = wizardTree[currentStepKey];
       const selectedOpt = stepData.options[optionIndex];
 
-      historyStack.push({
-        stepKey: currentStepKey,
-        choice: selectedOpt,
-        prevPrice: currentPrice
-      });
+      historyStack.push({ stepKey: currentStepKey });
 
-      selections.push({ label: selectedOpt.label });
-
-      // Pricing logic
       if (selectedOpt.setBasePrice !== undefined) {
-        currentPrice = selectedOpt.setBasePrice;
-        selectedUnitBasePrice = selectedOpt.setBasePrice;
+        currentUnitBasePrice = selectedOpt.setBasePrice;
       } else if (selectedOpt.updatePrice !== undefined) {
-        currentPrice = selectedOpt.updatePrice;
-        selectedUnitBasePrice = selectedOpt.updatePrice;
+        currentUnitBasePrice = selectedOpt.updatePrice;
       } else if (selectedOpt.priceAdd !== undefined) {
-        currentPrice += selectedOpt.priceAdd;
-        selectedUnitBasePrice = currentPrice;
+        currentUnitBasePrice += selectedOpt.priceAdd;
       }
 
       if (selectedOpt.enableSqFt) {
-        sqFtRateTier = selectedOpt.sqFtPrice;
+        currentUnitBasePrice = selectedOpt.sqFtPrice;
       }
 
-      document.getElementById('runningTotalDisplay').innerText = `$${currentPrice.toLocaleString()}`;
-
+      currentItemLabel = selectedOpt.label;
       renderCurrentStep(selectedOpt.next);
     }
 
-    // Dynamic Multi-Item Discount logic (10% discount on additional items)
     function adjustQuantity(delta) {
       selectedItemQuantity += delta;
       if (selectedItemQuantity < 1) selectedItemQuantity = 1;
@@ -915,87 +937,60 @@
       const noteElem = document.getElementById('discountNote');
       if (valElem) valElem.innerText = selectedItemQuantity;
 
-      // 1st item = full price, 2nd+ items = 15% discount on additional units
+      let calculatedItemPrice = currentUnitBasePrice;
       if (selectedItemQuantity === 1) {
-        currentPrice = selectedUnitBasePrice;
         if (noteElem) noteElem.innerText = "Standard single item rate";
       } else {
-        let discountedAdditional = (selectedUnitBasePrice * 0.85) * (selectedItemQuantity - 1);
-        currentPrice = Math.round(selectedUnitBasePrice + discountedAdditional);
-        if (noteElem) noteElem.innerText = `15% multi-item discount applied to extra units!`;
+        let discountedAdditional = (currentUnitBasePrice * 0.85) * (selectedItemQuantity - 1);
+        calculatedItemPrice = Math.round(currentUnitBasePrice + discountedAdditional);
+        if (noteElem) noteElem.innerText = `15% discount applied to additional items!`;
       }
-
-      document.getElementById('runningTotalDisplay').innerText = `$${currentPrice.toLocaleString()}`;
+      return calculatedItemPrice;
     }
 
     function confirmQuantityChoice() {
-      selections.push({ label: `Quantity: ${selectedItemQuantity}` });
+      let finalItemPrice = updateQuantityPriceDisplay();
+      cartItems.push({
+        name: currentItemLabel,
+        qty: selectedItemQuantity,
+        price: finalItemPrice
+      });
       renderCurrentStep('finish');
     }
 
     function calculateSqFtPrice() {
       const sqft = parseFloat(document.getElementById('sqFtInput').value) || 0;
-      currentPrice = Math.round(sqft * sqFtRateTier);
-      document.getElementById('runningTotalDisplay').innerText = `$${currentPrice.toLocaleString()}`;
+      return Math.round(sqft * currentUnitBasePrice);
     }
 
     function confirmSqFtChoice() {
       const sqft = parseFloat(document.getElementById('sqFtInput').value) || 0;
-      selections.push({ label: `Area: ${sqft} sq ft` });
+      let finalSqFtPrice = calculateSqFtPrice();
+      cartItems.push({
+        name: `${currentItemLabel} (${sqft} sq ft)`,
+        qty: 1,
+        price: finalSqFtPrice
+      });
       renderCurrentStep('finish');
     }
 
+    function addAnotherService() {
+      renderCurrentStep('root');
+    }
+
+    function updateTotalDisplay() {
+      let rawSum = cartItems.reduce((acc, item) => acc + item.price, 0);
+      let finalPayable = Math.max(rawSum, MINIMUM_CALL_OUT);
+      document.getElementById('runningTotalDisplay').innerText = `$${finalPayable.toLocaleString()}`;
+    }
+
     function goBackStep() {
-      if (historyStack.length === 0) return;
-
-      const lastState = historyStack.pop();
-      selections.pop();
-      currentPrice = lastState.prevPrice;
-
-      document.getElementById('runningTotalDisplay').innerText = `$${currentPrice.toLocaleString()}`;
-      renderCurrentStep(lastState.stepKey);
-    }
-
-    function showDetails(id) {
-      document.getElementById(id).style.display = 'flex';
-    }
-
-    
-    // Scroll Auto-Play Logic using IntersectionObserver for Mobile Safari / Chrome
-    document.addEventListener("DOMContentLoaded", function() {
-      const videos = document.querySelectorAll(".auto-reel-video");
-
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          const video = entry.target;
-          if (entry.isIntersecting) {
-            video.play().catch(e => console.log("Autoplay blocked:", e));
-          } else {
-            video.pause();
-          }
-        });
-      }, { threshold: 0.3 });
-
-      videos.forEach(video => observer.observe(video));
-    });
-
-    function togglePlayVideo(wrapper, detailsId) {
-      const video = wrapper.querySelector("video");
-      showDetails(detailsId);
-
-      if (video.muted) {
-        video.muted = false; // unmute when user taps
-        wrapper.classList.add("playing");
-        video.play();
-      } else {
-        if (video.paused) {
-          video.play();
-          wrapper.classList.add("playing");
-        } else {
-          video.pause();
-          wrapper.classList.remove("playing");
-        }
+      if (historyStack.length === 0) {
+        renderCurrentStep('root');
+        return;
       }
+      const lastState = historyStack.pop();
+      renderCurrentStep(lastState.stepKey);
     }
 
     // Initialize
