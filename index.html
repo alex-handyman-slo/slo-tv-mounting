@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Alex Handyman & Construction - San Luis Obispo County</title>
+  <title>Alex J Handyman | HomeBuddy Handyman - San Luis Obispo, CA</title>
   <style>
-    /* Reset & Base Styles */
+    /* Reset & Core Styles */
     *, *::before, *::after {
       box-sizing: border-box;
     }
@@ -18,32 +18,56 @@
       line-height: 1.5;
     }
 
-    /* Header & Hero */
+    /* Header */
     header {
       background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
       color: #ffffff;
-      padding: 40px 20px;
+      padding: 35px 20px 30px;
       text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
+
+    .brand-logo-container {
+      background: #ffffff;
+      padding: 12px 20px;
+      border-radius: 16px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+      margin-bottom: 15px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .brand-logo-svg {
+      width: 140px;
+      height: auto;
+    }
+
     header h1 {
-      margin: 0 0 8px 0;
-      font-size: 2.2rem;
+      margin: 5px 0 2px 0;
+      font-size: 2.1rem;
       font-weight: 800;
+      letter-spacing: -0.5px;
     }
+
     header p {
-      margin: 0 0 20px 0;
-      font-size: 1.1rem;
+      margin: 0 0 18px 0;
+      font-size: 1rem;
       opacity: 0.95;
+      font-weight: 500;
     }
+
     .cta-sms-header {
       display: inline-block;
       background-color: #16a34a;
       color: #ffffff;
-      padding: 14px 30px;
+      padding: 14px 28px;
       border-radius: 30px;
       font-weight: 700;
       text-decoration: none;
-      font-size: 1.15rem;
+      font-size: 1.1rem;
       box-shadow: 0 4px 14px rgba(22, 163, 74, 0.4);
       transition: background-color 0.2s, transform 0.1s;
     }
@@ -54,23 +78,17 @@
 
     /* Main Container */
     .container {
-      max-width: 960px;
+      max-width: 900px;
       margin: 0 auto;
-      padding: 35px 18px;
+      padding: 30px 18px;
     }
 
     .section-title {
       text-align: center;
-      font-size: 1.8rem;
+      font-size: 1.75rem;
       color: #0f172a;
-      margin: 0 0 6px 0;
+      margin: 0 0 22px 0;
       font-weight: 800;
-    }
-    .section-subtitle {
-      text-align: center;
-      color: #64748b;
-      margin: 0 0 30px 0;
-      font-size: 1rem;
     }
 
     /* Calculator Card */
@@ -78,19 +96,19 @@
       background: #ffffff;
       border: 1px solid #e2e8f0;
       border-radius: 20px;
-      padding: 30px;
+      padding: 28px;
       box-shadow: 0 6px 25px rgba(0, 0, 0, 0.05);
-      margin-bottom: 50px;
+      margin-bottom: 45px;
     }
 
-    /* Wizard Header */
+    /* Dynamic Wizard Header Bar */
     .wizard-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding-bottom: 18px;
-      margin-bottom: 22px;
+      margin-bottom: 20px;
       border-bottom: 2px solid #f1f5f9;
+      padding-bottom: 12px;
     }
 
     .back-btn {
@@ -98,7 +116,7 @@
       color: #334155;
       border: none;
       border-radius: 10px;
-      padding: 9px 16px;
+      padding: 8px 16px;
       font-size: 0.95rem;
       font-weight: 700;
       cursor: pointer;
@@ -109,15 +127,14 @@
     }
 
     .back-btn:hover { background-color: #cbd5e1; }
-    .back-btn:disabled { opacity: 0.35; cursor: not-allowed; }
 
     .total-tracker {
-      font-size: 1.3rem;
+      font-size: 1.4rem;
       font-weight: 800;
       color: #166534;
       background: #f0fdf4;
       border: 1px solid #bbf7d0;
-      padding: 7px 18px;
+      padding: 6px 18px;
       border-radius: 30px;
     }
 
@@ -125,23 +142,13 @@
       font-size: 1.2rem;
       font-weight: 700;
       color: #0f172a;
-      margin-bottom: 18px;
+      margin-bottom: 16px;
     }
 
-    /* Grids */
-    .main-categories-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 14px;
-    }
-
-    @media (max-width: 580px) {
-      .main-categories-grid { grid-template-columns: 1fr; }
-    }
-
+    /* Standardized Uniform Green Buttons across ALL screens */
     .sub-buttons-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
       gap: 12px;
     }
 
@@ -150,8 +157,8 @@
       color: #ffffff;
       border: none;
       border-radius: 14px;
-      padding: 18px 14px;
-      font-size: 1.05rem;
+      padding: 16px 14px;
+      font-size: 1rem;
       font-weight: 700;
       cursor: pointer;
       display: flex;
@@ -159,7 +166,8 @@
       align-items: center;
       justify-content: center;
       text-align: center;
-      gap: 6px;
+      gap: 4px;
+      min-height: 85px;
       box-shadow: 0 4px 12px rgba(22, 163, 74, 0.18);
       transition: all 0.2s;
     }
@@ -170,49 +178,99 @@
       box-shadow: 0 6px 16px rgba(22, 163, 74, 0.28);
     }
 
-    .green-opt-btn span.icon { font-size: 1.8rem; }
-    .green-opt-btn span.subtext { font-size: 0.85rem; font-weight: 500; opacity: 0.9; }
+    .green-opt-btn span.subtext {
+      font-size: 0.82rem;
+      font-weight: 500;
+      opacity: 0.9;
+    }
 
-    .custom-input-group {
-      margin-top: 15px;
+    /* Quantity and Square Feet Input Controls */
+    .interactive-input-card {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 20px;
+      text-align: center;
+      margin: 15px 0;
+    }
+
+    .qty-selector {
       display: flex;
-      flex-direction: column;
-      gap: 12px;
+      align-items: center;
+      justify-content: center;
+      gap: 15px;
+      margin: 15px 0;
     }
 
-    .custom-input-group input {
-      padding: 14px;
-      border: 2px solid #cbd5e1;
-      border-radius: 10px;
-      font-size: 1rem;
-      width: 100%;
-    }
-
-    .next-step-btn {
-      background-color: #2563eb;
+    .qty-btn {
+      background: #16a34a;
       color: #ffffff;
       border: none;
-      border-radius: 10px;
-      padding: 14px;
-      font-size: 1rem;
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      font-size: 1.6rem;
       font-weight: 700;
       cursor: pointer;
-      transition: background-color 0.2s;
+      transition: background 0.2s;
     }
 
-    .next-step-btn:hover { background-color: #1d4ed8; }
+    .qty-btn:hover { background: #15803d; }
 
-    /* Clean Final Summary Box */
+    .qty-val {
+      font-size: 1.6rem;
+      font-weight: 800;
+      width: 60px;
+      text-align: center;
+      color: #0f172a;
+    }
+
+    .discount-badge {
+      font-size: 0.88rem;
+      color: #15803d;
+      font-weight: 700;
+      margin-top: 5px;
+    }
+
+    .sqft-input-field {
+      width: 100%;
+      max-width: 250px;
+      padding: 12px 16px;
+      font-size: 1.2rem;
+      font-weight: 700;
+      border: 2px solid #cbd5e1;
+      border-radius: 12px;
+      text-align: center;
+      margin: 10px 0;
+    }
+
+    .continue-btn {
+      background-color: #16a34a;
+      color: #ffffff;
+      border: none;
+      border-radius: 12px;
+      padding: 16px;
+      font-size: 1.1rem;
+      font-weight: 800;
+      width: 100%;
+      cursor: pointer;
+      margin-top: 15px;
+      box-shadow: 0 4px 12px rgba(22, 163, 74, 0.2);
+    }
+
+    .continue-btn:hover { background-color: #15803d; }
+
+    /* Summary Final Box */
     .summary-box {
       background: #f0fdf4;
       border: 2px solid #86efac;
       border-radius: 16px;
-      padding: 30px;
+      padding: 25px;
       text-align: center;
     }
 
     .summary-title {
-      font-size: 1.2rem;
+      font-size: 1.15rem;
       font-weight: 700;
       color: #1e293b;
       margin-bottom: 12px;
@@ -222,7 +280,7 @@
       font-size: 2.2rem;
       font-weight: 800;
       color: #15803d;
-      margin-bottom: 22px;
+      margin-bottom: 20px;
     }
 
     .sms-btn-final {
@@ -239,13 +297,36 @@
       transition: background-color 0.2s;
     }
 
-    .sms-btn-final:hover { background-color: #15803d; }
+    /* License Footer Card */
+    .license-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 20px;
+      text-align: center;
+      margin-top: 35px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+    }
 
-    /* REELS VIDEO GRID - 2x2 Clean Layout */
+    .license-card h3 {
+      margin: 0 0 8px 0;
+      color: #1e3a8a;
+      font-size: 1.15rem;
+      font-weight: 800;
+    }
+
+    .license-card p {
+      margin: 0;
+      font-size: 0.95rem;
+      color: #475569;
+      font-weight: 600;
+    }
+
+    /* Video Reels Grid */
     .reels-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 18px;
+      gap: 16px;
     }
 
     @media (max-width: 520px) {
@@ -262,10 +343,36 @@
       flex-direction: column;
     }
 
+    .reel-main-bar {
+      padding: 10px 12px;
+      background: #ffffff;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #f1f5f9;
+    }
+
+    .work-title {
+      font-size: 0.95rem;
+      margin: 0;
+      color: #0f172a;
+      font-weight: 700;
+    }
+
+    .work-price-badge {
+      background-color: #eff6ff;
+      color: #1d4ed8;
+      font-weight: 800;
+      font-size: 1rem;
+      padding: 3px 8px;
+      border-radius: 6px;
+    }
+
+    
     .video-wrapper {
       position: relative;
       width: 100%;
-      padding-top: 177.78%; /* 9:16 vertical ratio */
+      padding-top: 177.78%;
       background: #0f172a;
       cursor: pointer;
     }
@@ -277,109 +384,40 @@
       object-fit: cover;
     }
 
-    .reel-main-bar {
-      padding: 12px 14px;
-      background: #ffffff;
+    .custom-play-btn {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 50px; height: 50px;
+      background: rgba(15, 23, 42, 0.65);
+      border-radius: 50%;
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      border-bottom: 1px solid #f1f5f9;
+      justify-content: center;
+      color: #ffffff;
+      font-size: 1.2rem;
+      pointer-events: none;
+      transition: opacity 0.2s, transform 0.2s;
     }
 
-    .work-title {
-      font-size: 1rem;
-      margin: 0;
-      color: #0f172a;
-      font-weight: 700;
+    .video-wrapper.playing .custom-play-btn {
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(0.8);
     }
 
-    .work-price-badge {
-      background-color: #eff6ff;
-      color: #1d4ed8;
-      font-weight: 800;
-      font-size: 1.05rem;
-      padding: 4px 10px;
-      border-radius: 8px;
-      white-space: nowrap;
-    }
 
     .reel-expanded-info {
-      padding: 12px 14px;
+      padding: 12px;
       display: none;
       background: #f8fafc;
       flex-direction: column;
-      gap: 8px;
+      gap: 6px;
       border-top: 1px solid #e2e8f0;
     }
 
-    .work-description {
-      font-size: 0.88rem;
-      color: #475569;
-      margin: 0;
-    }
-
-    .stars {
-      color: #f59e0b;
-      font-size: 0.9rem;
-      letter-spacing: 1px;
-    }
-
-    .review-text {
-      font-style: italic;
-      font-size: 0.85rem;
-      color: #334155;
-      margin: 2px 0;
-    }
-
-    .action-buttons {
-      display: flex;
-      justify-content: center;
-      gap: 15px;
-      margin-top: 35px;
-      flex-wrap: wrap;
-    }
-
-    .btn {
-      padding: 12px 26px;
-      border-radius: 8px;
-      border: none;
-      font-weight: 600;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-
-    .btn-primary { background-color: #2563eb; color: #ffffff; }
-    .btn-secondary { background-color: #e2e8f0; color: #1e293b; }
-
-    /* Modal */
-    .modal-overlay {
-      display: none;
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(15, 23, 42, 0.6);
-      backdrop-filter: blur(4px);
-      align-items: center;
-      justify-content: center;
-      z-index: 1000;
-      padding: 20px;
-    }
-
-    .modal-content {
-      background: #ffffff;
-      padding: 30px;
-      border-radius: 16px;
-      width: 100%;
-      max-width: 480px;
-      position: relative;
-    }
-
-    .modal-close {
-      position: absolute;
-      top: 15px; right: 20px;
-      border: none; background: none;
-      font-size: 1.8rem; cursor: pointer; color: #94a3b8;
-    }
+    .work-description { font-size: 0.85rem; color: #475569; margin: 0; }
+    .stars { color: #f59e0b; font-size: 0.85rem; }
+    .review-text { font-style: italic; font-size: 0.82rem; color: #334155; margin: 0; }
 
     footer {
       text-align: center;
@@ -387,17 +425,31 @@
       background-color: #0f172a;
       color: #94a3b8;
       font-size: 0.9rem;
-      margin-top: 50px;
+      margin-top: 40px;
     }
   </style>
 </head>
 <body>
 
-  <!-- Header -->
+  <!-- Header with HomeBuddy Logo -->
   <header>
-    <h1>Get an Estimate & Contact Alex</h1>
-    <p>Handyman, Framing, Pergolas, Sheds & ADU Construction | San Luis Obispo County</p>
-    <a href="sms:2797582752?body=Hello%20Alex%2C%20I%20would%20like%20to%20get%20an%20estimate%20for%20a%20project." class="cta-sms-header">💬 Contact Alex</a>
+    <div class="brand-logo-container">
+      <svg class="brand-logo-svg" viewBox="0 0 300 120" xmlns="http://www.w3.org/2000/svg">
+        <path d="M 50 45 L 85 18 L 120 45 L 120 85 L 50 85 Z" fill="none" stroke="#1e3a8a" stroke-width="7" stroke-linejoin="round"/>
+        <path d="M 40 50 L 85 15 L 130 50" fill="none" stroke="#1e3a8a" stroke-width="8" stroke-linecap="round"/>
+        <path d="M 62 62 Q 85 82 108 62" fill="none" stroke="#1e3a8a" stroke-width="6" stroke-linecap="round"/>
+        <rect x="73" y="38" width="24" height="20" fill="none" stroke="#1e3a8a" stroke-width="4"/>
+        <line x1="85" y1="38" x2="85" y2="58" stroke="#1e3a8a" stroke-width="3"/>
+        <line x1="73" y1="48" x2="97" y2="48" stroke="#1e3a8a" stroke-width="3"/>
+        <text x="142" y="52" font-family="-apple-system, sans-serif" font-weight="800" font-size="23" fill="#1e3a8a">HomeBuddy</text>
+        <text x="142" y="76" font-family="-apple-system, sans-serif" font-weight="700" font-size="19" fill="#1e3a8a">Handyman</text>
+        <text x="142" y="94" font-family="-apple-system, sans-serif" font-weight="600" font-size="12" fill="#2563eb">Local &amp; Reliable</text>
+      </svg>
+    </div>
+
+    <h1>Alex J Handyman</h1>
+    <p>San Luis Obispo, CA • Local &amp; Reliable Services</p>
+    <a href="sms:2797582752?body=Hello%21%20I%20would%20like%20to%20get%20an%20estimate%20for%20a%20service." class="cta-sms-header">💬 Get estimate</a>
   </header>
 
   <!-- Main Container -->
@@ -405,14 +457,13 @@
 
     <!-- CALCULATOR WIZARD -->
     <section>
-      <h2 class="section-title">Interactive Service Estimator</h2>
-      <p class="section-subtitle">Select options below to calculate your service quote.</p>
+      <h2 class="section-title">Калькулятор стоимости услуг</h2>
 
       <div class="calculator-card">
         
-        <!-- Header: Back Button & Price Tracker -->
-        <div class="wizard-header">
-          <button class="back-btn" id="backBtn" onclick="goBackStep()" disabled>← Back</button>
+        <!-- Top Header Bar (Hidden on Step 1) -->
+        <div class="wizard-header" id="wizardHeader" style="display: none;">
+          <button class="back-btn" onclick="goBackStep()">← Back</button>
           <div class="total-tracker" id="runningTotalDisplay">$0</div>
         </div>
 
@@ -424,20 +475,18 @@
     <!-- REELS VIDEO GALLERY -->
     <section>
       <h2 class="section-title">Recent Completed Projects</h2>
-      <p class="section-subtitle">Tap any video to play craftsmanship reels and view job details.</p>
 
       <div class="reels-grid">
-
-        <!-- Card 1 -->
         <div class="reel-card">
           <div class="reel-main-bar">
             <h3 class="work-title">Concrete Pouring</h3>
             <span class="work-price-badge">$1,800</span>
           </div>
-          <div class="video-wrapper">
-            <video controls preload="metadata" playsinline poster="beton-thumb.jpg" onplay="showDetails('details1')">
-              <source src="beton.mp4#t=0.5" type="video/mp4">
+          <div class="video-wrapper" onclick="togglePlayVideo(this, 'details1')">
+            <video class="auto-reel-video" autoplay muted loop playsinline preload="auto" poster="beton-thumb.jpg">
+              <source src="beton.mp4" type="video/mp4">
             </video>
+            <div class="custom-play-btn">▶</div>
           </div>
           <div class="reel-expanded-info" id="details1">
             <p class="work-description">Ground grading, formwork setup, mesh reinforcement, and smooth concrete slab finishing turnkey.</p>
@@ -446,16 +495,16 @@
           </div>
         </div>
 
-        <!-- Card 2 -->
         <div class="reel-card">
           <div class="reel-main-bar">
             <h3 class="work-title">Patio Pergola</h3>
             <span class="work-price-badge">$500</span>
           </div>
-          <div class="video-wrapper">
-            <video controls preload="metadata" playsinline poster="pergola-thumb.jpg" onplay="showDetails('details2')">
-              <source src="Pergola.mp4#t=0.5" type="video/mp4">
+          <div class="video-wrapper" onclick="togglePlayVideo(this, 'details2')">
+            <video class="auto-reel-video" autoplay muted loop playsinline preload="auto" poster="pergola-thumb.jpg">
+              <source src="Pergola.mp4" type="video/mp4">
             </video>
+            <div class="custom-play-btn">▶</div>
           </div>
           <div class="reel-expanded-info" id="details2">
             <p class="work-description">Assembly and heavy-duty anchoring of outdoor patio pergola frame over deck.</p>
@@ -464,16 +513,16 @@
           </div>
         </div>
 
-        <!-- Card 3 -->
         <div class="reel-card">
           <div class="reel-main-bar">
-            <h3 class="work-title">Drywall & Painting</h3>
+            <h3 class="work-title">Drywall &amp; Painting</h3>
             <span class="work-price-badge">$450</span>
           </div>
-          <div class="video-wrapper">
-            <video controls preload="metadata" playsinline poster="drywall-thumb.jpg" onplay="showDetails('details3')">
-              <source src="video3.mp4#t=0.5" type="video/mp4">
+          <div class="video-wrapper" onclick="togglePlayVideo(this, 'details3')">
+            <video class="auto-reel-video" autoplay muted loop playsinline preload="auto" poster="drywall-thumb.jpg">
+              <source src="video3.mp4" type="video/mp4">
             </video>
+            <div class="custom-play-btn">▶</div>
           </div>
           <div class="reel-expanded-info" id="details3">
             <p class="work-description">Drywall patching, texture matching, and full interior room painting.</p>
@@ -482,16 +531,16 @@
           </div>
         </div>
 
-        <!-- Card 4 -->
         <div class="reel-card">
           <div class="reel-main-bar">
             <h3 class="work-title">Storage Shed Framing</h3>
             <span class="work-price-badge">$750</span>
           </div>
-          <div class="video-wrapper">
-            <video controls preload="metadata" playsinline poster="shed-thumb.jpg" onplay="showDetails('details4')">
-              <source src="video4.mp4#t=0.5" type="video/mp4">
+          <div class="video-wrapper" onclick="togglePlayVideo(this, 'details4')">
+            <video class="auto-reel-video" autoplay muted loop playsinline poster="shed-thumb.jpg">
+              <source src="video4.mp4" type="video/mp4">
             </video>
+            <div class="custom-play-btn">▶</div>
           </div>
           <div class="reel-expanded-info" id="details4">
             <p class="work-description">Custom wooden storage shed framing, wall studs, and roof trusses assembly.</p>
@@ -499,45 +548,21 @@
             <p class="review-text">“Sturdy construction built exactly to specifications!”</p>
           </div>
         </div>
-
       </div>
+    </section>
 
-      <div class="action-buttons">
-        <button class="btn btn-secondary" onclick="alert('More videos coming soon!')">Load More Videos</button>
-        <button class="btn btn-primary" onclick="openReviewModal()">Leave a Review</button>
+    <!-- LICENSES CARD AT BOTTOM -->
+    <section>
+      <div class="license-card">
+        <h3>Licensed & Insured Construction Services</h3>
+        <p>Licensed General Construction Contractor (Class B) & Roofing Contractor (Class C) in California</p>
       </div>
     </section>
 
   </main>
 
-  <!-- Review Modal -->
-  <div class="modal-overlay" id="reviewModal">
-    <div class="modal-content">
-      <button class="modal-close" onclick="closeReviewModal()">&times;</button>
-      <h3>Leave a Review</h3>
-      <form onsubmit="handleReviewSubmit(event)">
-        <div style="margin-bottom: 15px;">
-          <label style="display:block; margin-bottom:5px; font-weight:600;">Your Name:</label>
-          <input type="text" required placeholder="John Doe" style="width:100%; padding:10px; border:1px solid #ccc; border-radius:8px;">
-        </div>
-        <div style="margin-bottom: 15px;">
-          <label style="display:block; margin-bottom:5px; font-weight:600;">Rating:</label>
-          <select style="width:100%; padding:10px; border:1px solid #ccc; border-radius:8px;">
-            <option value="5">★★★★★ (5 / 5)</option>
-            <option value="4">★★★★☆ (4 / 5)</option>
-          </select>
-        </div>
-        <div style="margin-bottom: 15px;">
-          <label style="display:block; margin-bottom:5px; font-weight:600;">Review Details:</label>
-          <textarea rows="4" required placeholder="Describe the job performed..." style="width:100%; padding:10px; border:1px solid #ccc; border-radius:8px;"></textarea>
-        </div>
-        <button type="submit" class="btn btn-primary" style="width:100%;">Submit Review</button>
-      </form>
-    </div>
-  </div>
-
   <footer>
-    <p>&copy; 2026 Alex Handyman & Construction. Contact Alex: (279) 758-2752</p>
+    <p>&copy; 2026 Alex J Handyman • HomeBuddy Handyman. San Luis Obispo, CA • (279) 758-2752</p>
   </footer>
 
   <script>
@@ -545,147 +570,174 @@
     let historyStack = [];
     let selections = [];
     let currentPrice = 0;
-    let selectedServiceName = "";
+    
+    // Multi-item Quantity State
+    let selectedUnitBasePrice = 0;
+    let selectedItemQuantity = 1;
+    let activeQuantityMode = false;
 
-    // Wizard Tree Data Configuration
+    // SqFt State
+    let activeSqFtMode = false;
+    let sqFtRateTier = 0; // price per sqft
+
     const wizardTree = {
       root: {
         isRoot: true,
         question: "Select Category:",
         options: [
-          { label: "Home Services & Mounting", icon: "🛠️", subtext: "TV mounting, furniture assembly, shelves, mirrors, locks", next: "home_services" },
-          { label: "Home Repairs & Maintenance", icon: "🔧", subtext: "Drywall, painting, appliances, flooring, plumbing, electric", next: "home_repairs" },
-          { label: "Sheds, Pergolas & Covers", icon: "🏚️", subtext: "Custom sheds, outdoor patio covers, gazebos", next: "sheds_pergolas" },
-          { label: "ADU Construction", icon: "🏠", subtext: "Accessory Dwelling Units & living spaces", next: "adu_scope" }
+          { label: "TV Mounting & Hanging Services", subtext: "TVs, shelves, mirrors, door locks", next: "home_services" },
+          { label: "Furniture Assembly", subtext: "Beds, dressers, desks, tables, wardrobes", next: "furniture_type" },
+          { label: "Small Electrical Services", subtext: "Outlets, light fixtures, fans, hair dryer mounts", next: "small_electrical" },
+          { label: "Small Plumbing Services", subtext: "Faucets, p-traps/siphons, showerheads, leaks", next: "small_plumbing" },
+          { label: "Painting Services", subtext: "Interior, exterior, doors, rooms by sq ft", next: "painting_services" },
+          { label: "Concrete Work", subtext: "Slabs, walkways, patio bases", next: "concrete_work" },
+          { label: "Roofing & Gutters", subtext: "Roof repairs & gutter cleaning", next: "roofing_gutters" },
+          { label: "Major Home Remodeling", subtext: "Kitchen, bathroom, bedroom & full house", next: "major_remodel" },
+          { label: "Sheds, Pergolas & Covers", subtext: "Custom sheds, pergolas, gazebos", next: "sheds_pergolas" },
+          { label: "ADU Construction", subtext: "Living space additions & detached ADUs", next: "adu_scope" }
         ]
       },
 
-      // CATEGORY 1: Home Services
+      // CATEGORY 1: TV & Hanging Services
       home_services: {
-        question: "Select Home Service Task:",
+        question: "Select Service:",
         options: [
-          { label: "TV Mounting", icon: "📺", setBasePrice: 65, next: "tv_size" },
-          { label: "Furniture Assembly", icon: "🛋️", setBasePrice: 50, next: "furniture_type" },
-          { label: "Hanging Shelves / Artwork / Mirrors", setBasePrice: 50, next: "finish" },
-          { label: "Curtain Rods & Blinds Installation", setBasePrice: 55, next: "finish" },
-          { label: "Door Lock & Handle Replacement", setBasePrice: 60, next: "finish" }
+          { label: "TV Mounting", setBasePrice: 65, next: "tv_size" },
+          { label: "Furniture Assembly", setBasePrice: 50, next: "furniture_type" },
+          { label: "Hanging Shelves / Artwork / Mirrors", setBasePrice: 45, enableQty: true, next: "qty_screen" },
+          { label: "Curtain Rods & Blinds Installation", setBasePrice: 45, enableQty: true, next: "qty_screen" },
+          { label: "Door Lock & Handle Replacement", setBasePrice: 55, enableQty: true, next: "qty_screen" }
         ]
       },
 
       tv_size: {
         question: "Select Screen Size:",
         options: [
-          { label: "43″ – 65″", updatePrice: 65, next: "tv_wall" },
-          { label: "67″ – 75″", updatePrice: 85, next: "tv_wall" },
-          { label: "85″ – 100″", updatePrice: 110, next: "tv_wall" }
+          { label: "30″ – 55″", updatePrice: 65, next: "tv_wall" },
+          { label: "55″ – 75″", updatePrice: 85, next: "tv_wall" },
+          { label: "75″ – 100″", updatePrice: 110, next: "tv_wall" }
         ]
       },
       tv_wall: {
-        question: "Select Wall Surface:",
+        question: "Select Wall Material:",
         options: [
-          { label: "Drywall / Wood Studs", priceAdd: 0, next: "finish" },
-          { label: "Concrete / Brick", priceAdd: 20, next: "finish" },
-          { label: "Tile / Fireplace", priceAdd: 30, next: "finish" }
+          { label: "Drywall / Wood Wall", priceAdd: 0, next: "tv_cord" },
+          { label: "Concrete / Brick", priceAdd: 20, next: "tv_cord" },
+          { label: "Tile / Ceramics", priceAdd: 30, next: "tv_cord" }
+        ]
+      },
+      tv_cord: {
+        question: "In-Wall Concealed Wiring Needed?",
+        options: [
+          { label: "No, standard mounting", priceAdd: 0, next: "tv_mount_hardware" },
+          { label: "Yes, hide cables in wall", priceAdd: 50, next: "tv_cord_kit" }
+        ]
+      },
+      tv_cord_kit: {
+        question: "Do you have in-wall cord concealment kit?",
+        options: [
+          { label: "Yes, I have the kit", priceAdd: 0, next: "tv_mount_hardware" },
+          { label: "No, Alex provides kit (+$35)", priceAdd: 35, next: "tv_mount_hardware" }
+        ]
+      },
+      tv_mount_hardware: {
+        question: "Do you have the TV Mount Bracket?",
+        options: [
+          { label: "Yes, I have my own mount bracket", priceAdd: 0, enableQty: true, next: "qty_screen" },
+          { label: "No, Alex provides TV mount bracket (+$45)", priceAdd: 45, enableQty: true, next: "qty_screen" }
         ]
       },
 
-      // Furniture Sub-branch
+      // CATEGORY 2: Furniture Assembly
       furniture_type: {
         question: "Select Furniture Item:",
         options: [
           { label: "Bed Assembly", setBasePrice: 50, next: "bed_size" },
-          { label: "Dresser / Desk", setBasePrice: 75, next: "finish" },
-          { label: "Chair / Nightstand / Small Table", setBasePrice: 45, next: "finish" },
-          { label: "Large Wardrobe / Closet System", setBasePrice: 150, next: "finish" }
+          { label: "Dresser", setBasePrice: 70, enableQty: true, next: "qty_screen" },
+          { label: "Desk", setBasePrice: 60, enableQty: true, next: "qty_screen" },
+          { label: "Chair / Nightstand / Small Table", setBasePrice: 35, enableQty: true, next: "qty_screen" },
+          { label: "Bookcase / Shelving Unit", setBasePrice: 45, enableQty: true, next: "qty_screen" }
         ]
       },
       bed_size: {
         question: "Select Bed Size:",
         options: [
-          { label: "Twin", updatePrice: 50, next: "finish" },
-          { label: "Twin XL", updatePrice: 55, next: "finish" },
-          { label: "Full", updatePrice: 70, next: "finish" },
-          { label: "Queen", updatePrice: 85, next: "finish" },
-          { label: "King", updatePrice: 140, next: "finish" },
-          { label: "California King", updatePrice: 145, next: "finish" },
-          { label: "Bunk Bed / Storage Bed", updatePrice: 160, next: "finish" }
+          { label: "Twin / Twin XL", updatePrice: 50, enableQty: true, next: "qty_screen" },
+          { label: "Full / Queen", updatePrice: 75, enableQty: true, next: "qty_screen" },
+          { label: "King / California King", updatePrice: 130, enableQty: true, next: "qty_screen" },
+          { label: "Bunk Bed / Storage Bed", updatePrice: 150, enableQty: true, next: "qty_screen" }
         ]
       },
 
-      // CATEGORY 2: Home Repairs
-      home_repairs: {
-        question: "Select Repair Category:",
-        options: [
-          { label: "Drywall Repair & Patching", setBasePrice: 75, next: "drywall_type" },
-          { label: "Interior / Exterior Painting", setBasePrice: 150, next: "painting_type" },
-          { label: "Home Appliance Repair", setBasePrice: 85, next: "appliance_type" },
-          { label: "Flooring Repair & Install", setBasePrice: 120, next: "flooring_type" },
-          { label: "Plumbing Repairs", setBasePrice: 70, next: "plumbing_type" },
-          { label: "Electrical Repairs", setBasePrice: 45, next: "electrical_type" }
-        ]
-      },
-
-      drywall_type: {
-        question: "Select Drywall Scope:",
-        options: [
-          { label: "Small Hole Patching", updatePrice: 75, next: "finish" },
-          { label: "Medium Patch (up to 2×2 ft)", updatePrice: 120, next: "finish" },
-          { label: "Full Sheet Replace", updatePrice: 250, next: "finish" }
-        ]
-      },
-
-      painting_type: {
-        question: "Select Painting Scope:",
-        options: [
-          { label: "Accent Wall / Touch-up", updatePrice: 150, next: "finish" },
-          { label: "Full Room Painting", updatePrice: 350, next: "finish" },
-          { label: "Exterior Trim / Door", updatePrice: 200, next: "finish" }
-        ]
-      },
-
-      appliance_type: {
-        question: "Select Appliance Task:",
-        options: [
-          { label: "Refrigerator Repair", updatePrice: 95, next: "finish" },
-          { label: "Washer / Dryer Install", updatePrice: 90, next: "finish" },
-          { label: "Dishwasher Repair", updatePrice: 100, next: "finish" },
-          { label: "Garbage Disposal Replace", updatePrice: 85, next: "finish" }
-        ]
-      },
-
-      flooring_type: {
-        question: "Select Flooring Task:",
-        options: [
-          { label: "Laminate / Vinyl Plank", updatePrice: 350, next: "finish" },
-          { label: "Baseboard Repair", updatePrice: 150, next: "finish" },
-          { label: "Tile Repair & Grouting", updatePrice: 120, next: "finish" }
-        ]
-      },
-
-      plumbing_type: {
-        question: "Select Plumbing Task:",
-        options: [
-          { label: "Faucet Replacement", updatePrice: 80, next: "finish" },
-          { label: "Showerhead / Valve Repair", updatePrice: 90, next: "finish" },
-          { label: "Sink Drain / P-Trap Replace", updatePrice: 70, next: "finish" },
-          { label: "Bathtub or Toilet Install", updatePrice: 120, next: "finish" }
-        ]
-      },
-
-      electrical_type: {
+      // CATEGORY 3: Small Electrical Services
+      small_electrical: {
         question: "Select Electrical Task:",
         options: [
-          { label: "Outlet / Switch Replace", updatePrice: 45, next: "finish" },
-          { label: "Light Fixture Install", updatePrice: 65, next: "finish" },
-          { label: "Ceiling Fan Install", updatePrice: 95, next: "finish" }
+          { label: "Outlet / Switch Repair & Install", setBasePrice: 45, enableQty: true, next: "qty_screen" },
+          { label: "Light Fixture Repair & Install", setBasePrice: 65, enableQty: true, next: "qty_screen" },
+          { label: "Ceiling Fan Installation", setBasePrice: 95, enableQty: true, next: "qty_screen" },
+          { label: "Add New Outlet Wiring", setBasePrice: 110, enableQty: true, next: "qty_screen" },
+          { label: "Wall-Mount Hair Dryer / Appliance Mount", setBasePrice: 40, enableQty: true, next: "qty_screen" }
         ]
       },
 
-      // CATEGORY 3: Outdoor Structures
+      // CATEGORY 4: Small Plumbing Services
+      small_plumbing: {
+        question: "Select Plumbing Task:",
+        options: [
+          { label: "Faucet Replacement", setBasePrice: 80, enableQty: true, next: "qty_screen" },
+          { label: "Sink Drain / P-Trap (Siphon) Replacement", setBasePrice: 65, enableQty: true, next: "qty_screen" },
+          { label: "Showerhead & Valve Replacement", setBasePrice: 75, enableQty: true, next: "qty_screen" },
+          { label: "Garbage Disposal Replacement", setBasePrice: 85, enableQty: true, next: "qty_screen" },
+          { label: "Toilet Installation / Repair", setBasePrice: 110, enableQty: true, next: "qty_screen" }
+        ]
+      },
+
+      // CATEGORY 5: Painting Services
+      painting_services: {
+        question: "Select Painting Task:",
+        options: [
+          { label: "Door / Trim Painting", setBasePrice: 60, enableQty: true, next: "qty_screen" },
+          { label: "Interior Room Painting (By Sq Ft)", setBasePrice: 0, enableSqFt: true, sqFtPrice: 2.50, next: "sqft_screen" },
+          { label: "Exterior Painting (By Sq Ft)", setBasePrice: 0, enableSqFt: true, sqFtPrice: 3.00, next: "sqft_screen" }
+        ]
+      },
+
+      // CATEGORY 6: Concrete Work
+      concrete_work: {
+        question: "Select Concrete Scope:",
+        options: [
+          { label: "Small Concrete Walkway / Pad (<100 sq ft)", setBasePrice: 0, enableSqFt: true, sqFtPrice: 20, next: "sqft_screen" },
+          { label: "Standard Concrete Slab (>100 sq ft)", setBasePrice: 0, enableSqFt: true, sqFtPrice: 12, next: "sqft_screen" }
+        ]
+      },
+
+      // CATEGORY 7: Roofing & Gutters
+      roofing_gutters: {
+        question: "Select Roofing / Gutter Task:",
+        options: [
+          { label: "Gutter Cleaning", setBasePrice: 120, next: "finish" },
+          { label: "Roof Leak & Shingle Repair", setBasePrice: 250, next: "finish" },
+          { label: "Flashing & Ridge Repair", setBasePrice: 300, next: "finish" }
+        ]
+      },
+
+      // CATEGORY 8: Major Home Remodeling
+      major_remodel: {
+        question: "Select Remodeling Area:",
+        options: [
+          { label: "Full Kitchen Remodel", setBasePrice: 4500, next: "finish" },
+          { label: "Bathroom Remodel", setBasePrice: 3500, next: "finish" },
+          { label: "Bedroom / Room Renovation", setBasePrice: 2500, next: "finish" },
+          { label: "Full House Renovation", setBasePrice: 12000, next: "finish" }
+        ]
+      },
+
+      // CATEGORY 9: Outdoor Structures
       sheds_pergolas: {
         question: "Select Structure Type:",
         options: [
-          { label: "Storage Shed", setBasePrice: 400, next: "shed_size" },
+          { label: "Storage Shed Construction", setBasePrice: 400, next: "shed_size" },
           { label: "Pergola / Patio Cover", setBasePrice: 450, next: "pergola_type" }
         ]
       },
@@ -695,8 +747,7 @@
         options: [
           { label: "Small (8×8 ft)", updatePrice: 400, next: "finish" },
           { label: "Medium (10×12 ft)", updatePrice: 650, next: "finish" },
-          { label: "Large (12×16 ft)", updatePrice: 950, next: "finish" },
-          { label: "Custom Dimensions", updatePrice: 600, isCustom: true, next: "finish" }
+          { label: "Large (12×16 ft)", updatePrice: 950, next: "finish" }
         ]
       },
 
@@ -704,18 +755,16 @@
         question: "Select Pergola Size:",
         options: [
           { label: "Standard (10×10 ft)", updatePrice: 450, next: "finish" },
-          { label: "Large Patio (12×16 ft)", updatePrice: 650, next: "finish" },
-          { label: "Attached Deck Shelter", updatePrice: 550, next: "finish" },
-          { label: "Custom Dimensions", updatePrice: 500, isCustom: true, next: "finish" }
+          { label: "Large Patio (12×16 ft)", updatePrice: 650, next: "finish" }
         ]
       },
 
-      // CATEGORY 4: ADU
+      // CATEGORY 10: ADU
       adu_scope: {
         question: "Select ADU Scope:",
         options: [
-          { label: "Full Turnkey ADU", subtext: "Permits, blueprints & build", setBasePrice: 18000, next: "adu_size_turnkey" },
-          { label: "Construction Only", subtext: "Building only", setBasePrice: 0, next: "adu_size_build" }
+          { label: "Full Turnkey ADU", setBasePrice: 18000, next: "adu_size_turnkey" },
+          { label: "ADU Construction Only", setBasePrice: 0, next: "adu_size_build" }
         ]
       },
       adu_size_turnkey: {
@@ -723,8 +772,7 @@
         options: [
           { label: "Studio (400 sq ft)", updatePrice: 140000, next: "finish" },
           { label: "1-Bedroom (600 sq ft)", updatePrice: 180000, next: "finish" },
-          { label: "2-Bedroom (800 sq ft)", updatePrice: 230000, next: "finish" },
-          { label: "Custom ADU Dimensions", updatePrice: 160000, isCustom: true, next: "finish" }
+          { label: "2-Bedroom (800 sq ft)", updatePrice: 230000, next: "finish" }
         ]
       },
       adu_size_build: {
@@ -732,18 +780,58 @@
         options: [
           { label: "Studio (400 sq ft)", updatePrice: 55000, next: "finish" },
           { label: "1-Bedroom (600 sq ft)", updatePrice: 75000, next: "finish" },
-          { label: "2-Bedroom (800 sq ft)", updatePrice: 95000, next: "finish" },
-          { label: "Custom ADU Dimensions", updatePrice: 65000, isCustom: true, next: "finish" }
+          { label: "2-Bedroom (800 sq ft)", updatePrice: 95000, next: "finish" }
         ]
       }
     };
 
     function renderCurrentStep(stepKey) {
       const container = document.getElementById('stepContainer');
+      const header = document.getElementById('wizardHeader');
       container.innerHTML = '';
 
-      document.getElementById('backBtn').disabled = (historyStack.length === 0);
+      if (stepKey === 'root') {
+        header.style.display = 'none';
+      } else {
+        header.style.display = 'flex';
+      }
 
+      // Quantity Screen Dynamic Controls (1, 2, 3, 4+)
+      if (stepKey === 'qty_screen') {
+        selectedItemQuantity = 1;
+        updateQuantityPriceDisplay();
+
+        container.innerHTML = `
+          <div class="interactive-input-card">
+            <div class="step-question" style="margin-bottom:8px;">How many items do you need?</div>
+            <p style="color:#64748b; font-size:0.9rem; margin:0 0 12px 0;">Select quantity (bulk discount applied for multiple items)</p>
+            <div class="qty-selector">
+              <button class="qty-btn" onclick="adjustQuantity(-1)">-</button>
+              <span class="qty-val" id="qtyVal">1</span>
+              <button class="qty-btn" onclick="adjustQuantity(1)">+</button>
+            </div>
+            <div class="discount-badge" id="discountNote">Standard single item rate</div>
+            <button class="continue-btn" onclick="confirmQuantityChoice()">Confirm Quantity →</button>
+          </div>
+        `;
+        return;
+      }
+
+      // SqFt Screen Dynamic Controls
+      if (stepKey === 'sqft_screen') {
+        container.innerHTML = `
+          <div class="interactive-input-card">
+            <div class="step-question" style="margin-bottom:8px;">Enter Area Size in Square Feet (Sq Ft):</div>
+            <p style="color:#64748b; font-size:0.9rem; margin:0 0 12px 0;">Rate calculated automatically based on project volume</p>
+            <input type="number" id="sqFtInput" class="sqft-input-field" placeholder="e.g. 150" min="10" oninput="calculateSqFtPrice()">
+            <div class="discount-badge" id="sqFtRateNote">Rate: $${sqFtRateTier}/sq ft</div>
+            <button class="continue-btn" onclick="confirmSqFtChoice()">Confirm Size →</button>
+          </div>
+        `;
+        return;
+      }
+
+      // Final Order Screen
       if (stepKey === 'finish') {
         let optionsSummary = selections.map(s => s.label).join(' - ');
 
@@ -756,8 +844,7 @@
         `;
 
         let phone = '2797582752';
-        let msg = `Hello Alex! I would like to order service:\nTask: ${optionsSummary}\nPrice: $${currentPrice.toLocaleString()}.\nWhen are you available?`;
-        
+        let msg = `Hello! I would like to get an estimate for a service:\nTask: ${optionsSummary}\nPrice: $${currentPrice.toLocaleString()}.\nWhen are you available?`;
         document.getElementById('finalSmsBtn').href = `sms:${phone}?body=${encodeURIComponent(msg)}`;
         return;
       }
@@ -766,16 +853,13 @@
       if (!stepData) return;
 
       let html = `<div class="step-question">${stepData.question}</div>`;
-      let gridClass = stepData.isRoot ? 'main-categories-grid' : 'sub-buttons-grid';
-      html += `<div class="${gridClass}">`;
+      html += `<div class="sub-buttons-grid">`;
 
       stepData.options.forEach((opt, idx) => {
         let subText = opt.subtext ? `<span class="subtext">${opt.subtext}</span>` : '';
-        let iconTag = opt.icon ? `<span class="icon">${opt.icon}</span>` : '';
 
         html += `
           <button class="green-opt-btn" onclick="makeChoice('${stepKey}', ${idx})">
-            ${iconTag}
             <span>${opt.label}</span>
             ${subText}
           </button>
@@ -793,47 +877,72 @@
       historyStack.push({
         stepKey: currentStepKey,
         choice: selectedOpt,
-        prevPrice: currentPrice,
-        prevServiceName: selectedServiceName
+        prevPrice: currentPrice
       });
 
       selections.push({ label: selectedOpt.label });
 
-      // Dynamic price logic based on step choice
+      // Pricing logic
       if (selectedOpt.setBasePrice !== undefined) {
         currentPrice = selectedOpt.setBasePrice;
+        selectedUnitBasePrice = selectedOpt.setBasePrice;
       } else if (selectedOpt.updatePrice !== undefined) {
         currentPrice = selectedOpt.updatePrice;
+        selectedUnitBasePrice = selectedOpt.updatePrice;
       } else if (selectedOpt.priceAdd !== undefined) {
         currentPrice += selectedOpt.priceAdd;
+        selectedUnitBasePrice = currentPrice;
+      }
+
+      if (selectedOpt.enableSqFt) {
+        sqFtRateTier = selectedOpt.sqFtPrice;
       }
 
       document.getElementById('runningTotalDisplay').innerText = `$${currentPrice.toLocaleString()}`;
 
-      if (selectedOpt.isCustom) {
-        promptCustomInput(selectedOpt.next);
+      renderCurrentStep(selectedOpt.next);
+    }
+
+    // Dynamic Multi-Item Discount logic (10% discount on additional items)
+    function adjustQuantity(delta) {
+      selectedItemQuantity += delta;
+      if (selectedItemQuantity < 1) selectedItemQuantity = 1;
+      updateQuantityPriceDisplay();
+    }
+
+    function updateQuantityPriceDisplay() {
+      const valElem = document.getElementById('qtyVal');
+      const noteElem = document.getElementById('discountNote');
+      if (valElem) valElem.innerText = selectedItemQuantity;
+
+      // 1st item = full price, 2nd+ items = 15% discount on additional units
+      if (selectedItemQuantity === 1) {
+        currentPrice = selectedUnitBasePrice;
+        if (noteElem) noteElem.innerText = "Standard single item rate";
       } else {
-        renderCurrentStep(selectedOpt.next);
+        let discountedAdditional = (selectedUnitBasePrice * 0.85) * (selectedItemQuantity - 1);
+        currentPrice = Math.round(selectedUnitBasePrice + discountedAdditional);
+        if (noteElem) noteElem.innerText = `15% multi-item discount applied to extra units!`;
       }
+
+      document.getElementById('runningTotalDisplay').innerText = `$${currentPrice.toLocaleString()}`;
     }
 
-    function promptCustomInput(nextStepKey) {
-      const container = document.getElementById('stepContainer');
-      container.innerHTML = `
-        <div class="step-question">Enter Your Custom Dimensions:</div>
-        <div class="custom-input-group">
-          <input type="text" id="customDimInput" placeholder="e.g. 14×20 ft...">
-          <button class="next-step-btn" onclick="submitCustomDimensions('${nextStepKey}')">Continue →</button>
-        </div>
-      `;
+    function confirmQuantityChoice() {
+      selections.push({ label: `Quantity: ${selectedItemQuantity}` });
+      renderCurrentStep('finish');
     }
 
-    function submitCustomDimensions(nextStepKey) {
-      const inputVal = document.getElementById('customDimInput').value.trim();
-      if (inputVal) {
-        selections.push({ label: `Custom Size: ${inputVal}` });
-      }
-      renderCurrentStep(nextStepKey);
+    function calculateSqFtPrice() {
+      const sqft = parseFloat(document.getElementById('sqFtInput').value) || 0;
+      currentPrice = Math.round(sqft * sqFtRateTier);
+      document.getElementById('runningTotalDisplay').innerText = `$${currentPrice.toLocaleString()}`;
+    }
+
+    function confirmSqFtChoice() {
+      const sqft = parseFloat(document.getElementById('sqFtInput').value) || 0;
+      selections.push({ label: `Area: ${sqft} sq ft` });
+      renderCurrentStep('finish');
     }
 
     function goBackStep() {
@@ -842,7 +951,6 @@
       const lastState = historyStack.pop();
       selections.pop();
       currentPrice = lastState.prevPrice;
-      selectedServiceName = lastState.prevServiceName;
 
       document.getElementById('runningTotalDisplay').innerText = `$${currentPrice.toLocaleString()}`;
       renderCurrentStep(lastState.stepKey);
@@ -852,22 +960,46 @@
       document.getElementById(id).style.display = 'flex';
     }
 
-    // Initialize wizard at root
+    
+    // Scroll Auto-Play Logic using IntersectionObserver for Mobile Safari / Chrome
+    document.addEventListener("DOMContentLoaded", function() {
+      const videos = document.querySelectorAll(".auto-reel-video");
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          const video = entry.target;
+          if (entry.isIntersecting) {
+            video.play().catch(e => console.log("Autoplay blocked:", e));
+          } else {
+            video.pause();
+          }
+        });
+      }, { threshold: 0.3 });
+
+      videos.forEach(video => observer.observe(video));
+    });
+
+    function togglePlayVideo(wrapper, detailsId) {
+      const video = wrapper.querySelector("video");
+      showDetails(detailsId);
+
+      if (video.muted) {
+        video.muted = false; // unmute when user taps
+        wrapper.classList.add("playing");
+        video.play();
+      } else {
+        if (video.paused) {
+          video.play();
+          wrapper.classList.add("playing");
+        } else {
+          video.pause();
+          wrapper.classList.remove("playing");
+        }
+      }
+    }
+
+    // Initialize
     renderCurrentStep('root');
-
-    function openReviewModal() {
-      document.getElementById('reviewModal').style.display = 'flex';
-    }
-
-    function closeReviewModal() {
-      document.getElementById('reviewModal').style.display = 'none';
-    }
-
-    function handleReviewSubmit(e) {
-      e.preventDefault();
-      alert('Thank you for your review!');
-      closeReviewModal();
-    }
   </script>
 </body>
 </html>
