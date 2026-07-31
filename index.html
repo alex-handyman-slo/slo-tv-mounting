@@ -373,12 +373,8 @@
     /* Photo Projects Grid */
     .photo-grid {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 16px;
-    }
-
-    @media (max-width: 520px) {
-      .photo-grid { gap: 12px; }
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 18px;
     }
 
     .photo-card {
@@ -392,7 +388,7 @@
     }
 
     .photo-main-bar {
-      padding: 10px 12px;
+      padding: 12px 14px;
       background: #ffffff;
       display: flex;
       justify-content: space-between;
@@ -401,7 +397,7 @@
     }
 
     .work-title {
-      font-size: 0.95rem;
+      font-size: 1rem;
       margin: 0;
       color: #0f172a;
       font-weight: 700;
@@ -412,14 +408,14 @@
       color: #1d4ed8;
       font-weight: 800;
       font-size: 0.95rem;
-      padding: 3px 8px;
-      border-radius: 6px;
+      padding: 4px 10px;
+      border-radius: 8px;
     }
 
     .photo-wrapper {
       position: relative;
       width: 100%;
-      padding-top: 100%; /* Square Aspect Ratio for Photo Grid */
+      padding-top: 75%; /* 4:3 Aspect Ratio for clear photos */
       background: #f1f5f9;
     }
 
@@ -431,16 +427,16 @@
     }
 
     .photo-info {
-      padding: 12px;
+      padding: 14px;
       background: #ffffff;
       display: flex;
       flex-direction: column;
       gap: 6px;
     }
 
-    .work-description { font-size: 0.85rem; color: #475569; margin: 0; line-height: 1.3; }
-    .stars { color: #f59e0b; font-size: 0.85rem; }
-    .review-text { font-style: italic; font-size: 0.82rem; color: #334155; margin: 0; line-height: 1.3; }
+    .work-description { font-size: 0.88rem; color: #475569; margin: 0; line-height: 1.4; }
+    .stars { color: #f59e0b; font-size: 0.9rem; }
+    .review-text { font-style: italic; font-size: 0.85rem; color: #334155; margin: 0; line-height: 1.4; }
 
     footer {
       text-align: center;
@@ -500,69 +496,118 @@
       <h2 class="section-title">Recent Completed Projects</h2>
 
       <div class="photo-grid">
-        <!-- Photo Item 1 -->
+        
+        <!-- Photo 1 & 2: Roof Renovation -->
         <div class="photo-card">
           <div class="photo-main-bar">
-            <h3 class="work-title">Concrete Slab</h3>
-            <span class="work-price-badge">$1,800</span>
+            <h3 class="work-title">Full Roof Repair &amp; Sheathing</h3>
+            <span class="work-price-badge">$3,200</span>
           </div>
           <div class="photo-wrapper">
-            <img src="concrete.jpg" alt="Concrete Pouring Slab" onerror="this.src='https://images.unsplash.com/photo-1584467541268-b040f83be3fd?w=500&q=80'">
+            <img src="roof-repair.jpg" alt="Roof repair plywood installation">
           </div>
           <div class="photo-info">
-            <p class="work-description">Ground grading, formwork setup, mesh reinforcement, and smooth concrete slab finishing.</p>
+            <p class="work-description">Complete roof restoration: leak removal, new plywood deck installation, underlayment, and insulation replacement.</p>
             <div class="stars">★★★★★</div>
-            <p class="review-text">“Super smooth concrete slab! Alex worked fast, clean, and brought all materials.”</p>
+            <p class="review-text">“Alex completely fixed our roof leaks and replaced bad plywood. Heavy-duty quality work!”</p>
           </div>
         </div>
 
-        <!-- Photo Item 2 -->
         <div class="photo-card">
           <div class="photo-main-bar">
-            <h3 class="work-title">Patio Pergola</h3>
+            <h3 class="work-title">Tile Roof Re-Laying</h3>
+            <span class="work-price-badge">Included</span>
+          </div>
+          <div class="photo-wrapper">
+            <img src="roof-finished.jpg" alt="Finished tile roof restoration">
+          </div>
+          <div class="photo-info">
+            <p class="work-description">Re-laid original tile roofing with sealed leak protection and brand-new waterproof barrier.</p>
+            <div class="stars">★★★★★</div>
+            <p class="review-text">“Clean, professional tile restoration. Kept everything neat and tight.”</p>
+          </div>
+        </div>
+
+        <!-- Photo 3: TV & Soundbar Mounting -->
+        <div class="photo-card">
+          <div class="photo-main-bar">
+            <h3 class="work-title">TV &amp; Soundbar Wall Mount</h3>
+            <span class="work-price-badge">$180</span>
+          </div>
+          <div class="photo-wrapper">
+            <img src="tv-mounting.jpg" alt="TV and Soundbar Wall Mount with concealed wires">
+          </div>
+          <div class="photo-info">
+            <p class="work-description">Mounted large smart TV and soundbar with completely concealed in-wall wiring setup.</p>
+            <div class="stars">★★★★★</div>
+            <p class="review-text">“Flawless install! No visible cords anywhere, perfectly level on the wall.”</p>
+          </div>
+        </div>
+
+        <!-- Photo 4: Concrete Pouring -->
+        <div class="photo-card">
+          <div class="photo-main-bar">
+            <h3 class="work-title">Concrete Pad (8×15 ft)</h3>
+            <span class="work-price-badge">$1,440</span>
+          </div>
+          <div class="photo-wrapper">
+            <img src="concrete-pad.jpg" alt="Concrete pad pouring 8x15">
+          </div>
+          <div class="photo-info">
+            <p class="work-description">Ground excavation, formwork framing, mesh reinforcement, and smooth broom finish concrete slab.</p>
+            <div class="stars">★★★★★</div>
+            <p class="review-text">“Solid concrete slab poured cleanly in tight side yard space.”</p>
+          </div>
+        </div>
+
+        <!-- Photo 5: Storage Shed -->
+        <div class="photo-card">
+          <div class="photo-main-bar">
+            <h3 class="work-title">Custom Storage Shed (5×10 ft)</h3>
+            <span class="work-price-badge">$850</span>
+          </div>
+          <div class="photo-wrapper">
+            <img src="shed-building.jpg" alt="Wooden storage shed build on concrete base">
+          </div>
+          <div class="photo-info">
+            <p class="work-description">Custom wooden shed construction over fresh concrete slab with double doors and trim paint.</p>
+            <div class="stars">★★★★★</div>
+            <p class="review-text">“Very sturdy shed build! Fits perfectly in our side yard.”</p>
+          </div>
+        </div>
+
+        <!-- Photo 6: Metal Pergola -->
+        <div class="photo-card">
+          <div class="photo-main-bar">
+            <h3 class="work-title">Metal Patio Pergola</h3>
             <span class="work-price-badge">$500</span>
           </div>
           <div class="photo-wrapper">
-            <img src="pergola.jpg" alt="Patio Pergola Assembly" onerror="this.src='https://images.unsplash.com/photo-1591825729269-caeb344f6df2?w=500&q=80'">
+            <img src="metal-pergola.jpg" alt="Metal patio pergola frame assembly">
           </div>
           <div class="photo-info">
-            <p class="work-description">Assembly and heavy-duty anchoring of outdoor patio pergola frame over deck.</p>
+            <p class="work-description">Assembly and heavy-duty deck anchoring of metal patio pergola shade structure.</p>
             <div class="stars">★★★★★</div>
-            <p class="review-text">“Great teamwork and rock-solid installation. Looks amazing!”</p>
+            <p class="review-text">“Great assembly work. Anchored tight and looks incredible over our deck!”</p>
           </div>
         </div>
 
-        <!-- Photo Item 3 -->
+        <!-- Photo 7: Patio Dining Set -->
         <div class="photo-card">
           <div class="photo-main-bar">
-            <h3 class="work-title">Drywall &amp; Paint</h3>
-            <span class="work-price-badge">$450</span>
+            <h3 class="work-title">Outdoor Patio Dining Set</h3>
+            <span class="work-price-badge">$120</span>
           </div>
           <div class="photo-wrapper">
-            <img src="drywall.jpg" alt="Drywall Patching and Painting" onerror="this.src='https://images.unsplash.com/photo-1562259949-e8e7689d7828?w=500&q=80'">
+            <img src="patio-furniture.jpg" alt="Outdoor patio table and chair assembly">
           </div>
           <div class="photo-info">
-            <p class="work-description">Drywall patching, texture matching, and full interior room painting.</p>
+            <p class="work-description">Assembled outdoor dining table and 4 swivel patio chairs with rug placement.</p>
             <div class="stars">★★★★★</div>
-            <p class="review-text">“Smooth finish, no seams visible, completely cleaned up after.”</p>
+            <p class="review-text">“Fast assembly, super friendly service! Ready just in time for summer dinners.”</p>
           </div>
         </div>
 
-        <!-- Photo Item 4 -->
-        <div class="photo-card">
-          <div class="photo-main-bar">
-            <h3 class="work-title">Storage Shed</h3>
-            <span class="work-price-badge">$750</span>
-          </div>
-          <div class="photo-wrapper">
-            <img src="shed.jpg" alt="Storage Shed Construction" onerror="this.src='https://images.unsplash.com/photo-1590725140246-20acceed112e?w=500&q=80'">
-          </div>
-          <div class="photo-info">
-            <p class="work-description">Custom wooden storage shed framing, wall studs, and roof trusses assembly.</p>
-            <div class="stars">★★★★★</div>
-            <p class="review-text">“Sturdy construction built exactly to specifications!”</p>
-          </div>
-        </div>
       </div>
     </section>
 
