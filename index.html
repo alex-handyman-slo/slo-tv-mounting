@@ -538,42 +538,42 @@
         
         <div class="project-card">
           <div class="project-card-img-wrapper">
-            <img src="bedroom%20assembly.jpeg" alt="Bedroom Assembly Before and After">
+            <img src="bedroom%20assembly.jpeg" alt="Bedroom Assembly Before and After" onerror="handleImgError(this, 'bedroom assembly')">
           </div>
           <span>Bedroom Assembly</span>
         </div>
 
         <div class="project-card">
           <div class="project-card-img-wrapper">
-            <img src="Shed%20Installation.jpeg" alt="Shed Installation Before and After">
+            <img src="Shed%20Installation.jpeg" alt="Shed Installation Before and After" onerror="handleImgError(this, 'Shed Installation')">
           </div>
           <span>Shed Installation</span>
         </div>
 
         <div class="project-card">
           <div class="project-card-img-wrapper">
-            <img src="furniture%20%20assembly.jpeg" alt="Furniture Assembly Before and After">
+            <img src="furniture%20%20assembly.jpeg" alt="Furniture Assembly Before and After" onerror="handleImgError(this, 'furniture  assembly')">
           </div>
           <span>Furniture Assembly</span>
         </div>
 
         <div class="project-card">
           <div class="project-card-img-wrapper">
-            <img src="Kitchen%20Renovation.jpeg" alt="Kitchen Renovation Before and After">
+            <img src="Kitchen%20Renovation.jpeg" alt="Kitchen Renovation Before and After" onerror="handleImgError(this, 'Kitchen Renovation')">
           </div>
           <span>Kitchen Renovation</span>
         </div>
 
         <div class="project-card">
           <div class="project-card-img-wrapper">
-            <img src="Deck%20and%20Pergola.jpeg" alt="Deck and Pergola Before and After">
+            <img src="Deck%20and%20Pergola.jpeg" alt="Deck and Pergola Before and After" onerror="handleImgError(this, 'Deck and Pergola')">
           </div>
           <span>Deck and Pergola</span>
         </div>
 
         <div class="project-card">
           <div class="project-card-img-wrapper">
-            <img src="Concrete%20Driveway.jpeg" alt="Concrete Driveway Before and After">
+            <img src="Concrete%20Driveway.jpeg" alt="Concrete Driveway Before and After" onerror="handleImgError(this, 'Concrete Driveway')">
           </div>
           <span>Concrete Driveway</span>
         </div>
@@ -617,6 +617,20 @@
   </footer>
 
   <script>
+    // Universal image error fallback logic
+    function handleImgError(imgElement, baseName) {
+      if (!imgElement.dataset.tryCount) {
+        imgElement.dataset.tryCount = "1";
+        imgElement.src = baseName; // try exact name without extension
+      } else if (imgElement.dataset.tryCount === "1") {
+        imgElement.dataset.tryCount = "2";
+        imgElement.src = baseName + ".jpg"; // try .jpg extension
+      } else if (imgElement.dataset.tryCount === "2") {
+        imgElement.dataset.tryCount = "3";
+        imgElement.src = baseName + ".png"; // try .png extension
+      }
+    }
+
     // State Management
     let historyStack = [];
     let cartItems = [];
