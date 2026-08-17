@@ -303,7 +303,7 @@
     .back-btn:hover { background-color: #cbd5e1; }
 
     .total-tracker {
-      font-size: 1.4rem;
+      font-size: 1.3rem;
       font-weight: 800;
       color: #166534;
       background: #f0fdf4;
@@ -596,7 +596,7 @@
       <div class="projects-title">My Projects - Before &amp; After</div>
       <div class="projects-grid">
         
-        <!-- 1. Bedroom Assembly (Double space image) -->
+        <!-- 1. Bedroom Assembly -->
         <div class="project-card" onclick="openLightbox('Furniture%20%20assembly.jpg', 'Bedroom Assembly')">
           <div class="project-card-img-wrapper">
             <img src="Furniture%20%20assembly.jpg" alt="Bedroom Assembly Before and After">
@@ -620,15 +620,15 @@
           <span>Furniture Assembly</span>
         </div>
 
-        <!-- 4. Kitchen Renovation -->
-        <div class="project-card" onclick="openLightbox('Kitchen%20renovation.jpg', 'Kitchen Renovation')">
+        <!-- 4. Kitchen Renovation (Updated photo name) -->
+        <div class="project-card" onclick="openLightbox('Kitchen%20renovation.jpg.jpg', 'Kitchen Renovation')">
           <div class="project-card-img-wrapper">
-            <img src="Kitchen%20renovation.jpg" alt="Kitchen Renovation Before and After">
+            <img src="Kitchen%20renovation.jpg.jpg" alt="Kitchen Renovation Before and After">
           </div>
           <span>Kitchen Renovation</span>
         </div>
 
-        <!-- 5. Deck (Renamed from Deck and Pergola) -->
+        <!-- 5. Deck -->
         <div class="project-card" onclick="openLightbox('Deck.jpg', 'Deck')">
           <div class="project-card-img-wrapper">
             <img src="Deck.jpg" alt="Deck Before and After">
@@ -662,14 +662,14 @@
 
     <!-- CALCULATOR WIZARD -->
     <section>
-      <h2 class="section-title">Service Price Calculator</h2>
+      <h2 class="section-title">Order a Service</h2>
 
       <div class="calculator-card">
         
         <!-- Top Header Bar -->
-        <div class="wizard-header" id="wizardHeader" style="display: flex;">
+        <div class="wizard-header" id="wizardHeader">
           <button class="back-btn" id="backBtn" onclick="goBackStep()" style="display: none;">← Back</button>
-          <div class="total-tracker" id="runningTotalDisplay">$0</div>
+          <div class="total-tracker" id="runningTotalDisplay" style="display: none;">$0</div>
         </div>
 
         <div id="stepContainer"></div>
@@ -707,10 +707,11 @@
     let historyStack = [];
     let cartItems = [];
     
-    let MINIMUM_CALL_OUT = 60; // Callout fee applied at checkout if needed
+    let MINIMUM_CALL_OUT = 60;
     let tempDraftItem = null;
     let isComplexEstimate = false;
 
+    // FULL COMPLETE TREE WITH ALL 10 CATEGORIES AND ALL SERVICES
     const wizardTree = {
       root: {
         isRoot: true,
@@ -869,7 +870,7 @@
         options: [
           { label: "Small Shed (8×8 ft)", setBasePrice: 400, next: "commit_single_item" },
           { label: "Medium Shed (10×12 ft)", setBasePrice: 650, next: "commit_single_item" },
-          { label: "Large Shed (12×16 ft)", updatePrice: 950, next: "commit_single_item" }
+          { label: "Large Shed (12×16 ft)", setBasePrice: 950, next: "commit_single_item" }
         ]
       },
 
@@ -906,9 +907,17 @@
       }
     };
 
-    function updateCartDisplay() {
-      let rawSum = cartItems.reduce((acc, item) => acc + item.price, 0);
-      document.getElementById('runningTotalDisplay').innerText = `$${rawSum.toLocaleString()}`;
+    function updatePriceBadge() {
+      const display = document.getElementById('runningTotalDisplay');
+      let cartSum = cartItems.reduce((acc, item) => acc + item.price, 0);
+      let currentStepTotal = cartSum + (tempDraftItem ? tempDraftItem.basePrice : 0);
+
+      if (currentStepTotal > 0) {
+        display.style.display = 'block';
+        display.innerText = `Current Estimate: $${currentStepTotal.toLocaleString()}`;
+      } else {
+        display.style.display = 'none';
+      }
     }
 
     function renderCurrentStep(stepKey) {
@@ -968,6 +977,8 @@
           } else {
             noteElem.innerText = "15% discount applied to extra units!";
           }
+          tempDraftItem.calculatedFinal = calcPrice(currentQty);
+          updatePriceBadge();
         };
 
         document.getElementById('qtyMinusBtn').onclick = () => {
@@ -986,6 +997,8 @@
           tempDraftItem = null;
           renderCurrentStep('finish');
         };
+
+        updateQtyUI();
         return;
       }
 
@@ -1000,8 +1013,15 @@
           </div>
         `;
 
+        const sqInput = document.getElementById('sqFtInput');
+        sqInput.oninput = () => {
+          const sqft = parseFloat(sqInput.value) || 0;
+          tempDraftItem.basePrice = Math.round(sqft * tempDraftItem.sqFtPrice);
+          updatePriceBadge();
+        };
+
         document.getElementById('confirmSqFtBtn').onclick = () => {
-          const sqft = parseFloat(document.getElementById('sqFtInput').value) || 0;
+          const sqft = parseFloat(sqInput.value) || 0;
           let finalPrice = Math.round(sqft * tempDraftItem.sqFtPrice);
           cartItems.push({
             name: `${tempDraftItem.label} (${sqft} sq ft)`,
@@ -1054,7 +1074,7 @@
         let msg = `Hello! I would like to get an estimate for:\n${itemsStr}\nEstimated Total: $${finalPayable.toLocaleString()}.\nWhen are you available?`;
         document.getElementById('finalSmsBtn').href = `sms:${phone}?body=${encodeURIComponent(msg)}`;
         
-        updateCartDisplay();
+        updatePriceBadge();
         return;
       }
 
@@ -1077,7 +1097,7 @@
 
       html += `</div>`;
       container.innerHTML = html;
-      updateCartDisplay();
+      updatePriceBadge();
     }
 
     function makeChoice(currentStepKey, optionIndex) {
