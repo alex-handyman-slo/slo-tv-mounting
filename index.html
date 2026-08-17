@@ -145,7 +145,6 @@
       text-align: center;
     }
 
-    /* 3 columns layout */
     .projects-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -160,6 +159,12 @@
       display: flex;
       flex-direction: column;
       box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .project-card:hover {
+      transform: scale(1.03);
     }
 
     .project-card-img-wrapper {
@@ -188,6 +193,61 @@
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+    }
+
+    /* Image Lightbox Modal */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.9);
+      z-index: 9999;
+      justify-content: center;
+      align-items: center;
+      padding: 15px;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal-img-container {
+      position: relative;
+      max-width: 90vw;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .modal-img-container img {
+      max-width: 100%;
+      max-height: 80vh;
+      border-radius: 8px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+      object-fit: contain;
+    }
+
+    .modal-caption {
+      color: #ffffff;
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-top: 12px;
+      text-align: center;
+    }
+
+    .modal-close-btn {
+      position: absolute;
+      top: -40px;
+      right: 0;
+      color: #ffffff;
+      font-size: 2rem;
+      font-weight: bold;
+      cursor: pointer;
+      line-height: 1;
     }
 
     /* Main Container */
@@ -536,42 +596,48 @@
       <div class="projects-title">My Projects - Before &amp; After</div>
       <div class="projects-grid">
         
-        <div class="project-card">
+        <!-- 1. Bedroom Assembly (Double space image) -->
+        <div class="project-card" onclick="openLightbox('Furniture%20%20assembly.jpg', 'Bedroom Assembly')">
           <div class="project-card-img-wrapper">
-            <img src="Furniture%20assembly.jpg" alt="Bedroom Assembly Before and After">
+            <img src="Furniture%20%20assembly.jpg" alt="Bedroom Assembly Before and After">
           </div>
           <span>Bedroom Assembly</span>
         </div>
 
-        <div class="project-card">
+        <!-- 2. Shed Installation -->
+        <div class="project-card" onclick="openLightbox('Shed.jpg', 'Shed Installation')">
           <div class="project-card-img-wrapper">
             <img src="Shed.jpg" alt="Shed Installation Before and After">
           </div>
           <span>Shed Installation</span>
         </div>
 
-        <div class="project-card">
+        <!-- 3. Furniture Assembly -->
+        <div class="project-card" onclick="openLightbox('Furniture%20assembly.jpg', 'Furniture Assembly')">
           <div class="project-card-img-wrapper">
             <img src="Furniture%20assembly.jpg" alt="Furniture Assembly Before and After">
           </div>
           <span>Furniture Assembly</span>
         </div>
 
-        <div class="project-card">
+        <!-- 4. Kitchen Renovation -->
+        <div class="project-card" onclick="openLightbox('Kitchen%20renovation.jpg', 'Kitchen Renovation')">
           <div class="project-card-img-wrapper">
             <img src="Kitchen%20renovation.jpg" alt="Kitchen Renovation Before and After">
           </div>
           <span>Kitchen Renovation</span>
         </div>
 
-        <div class="project-card">
+        <!-- 5. Deck (Renamed from Deck and Pergola) -->
+        <div class="project-card" onclick="openLightbox('Deck.jpg', 'Deck')">
           <div class="project-card-img-wrapper">
-            <img src="Deck.jpg" alt="Deck and Pergola Before and After">
+            <img src="Deck.jpg" alt="Deck Before and After">
           </div>
-          <span>Deck and Pergola</span>
+          <span>Deck</span>
         </div>
 
-        <div class="project-card">
+        <!-- 6. Concrete Driveway -->
+        <div class="project-card" onclick="openLightbox('Concrete%20porch.jpg', 'Concrete Driveway')">
           <div class="project-card-img-wrapper">
             <img src="Concrete%20porch.jpg" alt="Concrete Driveway Before and After">
           </div>
@@ -582,6 +648,15 @@
     </div>
   </header>
 
+  <!-- Lightbox Modal for Fullsize Images -->
+  <div class="modal-overlay" id="imageModal" onclick="closeLightbox()">
+    <div class="modal-img-container" onclick="event.stopPropagation()">
+      <span class="modal-close-btn" onclick="closeLightbox()">&times;</span>
+      <img id="modalImg" src="" alt="Full view">
+      <div class="modal-caption" id="modalCaption"></div>
+    </div>
+  </div>
+
   <!-- Main Container -->
   <main class="container">
 
@@ -591,10 +666,10 @@
 
       <div class="calculator-card">
         
-        <!-- Top Header Bar (Hidden on Step 1) -->
-        <div class="wizard-header" id="wizardHeader" style="display: none;">
-          <button class="back-btn" onclick="goBackStep()">← Back</button>
-          <div class="total-tracker" id="runningTotalDisplay">$60</div>
+        <!-- Top Header Bar -->
+        <div class="wizard-header" id="wizardHeader" style="display: flex;">
+          <button class="back-btn" id="backBtn" onclick="goBackStep()" style="display: none;">← Back</button>
+          <div class="total-tracker" id="runningTotalDisplay">$0</div>
         </div>
 
         <div id="stepContainer"></div>
@@ -617,15 +692,23 @@
   </footer>
 
   <script>
-    // State Management
+    // Lightbox Modal Handler
+    function openLightbox(src, caption) {
+      document.getElementById('modalImg').src = src;
+      document.getElementById('modalCaption').innerText = caption;
+      document.getElementById('imageModal').classList.add('active');
+    }
+
+    function closeLightbox() {
+      document.getElementById('imageModal').classList.remove('active');
+    }
+
+    // Calculator State Management
     let historyStack = [];
     let cartItems = [];
     
-    let MINIMUM_CALL_OUT = 60; // Base service call fee
-    let activeRunningTotal = 60;
-    let currentItemLabel = "";
-    let currentUnitBasePrice = 60;
-    let selectedItemQuantity = 1;
+    let MINIMUM_CALL_OUT = 60; // Callout fee applied at checkout if needed
+    let tempDraftItem = null;
     let isComplexEstimate = false;
 
     const wizardTree = {
@@ -659,9 +742,9 @@
       tv_size: {
         question: "Select Screen Size:",
         options: [
-          { label: "30″ – 55″ TV Mount", updatePrice: 65, next: "tv_wall" },
-          { label: "55″ – 75″ TV Mount", updatePrice: 85, next: "tv_wall" },
-          { label: "75″ – 100″ TV Mount", updatePrice: 110, next: "tv_wall" }
+          { label: "30″ – 55″ TV Mount", setBasePrice: 65, next: "tv_wall" },
+          { label: "55″ – 75″ TV Mount", setBasePrice: 85, next: "tv_wall" },
+          { label: "75″ – 100″ TV Mount", setBasePrice: 110, next: "tv_wall" }
         ]
       },
       tv_wall: {
@@ -708,10 +791,10 @@
       bed_size: {
         question: "Select Bed Size:",
         options: [
-          { label: "Twin / Twin XL Bed Assembly", updatePrice: 50, enableQty: true, next: "qty_screen" },
-          { label: "Full / Queen Bed Assembly", updatePrice: 75, enableQty: true, next: "qty_screen" },
-          { label: "King / Cal King Bed Assembly", updatePrice: 130, enableQty: true, next: "qty_screen" },
-          { label: "Bunk Bed / Storage Bed Assembly", updatePrice: 150, enableQty: true, next: "qty_screen" }
+          { label: "Twin / Twin XL Bed Assembly", setBasePrice: 50, enableQty: true, next: "qty_screen" },
+          { label: "Full / Queen Bed Assembly", setBasePrice: 75, enableQty: true, next: "qty_screen" },
+          { label: "King / Cal King Bed Assembly", setBasePrice: 130, enableQty: true, next: "qty_screen" },
+          { label: "Bunk Bed / Storage Bed Assembly", setBasePrice: 150, enableQty: true, next: "qty_screen" }
         ]
       },
 
@@ -757,19 +840,19 @@
       roofing_gutters: {
         question: "Select Roofing / Gutter Task:",
         options: [
-          { label: "Gutter Cleaning", setBasePrice: 120, next: "add_item_to_cart" },
-          { label: "Roof Leak & Shingle Repair", setBasePrice: 250, next: "add_item_to_cart" },
-          { label: "Flashing & Ridge Repair", setBasePrice: 300, next: "add_item_to_cart" }
+          { label: "Gutter Cleaning", setBasePrice: 120, next: "commit_single_item" },
+          { label: "Roof Leak & Shingle Repair", setBasePrice: 250, next: "commit_single_item" },
+          { label: "Flashing & Ridge Repair", setBasePrice: 300, next: "commit_single_item" }
         ]
       },
 
       major_remodel: {
         question: "Select Remodeling Area:",
         options: [
-          { label: "Full Kitchen Remodel", setBasePrice: 4500, next: "add_item_to_cart" },
-          { label: "Bathroom Remodel", setBasePrice: 3500, next: "add_item_to_cart" },
-          { label: "Bedroom / Room Renovation", setBasePrice: 2500, next: "add_item_to_cart" },
-          { label: "Full House Renovation", setBasePrice: 12000, next: "add_item_to_cart" }
+          { label: "Full Kitchen Remodel", setBasePrice: 4500, next: "commit_single_item" },
+          { label: "Bathroom Remodel", setBasePrice: 3500, next: "commit_single_item" },
+          { label: "Bedroom / Room Renovation", setBasePrice: 2500, next: "commit_single_item" },
+          { label: "Full House Renovation", setBasePrice: 12000, next: "commit_single_item" }
         ]
       },
 
@@ -784,17 +867,17 @@
       shed_size: {
         question: "Select Shed Size:",
         options: [
-          { label: "Small Shed (8×8 ft)", updatePrice: 400, next: "add_item_to_cart" },
-          { label: "Medium Shed (10×12 ft)", updatePrice: 650, next: "add_item_to_cart" },
-          { label: "Large Shed (12×16 ft)", updatePrice: 950, next: "add_item_to_cart" }
+          { label: "Small Shed (8×8 ft)", setBasePrice: 400, next: "commit_single_item" },
+          { label: "Medium Shed (10×12 ft)", setBasePrice: 650, next: "commit_single_item" },
+          { label: "Large Shed (12×16 ft)", updatePrice: 950, next: "commit_single_item" }
         ]
       },
 
       pergola_type: {
         question: "Select Pergola Size:",
         options: [
-          { label: "Standard Pergola (10×10 ft)", updatePrice: 450, next: "add_item_to_cart" },
-          { label: "Large Patio Pergola (12×16 ft)", updatePrice: 650, next: "add_item_to_cart" }
+          { label: "Standard Pergola (10×10 ft)", setBasePrice: 450, next: "commit_single_item" },
+          { label: "Large Patio Pergola (12×16 ft)", setBasePrice: 650, next: "commit_single_item" }
         ]
       },
 
@@ -808,59 +891,101 @@
       adu_size_turnkey: {
         question: "Select Turnkey ADU Size:",
         options: [
-          { label: "Studio ADU (400 sq ft)", updatePrice: 140000, next: "add_item_to_cart" },
-          { label: "1-Bedroom ADU (600 sq ft)", updatePrice: 180000, next: "add_item_to_cart" },
-          { label: "2-Bedroom ADU (800 sq ft)", updatePrice: 230000, next: "add_item_to_cart" }
+          { label: "Studio ADU (400 sq ft)", setBasePrice: 140000, next: "commit_single_item" },
+          { label: "1-Bedroom ADU (600 sq ft)", setBasePrice: 180000, next: "commit_single_item" },
+          { label: "2-Bedroom ADU (800 sq ft)", setBasePrice: 230000, next: "commit_single_item" }
         ]
       },
       adu_size_build: {
         question: "Select Construction Size:",
         options: [
-          { label: "Studio ADU Frame (400 sq ft)", updatePrice: 55000, next: "add_item_to_cart" },
-          { label: "1-Bed ADU Frame (600 sq ft)", updatePrice: 75000, next: "add_item_to_cart" },
-          { label: "2-Bed ADU Frame (800 sq ft)", updatePrice: 95000, next: "add_item_to_cart" }
+          { label: "Studio ADU Frame (400 sq ft)", setBasePrice: 55000, next: "commit_single_item" },
+          { label: "1-Bed ADU Frame (600 sq ft)", setBasePrice: 75000, next: "commit_single_item" },
+          { label: "2-Bed ADU Frame (800 sq ft)", setBasePrice: 95000, next: "commit_single_item" }
         ]
       }
     };
 
+    function updateCartDisplay() {
+      let rawSum = cartItems.reduce((acc, item) => acc + item.price, 0);
+      document.getElementById('runningTotalDisplay').innerText = `$${rawSum.toLocaleString()}`;
+    }
+
     function renderCurrentStep(stepKey) {
       const container = document.getElementById('stepContainer');
-      const header = document.getElementById('wizardHeader');
+      const backBtn = document.getElementById('backBtn');
       container.innerHTML = '';
 
       if (stepKey === 'root') {
-        header.style.display = 'none';
+        backBtn.style.display = 'none';
+        tempDraftItem = null;
       } else {
-        header.style.display = 'flex';
+        backBtn.style.display = 'inline-flex';
       }
 
-      if (stepKey === 'add_item_to_cart') {
-        cartItems.push({
-          name: currentItemLabel,
-          qty: 1,
-          price: currentUnitBasePrice
-        });
+      if (stepKey === 'commit_single_item') {
+        if (tempDraftItem) {
+          cartItems.push({
+            name: tempDraftItem.label,
+            qty: 1,
+            price: tempDraftItem.basePrice
+          });
+          tempDraftItem = null;
+        }
         renderCurrentStep('finish');
         return;
       }
 
       if (stepKey === 'qty_screen') {
-        selectedItemQuantity = 1;
-        updateQuantityPriceDisplay();
+        let currentQty = 1;
 
         container.innerHTML = `
           <div class="interactive-input-card">
             <div class="step-question" style="margin-bottom:8px;">How many items do you need?</div>
             <p style="color:#64748b; font-size:0.9rem; margin:0 0 12px 0;">Select quantity (bulk discount applied for extra units)</p>
             <div class="qty-selector">
-              <button class="qty-btn" onclick="adjustQuantity(-1)">-</button>
+              <button class="qty-btn" id="qtyMinusBtn">-</button>
               <span class="qty-val" id="qtyVal">1</span>
-              <button class="qty-btn" onclick="adjustQuantity(1)">+</button>
+              <button class="qty-btn" id="qtyPlusBtn">+</button>
             </div>
             <div class="discount-badge" id="discountNote">Standard single item rate</div>
-            <button class="continue-btn" onclick="confirmQuantityChoice()">Add to Estimate →</button>
+            <button class="continue-btn" id="confirmQtyBtn">Add to Estimate →</button>
           </div>
         `;
+
+        const calcPrice = (qty) => {
+          let base = tempDraftItem.basePrice;
+          if (qty === 1) return base;
+          let extraDiscount = (base * 0.85) * (qty - 1);
+          return Math.round(base + extraDiscount);
+        };
+
+        const updateQtyUI = () => {
+          document.getElementById('qtyVal').innerText = currentQty;
+          const noteElem = document.getElementById('discountNote');
+          if (currentQty === 1) {
+            noteElem.innerText = "Standard single item rate";
+          } else {
+            noteElem.innerText = "15% discount applied to extra units!";
+          }
+        };
+
+        document.getElementById('qtyMinusBtn').onclick = () => {
+          if (currentQty > 1) { currentQty--; updateQtyUI(); }
+        };
+        document.getElementById('qtyPlusBtn').onclick = () => {
+          currentQty++; updateQtyUI();
+        };
+        document.getElementById('confirmQtyBtn').onclick = () => {
+          let finalPrice = calcPrice(currentQty);
+          cartItems.push({
+            name: tempDraftItem.label,
+            qty: currentQty,
+            price: finalPrice
+          });
+          tempDraftItem = null;
+          renderCurrentStep('finish');
+        };
         return;
       }
 
@@ -869,11 +994,23 @@
           <div class="interactive-input-card">
             <div class="step-question" style="margin-bottom:8px;">Enter Area Size in Square Feet (Sq Ft):</div>
             <p style="color:#64748b; font-size:0.9rem; margin:0 0 12px 0;">Rate calculated automatically based on project volume</p>
-            <input type="number" id="sqFtInput" class="sqft-input-field" placeholder="e.g. 150" min="10" oninput="calculateSqFtPrice()">
-            <div class="discount-badge" id="sqFtRateNote">Rate: $${currentUnitBasePrice}/sq ft</div>
-            <button class="continue-btn" onclick="confirmSqFtChoice()">Add to Estimate →</button>
+            <input type="number" id="sqFtInput" class="sqft-input-field" placeholder="e.g. 150" min="10">
+            <div class="discount-badge">Rate: $${tempDraftItem.sqFtPrice}/sq ft</div>
+            <button class="continue-btn" id="confirmSqFtBtn">Add to Estimate →</button>
           </div>
         `;
+
+        document.getElementById('confirmSqFtBtn').onclick = () => {
+          const sqft = parseFloat(document.getElementById('sqFtInput').value) || 0;
+          let finalPrice = Math.round(sqft * tempDraftItem.sqFtPrice);
+          cartItems.push({
+            name: `${tempDraftItem.label} (${sqft} sq ft)`,
+            qty: 1,
+            price: finalPrice
+          });
+          tempDraftItem = null;
+          renderCurrentStep('finish');
+        };
         return;
       }
 
@@ -902,6 +1039,7 @@
             <div style="font-weight:700; font-size:1.1rem; margin-bottom:12px; color:#0f172a;">Selected Services:</div>
             ${listHtml}
             ${disclaimerHtml}
+            <div style="font-size:0.9rem; color:#64748b; margin-bottom:4px;">Total Estimated Price:</div>
             <div class="price-headline">$${finalPayable.toLocaleString()}</div>
             
             <div class="action-buttons-group">
@@ -916,7 +1054,7 @@
         let msg = `Hello! I would like to get an estimate for:\n${itemsStr}\nEstimated Total: $${finalPayable.toLocaleString()}.\nWhen are you available?`;
         document.getElementById('finalSmsBtn').href = `sms:${phone}?body=${encodeURIComponent(msg)}`;
         
-        updateTotalDisplay();
+        updateCartDisplay();
         return;
       }
 
@@ -939,118 +1077,55 @@
 
       html += `</div>`;
       container.innerHTML = html;
+      updateCartDisplay();
     }
 
     function makeChoice(currentStepKey, optionIndex) {
       const stepData = wizardTree[currentStepKey];
       const selectedOpt = stepData.options[optionIndex];
 
-      historyStack.push({ stepKey: currentStepKey, priceBefore: activeRunningTotal });
+      historyStack.push({ stepKey: currentStepKey, draft: tempDraftItem ? {...tempDraftItem} : null });
 
       if (selectedOpt.isComplex) {
         isComplexEstimate = true;
       }
 
-      if (selectedOpt.setBasePrice !== undefined) {
-        currentUnitBasePrice = selectedOpt.setBasePrice;
-      } else if (selectedOpt.updatePrice !== undefined) {
-        currentUnitBasePrice = selectedOpt.updatePrice;
-      } else if (selectedOpt.priceAdd !== undefined) {
-        currentUnitBasePrice += selectedOpt.priceAdd;
+      if (!tempDraftItem) {
+        tempDraftItem = {
+          label: selectedOpt.label,
+          basePrice: selectedOpt.setBasePrice || 0,
+          sqFtPrice: selectedOpt.sqFtPrice || 0
+        };
+      } else {
+        if (selectedOpt.setBasePrice !== undefined) {
+          tempDraftItem.basePrice = selectedOpt.setBasePrice;
+        }
+        if (selectedOpt.priceAdd !== undefined) {
+          tempDraftItem.basePrice += selectedOpt.priceAdd;
+        }
+        if (selectedOpt.sqFtPrice !== undefined) {
+          tempDraftItem.sqFtPrice = selectedOpt.sqFtPrice;
+        }
+        tempDraftItem.label = selectedOpt.label;
       }
-
-      if (selectedOpt.enableSqFt) {
-        currentUnitBasePrice = selectedOpt.sqFtPrice;
-      }
-
-      currentItemLabel = selectedOpt.label;
-
-      let currentCartSum = cartItems.reduce((acc, item) => acc + item.price, 0);
-      activeRunningTotal = Math.max(MINIMUM_CALL_OUT, currentCartSum + currentUnitBasePrice);
-      document.getElementById('runningTotalDisplay').innerText = `$${activeRunningTotal.toLocaleString()}`;
 
       renderCurrentStep(selectedOpt.next);
     }
 
-    function adjustQuantity(delta) {
-      selectedItemQuantity += delta;
-      if (selectedItemQuantity < 1) selectedItemQuantity = 1;
-      updateQuantityPriceDisplay();
-    }
-
-    function updateQuantityPriceDisplay() {
-      const valElem = document.getElementById('qtyVal');
-      const noteElem = document.getElementById('discountNote');
-      if (valElem) valElem.innerText = selectedItemQuantity;
-
-      let calculatedItemPrice = currentUnitBasePrice;
-      if (selectedItemQuantity === 1) {
-        if (noteElem) noteElem.innerText = "Standard single item rate";
-      } else {
-        let discountedAdditional = (currentUnitBasePrice * 0.85) * (selectedItemQuantity - 1);
-        calculatedItemPrice = Math.round(currentUnitBasePrice + discountedAdditional);
-        if (noteElem) noteElem.innerText = `15% discount applied to extra units!`;
-      }
-
-      let currentCartSum = cartItems.reduce((acc, item) => acc + item.price, 0);
-      activeRunningTotal = Math.max(MINIMUM_CALL_OUT, currentCartSum + calculatedItemPrice);
-      document.getElementById('runningTotalDisplay').innerText = `$${activeRunningTotal.toLocaleString()}`;
-
-      return calculatedItemPrice;
-    }
-
-    function confirmQuantityChoice() {
-      let finalItemPrice = updateQuantityPriceDisplay();
-      cartItems.push({
-        name: currentItemLabel,
-        qty: selectedItemQuantity,
-        price: finalItemPrice
-      });
-      renderCurrentStep('finish');
-    }
-
-    function calculateSqFtPrice() {
-      const sqft = parseFloat(document.getElementById('sqFtInput').value) || 0;
-      let calculatedSqFtPrice = Math.round(sqft * currentUnitBasePrice);
-      
-      let currentCartSum = cartItems.reduce((acc, item) => acc + item.price, 0);
-      activeRunningTotal = Math.max(MINIMUM_CALL_OUT, currentCartSum + calculatedSqFtPrice);
-      document.getElementById('runningTotalDisplay').innerText = `$${activeRunningTotal.toLocaleString()}`;
-
-      return calculatedSqFtPrice;
-    }
-
-    function confirmSqFtChoice() {
-      const sqft = parseFloat(document.getElementById('sqFtInput').value) || 0;
-      let finalSqFtPrice = calculateSqFtPrice();
-      cartItems.push({
-        name: `${currentItemLabel} (${sqft} sq ft)`,
-        qty: 1,
-        price: finalSqFtPrice
-      });
-      renderCurrentStep('finish');
-    }
-
     function addAnotherService() {
+      historyStack = [];
+      tempDraftItem = null;
       renderCurrentStep('root');
-    }
-
-    function updateTotalDisplay() {
-      let rawSum = cartItems.reduce((acc, item) => acc + item.price, 0);
-      let finalPayable = Math.max(rawSum, MINIMUM_CALL_OUT);
-      document.getElementById('runningTotalDisplay').innerText = `$${finalPayable.toLocaleString()}`;
     }
 
     function goBackStep() {
       if (historyStack.length === 0) {
+        tempDraftItem = null;
         renderCurrentStep('root');
         return;
       }
       const lastState = historyStack.pop();
-      if (lastState.priceBefore !== undefined) {
-        activeRunningTotal = lastState.priceBefore;
-        document.getElementById('runningTotalDisplay').innerText = `$${activeRunningTotal.toLocaleString()}`;
-      }
+      tempDraftItem = lastState.draft;
       renderCurrentStep(lastState.stepKey);
     }
 
