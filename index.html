@@ -18,7 +18,7 @@
       line-height: 1.4;
     }
 
-    /* Hero Header with Dark Gradient */
+    /* Hero Header */
     header {
       background: linear-gradient(180deg, #0284c7 0%, #1e1b4b 35%, #0f172a 100%);
       color: #ffffff;
@@ -79,7 +79,7 @@
       transform: translateY(-2px);
     }
 
-    /* Social Media Links Header */
+    /* Social Links */
     .social-section-header {
       margin-top: 15px;
       text-align: center;
@@ -234,7 +234,7 @@
       cursor: pointer;
     }
 
-    /* Main Container with Compact Spacing */
+    /* Main Container */
     .container {
       max-width: 900px;
       margin: 0 auto;
@@ -249,7 +249,7 @@
       font-weight: 800;
     }
 
-    /* Calculator Card - Compact */
+    /* Calculator Card */
     .calculator-card {
       background: #ffffff;
       border: 1px solid #e2e8f0;
@@ -259,7 +259,6 @@
       margin-bottom: 15px;
     }
 
-    /* Dynamic Header Bar - Compact */
     .wizard-header {
       display: flex;
       justify-content: space-between;
@@ -297,11 +296,11 @@
       margin-bottom: 10px;
     }
 
-    /* Buttons Grid */
+    /* Equal Sized Uniform Buttons Grid */
     .sub-buttons-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 8px;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 10px;
     }
 
     .green-opt-btn {
@@ -309,8 +308,8 @@
       color: #ffffff;
       border: none;
       border-radius: 12px;
-      padding: 10px 10px;
-      font-size: 0.92rem;
+      padding: 12px 10px;
+      font-size: 0.95rem;
       font-weight: 700;
       cursor: pointer;
       display: flex;
@@ -318,9 +317,9 @@
       align-items: center;
       justify-content: center;
       text-align: center;
-      gap: 2px;
-      min-height: 65px;
-      box-shadow: 0 3px 8px rgba(22, 163, 74, 0.15);
+      gap: 3px;
+      height: 75px; /* Fixed Height for Uniform Size */
+      box-shadow: 0 3px 8px rgba(22, 163, 74, 0.18);
       transition: background-color 0.15s;
     }
 
@@ -471,7 +470,7 @@
       font-size: 1.05rem;
     }
 
-    /* License Footer Card */
+    /* License Footer */
     .license-card {
       background: #ffffff;
       border: 1px solid #e2e8f0;
@@ -565,7 +564,6 @@
           <div class="project-card-img-wrapper"><img src="Furniture%20assembly.jpg" alt="Furniture Assembly"></div>
           <span>Furniture Assembly</span>
         </div>
-        <!-- Kitchen Renovation image path -->
         <div class="project-card" onclick="openLightbox('Kitchen%20renovation.jpg.jpeg', 'Kitchen Renovation')">
           <div class="project-card-img-wrapper"><img src="Kitchen%20renovation.jpg.jpeg" alt="Kitchen Renovation"></div>
           <span>Kitchen Renovation</span>
@@ -777,52 +775,21 @@
         ]
       },
 
+      // SHEDS & PERGOLAS NOW BY SQ FT
       sheds_pergolas: {
         question: "Select Structure Type:",
         options: [
-          { label: "Storage Shed Construction", next: "shed_size" },
-          { label: "Pergola / Patio Cover", next: "pergola_type" }
+          { label: "Storage Shed Construction", enableSqFt: true, sqFtPrice: 8.00, next: "sqft_screen" },
+          { label: "Pergola / Patio Cover", enableSqFt: true, sqFtPrice: 6.00, next: "sqft_screen" }
         ]
       },
 
-      shed_size: {
-        question: "Select Shed Size:",
-        options: [
-          { label: "Small Shed (8×8 ft)", setBasePrice: 400, next: "commit_single_item" },
-          { label: "Medium Shed (10×12 ft)", setBasePrice: 650, next: "commit_single_item" },
-          { label: "Large Shed (12×16 ft)", setBasePrice: 950, next: "commit_single_item" }
-        ]
-      },
-
-      pergola_type: {
-        question: "Select Pergola Size:",
-        options: [
-          { label: "Standard Pergola (10×10 ft)", setBasePrice: 450, next: "commit_single_item" },
-          { label: "Large Patio Pergola (12×16 ft)", setBasePrice: 650, next: "commit_single_item" }
-        ]
-      },
-
+      // ADU CONSTRUCTION NOW BY SQ FT
       adu_scope: {
         question: "Select ADU Scope:",
         options: [
-          { label: "Full Turnkey ADU", next: "adu_size_turnkey" },
-          { label: "ADU Construction Only", next: "adu_size_build" }
-        ]
-      },
-      adu_size_turnkey: {
-        question: "Select Turnkey ADU Size:",
-        options: [
-          { label: "Studio ADU (400 sq ft)", setBasePrice: 140000, next: "commit_single_item" },
-          { label: "1-Bedroom ADU (600 sq ft)", setBasePrice: 180000, next: "commit_single_item" },
-          { label: "2-Bedroom ADU (800 sq ft)", setBasePrice: 230000, next: "commit_single_item" }
-        ]
-      },
-      adu_size_build: {
-        question: "Select Construction Size:",
-        options: [
-          { label: "Studio ADU Frame (400 sq ft)", setBasePrice: 55000, next: "commit_single_item" },
-          { label: "1-Bed ADU Frame (600 sq ft)", setBasePrice: 75000, next: "commit_single_item" },
-          { label: "2-Bed ADU Frame (800 sq ft)", setBasePrice: 95000, next: "commit_single_item" }
+          { label: "Full Turnkey ADU", enableSqFt: true, sqFtPrice: 300, next: "sqft_screen" },
+          { label: "ADU Construction Only", enableSqFt: true, sqFtPrice: 120, next: "sqft_screen" }
         ]
       }
     };
@@ -928,7 +895,7 @@
           <div class="interactive-input-card">
             <div class="step-question" style="margin-bottom:6px;">Enter Area Size in Square Feet (Sq Ft):</div>
             <p style="color:#64748b; font-size:0.85rem; margin:0 0 8px 0;">Rate calculated automatically based on project volume</p>
-            <input type="number" id="sqFtInput" class="sqft-input-field" placeholder="e.g. 150" min="10">
+            <input type="number" id="sqFtInput" class="sqft-input-field" placeholder="e.g. 400" min="10">
             <div class="discount-badge">Rate: $${tempDraftItem.sqFtPrice}/sq ft</div>
             <button class="continue-btn" id="confirmSqFtBtn">Add to Estimate →</button>
           </div>
