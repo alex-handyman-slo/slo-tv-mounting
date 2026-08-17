@@ -15,14 +15,14 @@
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       background-color: #f8fafc;
       color: #1e293b;
-      line-height: 1.5;
+      line-height: 1.4;
     }
 
     /* Hero Header with Dark Gradient */
     header {
       background: linear-gradient(180deg, #0284c7 0%, #1e1b4b 35%, #0f172a 100%);
       color: #ffffff;
-      padding: 30px 12px 35px;
+      padding: 20px 12px 25px;
       text-align: center;
       display: flex;
       flex-direction: column;
@@ -31,30 +31,30 @@
 
     .brand-logo-container {
       background: #ffffff;
-      padding: 10px 18px;
-      border-radius: 14px;
-      box-shadow: 0 6px 18px rgba(0,0,0,0.25);
-      margin-bottom: 12px;
+      padding: 8px 16px;
+      border-radius: 12px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.25);
+      margin-bottom: 8px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
     }
 
     .brand-logo-svg {
-      width: 130px;
+      width: 120px;
       height: auto;
     }
 
     header h1 {
-      margin: 4px 0 2px 0;
-      font-size: 2.2rem;
+      margin: 2px 0;
+      font-size: 2rem;
       font-weight: 800;
       letter-spacing: -0.5px;
     }
 
     header p.location-text {
-      margin: 0 0 16px 0;
-      font-size: 1.05rem;
+      margin: 0 0 12px 0;
+      font-size: 1rem;
       opacity: 0.95;
       font-weight: 600;
     }
@@ -62,16 +62,16 @@
     .cta-sms-header {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
       background-color: #16a34a;
       color: #ffffff;
-      padding: 14px 28px;
+      padding: 12px 24px;
       border-radius: 30px;
       font-weight: 800;
       text-decoration: none;
-      font-size: 1.15rem;
+      font-size: 1.05rem;
       border: 2px solid rgba(255, 255, 255, 0.3);
-      box-shadow: 0 4px 18px rgba(22, 163, 74, 0.5);
+      box-shadow: 0 4px 14px rgba(22, 163, 74, 0.4);
       transition: all 0.2s;
     }
     .cta-sms-header:hover {
@@ -81,22 +81,22 @@
 
     /* Social Media Links Header */
     .social-section-header {
-      margin-top: 20px;
+      margin-top: 15px;
       text-align: center;
       width: 100%;
     }
 
     .social-section-title {
-      font-size: 0.92rem;
+      font-size: 0.88rem;
       font-weight: 600;
       color: #ffffff;
       opacity: 0.95;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
 
     .header-socials {
       display: flex;
-      gap: 8px;
+      gap: 6px;
       justify-content: center;
       align-items: center;
       flex-wrap: wrap;
@@ -105,24 +105,19 @@
     .social-btn-colorful {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
-      padding: 8px 14px;
-      border-radius: 20px;
-      font-size: 0.85rem;
+      gap: 5px;
+      padding: 6px 12px;
+      border-radius: 18px;
+      font-size: 0.82rem;
       font-weight: 700;
       color: #ffffff;
       text-decoration: none;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.25);
-      transition: transform 0.2s;
-    }
-
-    .social-btn-colorful:hover {
-      transform: translateY(-2px);
+      box-shadow: 0 3px 10px rgba(0,0,0,0.2);
     }
 
     .social-btn-colorful .social-icon {
-      width: 16px;
-      height: 16px;
+      width: 15px;
+      height: 15px;
       fill: currentColor;
     }
 
@@ -134,43 +129,38 @@
     .projects-section {
       width: 100%;
       max-width: 900px;
-      margin-top: 30px;
+      margin-top: 20px;
     }
 
     .projects-title {
-      font-size: 1.7rem;
+      font-size: 1.5rem;
       font-weight: 800;
       color: #ffffff;
-      margin-bottom: 16px;
+      margin-bottom: 12px;
       text-align: center;
     }
 
     .projects-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 8px;
+      gap: 6px;
     }
 
     .project-card {
       background: rgba(255, 255, 255, 0.08);
       border: 1px solid rgba(255, 255, 255, 0.18);
-      border-radius: 10px;
+      border-radius: 8px;
       overflow: hidden;
       display: flex;
       flex-direction: column;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.25);
       cursor: pointer;
-      transition: transform 0.2s;
-    }
-
-    .project-card:hover {
-      transform: scale(1.03);
     }
 
     .project-card-img-wrapper {
       position: relative;
       width: 100%;
-      padding-top: 110%;
+      padding-top: 100%;
       background-color: #1e293b;
     }
 
@@ -184,8 +174,8 @@
     }
 
     .project-card span {
-      padding: 6px 4px;
-      font-size: 0.78rem;
+      padding: 5px 3px;
+      font-size: 0.75rem;
       font-weight: 700;
       color: #ffffff;
       text-align: center;
@@ -195,7 +185,7 @@
       text-overflow: ellipsis;
     }
 
-    /* Image Lightbox Modal */
+    /* Lightbox Modal */
     .modal-overlay {
       display: none;
       position: fixed;
@@ -210,9 +200,7 @@
       padding: 15px;
     }
 
-    .modal-overlay.active {
-      display: flex;
-    }
+    .modal-overlay.active { display: flex; }
 
     .modal-img-container {
       position: relative;
@@ -227,112 +215,102 @@
       max-width: 100%;
       max-height: 80vh;
       border-radius: 8px;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.5);
       object-fit: contain;
     }
 
     .modal-caption {
       color: #ffffff;
-      font-size: 1.1rem;
+      font-size: 1rem;
       font-weight: 700;
-      margin-top: 12px;
-      text-align: center;
+      margin-top: 10px;
     }
 
     .modal-close-btn {
       position: absolute;
-      top: -40px;
+      top: -35px;
       right: 0;
       color: #ffffff;
       font-size: 2rem;
-      font-weight: bold;
       cursor: pointer;
-      line-height: 1;
     }
 
-    /* Main Container */
+    /* Main Container with Compact Spacing */
     .container {
       max-width: 900px;
       margin: 0 auto;
-      padding: 35px 16px;
+      padding: 15px 12px;
     }
 
     .section-title {
       text-align: center;
-      font-size: 1.8rem;
+      font-size: 1.5rem;
       color: #0f172a;
-      margin: 0 0 20px 0;
+      margin: 0 0 10px 0;
       font-weight: 800;
     }
 
-    /* Calculator Card */
+    /* Calculator Card - Compact */
     .calculator-card {
       background: #ffffff;
       border: 1px solid #e2e8f0;
-      border-radius: 20px;
-      padding: 24px 18px;
-      box-shadow: 0 6px 25px rgba(0, 0, 0, 0.05);
-      margin-bottom: 25px;
+      border-radius: 16px;
+      padding: 14px 12px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+      margin-bottom: 15px;
     }
 
-    /* Dynamic Wizard Header Bar */
+    /* Dynamic Header Bar - Compact */
     .wizard-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 20px;
-      border-bottom: 2px solid #f1f5f9;
-      padding-bottom: 12px;
+      margin-bottom: 10px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #f1f5f9;
     }
 
     .back-btn {
       background-color: #e2e8f0;
       color: #334155;
       border: none;
-      border-radius: 10px;
-      padding: 8px 16px;
-      font-size: 0.95rem;
+      border-radius: 8px;
+      padding: 6px 12px;
+      font-size: 0.88rem;
       font-weight: 700;
       cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      transition: all 0.2s;
     }
 
-    .back-btn:hover { background-color: #cbd5e1; }
-
     .total-tracker {
-      font-size: 1.3rem;
+      font-size: 1.1rem;
       font-weight: 800;
       color: #166534;
       background: #f0fdf4;
       border: 1px solid #bbf7d0;
-      padding: 6px 18px;
-      border-radius: 30px;
+      padding: 4px 12px;
+      border-radius: 20px;
     }
 
     .step-question {
-      font-size: 1.15rem;
+      font-size: 1.05rem;
       font-weight: 700;
       color: #0f172a;
-      margin-bottom: 16px;
+      margin-bottom: 10px;
     }
 
     /* Buttons Grid */
     .sub-buttons-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 10px;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 8px;
     }
 
     .green-opt-btn {
       background-color: #16a34a;
       color: #ffffff;
       border: none;
-      border-radius: 14px;
-      padding: 14px 12px;
-      font-size: 0.98rem;
+      border-radius: 12px;
+      padding: 10px 10px;
+      font-size: 0.92rem;
       font-weight: 700;
       cursor: pointer;
       display: flex;
@@ -340,19 +318,18 @@
       align-items: center;
       justify-content: center;
       text-align: center;
-      gap: 4px;
-      min-height: 80px;
-      box-shadow: 0 4px 12px rgba(22, 163, 74, 0.18);
-      transition: all 0.2s;
+      gap: 2px;
+      min-height: 65px;
+      box-shadow: 0 3px 8px rgba(22, 163, 74, 0.15);
+      transition: background-color 0.15s;
     }
 
     .green-opt-btn:hover {
       background-color: #15803d;
-      transform: translateY(-2px);
     }
 
     .green-opt-btn span.subtext {
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       font-weight: 500;
       opacity: 0.9;
     }
@@ -361,138 +338,124 @@
     .interactive-input-card {
       background: #f8fafc;
       border: 1px solid #e2e8f0;
-      border-radius: 16px;
-      padding: 20px;
+      border-radius: 12px;
+      padding: 14px;
       text-align: center;
-      margin: 15px 0;
+      margin: 8px 0;
     }
 
     .qty-selector {
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 15px;
-      margin: 15px 0;
+      gap: 12px;
+      margin: 10px 0;
     }
 
     .qty-btn {
       background: #16a34a;
       color: #ffffff;
       border: none;
-      width: 48px;
-      height: 48px;
-      border-radius: 12px;
-      font-size: 1.6rem;
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      font-size: 1.4rem;
       font-weight: 700;
       cursor: pointer;
     }
 
     .qty-val {
-      font-size: 1.6rem;
+      font-size: 1.4rem;
       font-weight: 800;
-      width: 60px;
+      width: 50px;
       text-align: center;
       color: #0f172a;
     }
 
     .discount-badge {
-      font-size: 0.88rem;
+      font-size: 0.82rem;
       color: #15803d;
       font-weight: 700;
-      margin-top: 5px;
+      margin-top: 4px;
     }
 
     .sqft-input-field {
       width: 100%;
-      max-width: 250px;
-      padding: 12px 16px;
-      font-size: 1.2rem;
+      max-width: 220px;
+      padding: 10px 12px;
+      font-size: 1.1rem;
       font-weight: 700;
       border: 2px solid #cbd5e1;
-      border-radius: 12px;
+      border-radius: 10px;
       text-align: center;
-      margin: 10px 0;
+      margin: 8px 0;
     }
 
     .continue-btn {
       background-color: #16a34a;
       color: #ffffff;
       border: none;
-      border-radius: 12px;
-      padding: 16px;
-      font-size: 1.1rem;
+      border-radius: 10px;
+      padding: 12px;
+      font-size: 1rem;
       font-weight: 800;
       width: 100%;
       cursor: pointer;
-      margin-top: 15px;
+      margin-top: 10px;
     }
 
     /* Summary Final Box */
     .summary-box {
       background: #f0fdf4;
       border: 2px solid #86efac;
-      border-radius: 16px;
-      padding: 22px;
+      border-radius: 14px;
+      padding: 16px;
       text-align: center;
     }
 
     .selected-items-list {
       list-style: none;
       padding: 0;
-      margin: 0 0 15px 0;
+      margin: 0 0 10px 0;
       text-align: left;
       background: #ffffff;
-      border-radius: 12px;
+      border-radius: 10px;
       border: 1px solid #e2e8f0;
     }
 
     .selected-items-list li {
-      padding: 10px 14px;
+      padding: 8px 12px;
       border-bottom: 1px solid #f1f5f9;
-      font-size: 0.95rem;
+      font-size: 0.9rem;
       font-weight: 600;
       color: #334155;
       display: flex;
       justify-content: space-between;
     }
 
-    .selected-items-list li:last-child {
-      border-bottom: none;
-    }
-
-    .estimate-disclaimer {
-      background: #eff6ff;
-      border: 1px solid #bfdbfe;
-      color: #1d4ed8;
-      border-radius: 10px;
-      padding: 12px;
-      font-size: 0.88rem;
-      font-weight: 600;
-      margin-bottom: 15px;
-      text-align: left;
-    }
+    .selected-items-list li:last-child { border-bottom: none; }
 
     .price-headline {
-      font-size: 2.2rem;
+      font-size: 1.8rem;
       font-weight: 800;
       color: #15803d;
-      margin-bottom: 18px;
+      margin-bottom: 12px;
     }
 
     .action-buttons-group {
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 8px;
     }
 
     .add-more-btn {
       background-color: #2563eb;
       color: #ffffff;
       border: none;
-      border-radius: 12px;
-      padding: 14px;
+      border-radius: 10px;
+      padding: 12px;
       font-weight: 700;
-      font-size: 1rem;
+      font-size: 0.95rem;
       cursor: pointer;
     }
 
@@ -501,50 +464,50 @@
       width: 100%;
       background-color: #16a34a;
       color: #ffffff;
-      padding: 16px;
-      border-radius: 12px;
+      padding: 14px;
+      border-radius: 10px;
       font-weight: 800;
       text-decoration: none;
-      font-size: 1.15rem;
+      font-size: 1.05rem;
     }
 
     /* License Footer Card */
     .license-card {
       background: #ffffff;
       border: 1px solid #e2e8f0;
-      border-radius: 16px;
-      padding: 20px;
+      border-radius: 12px;
+      padding: 14px;
       text-align: center;
-      margin-top: 20px;
+      margin-top: 15px;
     }
 
     .license-card h3 {
-      margin: 0 0 8px 0;
+      margin: 0 0 4px 0;
       color: #1e3a8a;
-      font-size: 1.1rem;
+      font-size: 1rem;
       font-weight: 800;
     }
 
     .license-card p {
       margin: 0;
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       color: #475569;
       font-weight: 600;
     }
 
     footer {
       text-align: center;
-      padding: 25px 18px;
+      padding: 18px 12px;
       background-color: #0f172a;
       color: #94a3b8;
-      font-size: 0.85rem;
-      margin-top: 30px;
+      font-size: 0.8rem;
+      margin-top: 20px;
     }
   </style>
 </head>
 <body>
 
-  <!-- Header with Gradient Background -->
+  <!-- Header -->
   <header>
     <div class="brand-logo-container">
       <svg class="brand-logo-svg" viewBox="0 0 300 120" xmlns="http://www.w3.org/2000/svg">
@@ -567,23 +530,18 @@
       💬 Text Alex for Estimate
     </a>
 
-    <!-- Social Links with Correct Icons -->
+    <!-- Social Links -->
     <div class="social-section-header">
       <div class="social-section-title">See work photos &amp; customer reviews on my social pages:</div>
       <div class="header-socials">
-        <!-- Instagram -->
         <a href="https://www.instagram.com/alexjohnsonhandyman?igsh=NTc4MTIwNjQ2YQ==" target="_blank" rel="noopener" class="social-btn-colorful btn-instagram-color">
           <svg class="social-icon" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
           Instagram
         </a>
-        
-        <!-- Nextdoor (House Icon) -->
         <a href="https://nextdoor.com/page/home-buddy-alex-handyman?share_platform=10&utm_campaign=1786085502575&share_action_id=17aa4a96-ab64-456c-b623-c478aa09f2ab" target="_blank" rel="noopener" class="social-btn-colorful btn-nextdoor-color">
           <svg class="social-icon" viewBox="0 0 24 24"><path d="M12 3L2 12h3v8h6v-6h2v6h6v-8h3L12 3z"/></svg>
           Nextdoor
         </a>
-        
-        <!-- Facebook -->
         <a href="https://www.facebook.com/aleksandr.ivanov.537946?mibextid=wwXIfr" target="_blank" rel="noopener" class="social-btn-colorful btn-facebook-color">
           <svg class="social-icon" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
           Facebook
@@ -591,64 +549,40 @@
       </div>
     </div>
 
-    <!-- MY PROJECTS - BEFORE & AFTER (3x2 GRID) -->
+    <!-- MY PROJECTS -->
     <div class="projects-section">
       <div class="projects-title">My Projects - Before &amp; After</div>
       <div class="projects-grid">
-        
-        <!-- 1. Bedroom Assembly -->
         <div class="project-card" onclick="openLightbox('Furniture%20%20assembly.jpg', 'Bedroom Assembly')">
-          <div class="project-card-img-wrapper">
-            <img src="Furniture%20%20assembly.jpg" alt="Bedroom Assembly Before and After">
-          </div>
+          <div class="project-card-img-wrapper"><img src="Furniture%20%20assembly.jpg" alt="Bedroom Assembly"></div>
           <span>Bedroom Assembly</span>
         </div>
-
-        <!-- 2. Shed Installation -->
         <div class="project-card" onclick="openLightbox('Shed.jpg', 'Shed Installation')">
-          <div class="project-card-img-wrapper">
-            <img src="Shed.jpg" alt="Shed Installation Before and After">
-          </div>
+          <div class="project-card-img-wrapper"><img src="Shed.jpg" alt="Shed Installation"></div>
           <span>Shed Installation</span>
         </div>
-
-        <!-- 3. Furniture Assembly -->
         <div class="project-card" onclick="openLightbox('Furniture%20assembly.jpg', 'Furniture Assembly')">
-          <div class="project-card-img-wrapper">
-            <img src="Furniture%20assembly.jpg" alt="Furniture Assembly Before and After">
-          </div>
+          <div class="project-card-img-wrapper"><img src="Furniture%20assembly.jpg" alt="Furniture Assembly"></div>
           <span>Furniture Assembly</span>
         </div>
-
-        <!-- 4. Kitchen Renovation (Exact name: Kitchen renovation.jpg) -->
-        <div class="project-card" onclick="openLightbox('Kitchen%20renovation.jpg', 'Kitchen Renovation')">
-          <div class="project-card-img-wrapper">
-            <img src="Kitchen%20renovation.jpg" alt="Kitchen Renovation Before and After">
-          </div>
+        <!-- Kitchen Renovation image path -->
+        <div class="project-card" onclick="openLightbox('Kitchen%20renovation.jpg.jpeg', 'Kitchen Renovation')">
+          <div class="project-card-img-wrapper"><img src="Kitchen%20renovation.jpg.jpeg" alt="Kitchen Renovation"></div>
           <span>Kitchen Renovation</span>
         </div>
-
-        <!-- 5. Deck -->
         <div class="project-card" onclick="openLightbox('Deck.jpg', 'Deck')">
-          <div class="project-card-img-wrapper">
-            <img src="Deck.jpg" alt="Deck Before and After">
-          </div>
+          <div class="project-card-img-wrapper"><img src="Deck.jpg" alt="Deck"></div>
           <span>Deck</span>
         </div>
-
-        <!-- 6. Concrete Driveway -->
         <div class="project-card" onclick="openLightbox('Concrete%20porch.jpg', 'Concrete Driveway')">
-          <div class="project-card-img-wrapper">
-            <img src="Concrete%20porch.jpg" alt="Concrete Driveway Before and After">
-          </div>
+          <div class="project-card-img-wrapper"><img src="Concrete%20porch.jpg" alt="Concrete Driveway"></div>
           <span>Concrete Driveway</span>
         </div>
-
       </div>
     </div>
   </header>
 
-  <!-- Lightbox Modal for Fullsize Images -->
+  <!-- Lightbox Modal -->
   <div class="modal-overlay" id="imageModal" onclick="closeLightbox()">
     <div class="modal-img-container" onclick="event.stopPropagation()">
       <span class="modal-close-btn" onclick="closeLightbox()">&times;</span>
@@ -659,32 +593,23 @@
 
   <!-- Main Container -->
   <main class="container">
-
-    <!-- CALCULATOR WIZARD -->
     <section>
       <h2 class="section-title">Order a Service</h2>
-
       <div class="calculator-card">
-        
-        <!-- Top Header Bar -->
         <div class="wizard-header" id="wizardHeader">
           <button class="back-btn" id="backBtn" onclick="goBackStep()" style="display: none;">← Back</button>
           <div class="total-tracker" id="runningTotalDisplay" style="display: none;">$0</div>
         </div>
-
         <div id="stepContainer"></div>
-
       </div>
     </section>
 
-    <!-- LICENSES CARD AT BOTTOM -->
     <section>
       <div class="license-card">
         <h3>Licensed &amp; Insured Construction Services</h3>
         <p>Licensed General Construction Contractor (Class B) &amp; Roofing Contractor (Class C) in California</p>
       </div>
     </section>
-
   </main>
 
   <footer>
@@ -692,7 +617,6 @@
   </footer>
 
   <script>
-    // Lightbox Modal Handler
     function openLightbox(src, caption) {
       document.getElementById('modalImg').src = src;
       document.getElementById('modalCaption').innerText = caption;
@@ -703,15 +627,12 @@
       document.getElementById('imageModal').classList.remove('active');
     }
 
-    // Calculator State Management
     let historyStack = [];
     let cartItems = [];
-    
     let MINIMUM_CALL_OUT = 60;
     let tempDraftItem = null;
     let isComplexEstimate = false;
 
-    // FULL COMPLETE TREE WITH ALL 10 CATEGORIES AND ALL SERVICES
     const wizardTree = {
       root: {
         isRoot: true,
@@ -732,7 +653,7 @@
       home_services: {
         question: "Select Service:",
         options: [
-          { label: "TV Mounting", setBasePrice: 65, next: "tv_size" },
+          { label: "TV Mounting", next: "tv_size" },
           { label: "Hanging Shelves / Artwork / Mirrors", setBasePrice: 45, enableQty: true, next: "qty_screen" },
           { label: "Curtain Rods & Blinds Installation", setBasePrice: 45, enableQty: true, next: "qty_screen" },
           { label: "Door Lock & Handle Replacement", setBasePrice: 55, enableQty: true, next: "qty_screen" }
@@ -780,7 +701,7 @@
       furniture_type: {
         question: "Select Furniture Item:",
         options: [
-          { label: "Bed Assembly", setBasePrice: 50, next: "bed_size" },
+          { label: "Bed Assembly", next: "bed_size" },
           { label: "Dresser Assembly", setBasePrice: 70, enableQty: true, next: "qty_screen" },
           { label: "Desk Assembly", setBasePrice: 60, enableQty: true, next: "qty_screen" },
           { label: "Dining / Office Chair Assembly", setBasePrice: 35, enableQty: true, next: "qty_screen" },
@@ -859,8 +780,8 @@
       sheds_pergolas: {
         question: "Select Structure Type:",
         options: [
-          { label: "Storage Shed Construction", setBasePrice: 400, next: "shed_size" },
-          { label: "Pergola / Patio Cover", setBasePrice: 450, next: "pergola_type" }
+          { label: "Storage Shed Construction", next: "shed_size" },
+          { label: "Pergola / Patio Cover", next: "pergola_type" }
         ]
       },
 
@@ -884,8 +805,8 @@
       adu_scope: {
         question: "Select ADU Scope:",
         options: [
-          { label: "Full Turnkey ADU", setBasePrice: 18000, next: "adu_size_turnkey" },
-          { label: "ADU Construction Only", setBasePrice: 0, next: "adu_size_build" }
+          { label: "Full Turnkey ADU", next: "adu_size_turnkey" },
+          { label: "ADU Construction Only", next: "adu_size_build" }
         ]
       },
       adu_size_turnkey: {
@@ -909,12 +830,12 @@
     function updatePriceBadge(overridePrice) {
       const display = document.getElementById('runningTotalDisplay');
       let cartSum = cartItems.reduce((acc, item) => acc + item.price, 0);
-      let currentPrice = overridePrice !== undefined ? overridePrice : (tempDraftItem ? tempDraftItem.basePrice : 0);
-      let currentStepTotal = cartSum + currentPrice;
+      let currentPrice = overridePrice !== undefined ? overridePrice : (tempDraftItem && tempDraftItem.basePrice ? tempDraftItem.basePrice : 0);
+      let totalToDisplay = cartSum + currentPrice;
 
-      if (currentStepTotal > 0) {
+      if (totalToDisplay > 0) {
         display.style.display = 'block';
-        display.innerText = `Current Estimate: $${currentStepTotal.toLocaleString()}`;
+        display.innerText = `Current Estimate: $${totalToDisplay.toLocaleString()}`;
       } else {
         display.style.display = 'none';
       }
@@ -933,7 +854,7 @@
       }
 
       if (stepKey === 'commit_single_item') {
-        if (tempDraftItem) {
+        if (tempDraftItem && tempDraftItem.basePrice) {
           cartItems.push({
             name: tempDraftItem.label,
             qty: 1,
@@ -950,8 +871,8 @@
 
         container.innerHTML = `
           <div class="interactive-input-card">
-            <div class="step-question" style="margin-bottom:8px;">How many items do you need?</div>
-            <p style="color:#64748b; font-size:0.9rem; margin:0 0 12px 0;">Select quantity (bulk discount applied for extra units)</p>
+            <div class="step-question" style="margin-bottom:6px;">How many items do you need?</div>
+            <p style="color:#64748b; font-size:0.85rem; margin:0 0 8px 0;">Select quantity (bulk discount applied for extra units)</p>
             <div class="qty-selector">
               <button class="qty-btn" id="qtyMinusBtn">-</button>
               <span class="qty-val" id="qtyVal">1</span>
@@ -963,7 +884,7 @@
         `;
 
         const calcPrice = (qty) => {
-          let base = tempDraftItem.basePrice;
+          let base = tempDraftItem ? tempDraftItem.basePrice : 0;
           if (qty === 1) return base;
           let extraDiscount = (base * 0.85) * (qty - 1);
           return Math.round(base + extraDiscount);
@@ -1005,8 +926,8 @@
       if (stepKey === 'sqft_screen') {
         container.innerHTML = `
           <div class="interactive-input-card">
-            <div class="step-question" style="margin-bottom:8px;">Enter Area Size in Square Feet (Sq Ft):</div>
-            <p style="color:#64748b; font-size:0.9rem; margin:0 0 12px 0;">Rate calculated automatically based on project volume</p>
+            <div class="step-question" style="margin-bottom:6px;">Enter Area Size in Square Feet (Sq Ft):</div>
+            <p style="color:#64748b; font-size:0.85rem; margin:0 0 8px 0;">Rate calculated automatically based on project volume</p>
             <input type="number" id="sqFtInput" class="sqft-input-field" placeholder="e.g. 150" min="10">
             <div class="discount-badge">Rate: $${tempDraftItem.sqFtPrice}/sq ft</div>
             <button class="continue-btn" id="confirmSqFtBtn">Add to Estimate →</button>
@@ -1056,10 +977,10 @@
 
         container.innerHTML = `
           <div class="summary-box">
-            <div style="font-weight:700; font-size:1.1rem; margin-bottom:12px; color:#0f172a;">Selected Services:</div>
+            <div style="font-weight:700; font-size:1rem; margin-bottom:10px; color:#0f172a;">Selected Services:</div>
             ${listHtml}
             ${disclaimerHtml}
-            <div style="font-size:0.9rem; color:#64748b; margin-bottom:4px;">Total Estimated Price:</div>
+            <div style="font-size:0.85rem; color:#64748b; margin-bottom:2px;">Total Estimated Price:</div>
             <div class="price-headline">$${finalPayable.toLocaleString()}</div>
             
             <div class="action-buttons-group">
@@ -1086,7 +1007,6 @@
 
       stepData.options.forEach((opt, idx) => {
         let subText = opt.subtext ? `<span class="subtext">${opt.subtext}</span>` : '';
-
         html += `
           <button class="green-opt-btn" onclick="makeChoice('${stepKey}', ${idx})">
             <span>${opt.label}</span>
@@ -1104,7 +1024,10 @@
       const stepData = wizardTree[currentStepKey];
       const selectedOpt = stepData.options[optionIndex];
 
-      historyStack.push({ stepKey: currentStepKey, draft: tempDraftItem ? {...tempDraftItem} : null });
+      historyStack.push({ 
+        stepKey: currentStepKey, 
+        draft: tempDraftItem ? JSON.parse(JSON.stringify(tempDraftItem)) : null 
+      });
 
       if (selectedOpt.isComplex) {
         isComplexEstimate = true;
@@ -1149,7 +1072,6 @@
       renderCurrentStep(lastState.stepKey);
     }
 
-    // Initialize
     renderCurrentStep('root');
   </script>
 </body>
