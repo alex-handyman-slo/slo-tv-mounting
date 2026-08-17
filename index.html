@@ -318,7 +318,7 @@
       justify-content: center;
       text-align: center;
       gap: 3px;
-      height: 75px; /* Fixed Height for Uniform Size */
+      height: 75px;
       box-shadow: 0 3px 8px rgba(22, 163, 74, 0.18);
       transition: background-color 0.15s;
     }
@@ -743,16 +743,16 @@
         question: "Select Painting Task:",
         options: [
           { label: "Door / Trim Painting", setBasePrice: 60, enableQty: true, next: "qty_screen" },
-          { label: "Interior Room Painting (By Sq Ft)", setBasePrice: 0, enableSqFt: true, sqFtPrice: 2.50, next: "sqft_screen" },
-          { label: "Exterior Painting (By Sq Ft)", setBasePrice: 0, enableSqFt: true, sqFtPrice: 3.00, next: "sqft_screen" }
+          { label: "Interior Room Painting (By Sq Ft)", setBasePrice: 0, enableSqFt: true, sqFtPrice: 2.50, minBase: 150, next: "sqft_screen" },
+          { label: "Exterior Painting (By Sq Ft)", setBasePrice: 0, enableSqFt: true, sqFtPrice: 3.00, minBase: 200, next: "sqft_screen" }
         ]
       },
 
       concrete_work: {
         question: "Select Concrete Scope:",
         options: [
-          { label: "Small Walkway / Pad (<100 sq ft)", setBasePrice: 0, enableSqFt: true, sqFtPrice: 20, next: "sqft_screen" },
-          { label: "Standard Concrete Slab (>100 sq ft)", setBasePrice: 0, enableSqFt: true, sqFtPrice: 12, next: "sqft_screen" }
+          { label: "Small Walkway / Pad (<100 sq ft)", setBasePrice: 0, enableSqFt: true, sqFtPrice: 20, minBase: 350, next: "sqft_screen" },
+          { label: "Standard Concrete Slab (>100 sq ft)", setBasePrice: 0, enableSqFt: true, sqFtPrice: 12, minBase: 500, next: "sqft_screen" }
         ]
       },
 
@@ -775,21 +775,23 @@
         ]
       },
 
-      // SHEDS & PERGOLAS NOW BY SQ FT
+      // SHEDS & PERGOLAS - WITH MATERIALS / LABOR OPTIONS & MINIMUM BASE PRICE
       sheds_pergolas: {
-        question: "Select Structure Type:",
+        question: "Select Structure & Material Option:",
         options: [
-          { label: "Storage Shed Construction", enableSqFt: true, sqFtPrice: 8.00, next: "sqft_screen" },
-          { label: "Pergola / Patio Cover", enableSqFt: true, sqFtPrice: 6.00, next: "sqft_screen" }
+          { label: "Shed Build (Labor Only - Client Materials)", enableSqFt: true, sqFtPrice: 12.00, minBase: 400, next: "sqft_screen" },
+          { label: "Shed Build (Labor + Materials Included)", enableSqFt: true, sqFtPrice: 25.00, minBase: 750, next: "sqft_screen" },
+          { label: "Pergola / Patio Cover (Labor Only)", enableSqFt: true, sqFtPrice: 10.00, minBase: 350, next: "sqft_screen" },
+          { label: "Pergola / Patio Cover (Labor + Materials Included)", enableSqFt: true, sqFtPrice: 22.00, minBase: 650, next: "sqft_screen" }
         ]
       },
 
-      // ADU CONSTRUCTION NOW BY SQ FT
+      // ADU CONSTRUCTION BY SQ FT
       adu_scope: {
         question: "Select ADU Scope:",
         options: [
-          { label: "Full Turnkey ADU", enableSqFt: true, sqFtPrice: 300, next: "sqft_screen" },
-          { label: "ADU Construction Only", enableSqFt: true, sqFtPrice: 120, next: "sqft_screen" }
+          { label: "Full Turnkey ADU", enableSqFt: true, sqFtPrice: 300, minBase: 15000, next: "sqft_screen" },
+          { label: "ADU Construction Only (Frame & Shell)", enableSqFt: true, sqFtPrice: 120, minBase: 8000, next: "sqft_screen" }
         ]
       }
     };
@@ -891,26 +893,38 @@
       }
 
       if (stepKey === 'sqft_screen') {
+        let minBaseVal = tempDraftItem.minBase || 0;
+        let rateNoteText = `Rate: $${tempDraftItem.sqFtPrice}/sq ft`;
+        if (minBaseVal > 0) {
+          rateNoteText += ` (Minimum base fee: $${minBaseVal})`;
+        }
+
         container.innerHTML = `
           <div class="interactive-input-card">
             <div class="step-question" style="margin-bottom:6px;">Enter Area Size in Square Feet (Sq Ft):</div>
-            <p style="color:#64748b; font-size:0.85rem; margin:0 0 8px 0;">Rate calculated automatically based on project volume</p>
-            <input type="number" id="sqFtInput" class="sqft-input-field" placeholder="e.g. 400" min="10">
-            <div class="discount-badge">Rate: $${tempDraftItem.sqFtPrice}/sq ft</div>
+            <p style="color:#64748b; font-size:0.85rem; margin:0 0 8px 0;">Calculated automatically with minimum job size threshold</p>
+            <input type="number" id="sqFtInput" class="sqft-input-field" placeholder="e.g. 150" min="1">
+            <div class="discount-badge">${rateNoteText}</div>
             <button class="continue-btn" id="confirmSqFtBtn">Add to Estimate →</button>
           </div>
         `;
 
         const sqInput = document.getElementById('sqFtInput');
-        sqInput.oninput = () => {
+        
+        const calcSqFtVal = () => {
           const sqft = parseFloat(sqInput.value) || 0;
-          let calculatedSqftPrice = Math.round(sqft * tempDraftItem.sqFtPrice);
+          let rawCalculated = Math.round(sqft * tempDraftItem.sqFtPrice);
+          return Math.max(rawCalculated, minBaseVal);
+        };
+
+        sqInput.oninput = () => {
+          let calculatedSqftPrice = calcSqFtVal();
           updatePriceBadge(calculatedSqftPrice);
         };
 
         document.getElementById('confirmSqFtBtn').onclick = () => {
           const sqft = parseFloat(sqInput.value) || 0;
-          let finalPrice = Math.round(sqft * tempDraftItem.sqFtPrice);
+          let finalPrice = calcSqFtVal();
           cartItems.push({
             name: `${tempDraftItem.label} (${sqft} sq ft)`,
             qty: 1,
@@ -1004,7 +1018,8 @@
         tempDraftItem = {
           label: selectedOpt.label,
           basePrice: selectedOpt.setBasePrice || 0,
-          sqFtPrice: selectedOpt.sqFtPrice || 0
+          sqFtPrice: selectedOpt.sqFtPrice || 0,
+          minBase: selectedOpt.minBase || 0
         };
       } else {
         if (selectedOpt.setBasePrice !== undefined) {
@@ -1015,6 +1030,9 @@
         }
         if (selectedOpt.sqFtPrice !== undefined) {
           tempDraftItem.sqFtPrice = selectedOpt.sqFtPrice;
+        }
+        if (selectedOpt.minBase !== undefined) {
+          tempDraftItem.minBase = selectedOpt.minBase;
         }
         tempDraftItem.label = selectedOpt.label;
       }
