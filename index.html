@@ -3,7 +3,37 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Alex J Handyman | HomeBuddy Handyman - SLO County, CA</title>
+  <title>Alex J Handyman | Home & Construction Services SLO County, CA</title>
+  <meta name="description" content="Local handyman services & professional home improvement in San Luis Obispo County, Pismo Beach & Central Coast. Partnered with licensed California contractor #846613 for major construction.">
+  
+  <!-- Schema.org Microdata for Local Business GEO Optimization -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "HomeAndConstructionBusiness",
+    "name": "Alex J Handyman",
+    "image": "https://alex-handyman-slo.github.io/Kitchen%20renovation.jpg.jpeg",
+    "telephone": "+12797582752",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Pismo Beach",
+      "addressRegion": "CA",
+      "addressCountry": "US"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": 35.1428,
+      "longitude": -120.6413
+    },
+    "areaServed": [
+      "Pismo Beach", "Shell Beach", "San Luis Obispo", "Arroyo Grande", 
+      "Grover Beach", "Oceano", "Nipomo", "Los Osos", "Morro Bay", 
+      "Atascadero", "Templeton", "Paso Robles", "Santa Maria"
+    ],
+    "priceRange": "$$"
+  }
+  </script>
+
   <style>
     /* Reset & Core Styles */
     *, *::before, *::after {
@@ -296,7 +326,6 @@
       margin-bottom: 10px;
     }
 
-    /* Equal Sized Uniform Buttons Grid */
     .sub-buttons-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -470,13 +499,13 @@
       font-size: 1.05rem;
     }
 
-    /* ABOUT ME / BACKGROUND SECTION AT BOTTOM */
+    /* ABOUT ME / BACKGROUND SECTION */
     .about-me-section {
       background: #ffffff;
       border: 1px solid #e2e8f0;
       border-radius: 16px;
       padding: 24px 20px;
-      margin-top: 30px;
+      margin-top: 25px;
       box-shadow: 0 4px 20px rgba(0,0,0,0.03);
     }
 
@@ -529,9 +558,7 @@
       margin: 0 0 10px 0;
     }
 
-    .about-card p:last-child {
-      margin-bottom: 0;
-    }
+    .about-card p:last-child { margin-bottom: 0; }
 
     .about-card a {
       color: #2563eb;
@@ -563,28 +590,191 @@
       line-height: 1.6;
     }
 
-    /* License Footer */
-    .license-card {
+    /* TRUST & LICENSED CONTRACTING PARTNER SECTION */
+    .trust-credentials-section {
       background: #ffffff;
-      border: 1px solid #e2e8f0;
-      border-radius: 12px;
-      padding: 14px;
-      text-align: center;
-      margin-top: 15px;
+      border: 1px solid #cbd5e1;
+      border-radius: 16px;
+      padding: 24px 20px;
+      margin-top: 25px;
+      box-shadow: 0 6px 20px rgba(15, 23, 42, 0.05);
     }
 
-    .license-card h3 {
-      margin: 0 0 4px 0;
-      color: #1e3a8a;
-      font-size: 1rem;
+    .trust-section-title {
+      font-size: 1.6rem;
       font-weight: 800;
+      color: #0f172a;
+      text-align: center;
+      margin: 0 0 20px 0;
     }
 
-    .license-card p {
+    .trust-layout-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+      align-items: start;
+    }
+
+    .partner-info-box {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .partner-info-box h3 {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: #1e3a8a;
       margin: 0;
-      font-size: 0.85rem;
-      color: #475569;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .partner-info-box p {
+      font-size: 0.92rem;
+      color: #334155;
+      line-height: 1.55;
+      margin: 0;
+    }
+
+    .partner-details-list {
+      list-style: none;
+      padding: 0;
+      margin: 8px 0;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .partner-details-list li {
+      padding: 10px 14px;
+      border-bottom: 1px solid #e2e8f0;
+      font-size: 0.88rem;
       font-weight: 600;
+      color: #1e293b;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .partner-details-list li:last-child { border-bottom: none; }
+
+    /* License Card Right Side */
+    .license-credential-card {
+      background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+      color: #ffffff;
+      border-radius: 14px;
+      padding: 20px;
+      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.2);
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .license-card-badge {
+      font-size: 0.75rem;
+      font-weight: 800;
+      letter-spacing: 1px;
+      color: #38bdf8;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .license-card-company {
+      font-size: 1.25rem;
+      font-weight: 800;
+      margin-bottom: 2px;
+    }
+
+    .license-card-num {
+      font-size: 1.8rem;
+      font-weight: 900;
+      color: #4ade80;
+      letter-spacing: 1px;
+      margin: 8px 0;
+    }
+
+    .cslb-verify-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background-color: #16a34a;
+      color: #ffffff;
+      padding: 12px 20px;
+      border-radius: 25px;
+      font-weight: 800;
+      text-decoration: none;
+      font-size: 0.95rem;
+      border: 2px solid rgba(255, 255, 255, 0.25);
+      box-shadow: 0 4px 14px rgba(22, 163, 74, 0.4);
+      margin-top: 10px;
+      width: 100%;
+      max-width: 280px;
+      transition: all 0.2s;
+    }
+
+    .cslb-verify-btn:hover {
+      background-color: #15803d;
+      transform: translateY(-2px);
+    }
+
+    .cslb-sublink {
+      color: #93c5fd;
+      font-size: 0.78rem;
+      font-weight: 600;
+      margin-top: 10px;
+      text-decoration: underline;
+    }
+
+    .trust-disclaimer-text {
+      font-size: 0.82rem;
+      color: #64748b;
+      line-height: 1.45;
+      margin-top: 18px;
+      padding-top: 14px;
+      border-top: 1px dashed #cbd5e1;
+    }
+
+    /* WHY CHOOSE ALEX SECTION */
+    .why-choose-card {
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      border-radius: 16px;
+      padding: 20px;
+      margin-top: 25px;
+    }
+
+    .why-choose-card h3 {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: #166534;
+      text-align: center;
+      margin: 0 0 14px 0;
+    }
+
+    .why-choose-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+    }
+
+    .why-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: #1e293b;
+    }
+
+    .why-item span.icon {
+      color: #16a34a;
+      font-weight: 800;
+      font-size: 1.1rem;
     }
 
     footer {
@@ -704,54 +894,132 @@
         </div>
 
         <div class="about-grid">
-          
-          <!-- Card 1: Personal Approach -->
           <div class="about-card">
             <h3>👨‍👩‍👧‍👦 Personal Approach &amp; Values</h3>
             <p>Hi! My name is Alex. I am an engineer by training with extensive hands-on experience in residential construction and home improvement.</p>
             <p>My family and I recently moved to <strong>Pismo Beach</strong>, and I am deeply committed to serving our local neighbors across SLO County. I approach every job as if I were working on my own home — with technical precision, honesty, and complete pricing transparency.</p>
           </div>
 
-          <!-- Card 2: Proven Platform Experience -->
           <div class="about-card">
             <h3>⭐ Verified Platform Experience</h3>
             <p>My track record and customer satisfaction are proven across top national platforms:</p>
-            <p>• <strong>Angi &amp; Handy:</strong> Top-rated service pro for over 3 years with consistent 5-star customer feedback.</p>
+            <p>• <strong>Angi &amp; Handy:</strong> Verified service pro for over 3 years with top-rated customer feedback.</p>
             <p>• <strong>Wayfair Partner:</strong> Certified specialist for professional furniture assembly and home fixture installations.</p>
             <div class="badges-list">
-              <span class="badge-tag">Angi Top Pro (3+ Yrs)</span>
+              <span class="badge-tag">Angi Verified Pro</span>
               <span class="badge-tag">Wayfair Certified</span>
-              <span class="badge-tag">5-Star Rated</span>
+              <span class="badge-tag">Handy Specialist</span>
             </div>
           </div>
 
-          <!-- Card 3: White River Construction Representative -->
           <div class="about-card">
-            <h3>🏗️ Official Representative: White River Construction</h3>
-            <p>For major turnkey projects, I proudly represent <a href="https://whiterivergroups.com" target="_blank" rel="noopener">White River Construction Group</a> as their official officer and lead representative in San Luis Obispo County.</p>
-            <p>Together, we handle major ADU builds, decks, sheds, roofing, and full-home remodeling according to strict California building standards.</p>
+            <h3>🏗️ Major Construction Representative</h3>
+            <p>For larger construction and roofing projects, I work directly with <strong>USA FLAT ROOF dba WHITE RIVER CONSTRUCTION</strong> as an active Officer of the company.</p>
+            <p>Together, we handle full turn-key ADU builds, decks, sheds, roofing, and full-home remodeling according to California building standards.</p>
           </div>
 
-          <!-- Card 4: Service Areas -->
           <div class="about-card">
             <h3>📍 Service Areas in SLO County &amp; Nearby</h3>
-            <p>I provide fast, reliable service throughout the Central Coast region, including:</p>
+            <p>I provide fast, reliable handyman and home improvement services throughout the Central Coast region, including:</p>
             <div class="cities-list">
               Pismo Beach • Shell Beach • San Luis Obispo • Arroyo Grande • Grover Beach • Oceano • Nipomo • Los Osos • Morro Bay • Atascadero • Templeton • Paso Robles • Santa Maria
             </div>
           </div>
-
         </div>
       </div>
     </section>
 
-    <!-- LICENSE FOOTER CARD -->
+    <!-- TRUST & LICENSED CONTRACTING PARTNER SECTION -->
     <section>
-      <div class="license-card">
-        <h3>Licensed &amp; Insured Construction Services</h3>
-        <p>Licensed General Construction Contractor (Class B) &amp; Roofing Contractor (Class C) in California</p>
+      <div class="trust-credentials-section">
+        <h2 class="trust-section-title">Licensed Contracting Partner &amp; Credentials</h2>
+
+        <div class="trust-layout-grid">
+          
+          <!-- Left Column: Explanation -->
+          <div class="partner-info-box">
+            <h3>🛡️ Licensed Contracting Partner</h3>
+            <p>Alex J Handyman provides local handyman services and home improvement throughout San Luis Obispo County.</p>
+            <p>For larger general construction, structural builds, and roofing projects, Alex works directly through our licensed California contracting firm:</p>
+
+            <ul class="partner-details-list">
+              <li>
+                <span>Company Name:</span>
+                <strong>USA FLAT ROOF dba WHITE RIVER CONSTRUCTION</strong>
+              </li>
+              <li>
+                <span>License Number:</span>
+                <strong>#846613</strong>
+              </li>
+              <li>
+                <span>Classifications:</span>
+                <strong>Class B (General) &amp; Class C39 (Roofing)</strong>
+              </li>
+              <li>
+                <span>Officer Status:</span>
+                <strong>Alexander Ivanov (Officer since 2025)</strong>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Right Column: Visual License Card -->
+          <div class="license-credential-card">
+            <div class="license-card-badge">State of California Verified</div>
+            <div class="license-card-company">USA FLAT ROOF</div>
+            <div style="font-size: 0.9rem; opacity: 0.9;">dba WHITE RIVER CONSTRUCTION</div>
+            <div class="license-card-num">LIC #846613</div>
+            <div style="font-size:0.85rem; margin-bottom:12px;">Class B — General Building Contractor<br>Class C39 — Roofing Contractor</div>
+
+            <a href="https://www2.cslb.ca.gov/OnlineServices/CheckLicenseII/CheckLicense.aspx" target="_blank" rel="noopener noreferrer" class="cslb-verify-btn">
+              🔍 VERIFY LICENSE WITH CSLB
+            </a>
+            
+            <a href="https://www2.cslb.ca.gov/OnlineServices/CheckLicenseII/CheckLicense.aspx" target="_blank" rel="noopener noreferrer" class="cslb-sublink">
+              Verify License #846613 directly with CSLB
+            </a>
+          </div>
+
+        </div>
+
+        <div class="trust-disclaimer-text">
+          <strong>Transparency Notice:</strong> License #846613 is held by USA FLAT ROOF dba WHITE RIVER CONSTRUCTION. Alex J Handyman provides local handyman services in San Luis Obispo County and works with the licensed contracting company for larger construction and roofing projects. Alexander Ivanov has been an Officer of the company since 2025.
+        </div>
       </div>
     </section>
+
+    <!-- WHY CHOOSE ALEX J HANDYMAN SECTION -->
+    <section>
+      <div class="why-choose-card">
+        <h3>Why Choose Alex J Handyman?</h3>
+        <div class="why-choose-grid">
+          <div class="why-item">
+            <span class="icon">✓</span>
+            <span>Local SLO County &amp; Pismo Beach Service</span>
+          </div>
+          <div class="why-item">
+            <span class="icon">✓</span>
+            <span>Professional Engineer Workmanship</span>
+          </div>
+          <div class="why-item">
+            <span class="icon">✓</span>
+            <span>Transparent Live Estimates &amp; Pricing</span>
+          </div>
+          <div class="why-item">
+            <span class="icon">✓</span>
+            <span>Experienced &amp; Reliable Local Handyman</span>
+          </div>
+          <div class="why-item">
+            <span class="icon">✓</span>
+            <span>Licensed Contracting Partner for Major Projects</span>
+          </div>
+          <div class="why-item">
+            <span class="icon">✓</span>
+            <span>Direct Text Communication with Alex</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
   </main>
 
   <footer>
