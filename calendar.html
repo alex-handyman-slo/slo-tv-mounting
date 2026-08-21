@@ -26,9 +26,11 @@
             font-weight: 600;
         }
 
-        .calendar-container { background: white; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; }
-        .weekdays { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; font-size: 13px; color: #666; padding: 10px 0 5px 0; font-weight: 500; }
-        .days-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; }
+        /* Месячный календарь */
+        .calendar-container { background: white; border-bottom: 1px solid var(--border-color); padding: 10px 5px; }
+        .weekdays { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; font-size: 13px; color: #666; font-weight: 600; margin-bottom: 8px; }
+        .days-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+        
         .day-cell {
             display: flex;
             flex-direction: column;
@@ -36,10 +38,10 @@
             justify-content: center;
             height: 48px;
             cursor: pointer;
-            font-weight: 600;
-            font-size: 15px;
             position: relative;
+            border-radius: 8px;
         }
+        
         .day-number {
             width: 32px;
             height: 32px;
@@ -47,24 +49,28 @@
             align-items: center;
             justify-content: center;
             border-radius: 50%;
+            font-weight: 600;
+            font-size: 15px;
+            color: var(--text-dark);
         }
+
         .day-cell.selected .day-number {
             background-color: var(--primary);
             color: white;
         }
+
         .dot {
             width: 5px;
             height: 5px;
             background-color: var(--primary);
             border-radius: 50%;
-            position: absolute;
-            bottom: 3px;
+            margin-top: 2px;
         }
-        .day-cell.selected .dot { background-color: white; }
+        .day-cell.selected .dot { background-color: var(--primary); }
 
+        /* Список заказов */
         .jobs-section { padding: 15px; }
-        .date-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
-        .date-title { font-size: 16px; font-weight: 700; }
+        .date-header { font-size: 16px; font-weight: 700; margin-bottom: 12px; }
         
         .job-card {
             background: white;
@@ -139,7 +145,7 @@
             background: #fff;
         }
 
-        /* Селектор времени кнопками */
+        /* Выбор времени кнопками */
         .time-picker-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -165,20 +171,10 @@
             border-color: var(--primary);
         }
 
-        .phone-input-wrapper {
-            display: flex;
-            align-items: center;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding-left: 12px;
-        }
-        .phone-prefix { font-weight: 600; color: #333; margin-right: 4px; }
-        .phone-input-wrapper input { border: none; padding-left: 4px; }
-
         .detail-row { margin-bottom: 15px; }
         .detail-label { font-size: 12px; color: #777; text-transform: uppercase; margin-bottom: 2px; }
         .detail-value { font-size: 15px; font-weight: 500; }
-        .map-link { color: var(--primary); text-decoration: none; font-weight: 600; display: inline-block; margin-top: 4px; }
+        .clickable-link { color: var(--primary); text-decoration: none; font-weight: 600; }
         .btn-group { display: flex; gap: 10px; margin-top: 15px; }
         .btn-group a { flex: 1; text-align: center; }
     </style>
@@ -195,11 +191,9 @@
     </div>
 
     <div class="jobs-section">
-        <div class="date-header">
-            <span class="date-title" id="selected-date-title"></span>
-        </div>
+        <div class="date-header" id="selected-date-title"></div>
         <div id="jobs-list"></div>
-        <button class="btn-add" id="btn-add-main" onclick="openAddModal()">+ Добавить заказ</button>
+        <button class="btn-add" onclick="openAddModal()">+ Добавить заказ</button>
     </div>
 
     <!-- Модальное окно добавления -->
@@ -213,18 +207,18 @@
                 
                 <!-- Название услуги -->
                 <div class="form-group">
-                    <label>Название услуги</label>
+                    <label>Вид работы</label>
                     <select id="title" required>
                         <option value="Estimate" selected>Estimate</option>
-                        <option value="Handyman Service">Handyman Service</option>
-                        <option value="Plumbing Repair">Plumbing Repair</option>
-                        <option value="Electrical Work">Electrical Work</option>
-                        <option value="Drywall Repair / Patching">Drywall Repair / Patching</option>
-                        <option value="Painting">Painting</option>
-                        <option value="TV Mounting">TV Mounting</option>
-                        <option value="Furniture Assembly">Furniture Assembly</option>
-                        <option value="Door / Lock Repair">Door / Lock Repair</option>
-                        <option value="General Maintenance">General Maintenance</option>
+                        <option value="Мастер на час (Handyman)">Мастер на час (Handyman)</option>
+                        <option value="Сантехника">Сантехника</option>
+                        <option value="Электрика">Электрика</option>
+                        <option value="Ремонт гипсокартона (Drywall)">Ремонт гипсокартона (Drywall)</option>
+                        <option value="Покраска">Покраска</option>
+                        <option value="Монтаж ТВ">Монтаж ТВ</option>
+                        <option value="Сборка мебели">Сборка мебели</option>
+                        <option value="Замки и двери">Замки и двери</option>
+                        <option value="Мелкий ремонт">Мелкий ремонт</option>
                     </select>
                 </div>
 
@@ -234,35 +228,28 @@
                     <input type="number" id="price" min="0" max="5000" step="5" value="60">
                 </div>
 
-                <!-- Быстрый выбор времени -->
+                <!-- Время начала -->
                 <div class="form-group">
-                    <label>Время начала</label>
+                    <label>Время начала работы</label>
                     <div class="time-picker-grid" id="start-time-grid"></div>
-                </div>
-                <div class="form-group">
-                    <label>Время окончания</label>
-                    <div class="time-picker-grid" id="end-time-grid"></div>
                 </div>
 
                 <!-- Клиент -->
                 <div class="form-group">
                     <label>Имя клиента</label>
-                    <input type="text" id="client" required placeholder="John Doe">
+                    <input type="text" id="client" required placeholder="Имя">
                 </div>
 
-                <!-- Телефон с +1 -->
+                <!-- Телефон -->
                 <div class="form-group">
                     <label>Телефон</label>
-                    <div class="phone-input-wrapper">
-                        <span class="phone-prefix">+1</span>
-                        <input type="tel" id="phone" required placeholder="805 000 0000">
-                    </div>
+                    <input type="tel" id="phone" required placeholder="Номер телефона">
                 </div>
 
                 <!-- Адрес -->
                 <div class="form-group">
                     <label>Адрес</label>
-                    <input type="text" id="address" placeholder="3960 S Higuera St, San Luis Obispo">
+                    <input type="text" id="address" placeholder="Адрес объекта">
                 </div>
 
                 <!-- Описание -->
@@ -303,7 +290,6 @@
         let jobsData = {};
 
         let selectedStartTime = "8:00 am";
-        let selectedEndTime = "10:00 am";
 
         const timeSlots = [
             "7:00 am", "7:30 am", "8:00 am", "8:30 am", 
@@ -314,32 +300,19 @@
             "5:00 pm", "5:30 pm", "6:00 pm", "6:30 pm"
         ];
 
-        function initTimePickers() {
+        function initTimePicker() {
             const startGrid = document.getElementById('start-time-grid');
-            const endGrid = document.getElementById('end-time-grid');
             startGrid.innerHTML = '';
-            endGrid.innerHTML = '';
 
             timeSlots.forEach(slot => {
-                // Старт
                 const sChip = document.createElement('div');
                 sChip.className = 'time-chip' + (slot === selectedStartTime ? ' selected' : '');
                 sChip.innerText = slot;
                 sChip.onclick = () => {
                     selectedStartTime = slot;
-                    initTimePickers();
+                    initTimePicker();
                 };
                 startGrid.appendChild(sChip);
-
-                // Конец
-                const eChip = document.createElement('div');
-                eChip.className = 'time-chip' + (slot === selectedEndTime ? ' selected' : '');
-                eChip.innerText = slot;
-                eChip.onclick = () => {
-                    selectedEndTime = slot;
-                    initTimePickers();
-                };
-                endGrid.appendChild(eChip);
             });
         }
 
@@ -365,10 +338,12 @@
             const firstDayIndex = new Date(year, month, 1).getDay();
             const totalDays = new Date(year, month + 1, 0).getDate();
 
+            // Пустые ячейки смещения
             for(let i = 0; i < firstDayIndex; i++) {
                 grid.appendChild(document.createElement('div'));
             }
 
+            // Рендер чисел месяца
             for(let d = 1; d <= totalDays; d++) {
                 const dayStr = `${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
                 const cell = document.createElement('div');
@@ -376,7 +351,7 @@
                 
                 const num = document.createElement('div');
                 num.className = 'day-number';
-                num.innerText = d;
+                num.innerText = d; // Явно выводим число месяца
                 cell.appendChild(num);
 
                 const hasJobs = jobsData[dayStr] && Object.keys(jobsData[dayStr]).length > 0;
@@ -390,11 +365,6 @@
                     selectedDateStr = dayStr;
                     renderCalendar();
                     renderJobs();
-
-                    // Логика: если нет заказа — открываем окно создания
-                    if(!hasJobs) {
-                        openAddModal();
-                    }
                 };
 
                 grid.appendChild(cell);
@@ -406,13 +376,13 @@
             const title = document.getElementById('selected-date-title');
             
             const dateObj = new Date(selectedDateStr + 'T00:00:00');
-            title.innerText = dateObj.toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' });
+            title.innerText = dateObj.toLocaleDateString('ru-RU', { month: 'long', day: 'numeric', weekday: 'short' });
 
             list.innerHTML = '';
             const dayJobs = jobsData[selectedDateStr];
 
             if(!dayJobs || Object.keys(dayJobs).length === 0) {
-                list.innerHTML = '<p style="text-align:center; color:#888; padding:20px;">Нет заказов на этот день. Нажмите на дату для добавления.</p>';
+                list.innerHTML = '<p style="text-align:center; color:#888; padding:15px;">На этот день заказов нет</p>';
                 return;
             }
 
@@ -426,9 +396,9 @@
                         <span>${job.title}</span>
                         <span>$${job.price}</span>
                     </div>
-                    <div class="job-time">${job.time}</div>
+                    <div class="job-time">Начало: ${job.time}</div>
                     <div class="job-address">${job.address}</div>
-                    <button class="btn-action" onclick="event.stopPropagation(); window.location.href='sms:+1${job.phone}'">Message</button>
+                    <button class="btn-action" onclick="event.stopPropagation(); window.location.href='sms:${job.phone}'">Написать SMS</button>
                 `;
                 list.appendChild(card);
             });
@@ -446,25 +416,32 @@
                     <div class="detail-value">${job.title} — $${job.price}</div>
                 </div>
                 <div class="detail-row">
-                    <div class="detail-label">Время</div>
+                    <div class="detail-label">Время начала</div>
                     <div class="detail-value">${job.time}</div>
                 </div>
                 <div class="detail-row">
-                    <div class="detail-label">Локация</div>
-                    <div class="detail-value">${job.address}</div>
-                    <a class="map-link" href="https://maps.google.com/?q=${encodeURIComponent(job.address)}" target="_blank">📍 Google Maps</a>
+                    <div class="detail-label">Локация (Google Maps)</div>
+                    <div class="detail-value">
+                        <a class="clickable-link" href="https://maps.google.com/?q=${encodeURIComponent(job.address)}" target="_blank">📍 ${job.address}</a>
+                    </div>
                 </div>
                 <div class="detail-row">
                     <div class="detail-label">Клиент</div>
-                    <div class="detail-value">${job.client} (+1 ${job.phone})</div>
+                    <div class="detail-value">${job.client}</div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">Телефон</div>
+                    <div class="detail-value">
+                        <a class="clickable-link" href="tel:${job.phone}">📞 ${job.phone}</a>
+                    </div>
                 </div>
                 <div class="detail-row">
                     <div class="detail-label">Описание</div>
                     <div class="detail-value">${job.desc || 'Нет описания'}</div>
                 </div>
                 <div class="btn-group">
-                    <a href="sms:+1${job.phone}" class="btn-action">💬 Send SMS</a>
-                    <a href="tel:+1${job.phone}" class="btn-action">📞 Call</a>
+                    <a href="sms:${job.phone}" class="btn-action">💬 Отправить SMS</a>
+                    <a href="tel:${job.phone}" class="btn-action">📞 Позвонить</a>
                 </div>
             `;
             document.getElementById('details-modal').style.display = 'flex';
@@ -479,9 +456,9 @@
             const newJob = {
                 title: document.getElementById('title').value,
                 price: document.getElementById('price').value,
-                time: `${selectedStartTime} – ${selectedEndTime}`,
+                time: selectedStartTime,
                 client: document.getElementById('client').value,
-                phone: document.getElementById('phone').value.replace(/\D/g,''),
+                phone: document.getElementById('phone').value,
                 address: document.getElementById('address').value,
                 desc: document.getElementById('desc').value
             };
@@ -499,7 +476,7 @@
             closeModal('add-modal');
         }
 
-        initTimePickers();
+        initTimePicker();
         initDataSync();
     </script>
 </body>
