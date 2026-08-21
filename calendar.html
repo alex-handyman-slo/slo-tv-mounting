@@ -1,0 +1,60 @@
+html_content = '''
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мой Календарь Заказов</title>
+    <style>
+        :root { --main-color: #008b99; --bg-color: #f4f7f7; }
+        body { font-family: sans-serif; background: var(--bg-color); margin: 0; }
+        header { background: var(--main-color); color: white; padding: 15px; text-align: center; font-size: 1.2em; }
+        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; padding: 10px; background: white; }
+        .day { padding: 15px 5px; text-align: center; position: relative; border-bottom: 1px solid #eee; }
+        .has-job::after { content: ''; display: block; width: 6px; height: 6px; background: var(--main-color); border-radius: 50%; margin: 5px auto; }
+        .job-card { background: white; margin: 10px; padding: 15px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .btn { display: inline-block; padding: 10px 15px; margin: 5px; background: var(--main-color); color: white; text-decoration: none; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <header>Алекс: Календарь</header>
+    <div class="calendar-grid" id="calendar"></div>
+    <div id="job-details"></div>
+
+    <script>
+        // Пример структуры заказа
+        const jobs = {
+            "2026-08-31": { client: "Catherine Spears", phone: "+72797582752", address: "3960 S Higuera St, San Luis Obispo", desc: "Handyman Service" }
+        };
+
+        function renderCalendar() {
+            const cal = document.getElementById('calendar');
+            for(let i=1; i<=30; i++) {
+                let div = document.createElement('div');
+                div.className = 'day' + (i == 31 ? ' has-job' : '');
+                div.innerText = i;
+                div.onclick = () => showJobs('2026-08-' + (i<10 ? '0'+i : i));
+                cal.appendChild(div);
+            }
+        }
+
+        function showJobs(date) {
+            const details = document.getElementById('job-details');
+            const job = jobs[date];
+            if(job) {
+                details.innerHTML = `<div class="job-card">
+                    <h3>${job.client}</h3>
+                    <p>${job.desc}</p>
+                    <a href="tel:${job.phone}" class="btn">Позвонить</a>
+                    <a href="https://wa.me/${job.phone.replace('+','')}" class="btn">Сообщение</a>
+                    <a href="https://maps.google.com/?q=${encodeURIComponent(job.address)}" class="btn" target="_blank">Google Maps</a>
+                </div>`;
+            } else {
+                details.innerHTML = "<p style='text-align:center'>На этот день заказов нет.</p>";
+            }
+        }
+        renderCalendar();
+    </script>
+</body>
+</html>
+'''
