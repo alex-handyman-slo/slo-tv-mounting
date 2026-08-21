@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Schedule</title>
+    <title>Alex Handyman Calendar</title>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
     <style>
@@ -12,10 +12,12 @@
             --bg-gray: #f7f9fa;
             --text-dark: #1c1c1c;
             --border-color: #e5e9eb;
+            --success: #2e7d32;
+            --pending: #ed6c02;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
-        body { background-color: var(--bg-gray); color: var(--text-dark); padding-bottom: 30px; }
+        body { background-color: var(--bg-gray); color: var(--text-dark); padding-bottom: 40px; }
 
         header {
             background-color: var(--primary);
@@ -26,8 +28,29 @@
             font-weight: 600;
         }
 
+        /* Навигация по месяцам */
+        .calendar-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: white;
+            padding: 12px 16px;
+            font-weight: 700;
+            font-size: 16px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .nav-btn {
+            background: none;
+            border: none;
+            font-size: 18px;
+            cursor: pointer;
+            color: var(--primary);
+            padding: 4px 12px;
+            font-weight: bold;
+        }
+
         /* Месячный календарь */
-        .calendar-container { background: white; border-bottom: 1px solid var(--border-color); padding: 10px 5px; }
+        .calendar-container { background: white; border-bottom: 1px solid var(--border-color); padding: 5px 10px 15px 10px; }
         .weekdays { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; font-size: 13px; color: #666; font-weight: 600; margin-bottom: 8px; }
         .days-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
         
@@ -40,37 +63,42 @@
             cursor: pointer;
             position: relative;
             border-radius: 8px;
+            background: #fafafa;
+            border: 1px solid #f0f0f0;
         }
         
         .day-number {
-            width: 32px;
-            height: 32px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
             font-weight: 600;
             font-size: 15px;
             color: var(--text-dark);
         }
 
+        .day-cell.selected {
+            border-color: var(--primary);
+            background: #eef8f9;
+        }
         .day-cell.selected .day-number {
-            background-color: var(--primary);
-            color: white;
+            color: var(--primary);
         }
 
-        .dot {
-            width: 5px;
+        .dots-container {
+            display: flex;
+            gap: 2px;
+            margin-top: 2px;
             height: 5px;
+        }
+        .dot {
+            width: 4px;
+            height: 4px;
             background-color: var(--primary);
             border-radius: 50%;
-            margin-top: 2px;
         }
-        .day-cell.selected .dot { background-color: var(--primary); }
+        .dot.completed { background-color: var(--success); }
+        .dot.pending { background-color: var(--pending); }
 
         /* Список заказов */
         .jobs-section { padding: 15px; }
-        .date-header { font-size: 16px; font-weight: 700; margin-bottom: 12px; }
+        .date-header { font-size: 16px; font-weight: 700; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; }
         
         .job-card {
             background: white;
@@ -80,10 +108,23 @@
             border: 1px solid var(--border-color);
             box-shadow: 0 1px 3px rgba(0,0,0,0.05);
             cursor: pointer;
+            border-left: 4px solid var(--primary);
         }
+        .job-card.is-completed { border-left-color: var(--success); opacity: 0.85; }
         .job-card-header { display: flex; justify-content: space-between; font-weight: 700; font-size: 16px; margin-bottom: 6px; }
         .job-time { font-size: 13px; color: #666; margin-bottom: 4px; }
         .job-address { font-size: 13px; color: #444; margin-bottom: 10px; }
+        
+        .status-badge {
+            display: inline-block;
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+        .status-badge.completed { background: #e8f5e9; color: var(--success); }
+        .status-badge.pending { background: #fff3e0; color: var(--pending); }
 
         .btn-action {
             display: inline-block;
@@ -97,6 +138,7 @@
             font-weight: 600;
             text-decoration: none;
             font-size: 14px;
+            margin-top: 6px;
         }
 
         .btn-add {
@@ -145,7 +187,6 @@
             background: #fff;
         }
 
-        /* Выбор времени кнопками */
         .time-picker-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -181,31 +222,37 @@
 </head>
 <body>
 
-    <header>Your Schedule</header>
+    <header>Alex Handyman Schedule</header>
+
+    <div class="calendar-nav">
+        <button class="nav-btn" onclick="changeMonth(-1)">❮</button>
+        <span id="month-year-title"></span>
+        <button class="nav-btn" onclick="changeMonth(1)">❯</button>
+    </div>
 
     <div class="calendar-container">
         <div class="weekdays">
-            <div>S</div><div>M</div><div>T</div><div>W</div><div>T</div><div>F</div><div>S</div>
+            <div>Вс</div><div>Пн</div><div>Вт</div><div>Ср</div><div>Чт</div><div>Пт</div><div>Сб</div>
         </div>
         <div class="days-grid" id="days-grid"></div>
     </div>
 
     <div class="jobs-section">
-        <div class="date-header" id="selected-date-title"></div>
+        <div class="date-header">
+            <span id="selected-date-title"></span>
+        </div>
         <div id="jobs-list"></div>
-        <button class="btn-add" onclick="openAddModal()">+ Добавить заказ</button>
+        <button class="btn-add" onclick="openAddModal()">+ Добавить заказ на эту дату</button>
     </div>
 
     <!-- Модальное окно добавления -->
     <div class="modal" id="add-modal">
         <div class="modal-content">
             <div class="modal-header">
-                <span>Новый заказ</span>
+                <span>Новый заказ / Оценка</span>
                 <span class="close-btn" onclick="closeModal('add-modal')">&times;</span>
             </div>
             <form id="job-form" onsubmit="saveJob(event)">
-                
-                <!-- Название услуги -->
                 <div class="form-group">
                     <label>Вид работы</label>
                     <select id="title" required>
@@ -222,48 +269,42 @@
                     </select>
                 </div>
 
-                <!-- Цена роликом -->
                 <div class="form-group">
                     <label>Цена ($)</label>
                     <input type="number" id="price" min="0" max="5000" step="5" value="60">
                 </div>
 
-                <!-- Время начала -->
                 <div class="form-group">
                     <label>Время начала работы</label>
                     <div class="time-picker-grid" id="start-time-grid"></div>
                 </div>
 
-                <!-- Клиент -->
                 <div class="form-group">
                     <label>Имя клиента</label>
-                    <input type="text" id="client" required placeholder="Имя">
+                    <input type="text" id="client" required placeholder="Имя клиента">
                 </div>
 
-                <!-- Телефон -->
                 <div class="form-group">
                     <label>Телефон</label>
-                    <input type="tel" id="phone" required placeholder="Номер телефона">
+                    <input type="tel" id="phone" required placeholder="8050000000">
                 </div>
 
-                <!-- Адрес -->
                 <div class="form-group">
                     <label>Адрес</label>
                     <input type="text" id="address" placeholder="Адрес объекта">
                 </div>
 
-                <!-- Описание -->
                 <div class="form-group">
                     <label>Описание / Заметки</label>
                     <textarea id="desc" rows="3" placeholder="Заметки или надиктованный текст..."></textarea>
                 </div>
 
-                <button type="submit" class="btn-add">Сохранить заказ</button>
+                <button type="submit" class="btn-add">Сохранить</button>
             </form>
         </div>
     </div>
 
-    <!-- Модальное окно просмотра -->
+    <!-- Модальное окно просмотра и управления -->
     <div class="modal" id="details-modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -285,11 +326,11 @@
             db = firebase.database();
         } catch(e) {}
 
-        let currentDate = new Date();
-        let selectedDateStr = currentDate.toISOString().split('T')[0];
+        let viewDate = new Date(); // текущий отображаемый месяц/год
+        let selectedDateStr = viewDate.toISOString().split('T')[0];
         let jobsData = {};
-
         let selectedStartTime = "8:00 am";
+        let currentEditingId = null;
 
         const timeSlots = [
             "7:00 am", "7:30 am", "8:00 am", "8:30 am", 
@@ -303,7 +344,6 @@
         function initTimePicker() {
             const startGrid = document.getElementById('start-time-grid');
             startGrid.innerHTML = '';
-
             timeSlots.forEach(slot => {
                 const sChip = document.createElement('div');
                 sChip.className = 'time-chip' + (slot === selectedStartTime ? ' selected' : '');
@@ -329,21 +369,29 @@
             }
         }
 
+        function changeMonth(direction) {
+            viewDate.setMonth(viewDate.getMonth() + direction);
+            renderCalendar();
+        }
+
         function renderCalendar() {
             const grid = document.getElementById('days-grid');
+            const monthTitle = document.getElementById('month-year-title');
             grid.innerHTML = '';
             
-            const year = currentDate.getFullYear();
-            const month = currentDate.getMonth();
+            const year = viewDate.getFullYear();
+            const month = viewDate.getMonth();
+            
+            const monthNames = ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"];
+            monthTitle.innerText = `${monthNames[month]} ${year}`;
+
             const firstDayIndex = new Date(year, month, 1).getDay();
             const totalDays = new Date(year, month + 1, 0).getDate();
 
-            // Пустые ячейки смещения
             for(let i = 0; i < firstDayIndex; i++) {
                 grid.appendChild(document.createElement('div'));
             }
 
-            // Рендер чисел месяца
             for(let d = 1; d <= totalDays; d++) {
                 const dayStr = `${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
                 const cell = document.createElement('div');
@@ -351,14 +399,19 @@
                 
                 const num = document.createElement('div');
                 num.className = 'day-number';
-                num.innerText = d; // Явно выводим число месяца
+                num.innerText = d;
                 cell.appendChild(num);
 
-                const hasJobs = jobsData[dayStr] && Object.keys(jobsData[dayStr]).length > 0;
-                if(hasJobs) {
-                    const dot = document.createElement('div');
-                    dot.className = 'dot';
-                    cell.appendChild(dot);
+                const dayJobs = jobsData[dayStr];
+                if(dayJobs && Object.keys(dayJobs).length > 0) {
+                    const dotsWrapper = document.createElement('div');
+                    dotsWrapper.className = 'dots-container';
+                    Object.values(dayJobs).forEach(j => {
+                        const dot = document.createElement('div');
+                        dot.className = 'dot ' + (j.completed ? 'completed' : 'pending');
+                        dotsWrapper.appendChild(dot);
+                    });
+                    cell.appendChild(dotsWrapper);
                 }
 
                 cell.onclick = () => {
@@ -369,6 +422,7 @@
 
                 grid.appendChild(cell);
             }
+            renderJobs();
         }
 
         function renderJobs() {
@@ -389,15 +443,21 @@
             Object.keys(dayJobs).forEach(id => {
                 const job = dayJobs[id];
                 const card = document.createElement('div');
-                card.className = 'job-card';
-                card.onclick = () => openDetailsModal(job);
+                card.className = 'job-card' + (job.completed ? ' is-completed' : '');
+                card.onclick = () => openDetailsModal(id, job);
+                
+                const statusHtml = job.completed 
+                    ? '<span class="status-badge completed">✓ Выполнено</span>' 
+                    : '<span class="status-badge pending">⏳ Не выполнено</span>';
+
                 card.innerHTML = `
+                    ${statusHtml}
                     <div class="job-card-header">
                         <span>${job.title}</span>
                         <span>$${job.price}</span>
                     </div>
-                    <div class="job-time">Начало: ${job.time}</div>
-                    <div class="job-address">${job.address}</div>
+                    <div class="job-time">Время: ${job.time} | Клиент: ${job.client}</div>
+                    <div class="job-address">${job.address || 'Адрес не указан'}</div>
                     <button class="btn-action" onclick="event.stopPropagation(); window.location.href='sms:${job.phone}'">Написать SMS</button>
                 `;
                 list.appendChild(card);
@@ -405,12 +465,22 @@
         }
 
         function openAddModal() {
+            document.getElementById('job-form').reset();
             document.getElementById('add-modal').style.display = 'flex';
         }
 
-        function openDetailsModal(job) {
+        function openDetailsModal(id, job) {
+            currentEditingId = id;
             const body = document.getElementById('job-details-body');
             body.innerHTML = `
+                <div class="detail-row">
+                    <div class="detail-label">Статус заказа</div>
+                    <div class="detail-value">
+                        <button class="btn-action" style="background:${job.completed ? '#2e7d32' : '#ed6c02'}; color:white;" onclick="toggleStatus('${id}', ${!job.completed})">
+                            ${job.completed ? '✓ Выполнено (нажмите, чтобы вернуть)' : '⏳ В работе (нажмите, чтобы отметить выполненным)'}
+                        </button>
+                    </div>
+                </div>
                 <div class="detail-row">
                     <div class="detail-label">Услуга и Цена</div>
                     <div class="detail-value">${job.title} — $${job.price}</div>
@@ -430,21 +500,48 @@
                     <div class="detail-value">${job.client}</div>
                 </div>
                 <div class="detail-row">
-                    <div class="detail-label">Телефон</div>
+                    <div class="detail-label">Телефон для связи</div>
                     <div class="detail-value">
                         <a class="clickable-link" href="tel:${job.phone}">📞 ${job.phone}</a>
                     </div>
                 </div>
                 <div class="detail-row">
-                    <div class="detail-label">Описание</div>
+                    <div class="detail-label">Описание / Заметки</div>
                     <div class="detail-value">${job.desc || 'Нет описания'}</div>
                 </div>
                 <div class="btn-group">
-                    <a href="sms:${job.phone}" class="btn-action">💬 Отправить SMS</a>
-                    <a href="tel:${job.phone}" class="btn-action">📞 Позвонить</a>
+                    <a href="sms:${job.phone}" class="btn-action">💬 SMS</a>
+                    <a href="tel:${job.phone}" class="btn-action">📞 Звонок</a>
                 </div>
+                <button class="btn-action" style="background:#d32f2f; color:white; border-color:#d32f2f; margin-top:15px;" onclick="deleteJob('${id}')">Удалить заказ</button>
             `;
             document.getElementById('details-modal').style.display = 'flex';
+        }
+
+        function toggleStatus(id, newStatus) {
+            if(db) {
+                db.ref(`jobs/${selectedDateStr}/${id}/completed`).set(newStatus);
+            } else {
+                if(jobsData[selectedDateStr] && jobsData[selectedDateStr][id]) {
+                    jobsData[selectedDateStr][id].completed = newStatus;
+                    renderCalendar();
+                    renderJobs();
+                    closeModal('details-modal');
+                }
+            }
+        }
+
+        function deleteJob(id) {
+            if(confirm('Удалить этот заказ?')) {
+                if(db) {
+                    db.ref(`jobs/${selectedDateStr}/${id}`).remove();
+                } else {
+                    delete jobsData[selectedDateStr][id];
+                    renderCalendar();
+                    renderJobs();
+                }
+                closeModal('details-modal');
+            }
         }
 
         function closeModal(modalId) {
@@ -460,7 +557,8 @@
                 client: document.getElementById('client').value,
                 phone: document.getElementById('phone').value,
                 address: document.getElementById('address').value,
-                desc: document.getElementById('desc').value
+                desc: document.getElementById('desc').value,
+                completed: false
             };
 
             if(db) {
