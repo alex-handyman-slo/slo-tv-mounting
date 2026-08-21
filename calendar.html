@@ -1,60 +1,405 @@
-html_content = '''
 <!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Мой Календарь Заказов</title>
+    <title>Your Schedule</title>
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
     <style>
-        :root { --main-color: #008b99; --bg-color: #f4f7f7; }
-        body { font-family: sans-serif; background: var(--bg-color); margin: 0; }
-        header { background: var(--main-color); color: white; padding: 15px; text-align: center; font-size: 1.2em; }
-        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; padding: 10px; background: white; }
-        .day { padding: 15px 5px; text-align: center; position: relative; border-bottom: 1px solid #eee; }
-        .has-job::after { content: ''; display: block; width: 6px; height: 6px; background: var(--main-color); border-radius: 50%; margin: 5px auto; }
-        .job-card { background: white; margin: 10px; padding: 15px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        .btn { display: inline-block; padding: 10px 15px; margin: 5px; background: var(--main-color); color: white; text-decoration: none; border-radius: 5px; }
+        :root {
+            --primary: #008b99;
+            --bg-gray: #f7f9fa;
+            --text-dark: #1c1c1c;
+            --border-color: #e5e9eb;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+        body { background-color: var(--bg-gray); color: var(--text-dark); padding-bottom: 30px; }
+
+        header {
+            background-color: var(--primary);
+            color: white;
+            padding: 16px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        /* Месячный календарь */
+        .calendar-container { background: white; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; }
+        .weekdays { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; font-size: 13px; color: #666; padding: 10px 0 5px 0; font-weight: 500; }
+        .days-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; }
+        .day-cell {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 48px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 15px;
+            position: relative;
+        }
+        .day-number {
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+        .day-cell.selected .day-number {
+            background-color: var(--primary);
+            color: white;
+        }
+        .dot {
+            width: 4px;
+            height: 4px;
+            background-color: var(--primary);
+            border-radius: 50%;
+            position: absolute;
+            bottom: 4px;
+        }
+        .day-cell.selected .dot { background-color: white; }
+
+        /* Секция списка заказов */
+        .jobs-section { padding: 15px; }
+        .date-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+        .date-title { font-size: 16px; font-weight: 700; }
+        
+        .job-card {
+            background: white;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 12px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            cursor: pointer;
+        }
+        .job-card-header { display: flex; justify-content: space-between; font-weight: 700; font-size: 16px; margin-bottom: 6px; }
+        .job-time { font-size: 13px; color: #666; margin-bottom: 4px; }
+        .job-address { font-size: 13px; color: #444; margin-bottom: 10px; }
+
+        .btn-action {
+            display: inline-block;
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            background: white;
+            border-radius: 6px;
+            text-align: center;
+            font-weight: 600;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .btn-add {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 6px;
+            width: 100%;
+            font-size: 15px;
+            font-weight: 600;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+
+        /* Модальные окна */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5);
+            justify-content: center;
+            align-items: flex-end;
+            z-index: 1000;
+        }
+        .modal-content {
+            background: white;
+            width: 100%;
+            max-height: 90vh;
+            border-top-left-radius: 16px;
+            border-top-right-radius: 16px;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        .modal-header { font-size: 18px; font-weight: 700; margin-bottom: 15px; display: flex; justify-content: space-between; }
+        .close-btn { cursor: pointer; font-size: 20px; color: #888; }
+        
+        .form-group { margin-bottom: 12px; }
+        .form-group label { display: block; font-size: 12px; color: #666; margin-bottom: 4px; }
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 15px;
+        }
+        
+        .detail-row { margin-bottom: 15px; }
+        .detail-label { font-size: 12px; color: #777; text-transform: uppercase; margin-bottom: 2px; }
+        .detail-value { font-size: 15px; font-weight: 500; }
+        .map-link { color: var(--primary); text-decoration: none; font-weight: 600; display: inline-block; margin-top: 4px; }
+        .btn-group { display: flex; gap: 10px; margin-top: 15px; }
+        .btn-group a, .btn-group button { flex: 1; text-align: center; }
     </style>
 </head>
 <body>
-    <header>Алекс: Календарь</header>
-    <div class="calendar-grid" id="calendar"></div>
-    <div id="job-details"></div>
+
+    <header>Your Schedule</header>
+
+    <div class="calendar-container">
+        <div class="weekdays">
+            <div>S</div><div>M</div><div>T</div><div>W</div><div>T</div><div>F</div><div>S</div>
+        </div>
+        <div class="days-grid" id="days-grid"></div>
+    </div>
+
+    <div class="jobs-section">
+        <div class="date-header">
+            <span class="date-title" id="selected-date-title"></span>
+        </div>
+        <div id="jobs-list"></div>
+        <button class="btn-add" onclick="openAddModal()">+ Добавить заказ</button>
+    </div>
+
+    <!-- Модальное окно добавления -->
+    <div class="modal" id="add-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span>Новый заказ</span>
+                <span class="close-btn" onclick="closeModal('add-modal')">&times;</span>
+            </div>
+            <form id="job-form" onsubmit="saveJob(event)">
+                <div class="form-group">
+                    <label>Название услуги</label>
+                    <input type="text" id="title" required placeholder="Handyman Service">
+                </div>
+                <div class="form-group">
+                    <label>Цена ($)</label>
+                    <input type="text" id="price" placeholder="92.50">
+                </div>
+                <div class="form-group">
+                    <label>Время (Начало - Конец)</label>
+                    <input type="text" id="time" placeholder="7:00 am – 9:30 am">
+                </div>
+                <div class="form-group">
+                    <label>Имя клиента</label>
+                    <input type="text" id="client" required placeholder="Catherine Spears">
+                </div>
+                <div class="form-group">
+                    <label>Телефон</label>
+                    <input type="tel" id="phone" placeholder="+18005550199">
+                </div>
+                <div class="form-group">
+                    <label>Адрес</label>
+                    <input type="text" id="address" placeholder="3960 S Higuera St, San Luis Obispo">
+                </div>
+                <div class="form-group">
+                    <label>Описание / Заметки</label>
+                    <textarea id="desc" rows="3" placeholder="Детали заказа (можно надиктовать)..."></textarea>
+                </div>
+                <button type="submit" class="btn-add">Сохранить</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Модальное окно детального просмотра -->
+    <div class="modal" id="details-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span>Детали заказа</span>
+                <span class="close-btn" onclick="closeModal('details-modal')">&times;</span>
+            </div>
+            <div id="job-details-body"></div>
+        </div>
+    </div>
 
     <script>
-        // Пример структуры заказа
-        const jobs = {
-            "2026-08-31": { client: "Catherine Spears", phone: "+72797582752", address: "3960 S Higuera St, San Luis Obispo", desc: "Handyman Service" }
+        // Конфигурация Firebase (Замените своими данными из консоли Firebase при развертывании)
+        const firebaseConfig = {
+            databaseURL: "https://YOUR_PROJECT_ID-default-rtdb.firebaseio.com"
         };
+        
+        // Инициализация (Если Firebase не настроен, работает временно в памяти)
+        let db = null;
+        try {
+            firebase.initializeApp(firebaseConfig);
+            db = firebase.database();
+        } catch(e) { console.warn("Firebase не настроен. Данные сохраняются локально в сессии."); }
+
+        let currentDate = new Date(2026, 7, 31); // Август 31, 2026
+        let selectedDateStr = "2026-08-31";
+        let jobsData = {};
+
+        // Загрузка данных
+        function initDataSync() {
+            if(db) {
+                db.ref('jobs').on('value', (snapshot) => {
+                    jobsData = snapshot.val() || {};
+                    renderCalendar();
+                    renderJobs();
+                });
+            } else {
+                renderCalendar();
+                renderJobs();
+            }
+        }
+
+        function getDaysInMonth(year, month) {
+            return new Date(year, month + 1, 0).getDate();
+        }
 
         function renderCalendar() {
-            const cal = document.getElementById('calendar');
-            for(let i=1; i<=30; i++) {
-                let div = document.createElement('div');
-                div.className = 'day' + (i == 31 ? ' has-job' : '');
-                div.innerText = i;
-                div.onclick = () => showJobs('2026-08-' + (i<10 ? '0'+i : i));
-                cal.appendChild(div);
+            const grid = document.getElementById('days-grid');
+            grid.innerHTML = '';
+            
+            const year = currentDate.getFullYear();
+            const month = currentDate.getMonth();
+            const firstDayIndex = new Date(year, month, 1).getDay();
+            const totalDays = getDaysInMonth(year, month);
+
+            // Пустые ячейки в начале месяца
+            for(let i = 0; i < firstDayIndex; i++) {
+                const empty = document.createElement('div');
+                empty.className = 'day-cell';
+                grid.appendChild(empty);
+            }
+
+            // Дни месяца
+            for(let d = 1; d <= totalDays; d++) {
+                const dayStr = `${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+                const cell = document.createElement('div');
+                cell.className = 'day-cell' + (dayStr === selectedDateStr ? ' selected' : '');
+                
+                const num = document.createElement('div');
+                num.className = 'day-number';
+                num.innerText = d;
+                cell.appendChild(num);
+
+                // Точка наличия заказа
+                if(jobsData[dayStr] && Object.keys(jobsData[dayStr]).length > 0) {
+                    const dot = document.createElement('div');
+                    dot.className = 'dot';
+                    cell.appendChild(dot);
+                }
+
+                cell.onclick = () => {
+                    selectedDateStr = dayStr;
+                    renderCalendar();
+                    renderJobs();
+                };
+
+                grid.appendChild(cell);
             }
         }
 
-        function showJobs(date) {
-            const details = document.getElementById('job-details');
-            const job = jobs[date];
-            if(job) {
-                details.innerHTML = `<div class="job-card">
-                    <h3>${job.client}</h3>
-                    <p>${job.desc}</p>
-                    <a href="tel:${job.phone}" class="btn">Позвонить</a>
-                    <a href="https://wa.me/${job.phone.replace('+','')}" class="btn">Сообщение</a>
-                    <a href="https://maps.google.com/?q=${encodeURIComponent(job.address)}" class="btn" target="_blank">Google Maps</a>
-                </div>`;
-            } else {
-                details.innerHTML = "<p style='text-align:center'>На этот день заказов нет.</p>";
+        function renderJobs() {
+            const list = document.getElementById('jobs-list');
+            const title = document.getElementById('selected-date-title');
+            
+            const dateObj = new Date(selectedDateStr + 'T00:00:00');
+            const options = { weekday: 'long', month: 'short', day: 'numeric' };
+            title.innerText = dateObj.toLocaleDateString('en-US', options);
+
+            list.innerHTML = '';
+            const dayJobs = jobsData[selectedDateStr];
+
+            if(!dayJobs || Object.keys(dayJobs).length === 0) {
+                list.innerHTML = '<p style="text-align:center; color:#888; padding:20px;">Нет заказов на этот день</p>';
+                return;
             }
+
+            // Сортировка и вывод
+            Object.keys(dayJobs).forEach(id => {
+                const job = dayJobs[id];
+                const card = document.createElement('div');
+                card.className = 'job-card';
+                card.onclick = () => openDetailsModal(job);
+                card.innerHTML = `
+                    <div class="job-card-header">
+                        <span>${job.title}</span>
+                        <span>$${job.price || '0'}</span>
+                    </div>
+                    <div class="job-time">${job.time || 'Время не указано'}</div>
+                    <div class="job-address">${job.address || ''}</div>
+                    <button class="btn-action" onclick="event.stopPropagation(); window.location.href='sms:${job.phone}'">Message</button>
+                `;
+                list.appendChild(card);
+            });
         }
-        renderCalendar();
+
+        function openAddModal() {
+            document.getElementById('add-modal').style.display = 'flex';
+        }
+
+        function openDetailsModal(job) {
+            const body = document.getElementById('job-details-body');
+            body.innerHTML = `
+                <div class="detail-row">
+                    <div class="detail-label">Услуга и Цена</div>
+                    <div class="detail-value">${job.title} — $${job.price}</div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">Время</div>
+                    <div class="detail-value">${job.time}</div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">Локация</div>
+                    <div class="detail-value">${job.address}</div>
+                    <a class="map-link" href="https://maps.google.com/?q=${encodeURIComponent(job.address)}" target="_blank">📍 Get Directions</a>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">Клиент</div>
+                    <div class="detail-value">${job.client}</div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">Описание</div>
+                    <div class="detail-value">${job.desc || 'Нет описания'}</div>
+                </div>
+                <div class="btn-group">
+                    <a href="sms:${job.phone}" class="btn-action">💬 SMS</a>
+                    <a href="tel:${job.phone}" class="btn-action">📞 Call</a>
+                </div>
+            `;
+            document.getElementById('details-modal').style.display = 'flex';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        function saveJob(e) {
+            e.preventDefault();
+            const newJob = {
+                title: document.getElementById('title').value,
+                price: document.getElementById('price').value,
+                time: document.getElementById('time').value,
+                client: document.getElementById('client').value,
+                phone: document.getElementById('phone').value,
+                address: document.getElementById('address').value,
+                desc: document.getElementById('desc').value
+            };
+
+            if(db) {
+                db.ref(`jobs/${selectedDateStr}`).push(newJob);
+            } else {
+                if(!jobsData[selectedDateStr]) jobsData[selectedDateStr] = {};
+                jobsData[selectedDateStr][Date.now()] = newJob;
+                renderCalendar();
+                renderJobs();
+            }
+
+            document.getElementById('job-form').reset();
+            closeModal('add-modal');
+        }
+
+        initDataSync();
     </script>
 </body>
 </html>
-'''
