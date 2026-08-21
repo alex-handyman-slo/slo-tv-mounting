@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alex Handyman Calendar</title>
+    <title>Alex Handyman Schedule</title>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
     <style>
@@ -28,7 +28,6 @@
             font-weight: 600;
         }
 
-        /* Навигация по месяцам */
         .calendar-nav {
             display: flex;
             justify-content: space-between;
@@ -49,7 +48,6 @@
             font-weight: bold;
         }
 
-        /* Месячный календарь */
         .calendar-container { background: white; border-bottom: 1px solid var(--border-color); padding: 5px 10px 15px 10px; }
         .weekdays { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; font-size: 13px; color: #666; font-weight: 600; margin-bottom: 8px; }
         .days-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
@@ -88,17 +86,16 @@
             height: 5px;
         }
         .dot {
-            width: 4px;
-            height: 4px;
+            width: 5px;
+            height: 5px;
             background-color: var(--primary);
             border-radius: 50%;
         }
         .dot.completed { background-color: var(--success); }
         .dot.pending { background-color: var(--pending); }
 
-        /* Список заказов */
         .jobs-section { padding: 15px; }
-        .date-header { font-size: 16px; font-weight: 700; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; }
+        .date-header { font-size: 16px; font-weight: 700; margin-bottom: 12px; }
         
         .job-card {
             background: white;
@@ -154,7 +151,6 @@
             cursor: pointer;
         }
 
-        /* Модальные окна */
         .modal {
             display: none;
             position: fixed;
@@ -238,9 +234,7 @@
     </div>
 
     <div class="jobs-section">
-        <div class="date-header">
-            <span id="selected-date-title"></span>
-        </div>
+        <div class="date-header" id="selected-date-title"></div>
         <div id="jobs-list"></div>
         <button class="btn-add" onclick="openAddModal()">+ Добавить заказ на эту дату</button>
     </div>
@@ -249,13 +243,13 @@
     <div class="modal" id="add-modal">
         <div class="modal-content">
             <div class="modal-header">
-                <span>Новый заказ / Оценка</span>
+                <span id="add-modal-title">Новый заказ</span>
                 <span class="close-btn" onclick="closeModal('add-modal')">&times;</span>
             </div>
             <form id="job-form" onsubmit="saveJob(event)">
                 <div class="form-group">
                     <label>Вид работы</label>
-                    <select id="title" required>
+                    <select id="title">
                         <option value="Estimate" selected>Estimate</option>
                         <option value="Мастер на час (Handyman)">Мастер на час (Handyman)</option>
                         <option value="Сантехника">Сантехника</option>
@@ -281,30 +275,30 @@
 
                 <div class="form-group">
                     <label>Имя клиента</label>
-                    <input type="text" id="client" required placeholder="Имя клиента">
+                    <input type="text" id="client" placeholder="Имя клиента">
                 </div>
 
                 <div class="form-group">
-                    <label>Телефон</label>
-                    <input type="tel" id="phone" required placeholder="8050000000">
+                    <label>Телефон (необязательно)</label>
+                    <input type="tel" id="phone" placeholder="Номер телефона">
                 </div>
 
                 <div class="form-group">
-                    <label>Адрес</label>
+                    <label>Адрес (необязательно)</label>
                     <input type="text" id="address" placeholder="Адрес объекта">
                 </div>
 
                 <div class="form-group">
-                    <label>Описание / Заметки</label>
+                    <label>Описание / Заметки (необязательно)</label>
                     <textarea id="desc" rows="3" placeholder="Заметки или надиктованный текст..."></textarea>
                 </div>
 
-                <button type="submit" class="btn-add">Сохранить</button>
+                <button type="submit" class="btn-add">Сохранить заказ</button>
             </form>
         </div>
     </div>
 
-    <!-- Модальное окно просмотра и управления -->
+    <!-- Модальное окно просмотра -->
     <div class="modal" id="details-modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -326,11 +320,13 @@
             db = firebase.database();
         } catch(e) {}
 
-        let viewDate = new Date(); // текущий отображаемый месяц/год
-        let selectedDateStr = viewDate.toISOString().split('T')[0];
-        let jobsData = {};
+        let viewDate = new Date();
+        let selectedDateStr = new Date().toISOString().split('T')[0];
+        
+        // Локальное хранилище, если Firebase пока не подключен
+        let jobsData = JSON.parse(localStorage.getItem('handyman_jobs') || '{}');
+
         let selectedStartTime = "8:00 am";
-        let currentEditingId = null;
 
         const timeSlots = [
             "7:00 am", "7:30 am", "8:00 am", "8:30 am", 
@@ -393,7 +389,10 @@
             }
 
             for(let d = 1; d <= totalDays; d++) {
-                const dayStr = `${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+                const monthStr = String(month + 1).padStart(2, '0');
+                const dayStrFormatted = String(d).padStart(2, '0');
+                const dayStr = `${year}-${monthStr}-${dayStrFormatted}`;
+                
                 const cell = document.createElement('div');
                 cell.className = 'day-cell' + (dayStr === selectedDateStr ? ' selected' : '');
                 
@@ -422,14 +421,14 @@
 
                 grid.appendChild(cell);
             }
-            renderJobs();
         }
 
         function renderJobs() {
             const list = document.getElementById('jobs-list');
             const title = document.getElementById('selected-date-title');
             
-            const dateObj = new Date(selectedDateStr + 'T00:00:00');
+            const [y, m, d] = selectedDateStr.split('-').map(Number);
+            const dateObj = new Date(y, m - 1, d);
             title.innerText = dateObj.toLocaleDateString('ru-RU', { month: 'long', day: 'numeric', weekday: 'short' });
 
             list.innerHTML = '';
@@ -448,7 +447,9 @@
                 
                 const statusHtml = job.completed 
                     ? '<span class="status-badge completed">✓ Выполнено</span>' 
-                    : '<span class="status-badge pending">⏳ Не выполнено</span>';
+                    : '<span class="status-badge pending">⏳ В работе</span>';
+
+                const phoneBtn = job.phone ? `<button class="btn-action" onclick="event.stopPropagation(); window.location.href='sms:${job.phone}'">Написать SMS</button>` : '';
 
                 card.innerHTML = `
                     ${statusHtml}
@@ -456,9 +457,9 @@
                         <span>${job.title}</span>
                         <span>$${job.price}</span>
                     </div>
-                    <div class="job-time">Время: ${job.time} | Клиент: ${job.client}</div>
+                    <div class="job-time">Время: ${job.time} | Клиент: ${job.client || 'Не указан'}</div>
                     <div class="job-address">${job.address || 'Адрес не указан'}</div>
-                    <button class="btn-action" onclick="event.stopPropagation(); window.location.href='sms:${job.phone}'">Написать SMS</button>
+                    ${phoneBtn}
                 `;
                 list.appendChild(card);
             });
@@ -466,12 +467,33 @@
 
         function openAddModal() {
             document.getElementById('job-form').reset();
+            const [y, m, d] = selectedDateStr.split('-').map(Number);
+            const dateObj = new Date(y, m - 1, d);
+            document.getElementById('add-modal-title').innerText = `Заказ на ${dateObj.toLocaleDateString('ru-RU', { day: 'numeric', month: 'short' })}`;
             document.getElementById('add-modal').style.display = 'flex';
         }
 
         function openDetailsModal(id, job) {
-            currentEditingId = id;
             const body = document.getElementById('job-details-body');
+            
+            const phoneSection = job.phone ? `
+                <div class="detail-row">
+                    <div class="detail-label">Телефон для связи</div>
+                    <div class="detail-value"><a class="clickable-link" href="tel:${job.phone}">📞 ${job.phone}</a></div>
+                </div>
+                <div class="btn-group">
+                    <a href="sms:${job.phone}" class="btn-action">💬 SMS</a>
+                    <a href="tel:${job.phone}" class="btn-action">📞 Звонок</a>
+                </div>` : '';
+
+            const addressSection = job.address ? `
+                <div class="detail-row">
+                    <div class="detail-label">Локация (Google Maps)</div>
+                    <div class="detail-value">
+                        <a class="clickable-link" href="https://maps.google.com/?q=${encodeURIComponent(job.address)}" target="_blank">📍 ${job.address}</a>
+                    </div>
+                </div>` : '';
+
             body.innerHTML = `
                 <div class="detail-row">
                     <div class="detail-label">Статус заказа</div>
@@ -490,28 +512,14 @@
                     <div class="detail-value">${job.time}</div>
                 </div>
                 <div class="detail-row">
-                    <div class="detail-label">Локация (Google Maps)</div>
-                    <div class="detail-value">
-                        <a class="clickable-link" href="https://maps.google.com/?q=${encodeURIComponent(job.address)}" target="_blank">📍 ${job.address}</a>
-                    </div>
-                </div>
-                <div class="detail-row">
                     <div class="detail-label">Клиент</div>
-                    <div class="detail-value">${job.client}</div>
+                    <div class="detail-value">${job.client || 'Не указан'}</div>
                 </div>
-                <div class="detail-row">
-                    <div class="detail-label">Телефон для связи</div>
-                    <div class="detail-value">
-                        <a class="clickable-link" href="tel:${job.phone}">📞 ${job.phone}</a>
-                    </div>
-                </div>
-                <div class="detail-row">
+                ${addressSection}
+                ${phoneSection}
+                <div class="detail-row" style="margin-top:10px;">
                     <div class="detail-label">Описание / Заметки</div>
                     <div class="detail-value">${job.desc || 'Нет описания'}</div>
-                </div>
-                <div class="btn-group">
-                    <a href="sms:${job.phone}" class="btn-action">💬 SMS</a>
-                    <a href="tel:${job.phone}" class="btn-action">📞 Звонок</a>
                 </div>
                 <button class="btn-action" style="background:#d32f2f; color:white; border-color:#d32f2f; margin-top:15px;" onclick="deleteJob('${id}')">Удалить заказ</button>
             `;
@@ -524,6 +532,7 @@
             } else {
                 if(jobsData[selectedDateStr] && jobsData[selectedDateStr][id]) {
                     jobsData[selectedDateStr][id].completed = newStatus;
+                    saveLocal();
                     renderCalendar();
                     renderJobs();
                     closeModal('details-modal');
@@ -537,6 +546,7 @@
                     db.ref(`jobs/${selectedDateStr}/${id}`).remove();
                 } else {
                     delete jobsData[selectedDateStr][id];
+                    saveLocal();
                     renderCalendar();
                     renderJobs();
                 }
@@ -546,6 +556,10 @@
 
         function closeModal(modalId) {
             document.getElementById(modalId).style.display = 'none';
+        }
+
+        function saveLocal() {
+            localStorage.setItem('handyman_jobs', JSON.stringify(jobsData));
         }
 
         function saveJob(e) {
@@ -566,6 +580,7 @@
             } else {
                 if(!jobsData[selectedDateStr]) jobsData[selectedDateStr] = {};
                 jobsData[selectedDateStr][Date.now()] = newJob;
+                saveLocal();
                 renderCalendar();
                 renderJobs();
             }
