@@ -216,6 +216,17 @@
         .clickable-link { color: var(--primary); text-decoration: none; font-weight: 600; }
         .btn-group { display: flex; gap: 10px; margin-top: 15px; }
         .btn-group a { flex: 1; text-align: center; }
+
+        /* Стиль фото */
+        .photo-preview {
+            width: 100%;
+            max-height: 200px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-top: 8px;
+            border: 1px solid var(--border-color);
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -229,7 +240,6 @@
     </div>
 
     <div class="calendar-container">
-        <!-- Понедельник первый -->
         <div class="weekdays">
             <div>Пн</div><div>Вт</div><div>Ср</div><div>Чт</div><div>Пт</div><div>Сб</div><div>Вс</div>
         </div>
@@ -292,11 +302,16 @@
                 </div>
 
                 <div class="form-group">
+                    <label>Прикрепить фото объекта / поломки</label>
+                    <input type="file" id="photo-file" accept="image/*" style="padding: 8px;">
+                </div>
+
+                <div class="form-group">
                     <label>Описание / Заметки (необязательно)</label>
                     <textarea id="desc" rows="3" placeholder="Заметки или надиктованный текст..."></textarea>
                 </div>
 
-                <button type="submit" class="btn-add">Сохранить заказ</button>
+                <button type="submit" class="btn-add" id="save-btn">Сохранить заказ</button>
             </form>
         </div>
     </div>
@@ -373,9 +388,8 @@
             const monthNames = ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"];
             monthTitle.innerText = `${monthNames[month]} ${year}`;
 
-            // Смещение для недели с Понедельника
             let firstDayIndex = new Date(year, month, 1).getDay() - 1;
-            if (firstDayIndex === -1) firstDayIndex = 6; // если воскресенье
+            if (firstDayIndex === -1) firstDayIndex = 6;
 
             const totalDays = new Date(year, month + 1, 0).getDate();
 
@@ -454,6 +468,7 @@
                     </div>
                     <div class="job-time">Время: ${job.time} | Клиент: ${job.client || 'Не указан'}</div>
                     <div class="job-address">${job.address || 'Адрес не указан'}</div>
+                    ${job.photo ? `<img src="${job.photo}" class="photo-preview" style="height:80px;">` : ''}
                     ${phoneBtn}
                 `;
                 list.appendChild(card);
@@ -489,6 +504,14 @@
                     </div>
                 </div>` : '';
 
+            const photoSection = job.photo ? `
+                <div class="detail-row">
+                    <div class="detail-label">Фотография заказа</div>
+                    <a href="${job.photo}" target="_blank">
+                        <img src="${job.photo}" class="photo-preview">
+                    </a>
+                </div>` : '';
+
             body.innerHTML = `
                 <div class="detail-row">
                     <div class="detail-label">Статус заказа</div>
@@ -512,6 +535,7 @@
                 </div>
                 ${addressSection}
                 ${phoneSection}
+                ${photoSection}
                 <div class="detail-row" style="margin-top:10px;">
                     <div class="detail-label">Описание / Заметки</div>
                     <div class="detail-value">${job.desc || 'Нет описания'}</div>
@@ -537,23 +561,55 @@
             document.getElementById(modalId).style.display = 'none';
         }
 
+        // Функция сжатия изображения для быстрой загрузки
+        function compressPhoto(file, callback) {
+            if (!file) return callback(null);
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const img = new Image();
+                img.onload = () => {
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    const maxW = 800;
+                    const scale = maxW / img.width;
+                    canvas.width = (img.width > maxW) ? maxW : img.width;
+                    canvas.height = (img.width > maxW) ? img.height * scale : img.height;
+                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                    callback(canvas.toDataURL('image/jpeg', 0.7));
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
         function saveJob(e) {
             e.preventDefault();
-            const newJob = {
-                title: document.getElementById('title').value,
-                price: document.getElementById('price').value,
-                time: selectedStartTime,
-                client: document.getElementById('client').value,
-                phone: document.getElementById('phone').value,
-                address: document.getElementById('address').value,
-                desc: document.getElementById('desc').value,
-                completed: false
-            };
+            const fileInput = document.getElementById('photo-file');
+            const saveBtn = document.getElementById('save-btn');
+            
+            saveBtn.disabled = true;
+            saveBtn.innerText = "Сохранение...";
 
-            db.ref(`jobs/${selectedDateStr}`).push(newJob);
+            compressPhoto(fileInput.files[0], (photoBase64) => {
+                const newJob = {
+                    title: document.getElementById('title').value,
+                    price: document.getElementById('price').value,
+                    time: selectedStartTime,
+                    client: document.getElementById('client').value,
+                    phone: document.getElementById('phone').value,
+                    address: document.getElementById('address').value,
+                    desc: document.getElementById('desc').value,
+                    photo: photoBase64 || null,
+                    completed: false
+                };
 
-            document.getElementById('job-form').reset();
-            closeModal('add-modal');
+                db.ref(`jobs/${selectedDateStr}`).push(newJob);
+
+                saveBtn.disabled = false;
+                saveBtn.innerText = "Сохранить заказ";
+                document.getElementById('job-form').reset();
+                closeModal('add-modal');
+            });
         }
 
         initTimePicker();
