@@ -2,8 +2,10 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alex Handyman Schedule</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Alex Handyman</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
     <style>
@@ -311,21 +313,15 @@
 
     <script>
         const firebaseConfig = {
-            databaseURL: "https://YOUR_PROJECT_ID-default-rtdb.firebaseio.com"
+            databaseURL: "https://alex-calendar-b4f04-default-rtdb.firebaseio.com"
         };
         
-        let db = null;
-        try {
-            firebase.initializeApp(firebaseConfig);
-            db = firebase.database();
-        } catch(e) {}
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
 
         let viewDate = new Date();
         let selectedDateStr = new Date().toISOString().split('T')[0];
-        
-        // Локальное хранилище, если Firebase пока не подключен
-        let jobsData = JSON.parse(localStorage.getItem('handyman_jobs') || '{}');
-
+        let jobsData = {};
         let selectedStartTime = "8:00 am";
 
         const timeSlots = [
@@ -353,16 +349,11 @@
         }
 
         function initDataSync() {
-            if(db) {
-                db.ref('jobs').on('value', (snapshot) => {
-                    jobsData = snapshot.val() || {};
-                    renderCalendar();
-                    renderJobs();
-                });
-            } else {
+            db.ref('jobs').on('value', (snapshot) => {
+                jobsData = snapshot.val() || {};
                 renderCalendar();
                 renderJobs();
-            }
+            });
         }
 
         function changeMonth(direction) {
@@ -527,39 +518,19 @@
         }
 
         function toggleStatus(id, newStatus) {
-            if(db) {
-                db.ref(`jobs/${selectedDateStr}/${id}/completed`).set(newStatus);
-            } else {
-                if(jobsData[selectedDateStr] && jobsData[selectedDateStr][id]) {
-                    jobsData[selectedDateStr][id].completed = newStatus;
-                    saveLocal();
-                    renderCalendar();
-                    renderJobs();
-                    closeModal('details-modal');
-                }
-            }
+            db.ref(`jobs/${selectedDateStr}/${id}/completed`).set(newStatus);
+            closeModal('details-modal');
         }
 
         function deleteJob(id) {
             if(confirm('Удалить этот заказ?')) {
-                if(db) {
-                    db.ref(`jobs/${selectedDateStr}/${id}`).remove();
-                } else {
-                    delete jobsData[selectedDateStr][id];
-                    saveLocal();
-                    renderCalendar();
-                    renderJobs();
-                }
+                db.ref(`jobs/${selectedDateStr}/${id}`).remove();
                 closeModal('details-modal');
             }
         }
 
         function closeModal(modalId) {
             document.getElementById(modalId).style.display = 'none';
-        }
-
-        function saveLocal() {
-            localStorage.setItem('handyman_jobs', JSON.stringify(jobsData));
         }
 
         function saveJob(e) {
@@ -575,15 +546,7 @@
                 completed: false
             };
 
-            if(db) {
-                db.ref(`jobs/${selectedDateStr}`).push(newJob);
-            } else {
-                if(!jobsData[selectedDateStr]) jobsData[selectedDateStr] = {};
-                jobsData[selectedDateStr][Date.now()] = newJob;
-                saveLocal();
-                renderCalendar();
-                renderJobs();
-            }
+            db.ref(`jobs/${selectedDateStr}`).push(newJob);
 
             document.getElementById('job-form').reset();
             closeModal('add-modal');
