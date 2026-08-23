@@ -229,8 +229,9 @@
     </div>
 
     <div class="calendar-container">
+        <!-- Понедельник первый -->
         <div class="weekdays">
-            <div>Вс</div><div>Пн</div><div>Вт</div><div>Ср</div><div>Чт</div><div>Пт</div><div>Сб</div>
+            <div>Пн</div><div>Вт</div><div>Ср</div><div>Чт</div><div>Пт</div><div>Сб</div><div>Вс</div>
         </div>
         <div class="days-grid" id="days-grid"></div>
     </div>
@@ -372,7 +373,10 @@
             const monthNames = ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"];
             monthTitle.innerText = `${monthNames[month]} ${year}`;
 
-            const firstDayIndex = new Date(year, month, 1).getDay();
+            // Смещение для недели с Понедельника
+            let firstDayIndex = new Date(year, month, 1).getDay() - 1;
+            if (firstDayIndex === -1) firstDayIndex = 6; // если воскресенье
+
             const totalDays = new Date(year, month + 1, 0).getDate();
 
             for(let i = 0; i < firstDayIndex; i++) {
