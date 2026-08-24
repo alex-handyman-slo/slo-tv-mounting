@@ -138,6 +138,7 @@
             text-decoration: none;
             font-size: 14px;
             margin-top: 6px;
+            cursor: pointer;
         }
 
         .btn-add {
@@ -185,7 +186,8 @@
             background: #fff;
         }
 
-        .time-picker-grid {
+        /* Кнопки времени и дней */
+        .time-picker-grid, .days-picker-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 6px;
@@ -195,7 +197,9 @@
             padding: 8px;
             border-radius: 8px;
         }
-        .time-chip {
+        .days-picker-grid { grid-template-columns: repeat(7, 1fr); max-height: none; }
+        
+        .chip {
             padding: 8px 4px;
             font-size: 12px;
             text-align: center;
@@ -203,8 +207,9 @@
             border-radius: 6px;
             background: #f9f9f9;
             cursor: pointer;
+            font-weight: 600;
         }
-        .time-chip.selected {
+        .chip.selected {
             background: var(--primary);
             color: white;
             border-color: var(--primary);
@@ -215,15 +220,20 @@
         .detail-value { font-size: 15px; font-weight: 500; }
         .clickable-link { color: var(--primary); text-decoration: none; font-weight: 600; }
         .btn-group { display: flex; gap: 10px; margin-top: 15px; }
-        .btn-group a { flex: 1; text-align: center; }
+        .btn-group a, .btn-group button { flex: 1; text-align: center; }
 
-        /* Стиль фото */
-        .photo-preview {
+        /* Сетка галереи до 5 фото */
+        .photos-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-top: 8px;
+        }
+        .photo-thumb {
             width: 100%;
-            max-height: 200px;
+            height: 90px;
             object-fit: cover;
             border-radius: 8px;
-            margin-top: 8px;
             border: 1px solid var(--border-color);
             cursor: pointer;
         }
@@ -252,7 +262,7 @@
         <button class="btn-add" onclick="openAddModal()">+ Добавить заказ на эту дату</button>
     </div>
 
-    <!-- Модальное окно добавления -->
+    <!-- Модальное окно добавления/редактирования -->
     <div class="modal" id="add-modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -261,8 +271,13 @@
             </div>
             <form id="job-form" onsubmit="saveJob(event)">
                 <div class="form-group">
+                    <label>Дата заказа</label>
+                    <input type="date" id="job-date" required>
+                </div>
+
+                <div class="form-group">
                     <label>Вид работы</label>
-                    <select id="title">
+                    <select id="title" onchange="toggleCustomTitle(this.value)">
                         <option value="Estimate" selected>Estimate</option>
                         <option value="Мастер на час (Handyman)">Мастер на час (Handyman)</option>
                         <option value="Сантехника">Сантехника</option>
@@ -273,7 +288,13 @@
                         <option value="Сборка мебели">Сборка мебели</option>
                         <option value="Замки и двери">Замки и двери</option>
                         <option value="Мелкий ремонт">Мелкий ремонт</option>
+                        <option value="CUSTOM">-- Другое (ввести вручную) --</option>
                     </select>
+                </div>
+
+                <div class="form-group" id="custom-title-group" style="display:none;">
+                    <label>Введите своё название услуги</label>
+                    <input type="text" id="custom-title" placeholder="Например: Установка забора">
                 </div>
 
                 <div class="form-group">
@@ -284,6 +305,11 @@
                 <div class="form-group">
                     <label>Время начала работы</label>
                     <div class="time-picker-grid" id="start-time-grid"></div>
+                </div>
+
+                <div class="form-group" id="duration-group">
+                    <label>Длительность заказа (дней)</label>
+                    <div class="days-picker-grid" id="days-count-grid"></div>
                 </div>
 
                 <div class="form-group">
@@ -302,8 +328,8 @@
                 </div>
 
                 <div class="form-group">
-                    <label>Прикрепить фото объекта / поломки</label>
-                    <input type="file" id="photo-file" accept="image/*" style="padding: 8px;">
+                    <label>Прикрепить фото (до 5 шт)</label>
+                    <input type="file" id="photo-files" accept="image/*" multiple style="padding: 8px;">
                 </div>
 
                 <div class="form-group">
@@ -339,6 +365,10 @@
         let selectedDateStr = new Date().toISOString().split('T')[0];
         let jobsData = {};
         let selectedStartTime = "8:00 am";
+        let selectedDuration = 1;
+        let editingJobId = null; // ID редактируемого заказа
+        let editingJobDate = null;
+        let existingPhotos = []; // Существующие фото при редактировании
 
         const timeSlots = [
             "7:00 am", "7:30 am", "8:00 am", "8:30 am", 
@@ -354,7 +384,7 @@
             startGrid.innerHTML = '';
             timeSlots.forEach(slot => {
                 const sChip = document.createElement('div');
-                sChip.className = 'time-chip' + (slot === selectedStartTime ? ' selected' : '');
+                sChip.className = 'chip' + (slot === selectedStartTime ? ' selected' : '');
                 sChip.innerText = slot;
                 sChip.onclick = () => {
                     selectedStartTime = slot;
@@ -362,6 +392,25 @@
                 };
                 startGrid.appendChild(sChip);
             });
+        }
+
+        function initDaysPicker() {
+            const daysGrid = document.getElementById('days-count-grid');
+            daysGrid.innerHTML = '';
+            for(let i=1; i<=7; i++) {
+                const dChip = document.createElement('div');
+                dChip.className = 'chip' + (i === selectedDuration ? ' selected' : '');
+                dChip.innerText = `${i} дн.`;
+                dChip.onclick = () => {
+                    selectedDuration = i;
+                    initDaysPicker();
+                };
+                daysGrid.appendChild(dChip);
+            }
+        }
+
+        function toggleCustomTitle(val) {
+            document.getElementById('custom-title-group').style.display = (val === 'CUSTOM') ? 'block' : 'none';
         }
 
         function initDataSync() {
@@ -460,6 +509,11 @@
 
                 const phoneBtn = job.phone ? `<button class="btn-action" onclick="event.stopPropagation(); window.location.href='sms:${job.phone}'">Написать SMS</button>` : '';
 
+                let photosHtml = '';
+                if(job.photos && job.photos.length > 0) {
+                    photosHtml = `<div class="photos-grid">` + job.photos.map(p => `<img src="${p}" class="photo-thumb">`).join('') + `</div>`;
+                }
+
                 card.innerHTML = `
                     ${statusHtml}
                     <div class="job-card-header">
@@ -468,18 +522,54 @@
                     </div>
                     <div class="job-time">Время: ${job.time} | Клиент: ${job.client || 'Не указан'}</div>
                     <div class="job-address">${job.address || 'Адрес не указан'}</div>
-                    ${job.photo ? `<img src="${job.photo}" class="photo-preview" style="height:80px;">` : ''}
+                    ${photosHtml}
                     ${phoneBtn}
                 `;
                 list.appendChild(card);
             });
         }
 
-        function openAddModal() {
+        function openAddModal(editingId = null, job = null) {
             document.getElementById('job-form').reset();
-            const [y, m, d] = selectedDateStr.split('-').map(Number);
-            const dateObj = new Date(y, m - 1, d);
-            document.getElementById('add-modal-title').innerText = `Заказ на ${dateObj.toLocaleDateString('ru-RU', { day: 'numeric', month: 'short' })}`;
+            editingJobId = editingId;
+            existingPhotos = [];
+
+            if(editingId && job) {
+                editingJobDate = selectedDateStr;
+                document.getElementById('add-modal-title').innerText = 'Редактирование заказа';
+                document.getElementById('job-date').value = selectedDateStr;
+                
+                // Проверка названия
+                const selectTitle = document.getElementById('title');
+                const titleExists = Array.from(selectTitle.options).some(opt => opt.value === job.title);
+                if(titleExists) {
+                    selectTitle.value = job.title;
+                    toggleCustomTitle(job.title);
+                } else {
+                    selectTitle.value = 'CUSTOM';
+                    toggleCustomTitle('CUSTOM');
+                    document.getElementById('custom-title').value = job.title;
+                }
+
+                document.getElementById('price').value = job.price;
+                document.getElementById('client').value = job.client || '';
+                document.getElementById('phone').value = job.phone || '';
+                document.getElementById('address').value = job.address || '';
+                document.getElementById('desc').value = job.desc || '';
+                selectedStartTime = job.time || "8:00 am";
+                existingPhotos = job.photos || [];
+                document.getElementById('duration-group').style.display = 'none'; // при редактировании скрываем
+            } else {
+                document.getElementById('add-modal-title').innerText = `Заказ на ${selectedDateStr}`;
+                document.getElementById('job-date').value = selectedDateStr;
+                document.getElementById('duration-group').style.display = 'block';
+                selectedDuration = 1;
+                toggleCustomTitle('Estimate');
+            }
+
+            initTimePicker();
+            initDaysPicker();
+            closeModal('details-modal');
             document.getElementById('add-modal').style.display = 'flex';
         }
 
@@ -504,13 +594,12 @@
                     </div>
                 </div>` : '';
 
-            const photoSection = job.photo ? `
-                <div class="detail-row">
-                    <div class="detail-label">Фотография заказа</div>
-                    <a href="${job.photo}" target="_blank">
-                        <img src="${job.photo}" class="photo-preview">
-                    </a>
-                </div>` : '';
+            let photoSection = '';
+            if(job.photos && job.photos.length > 0) {
+                photoSection = `<div class="detail-row"><div class="detail-label">Фотографии заказа (${job.photos.length})</div><div class="photos-grid">` + 
+                    job.photos.map(p => `<a href="${p}" target="_blank"><img src="${p}" class="photo-thumb"></a>`).join('') + 
+                    `</div></div>`;
+            }
 
             body.innerHTML = `
                 <div class="detail-row">
@@ -540,7 +629,10 @@
                     <div class="detail-label">Описание / Заметки</div>
                     <div class="detail-value">${job.desc || 'Нет описания'}</div>
                 </div>
-                <button class="btn-action" style="background:#d32f2f; color:white; border-color:#d32f2f; margin-top:15px;" onclick="deleteJob('${id}')">Удалить заказ</button>
+                <div class="btn-group">
+                    <button class="btn-action" style="background:#008b99; color:white;" onclick="openAddModal('${id}', ${JSON.stringify(job).replace(/"/g, '&quot;')})">✏️ Редактировать</button>
+                    <button class="btn-action" style="background:#d32f2f; color:white; border-color:#d32f2f;" onclick="deleteJob('${id}')">Удалить</button>
+                </div>
             `;
             document.getElementById('details-modal').style.display = 'flex';
         }
@@ -561,49 +653,80 @@
             document.getElementById(modalId).style.display = 'none';
         }
 
-        // Функция сжатия изображения для быстрой загрузки
-        function compressPhoto(file, callback) {
-            if (!file) return callback(null);
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                const img = new Image();
-                img.onload = () => {
-                    const canvas = document.createElement('canvas');
-                    const ctx = canvas.getContext('2d');
-                    const maxW = 800;
-                    const scale = maxW / img.width;
-                    canvas.width = (img.width > maxW) ? maxW : img.width;
-                    canvas.height = (img.width > maxW) ? img.height * scale : img.height;
-                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                    callback(canvas.toDataURL('image/jpeg', 0.7));
+        // Обработка сжатия до 5 фото
+        function processPhotos(files, callback) {
+            if (!files || files.length === 0) return callback(existingPhotos);
+            let photos = [...existingPhotos];
+            let filesArray = Array.from(files).slice(0, 5 - photos.length);
+            let loadedCount = 0;
+
+            if(filesArray.length === 0) return callback(photos);
+
+            filesArray.forEach(file => {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const img = new Image();
+                    img.onload = () => {
+                        const canvas = document.createElement('canvas');
+                        const ctx = canvas.getContext('2d');
+                        const maxW = 800;
+                        const scale = maxW / img.width;
+                        canvas.width = (img.width > maxW) ? maxW : img.width;
+                        canvas.height = (img.width > maxW) ? img.height * scale : img.height;
+                        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                        photos.push(canvas.toDataURL('image/jpeg', 0.6));
+                        loadedCount++;
+                        if(loadedCount === filesArray.length) callback(photos);
+                    };
+                    img.src = e.target.result;
                 };
-                img.src = e.target.result;
-            };
-            reader.readAsDataURL(file);
+                reader.readAsDataURL(file);
+            });
         }
 
         function saveJob(e) {
             e.preventDefault();
-            const fileInput = document.getElementById('photo-file');
             const saveBtn = document.getElementById('save-btn');
-            
             saveBtn.disabled = true;
             saveBtn.innerText = "Сохранение...";
 
-            compressPhoto(fileInput.files[0], (photoBase64) => {
+            const targetDateStr = document.getElementById('job-date').value;
+            const selectTitle = document.getElementById('title').value;
+            const finalTitle = (selectTitle === 'CUSTOM') ? document.getElementById('custom-title').value : selectTitle;
+
+            const fileInput = document.getElementById('photo-files');
+
+            processPhotos(fileInput.files, (photoArray) => {
                 const newJob = {
-                    title: document.getElementById('title').value,
+                    title: finalTitle || 'Услуга',
                     price: document.getElementById('price').value,
                     time: selectedStartTime,
                     client: document.getElementById('client').value,
                     phone: document.getElementById('phone').value,
                     address: document.getElementById('address').value,
                     desc: document.getElementById('desc').value,
-                    photo: photoBase64 || null,
+                    photos: photoArray || [],
                     completed: false
                 };
 
-                db.ref(`jobs/${selectedDateStr}`).push(newJob);
+                // Если редактируем — сперва удалим старую запись (если сменилась дата)
+                if(editingJobId) {
+                    if(editingJobDate && editingJobDate !== targetDateStr) {
+                        db.ref(`jobs/${editingJobDate}/${editingJobId}`).remove();
+                        db.ref(`jobs/${targetDateStr}`).push(newJob);
+                    } else {
+                        db.ref(`jobs/${targetDateStr}/${editingJobId}`).update(newJob);
+                    }
+                } else {
+                    // Создание заказа на N дней
+                    const startDate = new Date(targetDateStr + 'T00:00:00');
+                    for(let i = 0; i < selectedDuration; i++) {
+                        const curDate = new Date(startDate);
+                        curDate.setDate(startDate.getDate() + i);
+                        const curDateStr = curDate.toISOString().split('T')[0];
+                        db.ref(`jobs/${curDateStr}`).push(newJob);
+                    }
+                }
 
                 saveBtn.disabled = false;
                 saveBtn.innerText = "Сохранить заказ";
