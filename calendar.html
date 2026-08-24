@@ -213,7 +213,6 @@
             border-color: var(--primary);
         }
 
-        /* Выбор дат кликами */
         .dates-picker-container {
             border: 1px solid var(--border-color);
             border-radius: 8px;
@@ -298,7 +297,6 @@
             </div>
             <form id="job-form" onsubmit="saveJob(event)">
                 
-                <!-- Множественный выбор дат -->
                 <div class="form-group">
                     <label>Выберите дату (или несколько дней работы)</label>
                     <div class="dates-picker-container">
@@ -309,26 +307,10 @@
                     </div>
                 </div>
 
+                <!-- Поле ввода услуги вручную -->
                 <div class="form-group">
-                    <label>Вид работы</label>
-                    <select id="title" onchange="toggleCustomTitle(this.value)">
-                        <option value="Estimate" selected>Estimate</option>
-                        <option value="Мастер на час (Handyman)">Мастер на час (Handyman)</option>
-                        <option value="Сантехника">Сантехника</option>
-                        <option value="Электрика">Электрика</option>
-                        <option value="Ремонт гипсокартона (Drywall)">Ремонт гипсокартона (Drywall)</option>
-                        <option value="Покраска">Покраска</option>
-                        <option value="Монтаж ТВ">Монтаж ТВ</option>
-                        <option value="Сборка мебели">Сборка мебели</option>
-                        <option value="Замки и двери">Замки и двери</option>
-                        <option value="Мелкий ремонт">Мелкий ремонт</option>
-                        <option value="CUSTOM">-- Другое (ввести вручную) --</option>
-                    </select>
-                </div>
-
-                <div class="form-group" id="custom-title-group" style="display:none;">
-                    <label>Введите своё название услуги</label>
-                    <input type="text" id="custom-title" placeholder="Например: Установка забора">
+                    <label>Название услуги / Вид работы</label>
+                    <input type="text" id="title" required placeholder="Например: Handyman Service, Estimate, Покраска...">
                 </div>
 
                 <div class="form-group">
@@ -394,8 +376,8 @@
         let selectedDateStr = new Date().toISOString().split('T')[0];
         let jobsData = {};
         let selectedStartTime = "8:00 am";
-        let selectedJobDates = []; // Массив выбранных дат для одного заказа
-        let editingJobGroupId = null; // Уникальный ID связи для многодневного заказа
+        let selectedJobDates = [];
+        let editingJobGroupId = null;
         let existingPhotos = [];
 
         const timeSlots = [
@@ -422,7 +404,6 @@
             });
         }
 
-        // Рендер сетки выбора дат в модальном окне
         function renderFormDatesGrid() {
             const grid = document.getElementById('form-dates-grid');
             grid.innerHTML = '';
@@ -457,10 +438,6 @@
                 };
                 grid.appendChild(chip);
             }
-        }
-
-        function toggleCustomTitle(val) {
-            document.getElementById('custom-title-group').style.display = (val === 'CUSTOM') ? 'block' : 'none';
         }
 
         function initDataSync() {
@@ -588,19 +565,8 @@
                 selectedJobDates = editingJobData.dates || [selectedDateStr];
                 
                 document.getElementById('add-modal-title').innerText = 'Редактирование заказа';
-                
-                const selectTitle = document.getElementById('title');
-                const titleExists = Array.from(selectTitle.options).some(opt => opt.value === editingJobData.title);
-                if(titleExists) {
-                    selectTitle.value = editingJobData.title;
-                    toggleCustomTitle(editingJobData.title);
-                } else {
-                    selectTitle.value = 'CUSTOM';
-                    toggleCustomTitle('CUSTOM');
-                    document.getElementById('custom-title').value = editingJobData.title;
-                }
-
-                document.getElementById('price').value = editingJobData.price;
+                document.getElementById('title').value = editingJobData.title || '';
+                document.getElementById('price').value = editingJobData.price || 60;
                 document.getElementById('client').value = editingJobData.client || '';
                 document.getElementById('phone').value = editingJobData.phone || '';
                 document.getElementById('address').value = editingJobData.address || '';
@@ -609,9 +575,9 @@
                 existingPhotos = editingJobData.photos || [];
             } else {
                 editingJobGroupId = null;
-                selectedJobDates = [selectedDateStr]; // По умолчанию выбран текущий день
+                selectedJobDates = [selectedDateStr];
                 document.getElementById('add-modal-title').innerText = `Новый заказ`;
-                toggleCustomTitle('Estimate');
+                document.getElementById('title').value = 'Estimate';
             }
 
             initTimePicker();
@@ -691,7 +657,6 @@
 
         function deleteJobGroup(groupId, dateStr, id) {
             if(confirm('Удалить этот заказ изо всех выбранных дней?')) {
-                // Ищем по всем дням заказы с таким же groupId
                 Object.keys(jobsData).forEach(d => {
                     Object.keys(jobsData[d]).forEach(jId => {
                         if(jobsData[d][jId].groupId === groupId || jId === id) {
@@ -748,14 +713,11 @@
             saveBtn.disabled = true;
             saveBtn.innerText = "Сохранение...";
 
-            const selectTitle = document.getElementById('title').value;
-            const finalTitle = (selectTitle === 'CUSTOM') ? document.getElementById('custom-title').value : selectTitle;
             const fileInput = document.getElementById('photo-files');
 
             processPhotos(fileInput.files, (photoArray) => {
                 const groupId = editingJobGroupId || ('grp_' + Date.now());
 
-                // Удаляем старые записи этого заказа по всем дням при редактировании
                 if(editingJobGroupId) {
                     Object.keys(jobsData).forEach(d => {
                         Object.keys(jobsData[d]).forEach(jId => {
@@ -769,7 +731,7 @@
                 const newJobData = {
                     groupId: groupId,
                     dates: selectedJobDates,
-                    title: finalTitle || 'Услуга',
+                    title: document.getElementById('title').value || 'Услуга',
                     price: document.getElementById('price').value,
                     time: selectedStartTime,
                     client: document.getElementById('client').value,
@@ -780,7 +742,6 @@
                     completed: false
                 };
 
-                // Записываем заказ в каждый из выбранных дней
                 selectedJobDates.forEach(dStr => {
                     db.ref(`jobs/${dStr}`).push(newJobData);
                 });
