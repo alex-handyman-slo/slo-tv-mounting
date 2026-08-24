@@ -307,7 +307,6 @@
                     </div>
                 </div>
 
-                <!-- Поле ввода услуги вручную -->
                 <div class="form-group">
                     <label>Название услуги / Вид работы</label>
                     <input type="text" id="title" required placeholder="Например: Handyman Service, Estimate, Покраска...">
@@ -524,7 +523,14 @@
                 return;
             }
 
-            Object.keys(dayJobs).forEach(id => {
+            // Сортировка по времени
+            const sortedKeys = Object.keys(dayJobs).sort((a, b) => {
+                const timeA = timeSlots.indexOf(dayJobs[a].time);
+                const timeB = timeSlots.indexOf(dayJobs[b].time);
+                return (timeA === -1 ? 99 : timeA) - (timeB === -1 ? 99 : timeB);
+            });
+
+            sortedKeys.forEach(id => {
                 const job = dayJobs[id];
                 const card = document.createElement('div');
                 card.className = 'job-card' + (job.completed ? ' is-completed' : '');
@@ -614,6 +620,8 @@
                     `</div></div>`;
             }
 
+            const jobWithGroupId = { ...job, groupId: job.groupId || id };
+
             body.innerHTML = `
                 <div class="detail-row">
                     <div class="detail-label">Статус заказа</div>
@@ -643,8 +651,8 @@
                     <div class="detail-value">${job.desc || 'Нет описания'}</div>
                 </div>
                 <div class="btn-group">
-                    <button class="btn-action" style="background:#008b99; color:white;" onclick="openAddModal(${JSON.stringify(job).replace(/"/g, '&quot;')})">✏️ Редактировать</button>
-                    <button class="btn-action" style="background:#d32f2f; color:white; border-color:#d32f2f;" onclick="deleteJobGroup('${job.groupId || id}', '${selectedDateStr}', '${id}')">Удалить</button>
+                    <button class="btn-action" style="background:#008b99; color:white;" onclick="openAddModal(${JSON.stringify(jobWithGroupId).replace(/"/g, '&quot;')})">✏️ Редактировать</button>
+                    <button class="btn-action" style="background:#d32f2f; color:white; border-color:#d32f2f;" onclick="deleteJobGroup('${jobWithGroupId.groupId}', '${selectedDateStr}', '${id}')">Удалить</button>
                 </div>
             `;
             document.getElementById('details-modal').style.display = 'flex';
@@ -718,6 +726,7 @@
             processPhotos(fileInput.files, (photoArray) => {
                 const groupId = editingJobGroupId || ('grp_' + Date.now());
 
+                // Удаляем старые записи этого заказа перед сохранением обновленного
                 if(editingJobGroupId) {
                     Object.keys(jobsData).forEach(d => {
                         Object.keys(jobsData[d]).forEach(jId => {
