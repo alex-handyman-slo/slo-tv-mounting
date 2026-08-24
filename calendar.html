@@ -376,6 +376,7 @@
         let jobsData = {};
         let selectedStartTime = "8:00 am";
         let selectedJobDates = [];
+        let editingJobId = null; 
         let editingJobGroupId = null;
         let existingPhotos = [];
 
@@ -562,12 +563,13 @@
             });
         }
 
-        function openAddModal(editingJobData = null) {
+        function openAddModal(editingJobData = null, rawId = null) {
             document.getElementById('job-form').reset();
             existingPhotos = [];
 
             if(editingJobData) {
-                editingJobGroupId = editingJobData.groupId || null;
+                editingJobId = rawId;
+                editingJobGroupId = editingJobData.groupId || rawId;
                 selectedJobDates = editingJobData.dates || [selectedDateStr];
                 
                 document.getElementById('add-modal-title').innerText = 'Редактирование заказа';
@@ -580,6 +582,7 @@
                 selectedStartTime = editingJobData.time || "8:00 am";
                 existingPhotos = editingJobData.photos || [];
             } else {
+                editingJobId = null;
                 editingJobGroupId = null;
                 selectedJobDates = [selectedDateStr];
                 document.getElementById('add-modal-title').innerText = `Новый заказ`;
@@ -620,7 +623,7 @@
                     `</div></div>`;
             }
 
-            const jobWithGroupId = { ...job, groupId: job.groupId || id };
+            const targetGroupId = job.groupId || id;
 
             body.innerHTML = `
                 <div class="detail-row">
@@ -651,8 +654,8 @@
                     <div class="detail-value">${job.desc || 'Нет описания'}</div>
                 </div>
                 <div class="btn-group">
-                    <button class="btn-action" style="background:#008b99; color:white;" onclick="openAddModal(${JSON.stringify(jobWithGroupId).replace(/"/g, '&quot;')})">✏️ Редактировать</button>
-                    <button class="btn-action" style="background:#d32f2f; color:white; border-color:#d32f2f;" onclick="deleteJobGroup('${jobWithGroupId.groupId}', '${selectedDateStr}', '${id}')">Удалить</button>
+                    <button class="btn-action" style="background:#008b99; color:white;" onclick="openAddModal(${JSON.stringify(job).replace(/"/g, '&quot;')}, '${id}')">✏️ Редактировать</button>
+                    <button class="btn-action" style="background:#d32f2f; color:white; border-color:#d32f2f;" onclick="deleteJobGroup('${targetGroupId}', '${selectedDateStr}', '${id}')">Удалить</button>
                 </div>
             `;
             document.getElementById('details-modal').style.display = 'flex';
@@ -727,10 +730,10 @@
                 const groupId = editingJobGroupId || ('grp_' + Date.now());
 
                 // Удаляем старые записи этого заказа перед сохранением обновленного
-                if(editingJobGroupId) {
+                if(editingJobId || editingJobGroupId) {
                     Object.keys(jobsData).forEach(d => {
                         Object.keys(jobsData[d]).forEach(jId => {
-                            if(jobsData[d][jId].groupId === editingJobGroupId) {
+                            if(jId === editingJobId || (editingJobGroupId && jobsData[d][jId].groupId === editingJobGroupId)) {
                                 db.ref(`jobs/${d}/${jId}`).remove();
                             }
                         });
