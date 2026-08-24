@@ -186,8 +186,7 @@
             background: #fff;
         }
 
-        /* Кнопки времени и дней */
-        .time-picker-grid, .days-picker-grid {
+        .time-picker-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 6px;
@@ -197,7 +196,6 @@
             padding: 8px;
             border-radius: 8px;
         }
-        .days-picker-grid { grid-template-columns: repeat(7, 1fr); max-height: none; }
         
         .chip {
             padding: 8px 4px;
@@ -215,6 +213,36 @@
             border-color: var(--primary);
         }
 
+        /* Выбор дат кликами */
+        .dates-picker-container {
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 8px;
+            background: #fff;
+        }
+        .dates-picker-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 4px;
+        }
+        .date-chip {
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            border: 1px solid #eee;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            background: #fafafa;
+        }
+        .date-chip.selected {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
         .detail-row { margin-bottom: 15px; }
         .detail-label { font-size: 12px; color: #777; text-transform: uppercase; margin-bottom: 2px; }
         .detail-value { font-size: 15px; font-weight: 500; }
@@ -222,7 +250,6 @@
         .btn-group { display: flex; gap: 10px; margin-top: 15px; }
         .btn-group a, .btn-group button { flex: 1; text-align: center; }
 
-        /* Сетка галереи до 5 фото */
         .photos-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -270,9 +297,16 @@
                 <span class="close-btn" onclick="closeModal('add-modal')">&times;</span>
             </div>
             <form id="job-form" onsubmit="saveJob(event)">
+                
+                <!-- Множественный выбор дат -->
                 <div class="form-group">
-                    <label>Дата заказа</label>
-                    <input type="date" id="job-date" required>
+                    <label>Выберите дату (или несколько дней работы)</label>
+                    <div class="dates-picker-container">
+                        <div class="weekdays" style="margin-bottom:4px;">
+                            <div>Пн</div><div>Вт</div><div>Ср</div><div>Чт</div><div>Пт</div><div>Сб</div><div>Вс</div>
+                        </div>
+                        <div class="dates-picker-grid" id="form-dates-grid"></div>
+                    </div>
                 </div>
 
                 <div class="form-group">
@@ -305,11 +339,6 @@
                 <div class="form-group">
                     <label>Время начала работы</label>
                     <div class="time-picker-grid" id="start-time-grid"></div>
-                </div>
-
-                <div class="form-group" id="duration-group">
-                    <label>Длительность заказа (дней)</label>
-                    <div class="days-picker-grid" id="days-count-grid"></div>
                 </div>
 
                 <div class="form-group">
@@ -365,10 +394,9 @@
         let selectedDateStr = new Date().toISOString().split('T')[0];
         let jobsData = {};
         let selectedStartTime = "8:00 am";
-        let selectedDuration = 1;
-        let editingJobId = null; // ID редактируемого заказа
-        let editingJobDate = null;
-        let existingPhotos = []; // Существующие фото при редактировании
+        let selectedJobDates = []; // Массив выбранных дат для одного заказа
+        let editingJobGroupId = null; // Уникальный ID связи для многодневного заказа
+        let existingPhotos = [];
 
         const timeSlots = [
             "7:00 am", "7:30 am", "8:00 am", "8:30 am", 
@@ -394,18 +422,40 @@
             });
         }
 
-        function initDaysPicker() {
-            const daysGrid = document.getElementById('days-count-grid');
-            daysGrid.innerHTML = '';
-            for(let i=1; i<=7; i++) {
-                const dChip = document.createElement('div');
-                dChip.className = 'chip' + (i === selectedDuration ? ' selected' : '');
-                dChip.innerText = `${i} дн.`;
-                dChip.onclick = () => {
-                    selectedDuration = i;
-                    initDaysPicker();
+        // Рендер сетки выбора дат в модальном окне
+        function renderFormDatesGrid() {
+            const grid = document.getElementById('form-dates-grid');
+            grid.innerHTML = '';
+
+            const year = viewDate.getFullYear();
+            const month = viewDate.getMonth();
+            let firstDayIndex = new Date(year, month, 1).getDay() - 1;
+            if (firstDayIndex === -1) firstDayIndex = 6;
+            const totalDays = new Date(year, month + 1, 0).getDate();
+
+            for(let i = 0; i < firstDayIndex; i++) {
+                grid.appendChild(document.createElement('div'));
+            }
+
+            for(let d = 1; d <= totalDays; d++) {
+                const monthStr = String(month + 1).padStart(2, '0');
+                const dayStrFormatted = String(d).padStart(2, '0');
+                const dayStr = `${year}-${monthStr}-${dayStrFormatted}`;
+
+                const chip = document.createElement('div');
+                const isSel = selectedJobDates.includes(dayStr);
+                chip.className = 'date-chip' + (isSel ? ' selected' : '');
+                chip.innerText = d;
+
+                chip.onclick = () => {
+                    if(selectedJobDates.includes(dayStr)) {
+                        selectedJobDates = selectedJobDates.filter(item => item !== dayStr);
+                    } else {
+                        selectedJobDates.push(dayStr);
+                    }
+                    renderFormDatesGrid();
                 };
-                daysGrid.appendChild(dChip);
+                grid.appendChild(chip);
             }
         }
 
@@ -529,46 +579,43 @@
             });
         }
 
-        function openAddModal(editingId = null, job = null) {
+        function openAddModal(editingJobData = null) {
             document.getElementById('job-form').reset();
-            editingJobId = editingId;
             existingPhotos = [];
 
-            if(editingId && job) {
-                editingJobDate = selectedDateStr;
-                document.getElementById('add-modal-title').innerText = 'Редактирование заказа';
-                document.getElementById('job-date').value = selectedDateStr;
+            if(editingJobData) {
+                editingJobGroupId = editingJobData.groupId || null;
+                selectedJobDates = editingJobData.dates || [selectedDateStr];
                 
-                // Проверка названия
+                document.getElementById('add-modal-title').innerText = 'Редактирование заказа';
+                
                 const selectTitle = document.getElementById('title');
-                const titleExists = Array.from(selectTitle.options).some(opt => opt.value === job.title);
+                const titleExists = Array.from(selectTitle.options).some(opt => opt.value === editingJobData.title);
                 if(titleExists) {
-                    selectTitle.value = job.title;
-                    toggleCustomTitle(job.title);
+                    selectTitle.value = editingJobData.title;
+                    toggleCustomTitle(editingJobData.title);
                 } else {
                     selectTitle.value = 'CUSTOM';
                     toggleCustomTitle('CUSTOM');
-                    document.getElementById('custom-title').value = job.title;
+                    document.getElementById('custom-title').value = editingJobData.title;
                 }
 
-                document.getElementById('price').value = job.price;
-                document.getElementById('client').value = job.client || '';
-                document.getElementById('phone').value = job.phone || '';
-                document.getElementById('address').value = job.address || '';
-                document.getElementById('desc').value = job.desc || '';
-                selectedStartTime = job.time || "8:00 am";
-                existingPhotos = job.photos || [];
-                document.getElementById('duration-group').style.display = 'none'; // при редактировании скрываем
+                document.getElementById('price').value = editingJobData.price;
+                document.getElementById('client').value = editingJobData.client || '';
+                document.getElementById('phone').value = editingJobData.phone || '';
+                document.getElementById('address').value = editingJobData.address || '';
+                document.getElementById('desc').value = editingJobData.desc || '';
+                selectedStartTime = editingJobData.time || "8:00 am";
+                existingPhotos = editingJobData.photos || [];
             } else {
-                document.getElementById('add-modal-title').innerText = `Заказ на ${selectedDateStr}`;
-                document.getElementById('job-date').value = selectedDateStr;
-                document.getElementById('duration-group').style.display = 'block';
-                selectedDuration = 1;
+                editingJobGroupId = null;
+                selectedJobDates = [selectedDateStr]; // По умолчанию выбран текущий день
+                document.getElementById('add-modal-title').innerText = `Новый заказ`;
                 toggleCustomTitle('Estimate');
             }
 
             initTimePicker();
-            initDaysPicker();
+            renderFormDatesGrid();
             closeModal('details-modal');
             document.getElementById('add-modal').style.display = 'flex';
         }
@@ -630,8 +677,8 @@
                     <div class="detail-value">${job.desc || 'Нет описания'}</div>
                 </div>
                 <div class="btn-group">
-                    <button class="btn-action" style="background:#008b99; color:white;" onclick="openAddModal('${id}', ${JSON.stringify(job).replace(/"/g, '&quot;')})">✏️ Редактировать</button>
-                    <button class="btn-action" style="background:#d32f2f; color:white; border-color:#d32f2f;" onclick="deleteJob('${id}')">Удалить</button>
+                    <button class="btn-action" style="background:#008b99; color:white;" onclick="openAddModal(${JSON.stringify(job).replace(/"/g, '&quot;')})">✏️ Редактировать</button>
+                    <button class="btn-action" style="background:#d32f2f; color:white; border-color:#d32f2f;" onclick="deleteJobGroup('${job.groupId || id}', '${selectedDateStr}', '${id}')">Удалить</button>
                 </div>
             `;
             document.getElementById('details-modal').style.display = 'flex';
@@ -642,9 +689,16 @@
             closeModal('details-modal');
         }
 
-        function deleteJob(id) {
-            if(confirm('Удалить этот заказ?')) {
-                db.ref(`jobs/${selectedDateStr}/${id}`).remove();
+        function deleteJobGroup(groupId, dateStr, id) {
+            if(confirm('Удалить этот заказ изо всех выбранных дней?')) {
+                // Ищем по всем дням заказы с таким же groupId
+                Object.keys(jobsData).forEach(d => {
+                    Object.keys(jobsData[d]).forEach(jId => {
+                        if(jobsData[d][jId].groupId === groupId || jId === id) {
+                            db.ref(`jobs/${d}/${jId}`).remove();
+                        }
+                    });
+                });
                 closeModal('details-modal');
             }
         }
@@ -653,7 +707,6 @@
             document.getElementById(modalId).style.display = 'none';
         }
 
-        // Обработка сжатия до 5 фото
         function processPhotos(files, callback) {
             if (!files || files.length === 0) return callback(existingPhotos);
             let photos = [...existingPhotos];
@@ -686,18 +739,36 @@
 
         function saveJob(e) {
             e.preventDefault();
+            if(selectedJobDates.length === 0) {
+                alert('Пожалуйста, выберите хотя бы один день!');
+                return;
+            }
+
             const saveBtn = document.getElementById('save-btn');
             saveBtn.disabled = true;
             saveBtn.innerText = "Сохранение...";
 
-            const targetDateStr = document.getElementById('job-date').value;
             const selectTitle = document.getElementById('title').value;
             const finalTitle = (selectTitle === 'CUSTOM') ? document.getElementById('custom-title').value : selectTitle;
-
             const fileInput = document.getElementById('photo-files');
 
             processPhotos(fileInput.files, (photoArray) => {
-                const newJob = {
+                const groupId = editingJobGroupId || ('grp_' + Date.now());
+
+                // Удаляем старые записи этого заказа по всем дням при редактировании
+                if(editingJobGroupId) {
+                    Object.keys(jobsData).forEach(d => {
+                        Object.keys(jobsData[d]).forEach(jId => {
+                            if(jobsData[d][jId].groupId === editingJobGroupId) {
+                                db.ref(`jobs/${d}/${jId}`).remove();
+                            }
+                        });
+                    });
+                }
+
+                const newJobData = {
+                    groupId: groupId,
+                    dates: selectedJobDates,
                     title: finalTitle || 'Услуга',
                     price: document.getElementById('price').value,
                     time: selectedStartTime,
@@ -709,24 +780,10 @@
                     completed: false
                 };
 
-                // Если редактируем — сперва удалим старую запись (если сменилась дата)
-                if(editingJobId) {
-                    if(editingJobDate && editingJobDate !== targetDateStr) {
-                        db.ref(`jobs/${editingJobDate}/${editingJobId}`).remove();
-                        db.ref(`jobs/${targetDateStr}`).push(newJob);
-                    } else {
-                        db.ref(`jobs/${targetDateStr}/${editingJobId}`).update(newJob);
-                    }
-                } else {
-                    // Создание заказа на N дней
-                    const startDate = new Date(targetDateStr + 'T00:00:00');
-                    for(let i = 0; i < selectedDuration; i++) {
-                        const curDate = new Date(startDate);
-                        curDate.setDate(startDate.getDate() + i);
-                        const curDateStr = curDate.toISOString().split('T')[0];
-                        db.ref(`jobs/${curDateStr}`).push(newJob);
-                    }
-                }
+                // Записываем заказ в каждый из выбранных дней
+                selectedJobDates.forEach(dStr => {
+                    db.ref(`jobs/${dStr}`).push(newJobData);
+                });
 
                 saveBtn.disabled = false;
                 saveBtn.innerText = "Сохранить заказ";
