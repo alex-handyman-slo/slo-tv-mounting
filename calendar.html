@@ -96,7 +96,25 @@
         .dot.completed { background-color: var(--success); }
         .dot.pending { background-color: var(--pending); }
 
-        .jobs-section { padding: 15px; }
+        /* Блок доходности */
+        .revenue-card {
+            background: white;
+            margin: 15px;
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-around;
+            text-align: center;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+        .revenue-item { flex: 1; }
+        .revenue-title { font-size: 12px; color: #666; font-weight: 600; margin-bottom: 4px; text-transform: uppercase; }
+        .revenue-value { font-size: 18px; font-weight: 700; }
+        .revenue-value.earned { color: var(--success); }
+        .revenue-value.pending { color: var(--pending); }
+
+        .jobs-section { padding: 0 15px 15px 15px; }
         .date-header { font-size: 16px; font-weight: 700; margin-bottom: 12px; }
         
         .job-card {
@@ -246,8 +264,8 @@
         .detail-label { font-size: 12px; color: #777; text-transform: uppercase; margin-bottom: 2px; }
         .detail-value { font-size: 15px; font-weight: 500; }
         .clickable-link { color: var(--primary); text-decoration: none; font-weight: 600; }
-        .btn-group { display: flex; gap: 10px; margin-top: 15px; }
-        .btn-group a, .btn-group button { flex: 1; text-align: center; }
+        
+        .btn-grid-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 15px; }
 
         .photos-grid {
             display: grid;
@@ -282,6 +300,18 @@
         <div class="days-grid" id="days-grid"></div>
     </div>
 
+    <!-- Карточка заработка за месяц -->
+    <div class="revenue-card">
+        <div class="revenue-item">
+            <div class="revenue-title">Заработано</div>
+            <div class="revenue-value earned" id="month-earned">$0</div>
+        </div>
+        <div class="revenue-item" style="border-left: 1px solid var(--border-color);">
+            <div class="revenue-title">В ожидании</div>
+            <div class="revenue-value pending" id="month-pending">$0</div>
+        </div>
+    </div>
+
     <div class="jobs-section">
         <div class="date-header" id="selected-date-title"></div>
         <div id="jobs-list"></div>
@@ -298,8 +328,13 @@
             <form id="job-form" onsubmit="saveJob(event)">
                 
                 <div class="form-group">
-                    <label>Выберите дату (или несколько дней работы)</label>
+                    <label>Выберите дату (или несколько дней)</label>
                     <div class="dates-picker-container">
+                        <div class="calendar-nav" style="padding:4px 0; border:none; margin-bottom:6px;">
+                            <button type="button" class="nav-btn" onclick="changeFormMonth(-1)">❮</button>
+                            <span id="form-month-year-title" style="font-size:14px;"></span>
+                            <button type="button" class="nav-btn" onclick="changeFormMonth(1)">❯</button>
+                        </div>
                         <div class="weekdays" style="margin-bottom:4px;">
                             <div>Пн</div><div>Вт</div><div>Ср</div><div>Чт</div><div>Пт</div><div>Сб</div><div>Вс</div>
                         </div>
@@ -313,7 +348,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label>Цена ($)</label>
+                    <label>Предварительная цена ($)</label>
                     <input type="number" id="price" min="0" max="5000" step="5" value="60">
                 </div>
 
@@ -372,6 +407,7 @@
         const db = firebase.database();
 
         let viewDate = new Date();
+        let formViewDate = new Date();
         let selectedDateStr = new Date().toISOString().split('T')[0];
         let jobsData = {};
         let selectedStartTime = "8:00 am";
@@ -404,12 +440,22 @@
             });
         }
 
+        function changeFormMonth(direction) {
+            formViewDate.setMonth(formViewDate.getMonth() + direction);
+            renderFormDatesGrid();
+        }
+
         function renderFormDatesGrid() {
             const grid = document.getElementById('form-dates-grid');
+            const title = document.getElementById('form-month-year-title');
             grid.innerHTML = '';
 
-            const year = viewDate.getFullYear();
-            const month = viewDate.getMonth();
+            const year = formViewDate.getFullYear();
+            const month = formViewDate.getMonth();
+            
+            const monthNames = ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"];
+            title.innerText = `${monthNames[month]} ${year}`;
+
             let firstDayIndex = new Date(year, month, 1).getDay() - 1;
             if (firstDayIndex === -1) firstDayIndex = 6;
             const totalDays = new Date(year, month + 1, 0).getDate();
@@ -445,12 +491,36 @@
                 jobsData = snapshot.val() || {};
                 renderCalendar();
                 renderJobs();
+                calculateRevenue();
             });
         }
 
         function changeMonth(direction) {
             viewDate.setMonth(viewDate.getMonth() + direction);
             renderCalendar();
+            calculateRevenue();
+        }
+
+        function calculateRevenue() {
+            let earned = 0;
+            let pending = 0;
+            const currentYearMonth = `${viewDate.getFullYear()}-${String(viewDate.getMonth() + 1).padStart(2, '0')}`;
+
+            Object.keys(jobsData).forEach(dStr => {
+                if(dStr.startsWith(currentYearMonth)) {
+                    Object.values(jobsData[dStr]).forEach(j => {
+                        const priceNum = parseFloat(j.finalPrice || j.price || 0);
+                        if(j.completed) {
+                            earned += priceNum;
+                        } else {
+                            pending += priceNum;
+                        }
+                    });
+                }
+            });
+
+            document.getElementById('month-earned').innerText = `$${earned.toFixed(0)}`;
+            document.getElementById('month-pending').innerText = `$${pending.toFixed(0)}`;
         }
 
         function renderCalendar() {
@@ -524,7 +594,6 @@
                 return;
             }
 
-            // Сортировка по времени
             const sortedKeys = Object.keys(dayJobs).sort((a, b) => {
                 const timeA = timeSlots.indexOf(dayJobs[a].time);
                 const timeB = timeSlots.indexOf(dayJobs[b].time);
@@ -537,9 +606,10 @@
                 card.className = 'job-card' + (job.completed ? ' is-completed' : '');
                 card.onclick = () => openDetailsModal(id, job);
                 
+                const displayPrice = job.finalPrice ? `$${job.finalPrice} (оплачено)` : `$${job.price}`;
                 const statusHtml = job.completed 
-                    ? '<span class="status-badge completed">✓ Выполнено</span>' 
-                    : '<span class="status-badge pending">⏳ В работе</span>';
+                    ? `<span class="status-badge completed">✓ Выполнено (${displayPrice})</span>` 
+                    : `<span class="status-badge pending">⏳ В работе (${displayPrice})</span>`;
 
                 const phoneBtn = job.phone ? `<button class="btn-action" onclick="event.stopPropagation(); window.location.href='sms:${job.phone}'">Написать SMS</button>` : '';
 
@@ -552,7 +622,7 @@
                     ${statusHtml}
                     <div class="job-card-header">
                         <span>${job.title}</span>
-                        <span>$${job.price}</span>
+                        <span>${displayPrice}</span>
                     </div>
                     <div class="job-time">Время: ${job.time} | Клиент: ${job.client || 'Не указан'}</div>
                     <div class="job-address">${job.address || 'Адрес не указан'}</div>
@@ -563,16 +633,22 @@
             });
         }
 
-        function openAddModal(editingJobData = null, rawId = null) {
+        function openAddModal(editingJobData = null, rawId = null, isDuplicate = false) {
             document.getElementById('job-form').reset();
             existingPhotos = [];
 
             if(editingJobData) {
-                editingJobId = rawId;
-                editingJobGroupId = editingJobData.groupId || rawId;
+                if(isDuplicate) {
+                    editingJobId = null;
+                    editingJobGroupId = null;
+                    document.getElementById('add-modal-title').innerText = 'Новый заказ (для клиента)';
+                } else {
+                    editingJobId = rawId;
+                    editingJobGroupId = editingJobData.groupId || rawId;
+                    document.getElementById('add-modal-title').innerText = 'Редактирование заказа';
+                }
+
                 selectedJobDates = editingJobData.dates || [selectedDateStr];
-                
-                document.getElementById('add-modal-title').innerText = 'Редактирование заказа';
                 document.getElementById('title').value = editingJobData.title || '';
                 document.getElementById('price').value = editingJobData.price || 60;
                 document.getElementById('client').value = editingJobData.client || '';
@@ -580,13 +656,21 @@
                 document.getElementById('address').value = editingJobData.address || '';
                 document.getElementById('desc').value = editingJobData.desc || '';
                 selectedStartTime = editingJobData.time || "8:00 am";
-                existingPhotos = editingJobData.photos || [];
+                existingPhotos = isDuplicate ? [] : (editingJobData.photos || []);
             } else {
                 editingJobId = null;
                 editingJobGroupId = null;
                 selectedJobDates = [selectedDateStr];
                 document.getElementById('add-modal-title').innerText = `Новый заказ`;
                 document.getElementById('title').value = 'Estimate';
+            }
+
+            // Синхронизируем дата-слайдер формы с первым выбранным днем
+            if(selectedJobDates.length > 0) {
+                const [y, m] = selectedJobDates[0].split('-').map(Number);
+                formViewDate = new Date(y, m - 1, 1);
+            } else {
+                formViewDate = new Date(viewDate);
             }
 
             initTimePicker();
@@ -624,19 +708,20 @@
             }
 
             const targetGroupId = job.groupId || id;
+            const currentPrice = job.finalPrice || job.price;
 
             body.innerHTML = `
                 <div class="detail-row">
                     <div class="detail-label">Статус заказа</div>
                     <div class="detail-value">
-                        <button class="btn-action" style="background:${job.completed ? '#2e7d32' : '#ed6c02'}; color:white;" onclick="toggleStatus('${id}', ${!job.completed})">
-                            ${job.completed ? '✓ Выполнено (нажмите, чтобы вернуть)' : '⏳ В работе (нажмите, чтобы отметить выполненным)'}
+                        <button class="btn-action" style="background:${job.completed ? '#2e7d32' : '#ed6c02'}; color:white;" onclick="toggleStatus('${id}', ${!job.completed}, '${currentPrice}')">
+                            ${job.completed ? `✓ Выполнено ($${currentPrice}) — Нажмите, чтобы вернуть` : '⏳ В работе — Отметить выполненным'}
                         </button>
                     </div>
                 </div>
                 <div class="detail-row">
                     <div class="detail-label">Услуга и Цена</div>
-                    <div class="detail-value">${job.title} — $${job.price}</div>
+                    <div class="detail-value">${job.title} — $${currentPrice} ${job.finalPrice ? '(Фактическая)' : '(План)'}</div>
                 </div>
                 <div class="detail-row">
                     <div class="detail-label">Время начала</div>
@@ -653,16 +738,29 @@
                     <div class="detail-label">Описание / Заметки</div>
                     <div class="detail-value">${job.desc || 'Нет описания'}</div>
                 </div>
-                <div class="btn-group">
-                    <button class="btn-action" style="background:#008b99; color:white;" onclick="openAddModal(${JSON.stringify(job).replace(/"/g, '&quot;')}, '${id}')">✏️ Редактировать</button>
-                    <button class="btn-action" style="background:#d32f2f; color:white; border-color:#d32f2f;" onclick="deleteJobGroup('${targetGroupId}', '${selectedDateStr}', '${id}')">Удалить</button>
+                <div class="btn-grid-actions">
+                    <button class="btn-action" style="background:#008b99; color:white;" onclick="openAddModal(${JSON.stringify(job).replace(/"/g, '&quot;')}, '${id}', false)">✏️ Редактировать</button>
+                    <button class="btn-action" style="background:#2e7d32; color:white;" onclick="openAddModal(${JSON.stringify(job).replace(/"/g, '&quot;')}, '${id}', true)">➕ Ещё заказ</button>
                 </div>
+                <button class="btn-action" style="background:#d32f2f; color:white; border-color:#d32f2f; margin-top:8px;" onclick="deleteJobGroup('${targetGroupId}', '${selectedDateStr}', '${id}')">Удалить заказ</button>
             `;
             document.getElementById('details-modal').style.display = 'flex';
         }
 
-        function toggleStatus(id, newStatus) {
-            db.ref(`jobs/${selectedDateStr}/${id}/completed`).set(newStatus);
+        function toggleStatus(id, newStatus, currentPrice) {
+            if(newStatus) {
+                const finalAmt = prompt("Укажите итоговую сумму оплаты ($):", currentPrice);
+                if(finalAmt !== null) {
+                    db.ref(`jobs/${selectedDateStr}/${id}`).update({
+                        completed: true,
+                        finalPrice: parseFloat(finalAmt) || currentPrice
+                    });
+                }
+            } else {
+                db.ref(`jobs/${selectedDateStr}/${id}`).update({
+                    completed: false
+                });
+            }
             closeModal('details-modal');
         }
 
@@ -670,7 +768,7 @@
             if(confirm('Удалить этот заказ изо всех выбранных дней?')) {
                 Object.keys(jobsData).forEach(d => {
                     Object.keys(jobsData[d]).forEach(jId => {
-                        if(jobsData[d][jId].groupId === groupId || jId === id) {
+                        if(jId === id || (groupId && jobsData[d][jId].groupId === groupId)) {
                             db.ref(`jobs/${d}/${jId}`).remove();
                         }
                     });
@@ -729,7 +827,6 @@
             processPhotos(fileInput.files, (photoArray) => {
                 const groupId = editingJobGroupId || ('grp_' + Date.now());
 
-                // Удаляем старые записи этого заказа перед сохранением обновленного
                 if(editingJobId || editingJobGroupId) {
                     Object.keys(jobsData).forEach(d => {
                         Object.keys(jobsData[d]).forEach(jId => {
