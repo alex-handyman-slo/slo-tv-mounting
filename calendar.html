@@ -2,716 +2,868 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SLO TV Mounting — Календарь заказов</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Alex Handyman</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
     <style>
         :root {
-            --primary-color: #2c3e50;
-            --accent-color: #3498db;
-            --success-color: #27ae60;
-            --pending-color: #f39c12;
-            --bg-color: #f4f6f8;
-            --card-bg: #ffffff;
-            --text-color: #333333;
+            --primary: #008b99;
+            --bg-gray: #f7f9fa;
+            --text-dark: #1c1c1c;
+            --border-color: #e5e9eb;
+            --success: #2e7d32;
+            --pending: #ed6c02;
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-        }
-
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            padding: 15px;
-        }
-
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+        body { background-color: var(--bg-gray); color: var(--text-dark); padding-bottom: 40px; }
 
         header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: var(--card-bg);
-            padding: 15px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-            margin-bottom: 15px;
-        }
-
-        h1 {
-            font-size: 18px;
-            color: var(--primary-color);
-        }
-
-        /* Компактная статистика по неделям (4-5 строчек) */
-        .weekly-stats-box {
-            background: var(--card-bg);
-            padding: 10px 15px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-            margin-bottom: 15px;
-            font-size: 12px;
-        }
-
-        .weekly-stats-title {
-            font-weight: bold;
-            margin-bottom: 6px;
-            color: var(--primary-color);
-            border-bottom: 1px solid #eee;
-            padding-bottom: 3px;
-        }
-
-        .week-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 2px 0;
-        }
-
-        .stat-earned { color: var(--success-color); font-weight: bold; }
-        .stat-pending { color: var(--pending-color); font-weight: bold; }
-
-        /* Календарь сетка */
-        .calendar-card {
-            background: var(--card-bg);
-            padding: 15px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-            margin-bottom: 15px;
-        }
-
-        .calendar-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-
-        .calendar-header button {
-            background: none;
-            border: 1px solid #ccc;
-            padding: 5px 10px;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        .weekdays {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
+            background-color: var(--primary);
+            color: white;
+            padding: 16px;
             text-align: center;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .calendar-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: white;
+            padding: 12px 16px;
+            font-weight: 700;
+            font-size: 16px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .nav-btn {
+            background: none;
+            border: none;
+            font-size: 18px;
+            cursor: pointer;
+            color: var(--primary);
+            padding: 4px 12px;
             font-weight: bold;
-            font-size: 12px;
-            color: #7f8c8d;
-            margin-bottom: 5px;
         }
 
-        .days-grid {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 4px;
-        }
-
+        .calendar-container { background: white; border-bottom: 1px solid var(--border-color); padding: 5px 10px 15px 10px; }
+        .weekdays { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; font-size: 13px; color: #666; font-weight: 600; margin-bottom: 8px; }
+        .days-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+        
         .day-cell {
-            aspect-ratio: 1;
-            background: #fafafa;
-            border: 1px solid #eee;
-            border-radius: 4px;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
-            padding: 4px;
-            font-size: 12px;
+            align-items: center;
+            justify-content: center;
+            height: 48px;
             cursor: pointer;
+            position: relative;
+            border-radius: 8px;
+            background: #fafafa;
+            border: 1px solid #f0f0f0;
+        }
+        
+        .day-number {
+            font-weight: 600;
+            font-size: 15px;
+            color: var(--text-dark);
         }
 
-        .day-cell:hover {
-            border-color: var(--accent-color);
+        .day-cell.selected {
+            border-color: var(--primary);
+            background: #eef8f9;
+        }
+        .day-cell.selected .day-number {
+            color: var(--primary);
         }
 
-        .day-cell.active-date {
-            background: #ebf5fb;
-            border-color: var(--accent-color);
-            font-weight: bold;
-        }
-
-        .day-indicators {
+        .dots-container {
             display: flex;
             gap: 2px;
-            justify-content: center;
+            margin-top: 2px;
+            height: 5px;
         }
-
         .dot {
-            width: 6px;
-            height: 6px;
+            width: 5px;
+            height: 5px;
+            background-color: var(--primary);
             border-radius: 50%;
         }
-        .dot-earned { background: var(--success-color); }
-        .dot-pending { background: var(--pending-color); }
+        .dot.completed { background-color: var(--success); }
+        .dot.pending { background-color: var(--pending); }
 
-        /* Блок клиентов */
-        .clients-section {
-            background: var(--card-bg);
+        /* Блок доходности */
+        .revenue-card {
+            background: white;
+            margin: 15px;
             padding: 15px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-        }
-
-        .clients-section h2 {
-            font-size: 16px;
-            margin-bottom: 10px;
-            color: var(--primary-color);
-        }
-
-        #clientSearch {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            margin-bottom: 10px;
-            font-size: 14px;
-        }
-
-        #clientsList {
-            list-style: none;
-            max-height: 250px;
-            overflow-y: auto;
-        }
-
-        #clientsList li {
-            padding: 10px;
-            border-bottom: 1px solid #f1f1f1;
-            cursor: pointer;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
             display: flex;
-            justify-content: space-between;
-            align-items: center;
+            justify-content: space-around;
+            text-align: center;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+        .revenue-item { flex: 1; }
+        .revenue-title { font-size: 12px; color: #666; font-weight: 600; margin-bottom: 4px; text-transform: uppercase; }
+        .revenue-value { font-size: 18px; font-weight: 700; }
+        .revenue-value.earned { color: var(--success); }
+        .revenue-value.pending { color: var(--pending); }
+
+        .jobs-section { padding: 0 15px 15px 15px; }
+        .date-header { font-size: 16px; font-weight: 700; margin-bottom: 12px; }
+        
+        .job-card {
+            background: white;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 12px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            cursor: pointer;
+            border-left: 4px solid var(--primary);
+        }
+        .job-card.is-completed { border-left-color: var(--success); opacity: 0.85; }
+        .job-card-header { display: flex; justify-content: space-between; font-weight: 700; font-size: 16px; margin-bottom: 6px; }
+        .job-time { font-size: 13px; color: #666; margin-bottom: 4px; }
+        .job-address { font-size: 13px; color: #444; margin-bottom: 10px; }
+        
+        .status-badge {
+            display: inline-block;
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+        .status-badge.completed { background: #e8f5e9; color: var(--success); }
+        .status-badge.pending { background: #fff3e0; color: var(--pending); }
+
+        .btn-action {
+            display: inline-block;
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            background: white;
+            border-radius: 6px;
+            text-align: center;
+            font-weight: 600;
+            text-decoration: none;
             font-size: 14px;
+            margin-top: 6px;
+            cursor: pointer;
         }
 
-        #clientsList li:hover {
-            background: #f9f9f9;
+        .btn-add {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 8px;
+            width: 100%;
+            font-size: 16px;
+            font-weight: 600;
+            margin-top: 10px;
+            cursor: pointer;
         }
 
-        /* Модальные окна */
         .modal {
             display: none;
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.5);
-            z-index: 1000;
             justify-content: center;
-            align-items: center;
-            padding: 15px;
+            align-items: flex-end;
+            z-index: 1000;
         }
-
         .modal-content {
-            background: #fff;
+            background: white;
             width: 100%;
-            max-width: 500px;
             max-height: 90vh;
-            overflow-y: auto;
+            border-top-left-radius: 16px;
+            border-top-right-radius: 16px;
             padding: 20px;
+            overflow-y: auto;
+        }
+        .modal-header { font-size: 18px; font-weight: 700; margin-bottom: 15px; display: flex; justify-content: space-between; }
+        .close-btn { cursor: pointer; font-size: 22px; color: #888; }
+        
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; font-size: 13px; color: #666; margin-bottom: 6px; font-weight: 600; }
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border-color);
             border-radius: 8px;
-            position: relative;
+            font-size: 15px;
+            background: #fff;
         }
 
-        .close-btn {
-            position: absolute;
-            top: 15px; right: 15px;
-            background: none; border: none;
-            font-size: 18px; cursor: pointer;
-        }
-
-        .form-group {
-            margin-bottom: 12px;
-        }
-
-        .form-group label {
-            display: block;
-            font-size: 12px;
-            font-weight: bold;
-            margin-bottom: 4px;
-        }
-
-        .form-group input, .form-group textarea, .form-group select {
-            width: 100%;
+        .time-picker-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 6px;
+            max-height: 120px;
+            overflow-y: auto;
+            border: 1px solid var(--border-color);
             padding: 8px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            font-size: 14px;
+            border-radius: 8px;
         }
-
-        .btn {
-            background: var(--accent-color);
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 4px;
-            cursor: pointer;
-            width: 100%;
-            font-size: 14px;
-            font-weight: bold;
-        }
-
-        .btn-success { background: var(--success-color); margin-top: 10px; }
-
-        .order-card-item {
-            background: #fdfdfd;
-            border: 1px solid #e1e1e1;
+        
+        .chip {
+            padding: 8px 4px;
+            font-size: 12px;
+            text-align: center;
+            border: 1px solid var(--border-color);
             border-radius: 6px;
-            padding: 10px;
-            margin-bottom: 10px;
-            font-size: 13px;
+            background: #f9f9f9;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .chip.selected {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
         }
 
-        .order-photos {
+        .dates-picker-container {
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 8px;
+            background: #fff;
+        }
+        .dates-picker-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 4px;
+        }
+        .date-chip {
+            height: 36px;
             display: flex;
-            gap: 5px;
-            margin-top: 8px;
-            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            border: 1px solid #eee;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            background: #fafafa;
+        }
+        .date-chip.selected {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
         }
 
-        .order-photos img {
-            width: 50px;
-            height: 50px;
+        .detail-row { margin-bottom: 15px; }
+        .detail-label { font-size: 12px; color: #777; text-transform: uppercase; margin-bottom: 2px; }
+        .detail-value { font-size: 15px; font-weight: 500; }
+        .clickable-link { color: var(--primary); text-decoration: none; font-weight: 600; }
+        
+        .btn-grid-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 15px; }
+
+        .photos-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-top: 8px;
+        }
+        .photo-thumb {
+            width: 100%;
+            height: 90px;
             object-fit: cover;
-            border-radius: 4px;
-            border: 1px solid #ccc;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <header>
-        <h1>SLO TV Mounting</h1>
-        <button class="btn" style="width: auto; padding: 6px 12px;" onclick="openOrderModalForSelectedDate()">+ Заказ</button>
-    </header>
+    <header>Alex Handyman Schedule</header>
 
-    <!-- Компактная статистика по неделям -->
-    <div class="weekly-stats-box">
-        <div class="weekly-stats-title">Статистика по неделям (Заработано / Ожидание):</div>
-        <div id="weeklyStatsContainer">
-            <!-- Динамически заполняется JS -->
-        </div>
+    <div class="calendar-nav">
+        <button class="nav-btn" onclick="changeMonth(-1)">❮</button>
+        <span id="month-year-title"></span>
+        <button class="nav-btn" onclick="changeMonth(1)">❯</button>
     </div>
 
-    <!-- Календарь -->
-    <div class="calendar-card">
-        <div class="calendar-header">
-            <button onclick="changeMonth(-1)">‹</button>
-            <h2 id="monthYearTitle" style="font-size: 16px;">Сентябрь 2026</h2>
-            <button onclick="changeMonth(1)">›</button>
-        </div>
+    <div class="calendar-container">
         <div class="weekdays">
             <div>Пн</div><div>Вт</div><div>Ср</div><div>Чт</div><div>Пт</div><div>Сб</div><div>Вс</div>
         </div>
-        <div class="days-grid" id="calendarDaysGrid">
-            <!-- Дни календаря -->
+        <div class="days-grid" id="days-grid"></div>
+    </div>
+
+    <!-- Карточка заработка за месяц -->
+    <div class="revenue-card">
+        <div class="revenue-item">
+            <div class="revenue-title">Заработано</div>
+            <div class="revenue-value earned" id="month-earned">$0</div>
+        </div>
+        <div class="revenue-item" style="border-left: 1px solid var(--border-color);">
+            <div class="revenue-title">В ожидании</div>
+            <div class="revenue-value pending" id="month-pending">$0</div>
         </div>
     </div>
 
-    <!-- Список клиентов -->
-    <div class="clients-section">
-        <h2>👥 Клиенты (по алфавиту)</h2>
-        <input type="text" id="clientSearch" placeholder="Поиск клиента..." oninput="filterClients()">
-        <ul id="clientsList">
-            <!-- Список клиентов -->
-        </ul>
+    <div class="jobs-section">
+        <div class="date-header" id="selected-date-title"></div>
+        <div id="jobs-list"></div>
+        <button class="btn-add" onclick="openAddModal()">+ Добавить заказ на эту дату</button>
     </div>
-</div>
 
-<!-- Модальное окно добавления/редактирования заказа -->
-<div class="modal" id="orderModal">
-    <div class="modal-content">
-        <button class="close-btn" onclick="closeModal('orderModal')">✕</button>
-        <h2 id="orderModalTitle" style="margin-bottom: 15px; font-size: 16px;">Новый заказ</h2>
-        <form id="orderForm" onsubmit="saveOrder(event)">
-            <div class="form-group">
-                <label>Дата заказа</label>
-                <input type="date" id="orderDate" required>
+    <!-- Модальное окно добавления/редактирования -->
+    <div class="modal" id="add-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span id="add-modal-title">Новый заказ</span>
+                <span class="close-btn" onclick="closeModal('add-modal')">&times;</span>
             </div>
-            <div class="form-group">
-                <label>Имя клиента</label>
-                <input type="text" id="clientName" placeholder="Иван" required>
-            </div>
-            <div class="form-group">
-                <label>Номер телефона</label>
-                <input type="tel" id="clientPhone" placeholder="+1 (999) 000-0000">
-            </div>
-            <div class="form-group">
-                <label>Описание / Что делать</label>
-                <textarea id="orderDescription" rows="2" placeholder="Повесить телевизор 65 дюймов..."></textarea>
-            </div>
-            <div class="form-group">
-                <label>Цена ($)</label>
-                <input type="number" id="orderPrice" value="0">
-            </div>
-            <div class="form-group">
-                <label>Статус</label>
-                <select id="orderStatus">
-                    <option value="pending">В ожидании</option>
-                    <option value="completed">Выполнено</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label>Фотографии</label>
-                <input type="file" id="orderPhotos" accept="image/*" multiple>
-            </div>
-            <button type="submit" class="btn">Сохранить заказ</button>
-        </form>
-    </div>
-</div>
+            <form id="job-form" onsubmit="saveJob(event)">
+                
+                <div class="form-group">
+                    <label>Выберите дату (или несколько дней)</label>
+                    <div class="dates-picker-container">
+                        <div class="calendar-nav" style="padding:4px 0; border:none; margin-bottom:6px;">
+                            <button type="button" class="nav-btn" onclick="changeFormMonth(-1)">❮</button>
+                            <span id="form-month-year-title" style="font-size:14px;"></span>
+                            <button type="button" class="nav-btn" onclick="changeFormMonth(1)">❯</button>
+                        </div>
+                        <div class="weekdays" style="margin-bottom:4px;">
+                            <div>Пн</div><div>Вт</div><div>Ср</div><div>Чт</div><div>Пт</div><div>Сб</div><div>Вс</div>
+                        </div>
+                        <div class="dates-picker-grid" id="form-dates-grid"></div>
+                    </div>
+                </div>
 
-<!-- Модальное окно истории клиента -->
-<div class="modal" id="clientHistoryModal">
-    <div class="modal-content">
-        <button class="close-btn" onclick="closeModal('clientHistoryModal')">✕</button>
-        <h2 id="historyClientName" style="font-size: 18px; margin-bottom: 5px;">Имя клиента</h2>
-        <p id="historyClientPhone" style="font-size: 13px; color: #666; margin-bottom: 15px;">Телефон: </p>
-        
-        <button class="btn btn-success" onclick="addNewOrderForExistingClient()">+ Добавить заказ этому клиенту</button>
-        
-        <hr style="margin: 15px 0; border: none; border-top: 1px solid #eee;">
-        <h3 style="font-size: 14px; margin-bottom: 10px;">Все заказы клиента:</h3>
-        <div id="historyOrdersContainer">
-            <!-- Заказы клиента -->
+                <div class="form-group">
+                    <label>Название услуги / Вид работы</label>
+                    <input type="text" id="title" required placeholder="Например: Handyman Service, Estimate, Покраска...">
+                </div>
+
+                <div class="form-group">
+                    <label>Предварительная цена ($)</label>
+                    <input type="number" id="price" min="0" max="5000" step="5" value="60">
+                </div>
+
+                <div class="form-group">
+                    <label>Время начала работы</label>
+                    <div class="time-picker-grid" id="start-time-grid"></div>
+                </div>
+
+                <div class="form-group">
+                    <label>Имя клиента</label>
+                    <input type="text" id="client" placeholder="Имя клиента">
+                </div>
+
+                <div class="form-group">
+                    <label>Телефон (необязательно)</label>
+                    <input type="tel" id="phone" placeholder="Номер телефона">
+                </div>
+
+                <div class="form-group">
+                    <label>Адрес (необязательно)</label>
+                    <input type="text" id="address" placeholder="Адрес объекта">
+                </div>
+
+                <div class="form-group">
+                    <label>Прикрепить фото (до 5 шт)</label>
+                    <input type="file" id="photo-files" accept="image/*" multiple style="padding: 8px;">
+                </div>
+
+                <div class="form-group">
+                    <label>Описание / Заметки (необязательно)</label>
+                    <textarea id="desc" rows="3" placeholder="Заметки или надиктованный текст..."></textarea>
+                </div>
+
+                <button type="submit" class="btn-add" id="save-btn">Сохранить заказ</button>
+            </form>
         </div>
     </div>
-</div>
 
-<script>
-    let currentDate = new Date();
-    let selectedDateStr = formatDate(new Date());
-    let activeClientForNewOrder = null;
+    <!-- Модальное окно просмотра -->
+    <div class="modal" id="details-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span>Детали заказа</span>
+                <span class="close-btn" onclick="closeModal('details-modal')">&times;</span>
+            </div>
+            <div id="job-details-body"></div>
+        </div>
+    </div>
 
-    // Инициализация при загрузке
-    document.addEventListener('DOMContentLoaded', () => {
-        renderCalendar();
-        renderClientsList();
-        renderWeeklyStats();
-    });
+    <script>
+        const firebaseConfig = {
+            databaseURL: "https://alex-calendar-b4f04-default-rtdb.firebaseio.com"
+        };
+        
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
 
-    function formatDate(date) {
-        let d = new Date(date),
-            month = '' + (d.getMonth() + 1),
-            day = '' + d.getDate(),
-            year = d.getFullYear();
-        if (month.length < 2) month = '0' + month;
-        if (day.length < 2) day = '0' + day;
-        return [year, month, day].join('-');
-    }
+        let viewDate = new Date();
+        let formViewDate = new Date();
+        let selectedDateStr = new Date().toISOString().split('T')[0];
+        let jobsData = {};
+        let selectedStartTime = "8:00 am";
+        let selectedJobDates = [];
+        let editingJobId = null; 
+        let editingJobGroupId = null;
+        let existingPhotos = [];
 
-    // Хранилище: получаем все заказы (ключ в localStorage: 'slo_orders')
-    function getOrders() {
-        return JSON.parse(localStorage.getItem('slo_orders')) || [];
-    }
+        const timeSlots = [
+            "7:00 am", "7:30 am", "8:00 am", "8:30 am", 
+            "9:00 am", "9:30 am", "10:00 am", "10:30 am",
+            "11:00 am", "11:30 am", "12:00 pm", "12:30 pm",
+            "1:00 pm", "1:30 pm", "2:00 pm", "2:30 pm",
+            "3:00 pm", "3:30 pm", "4:00 pm", "4:30 pm",
+            "5:00 pm", "5:30 pm", "6:00 pm", "6:30 pm"
+        ];
 
-    function saveOrders(orders) {
-        localStorage.setItem('slo_orders', JSON.stringify(orders));
-    }
-
-    // Рендер календаря
-    function renderCalendar() {
-        const year = currentDate.getFullYear();
-        const month = currentDate.getMonth();
-
-        const monthNames = ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"];
-        document.getElementById('monthYearTitleinnerText') || (document.getElementById('monthYearTitle').innerText = `${monthNames[month]} ${year}`);
-
-        const grid = document.getElementById('calendarDaysGrid');
-        grid.innerHTML = '';
-
-        const firstDayIndex = (new Date(year, month, 1).getDay() + 6) % 7; // Пн старт
-        const totalDays = new Date(year, month + 1, 0).getDate();
-        const orders = getOrders();
-
-        // Пустые ячейки с предыдущего месяца
-        for (let i = 0; i < firstDayIndex; i++) {
-            let emptyCell = document.createElement('div');
-            emptyCell.className = 'day-cell';
-            emptyCell.style.opacity = '0.3';
-            grid.appendChild(emptyCell);
-        }
-
-        // Дни месяца
-        for (let day = 1; day <= totalDays; day++) {
-            let cellDateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-            let cell = document.createElement('div');
-            cell.className = 'day-cell';
-            if (cellDateStr === selectedDateStr) cell.classList.add('active-date');
-
-            let dayOrders = orders.filter(o => o.date === cellDateStr);
-            
-            let dotsHtml = '<div class="day-indicators">';
-            dayOrders.forEach(o => {
-                let dotClass = o.status === 'completed' ? 'dot-earned' : 'dot-pending';
-                dotsHtml += `<div class="dot ${dotClass}" title="${o.clientName}: $${o.price}"></div>`;
+        function initTimePicker() {
+            const startGrid = document.getElementById('start-time-grid');
+            startGrid.innerHTML = '';
+            timeSlots.forEach(slot => {
+                const sChip = document.createElement('div');
+                sChip.className = 'chip' + (slot === selectedStartTime ? ' selected' : '');
+                sChip.innerText = slot;
+                sChip.onclick = () => {
+                    selectedStartTime = slot;
+                    initTimePicker();
+                };
+                startGrid.appendChild(sChip);
             });
-            dotsHtml += '</div>';
-
-            cell.innerHTML = `<span style="font-weight: 500;">${day}</span>${dotsHtml}`;
-            cell.onclick = () => {
-                selectedDateStr = cellDateStr;
-                renderCalendar();
-                openOrderModalForDate(cellDateStr);
-            };
-            grid.appendChild(cell);
         }
-        
-        renderWeeklyStats();
-    }
 
-    function changeMonth(direction) {
-        currentDate.setMonth(currentDate.getMonth() + direction);
-        renderCalendar();
-    }
+        function changeFormMonth(direction) {
+            formViewDate.setMonth(formViewDate.getMonth() + direction);
+            renderFormDatesGrid();
+        }
 
-    // Статистика по неделям (4-5 строк)
-    function renderWeeklyStats() {
-        const year = currentDate.getFullYear();
-        const month = currentDate.getMonth();
-        const orders = getOrders();
-        const container = document.getElementById('weeklyStatsContainer');
-        container.innerHTML = '';
+        function renderFormDatesGrid() {
+            const grid = document.getElementById('form-dates-grid');
+            const title = document.getElementById('form-month-year-title');
+            grid.innerHTML = '';
 
-        // Разбиваем месяц по неделям (с понедельника по воскресенье)
-        let firstDay = new Date(year, month, 1);
-        let lastDay = new Date(year, month + 1, 0);
-        
-        let weeks = [];
-        let currentWeekStart = new Date(firstDay);
-        // Сдвигаем к понедельнику если нужно или считаем блоками по 7 дней
-        let weekNum = 1;
+            const year = formViewDate.getFullYear();
+            const month = formViewDate.getMonth();
+            
+            const monthNames = ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"];
+            title.innerText = `${monthNames[month]} ${year}`;
 
-        while (currentWeekStart <= lastDay) {
-            let weekEnd = new Date(currentWeekStart);
-            weekEnd.setDate(weekEnd.getDate() + 6);
-            if (weekEnd > lastDay) weekEnd = new Date(lastDay);
+            let firstDayIndex = new Date(year, month, 1).getDay() - 1;
+            if (firstDayIndex === -1) firstDayIndex = 6;
+            const totalDays = new Date(year, month + 1, 0).getDate();
 
-            let wStartStr = formatDate(currentWeekStart);
-            let wEndStr = formatDate(weekEnd);
+            for(let i = 0; i < firstDayIndex; i++) {
+                grid.appendChild(document.createElement('div'));
+            }
 
-            // Считаем заработок и ожидание за эту неделю
+            for(let d = 1; d <= totalDays; d++) {
+                const monthStr = String(month + 1).padStart(2, '0');
+                const dayStrFormatted = String(d).padStart(2, '0');
+                const dayStr = `${year}-${monthStr}-${dayStrFormatted}`;
+
+                const chip = document.createElement('div');
+                const isSel = selectedJobDates.includes(dayStr);
+                chip.className = 'date-chip' + (isSel ? ' selected' : '');
+                chip.innerText = d;
+
+                chip.onclick = () => {
+                    if(selectedJobDates.includes(dayStr)) {
+                        selectedJobDates = selectedJobDates.filter(item => item !== dayStr);
+                    } else {
+                        selectedJobDates.push(dayStr);
+                    }
+                    renderFormDatesGrid();
+                };
+                grid.appendChild(chip);
+            }
+        }
+
+        function initDataSync() {
+            db.ref('jobs').on('value', (snapshot) => {
+                jobsData = snapshot.val() || {};
+                renderCalendar();
+                renderJobs();
+                calculateRevenue();
+            });
+        }
+
+        function changeMonth(direction) {
+            viewDate.setMonth(viewDate.getMonth() + direction);
+            renderCalendar();
+            calculateRevenue();
+        }
+
+        function calculateRevenue() {
             let earned = 0;
             let pending = 0;
+            const currentYearMonth = `${viewDate.getFullYear()}-${String(viewDate.getMonth() + 1).padStart(2, '0')}`;
 
-            orders.forEach(o => {
-                if (o.date >= wStartStr && o.date <= wEndStr) {
-                    let p = Number(o.price) || 0;
-                    if (o.status === 'completed') earned += p;
-                    else pending += p;
-                }
-            });
-
-            let row = document.createElement('div');
-            row.className = 'week-row';
-            row.innerHTML = `
-                <span>Неделя ${weekNum} (${currentWeekStart.getDate()}-${weekEnd.getDate()}):</span>
-                <span><span class="stat-earned">+$${earned}</span> / <span class="stat-pending">$${pending}</span></span>
-            `;
-            container.appendChild(row);
-
-            currentWeekStart.setDate(currentWeekStart.getDate() + 7);
-            weekNum++;
-        }
-    }
-
-    // Сохранение заказа
-    function saveOrder(e) {
-        e.preventDefault();
-        let orders = getOrders();
-
-        let date = document.getElementById('orderDate').value;
-        let clientName = document.getElementById('clientName').value.trim();
-        let clientPhone = document.getElementById('clientPhone').value.trim();
-        let description = document.getElementById('orderDescription').value;
-        let price = document.getElementById('orderPrice').value;
-        let status = document.getElementById('orderStatus').value;
-        let fileInput = document.getElementById('orderPhotos');
-
-        let processPhotosAndSave = (photosArray) => {
-            let newOrder = {
-                id: Date.now(),
-                date,
-                clientName,
-                clientPhone,
-                description,
-                price,
-                status,
-                photos: photosArray
-            };
-
-            orders.push(newOrder);
-            saveOrders(orders);
-            closeModal('orderModal');
-            renderCalendar();
-            renderClientsList();
-            document.getElementById('orderForm').reset();
-            activeClientForNewOrder = null;
-        };
-
-        if (fileInput.files && fileInput.files.length > 0) {
-            let readers = [];
-            let photos = [];
-            Array.from(fileInput.files).forEach(file => {
-                let reader = new FileReader();
-                readers.push(new Promise((resolve) => {
-                    reader.onload = (e) => {
-                        photos.push(e.target.result);
-                        resolve();
-                    };
-                    reader.readAsDataURL(file);
-                }));
-            });
-            Promise.all(readers).then(() => processPhotosAndSave(photos));
-        } else {
-            processPhotosAndSave([]);
-        }
-    }
-
-    // Список клиентов (алфавитная сортировка)
-    function renderClientsList() {
-        let orders = getOrders();
-        let clientsMap = {};
-
-        // Группируем заказы по клиентам
-        orders.forEach(o => {
-            if (!clientsMap[o.clientName]) {
-                clientsMap[o.clientName] = {
-                    name: o.clientName,
-                    phone: o.clientPhone || 'Нет телефона',
-                    ordersCount: 0
-                };
-            }
-            clientsMap[o.clientName].ordersCount++;
-            if (o.clientPhone && clientsMap[o.clientName].phone === 'Нет телефона') {
-                clientsMap[o.clientName].phone = o.clientPhone;
-            }
-        });
-
-        // Сортировка по алфавиту
-        let sortedClientNames = Object.keys(clientsMap).sort((a, b) => a.localeCompare(b));
-        let listContainer = document.getElementById('clientsList');
-        listContainer.innerHTML = '';
-
-        if (sortedClientNames.length === 0) {
-            listContainer.innerHTML = '<li style="color: #888; justify-content: center;">Пока нет клиентов</li>';
-            return;
-        }
-
-        sortedClientNames.forEach(name => {
-            let client = clientsMap[name];
-            let li = document.createElement('li');
-            li.innerHTML = `<span><strong>${name}</strong> <br><small style="color:#666;">${client.phone}</small></span> <span style="font-size: 12px; background: #eee; padding: 2px 6px; border-radius: 4px;">Заказов: ${client.ordersCount}</span>`;
-            li.onclick = () => openClientHistory(name);
-            listContainer.appendChild(li);
-        });
-    }
-
-    function filterClients() {
-        let query = document.getElementById('clientSearch').value.toLowerCase();
-        let items = document.getElementById('clientsList').getElementsByTagName('li');
-        for (let i = 0; i < items.length; i++) {
-            let text = items[i].textContent || items[i].innerText;
-            items[i].style.display = text.toLowerCase().includes(query) ? '' : 'none';
-        }
-    }
-
-    // Открытие истории клиента
-    let currentHistoryClient = null;
-    function openClientHistory(clientName) {
-        currentHistoryClient = clientName;
-        let orders = getOrders();
-        let clientOrders = orders.filter(o => o.clientName === clientName);
-
-        document.getElementById('historyClientName').innerText = clientName;
-        let phone = clientOrders.length > 0 ? clientOrders[0].phone : '';
-        document.getElementById('historyClientPhone').innerText = `Телефон: ${phone || 'Не указан'}`;
-
-        let container = document.getElementById('historyOrdersContainer');
-        container.innerHTML = '';
-
-        if (clientOrders.length === 0) {
-            container.innerHTML = '<p>Нет заказов</p>';
-        } else {
-            clientOrders.reverse().forEach(o => {
-                let statusText = o.status === 'completed' ? '<span style="color:var(--success-color)">Выполнено</span>' : '<span style="color:var(--pending-color)">В ожидании</span>';
-                let photosHtml = '';
-                if (o.photos && o.photos.length > 0) {
-                    photosHtml = '<div class="order-photos">';
-                    o.photos.forEach(p => {
-                        photosHtml += `<img src="${p}" onclick="window.open('${p}')">`;
+            Object.keys(jobsData).forEach(dStr => {
+                if(dStr.startsWith(currentYearMonth)) {
+                    Object.values(jobsData[dStr]).forEach(j => {
+                        const priceNum = parseFloat(j.finalPrice || j.price || 0);
+                        if(j.completed) {
+                            earned += priceNum;
+                        } else {
+                            pending += priceNum;
+                        }
                     });
-                    photosHtml += '</div>';
+                }
+            });
+
+            document.getElementById('month-earned').innerText = `$${earned.toFixed(0)}`;
+            document.getElementById('month-pending').innerText = `$${pending.toFixed(0)}`;
+        }
+
+        function renderCalendar() {
+            const grid = document.getElementById('days-grid');
+            const monthTitle = document.getElementById('month-year-title');
+            grid.innerHTML = '';
+            
+            const year = viewDate.getFullYear();
+            const month = viewDate.getMonth();
+            
+            const monthNames = ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"];
+            monthTitle.innerText = `${monthNames[month]} ${year}`;
+
+            let firstDayIndex = new Date(year, month, 1).getDay() - 1;
+            if (firstDayIndex === -1) firstDayIndex = 6;
+
+            const totalDays = new Date(year, month + 1, 0).getDate();
+
+            for(let i = 0; i < firstDayIndex; i++) {
+                grid.appendChild(document.createElement('div'));
+            }
+
+            for(let d = 1; d <= totalDays; d++) {
+                const monthStr = String(month + 1).padStart(2, '0');
+                const dayStrFormatted = String(d).padStart(2, '0');
+                const dayStr = `${year}-${monthStr}-${dayStrFormatted}`;
+                
+                const cell = document.createElement('div');
+                cell.className = 'day-cell' + (dayStr === selectedDateStr ? ' selected' : '');
+                
+                const num = document.createElement('div');
+                num.className = 'day-number';
+                num.innerText = d;
+                cell.appendChild(num);
+
+                const dayJobs = jobsData[dayStr];
+                if(dayJobs && Object.keys(dayJobs).length > 0) {
+                    const dotsWrapper = document.createElement('div');
+                    dotsWrapper.className = 'dots-container';
+                    Object.values(dayJobs).forEach(j => {
+                        const dot = document.createElement('div');
+                        dot.className = 'dot ' + (j.completed ? 'completed' : 'pending');
+                        dotsWrapper.appendChild(dot);
+                    });
+                    cell.appendChild(dotsWrapper);
                 }
 
-                let div = document.createElement('div');
-                div.className = 'order-card-item';
-                div.innerHTML = `
-                    <div style="display: flex; justify-content: space-between; font-weight: bold; margin-bottom: 4px;">
-                        <span>📅 ${o.date}</span>
-                        <span>$${o.price}</span>
+                cell.onclick = () => {
+                    selectedDateStr = dayStr;
+                    renderCalendar();
+                    renderJobs();
+                };
+
+                grid.appendChild(cell);
+            }
+        }
+
+        function renderJobs() {
+            const list = document.getElementById('jobs-list');
+            const title = document.getElementById('selected-date-title');
+            
+            const [y, m, d] = selectedDateStr.split('-').map(Number);
+            const dateObj = new Date(y, m - 1, d);
+            title.innerText = dateObj.toLocaleDateString('ru-RU', { month: 'long', day: 'numeric', weekday: 'short' });
+
+            list.innerHTML = '';
+            const dayJobs = jobsData[selectedDateStr];
+
+            if(!dayJobs || Object.keys(dayJobs).length === 0) {
+                list.innerHTML = '<p style="text-align:center; color:#888; padding:15px;">На этот день заказов нет</p>';
+                return;
+            }
+
+            const sortedKeys = Object.keys(dayJobs).sort((a, b) => {
+                const timeA = timeSlots.indexOf(dayJobs[a].time);
+                const timeB = timeSlots.indexOf(dayJobs[b].time);
+                return (timeA === -1 ? 99 : timeA) - (timeB === -1 ? 99 : timeB);
+            });
+
+            sortedKeys.forEach(id => {
+                const job = dayJobs[id];
+                const card = document.createElement('div');
+                card.className = 'job-card' + (job.completed ? ' is-completed' : '');
+                card.onclick = () => openDetailsModal(id, job);
+                
+                const displayPrice = job.finalPrice ? `$${job.finalPrice} (оплачено)` : `$${job.price}`;
+                const statusHtml = job.completed 
+                    ? `<span class="status-badge completed">✓ Выполнено (${displayPrice})</span>` 
+                    : `<span class="status-badge pending">⏳ В работе (${displayPrice})</span>`;
+
+                const phoneBtn = job.phone ? `<button class="btn-action" onclick="event.stopPropagation(); window.location.href='sms:${job.phone}'">Написать SMS</button>` : '';
+
+                let photosHtml = '';
+                if(job.photos && job.photos.length > 0) {
+                    photosHtml = `<div class="photos-grid">` + job.photos.map(p => `<img src="${p}" class="photo-thumb">`).join('') + `</div>`;
+                }
+
+                card.innerHTML = `
+                    ${statusHtml}
+                    <div class="job-card-header">
+                        <span>${job.title}</span>
+                        <span>${displayPrice}</span>
                     </div>
-                    <div>${o.description || 'Без описания'}</div>
-                    <div style="margin-top: 4px; font-size: 12px;">Статус: ${statusText}</div>
+                    <div class="job-time">Время: ${job.time} | Клиент: ${job.client || 'Не указан'}</div>
+                    <div class="job-address">${job.address || 'Адрес не указан'}</div>
                     ${photosHtml}
+                    ${phoneBtn}
                 `;
-                container.appendChild(div);
+                list.appendChild(card);
             });
         }
 
-        document.getElementById('clientHistoryModal').style.display = 'flex';
-    }
+        function openAddModal(editingJobData = null, rawId = null, isDuplicate = false) {
+            document.getElementById('job-form').reset();
+            existingPhotos = [];
 
-    // Быстрое добавление заказа из профиля клиента
-    function addNewOrderForExistingClient() {
-        let clientName = currentHistoryClient;
-        let orders = getOrders();
-        let clientObj = orders.find(o => o.clientName === clientName);
-        let phone = clientObj ? clientObj.phone : '';
+            if(editingJobData) {
+                if(isDuplicate) {
+                    editingJobId = null;
+                    editingJobGroupId = null;
+                    document.getElementById('add-modal-title').innerText = 'Новый заказ (для клиента)';
+                } else {
+                    editingJobId = rawId;
+                    editingJobGroupId = editingJobData.groupId || rawId;
+                    document.getElementById('add-modal-title').innerText = 'Редактирование заказа';
+                }
 
-        closeModal('clientHistoryModal');
-        
-        document.getElementById('orderModalTitle').innerText = `Добавить заказ для: ${clientName}`;
-        document.getElementById('orderDate').value = selectedDateStr;
-        document.getElementById('clientName').value = clientName;
-        document.getElementById('clientName').readOnly = true; // чтобы не менять имя случайно
-        document.getElementById('clientPhone').value = phone;
-        document.getElementById('orderDescription').value = '';
-        document.getElementById('orderPrice').value = '';
-        document.getElementById('orderStatus').value = 'pending';
-        document.getElementById('orderPhotos').value = '';
+                selectedJobDates = editingJobData.dates || [selectedDateStr];
+                document.getElementById('title').value = editingJobData.title || '';
+                document.getElementById('price').value = editingJobData.price || 60;
+                document.getElementById('client').value = editingJobData.client || '';
+                document.getElementById('phone').value = editingJobData.phone || '';
+                document.getElementById('address').value = editingJobData.address || '';
+                document.getElementById('desc').value = editingJobData.desc || '';
+                selectedStartTime = editingJobData.time || "8:00 am";
+                existingPhotos = isDuplicate ? [] : (editingJobData.photos || []);
+            } else {
+                editingJobId = null;
+                editingJobGroupId = null;
+                selectedJobDates = [selectedDateStr];
+                document.getElementById('add-modal-title').innerText = `Новый заказ`;
+                document.getElementById('title').value = 'Estimate';
+            }
 
-        document.getElementById('orderModal').style.display = 'flex';
-    }
+            // Синхронизируем дата-слайдер формы с первым выбранным днем
+            if(selectedJobDates.length > 0) {
+                const [y, m] = selectedJobDates[0].split('-').map(Number);
+                formViewDate = new Date(y, m - 1, 1);
+            } else {
+                formViewDate = new Date(viewDate);
+            }
 
-    function openOrderModalForSelectedDate() {
-        openOrderModalForDate(selectedDateStr);
-    }
+            initTimePicker();
+            renderFormDatesGrid();
+            closeModal('details-modal');
+            document.getElementById('add-modal').style.display = 'flex';
+        }
 
-    function openOrderModalForDate(dateStr) {
-        document.getElementById('orderModalTitle').innerText = `Новый заказ на ${dateStr}`;
-        document.getElementById('orderDate').value = dateStr;
-        document.getElementById('clientName').value = '';
-        document.getElementById('clientName').readOnly = false;
-        document.getElementById('clientPhone').value = '';
-        document.getElementById('orderDescription').value = '';
-        document.getElementById('orderPrice').value = '';
-        document.getElementById('orderStatus').value = 'pending';
-        document.getElementById('orderPhotos').value = '';
+        function openDetailsModal(id, job) {
+            const body = document.getElementById('job-details-body');
+            
+            const phoneSection = job.phone ? `
+                <div class="detail-row">
+                    <div class="detail-label">Телефон для связи</div>
+                    <div class="detail-value"><a class="clickable-link" href="tel:${job.phone}">📞 ${job.phone}</a></div>
+                </div>
+                <div class="btn-group">
+                    <a href="sms:${job.phone}" class="btn-action">💬 SMS</a>
+                    <a href="tel:${job.phone}" class="btn-action">📞 Звонок</a>
+                </div>` : '';
 
-        document.getElementById('orderModal').style.display = 'flex';
-    }
+            const addressSection = job.address ? `
+                <div class="detail-row">
+                    <div class="detail-label">Локация (Google Maps)</div>
+                    <div class="detail-value">
+                        <a class="clickable-link" href="https://maps.google.com/?q=${encodeURIComponent(job.address)}" target="_blank">📍 ${job.address}</a>
+                    </div>
+                </div>` : '';
 
-    function closeModal(modalId) {
-        document.getElementById(modalId).style.display = 'none';
-    }
-</script>
+            let photoSection = '';
+            if(job.photos && job.photos.length > 0) {
+                photoSection = `<div class="detail-row"><div class="detail-label">Фотографии заказа (${job.photos.length})</div><div class="photos-grid">` + 
+                    job.photos.map(p => `<a href="${p}" target="_blank"><img src="${p}" class="photo-thumb"></a>`).join('') + 
+                    `</div></div>`;
+            }
 
+            const targetGroupId = job.groupId || id;
+            const currentPrice = job.finalPrice || job.price;
+
+            body.innerHTML = `
+                <div class="detail-row">
+                    <div class="detail-label">Статус заказа</div>
+                    <div class="detail-value">
+                        <button class="btn-action" style="background:${job.completed ? '#2e7d32' : '#ed6c02'}; color:white;" onclick="toggleStatus('${id}', ${!job.completed}, '${currentPrice}')">
+                            ${job.completed ? `✓ Выполнено ($${currentPrice}) — Нажмите, чтобы вернуть` : '⏳ В работе — Отметить выполненным'}
+                        </button>
+                    </div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">Услуга и Цена</div>
+                    <div class="detail-value">${job.title} — $${currentPrice} ${job.finalPrice ? '(Фактическая)' : '(План)'}</div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">Время начала</div>
+                    <div class="detail-value">${job.time}</div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">Клиент</div>
+                    <div class="detail-value">${job.client || 'Не указан'}</div>
+                </div>
+                ${addressSection}
+                ${phoneSection}
+                ${photoSection}
+                <div class="detail-row" style="margin-top:10px;">
+                    <div class="detail-label">Описание / Заметки</div>
+                    <div class="detail-value">${job.desc || 'Нет описания'}</div>
+                </div>
+                <div class="btn-grid-actions">
+                    <button class="btn-action" style="background:#008b99; color:white;" onclick="openAddModal(${JSON.stringify(job).replace(/"/g, '&quot;')}, '${id}', false)">✏️ Редактировать</button>
+                    <button class="btn-action" style="background:#2e7d32; color:white;" onclick="openAddModal(${JSON.stringify(job).replace(/"/g, '&quot;')}, '${id}', true)">➕ Ещё заказ</button>
+                </div>
+                <button class="btn-action" style="background:#d32f2f; color:white; border-color:#d32f2f; margin-top:8px;" onclick="deleteJobGroup('${targetGroupId}', '${selectedDateStr}', '${id}')">Удалить заказ</button>
+            `;
+            document.getElementById('details-modal').style.display = 'flex';
+        }
+
+        function toggleStatus(id, newStatus, currentPrice) {
+            if(newStatus) {
+                const finalAmt = prompt("Укажите итоговую сумму оплаты ($):", currentPrice);
+                if(finalAmt !== null) {
+                    db.ref(`jobs/${selectedDateStr}/${id}`).update({
+                        completed: true,
+                        finalPrice: parseFloat(finalAmt) || currentPrice
+                    });
+                }
+            } else {
+                db.ref(`jobs/${selectedDateStr}/${id}`).update({
+                    completed: false
+                });
+            }
+            closeModal('details-modal');
+        }
+
+        function deleteJobGroup(groupId, dateStr, id) {
+            if(confirm('Удалить этот заказ изо всех выбранных дней?')) {
+                Object.keys(jobsData).forEach(d => {
+                    Object.keys(jobsData[d]).forEach(jId => {
+                        if(jId === id || (groupId && jobsData[d][jId].groupId === groupId)) {
+                            db.ref(`jobs/${d}/${jId}`).remove();
+                        }
+                    });
+                });
+                closeModal('details-modal');
+            }
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        function processPhotos(files, callback) {
+            if (!files || files.length === 0) return callback(existingPhotos);
+            let photos = [...existingPhotos];
+            let filesArray = Array.from(files).slice(0, 5 - photos.length);
+            let loadedCount = 0;
+
+            if(filesArray.length === 0) return callback(photos);
+
+            filesArray.forEach(file => {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const img = new Image();
+                    img.onload = () => {
+                        const canvas = document.createElement('canvas');
+                        const ctx = canvas.getContext('2d');
+                        const maxW = 800;
+                        const scale = maxW / img.width;
+                        canvas.width = (img.width > maxW) ? maxW : img.width;
+                        canvas.height = (img.width > maxW) ? img.height * scale : img.height;
+                        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                        photos.push(canvas.toDataURL('image/jpeg', 0.6));
+                        loadedCount++;
+                        if(loadedCount === filesArray.length) callback(photos);
+                    };
+                    img.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        function saveJob(e) {
+            e.preventDefault();
+            if(selectedJobDates.length === 0) {
+                alert('Пожалуйста, выберите хотя бы один день!');
+                return;
+            }
+
+            const saveBtn = document.getElementById('save-btn');
+            saveBtn.disabled = true;
+            saveBtn.innerText = "Сохранение...";
+
+            const fileInput = document.getElementById('photo-files');
+
+            processPhotos(fileInput.files, (photoArray) => {
+                const groupId = editingJobGroupId || ('grp_' + Date.now());
+
+                if(editingJobId || editingJobGroupId) {
+                    Object.keys(jobsData).forEach(d => {
+                        Object.keys(jobsData[d]).forEach(jId => {
+                            if(jId === editingJobId || (editingJobGroupId && jobsData[d][jId].groupId === editingJobGroupId)) {
+                                db.ref(`jobs/${d}/${jId}`).remove();
+                            }
+                        });
+                    });
+                }
+
+                const newJobData = {
+                    groupId: groupId,
+                    dates: selectedJobDates,
+                    title: document.getElementById('title').value || 'Услуга',
+                    price: document.getElementById('price').value,
+                    time: selectedStartTime,
+                    client: document.getElementById('client').value,
+                    phone: document.getElementById('phone').value,
+                    address: document.getElementById('address').value,
+                    desc: document.getElementById('desc').value,
+                    photos: photoArray || [],
+                    completed: false
+                };
+
+                selectedJobDates.forEach(dStr => {
+                    db.ref(`jobs/${dStr}`).push(newJobData);
+                });
+
+                saveBtn.disabled = false;
+                saveBtn.innerText = "Сохранить заказ";
+                document.getElementById('job-form').reset();
+                closeModal('add-modal');
+            });
+        }
+
+        initTimePicker();
+        initDataSync();
+    </script>
 </body>
 </html>
