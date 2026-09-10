@@ -1,546 +1,117 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SLO TV Mounting - Календарь и База Клиентов</title>
-    <style>
-        :root {
-            --primary: #2563eb;
-            --primary-hover: #1d4ed8;
-            --bg-color: #f8fafc;
-            --card-bg: #ffffff;
-            --text-color: #1e293b;
-            --border-color: #e2e8f0;
-            --success: #16a34a;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            margin: 0;
-            padding: 20px;
-        }
-
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-        }
-
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            background: var(--card-bg);
-            padding: 15px 20px;
-            border-radius: 12px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }
-
-        h1 {
-            font-size: 1.5rem;
-            margin: 0;
-        }
-
-        /* Статистика заработка */
-        .stats-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-
-        .stat-card {
-            background: var(--card-bg);
-            padding: 15px;
-            border-radius: 12px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            text-align: center;
-        }
-
-        .stat-card h3 {
-            margin: 0 0 5px 0;
-            font-size: 0.9rem;
-            color: #64748b;
-        }
-
-        .stat-card .amount {
-            font-size: 1.25rem;
-            font-weight: bold;
-            color: var(--success);
-        }
-
-        /* Календарь */
-        .calendar-card {
-            background: var(--card-bg);
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            margin-bottom: 20px;
-        }
-
-        .calendar-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-
-        .calendar-grid {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 5px;
-            text-align: center;
-        }
-
-        .day-name {
-            font-weight: bold;
-            color: #64748b;
-            padding: 5px;
-            font-size: 0.85rem;
-        }
-
-        .day {
-            min-height: 80px;
-            background: #f1f5f9;
-            border-radius: 8px;
-            padding: 5px;
-            cursor: pointer;
-            transition: background 0.2s;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            text-align: left;
-        }
-
-        .day:hover {
-            background: #e2e8f0;
-        }
-
-        .day.selected {
-            border: 2px solid var(--primary);
-        }
-
-        .day-number {
-            font-weight: bold;
-            font-size: 0.9rem;
-        }
-
-        .day-total {
-            font-size: 0.75rem;
-            color: var(--success);
-            font-weight: bold;
-        }
-
-        /* Секция заказов и клиентов */
-        .section-card {
-            background: var(--card-bg);
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            margin-bottom: 20px;
-        }
-
-        form {
-            display: grid;
-            gap: 12px;
-        }
-
-        input, textarea, select {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            box-sizing: border-box;
-            font-size: 0.95rem;
-        }
-
-        button {
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 0.95rem;
-            transition: background 0.2s;
-        }
-
-        button:hover {
-            background: var(--primary-hover);
-        }
-
-        .btn-secondary {
-            background: #64748b;
-        }
-        .btn-secondary:hover {
-            background: #475569;
-        }
-
-        /* Список клиентов внизу */
-        .client-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 15px;
-            margin-top: 15px;
-        }
-
-        .client-card {
-            background: #f8fafc;
-            border: 1px solid var(--border-color);
-            padding: 15px;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .client-card:hover {
-            border-color: var(--primary);
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-        }
-
-        .order-history-item {
-            background: #fff;
-            border-left: 3px solid var(--primary);
-            padding: 10px;
-            margin-top: 8px;
-            font-size: 0.85rem;
-            border-radius: 4px;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
-        }
-
-        .flex-row {
-            display: flex;
-            gap: 10px;
-        }
-    </style>
-</head>
-<body>
-
-<div class="container">
-    <header>
-        <h1>SLO TV Mounting - Календарь и База</h1>
-        <div id="currentMonthYear">Сентябрь 2026</div>
-    </header>
-
-    <!-- Статистика заработка -->
-    <div class="stats-container">
-        <div class="stat-card">
-            <h3>За месяц</h3>
-            <div class="amount" id="statMonth">$0</div>
-        </div>
-        <div class="stat-card">
-            <h3>1-я неделя</h3>
-            <div class="amount" id="statWeek1">$0</div>
-        </div>
-        <div class="stat-card">
-            <h3>2-я неделя</h3>
-            <div class="amount" id="statWeek2">$0</div>
-        </div>
-        <div class="stat-card">
-            <h3>3-я неделя</h3>
-            <div class="amount" id="statWeek3">$0</div>
-        </div>
-        <div class="stat-card">
-            <h3>4-я неделя (+)</h3>
-            <div class="amount" id="statWeek4">$0</div>
-        </div>
-    </div>
-
-    <!-- Календарь -->
-    <div class="calendar-card">
-        <div class="calendar-header">
-            <button onclick="changeMonth(-1)">&larr; Прошлый</button>
-            <h2 id="calendarTitle" style="margin:0; font-size: 1.2rem;">Месяц</h2>
-            <button onclick="changeMonth(1)">Следующий &rarr;</button>
-        </div>
-        <div class="calendar-grid" id="calendarDays">
-            <!-- Дни недели и числа генерируются через JS -->
-        </div>
-    </div>
-
-    <!-- Добавление / Редактирование заказа -->
-    <div class="section-card">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-            <h2 id="formTitle" style="margin:0; font-size: 1.2rem;">Добавить заказ на дату: <span id="selectedDateText">-</span></h2>
-            <button type="button" class="btn-secondary" onclick="resetForm()">Сделать новый заказ / Сбросить</button>
-        </div>
-        
-        <form id="orderForm" onsubmit="saveOrder(event)">
-            <input type="hidden" id="orderDate">
-            <div class="flex-row">
-                <input type="text" id="clientName" placeholder="Имя клиента" required>
-                <input type="tel" id="clientPhone" placeholder="Номер телефона" required>
-            </div>
-            <input type="text" id="clientAddress" placeholder="Адрес выполнения работ" required>
-            <input type="number" id="orderPrice" placeholder="Стоимость ($)" required>
-            <textarea id="orderNotes" placeholder="Примечания к заказу (оборудование, особенности стены и т.д.)" rows="3"></textarea>
-            <div>
-                <label style="font-size: 0.85rem; color: #64748b;">Фотографии работ:</label>
-                <input type="file" id="orderPhotos" accept="image/*" multiple>
-            </div>
-            <button type="submit">Сохранить заказ на эту дату</button>
-        </form>
-    </div>
-
-    <!-- База всех клиентов -->
-    <div class="section-card">
-        <h2 style="margin-top:0; font-size: 1.2rem;">База клиентов (История заказов)</h2>
-        <input type="text" id="searchClient" placeholder="Поиск клиента по имени, телефону или адресу..." oninput="renderClients()" style="margin-bottom: 15px;">
-        <div class="client-list" id="clientListContainer">
-            <!-- Список клиентов подгружается через JS -->
-        </div>
-    </div>
-</div>
-
-<script>
-    // Хранилище в localStorage
-    let orders = JSON.parse(localStorage.getItem('slo_orders')) || [];
-    let currentDate = new Date();
-    let selectedDateStr = formatDateKey(new Date());
-
-    function formatDateKey(date) {
-        let d = new Date(date),
-            month = '' + (d.getMonth() + 1),
-            day = '' + d.getDate(),
-            year = d.getFullYear();
-        if (month.length < 2) month = '0' + month;
-        if (day.length < 2) day = '0' + day;
-        return [year, month, day].join('-');
-    }
-
-    document.addEventListener('DOMContentLoaded', () => {
-        document.getElementById('orderDate').value = selectedDateStr;
-        document.getElementById('selectedDateText').innerText = selectedDateStr;
-        renderCalendar();
-        renderStats();
-        renderClients();
-    });
-
-    // Управление календарем
-    function changeMonth(direction) {
-        currentDate.setMonth(currentDate.getMonth() + direction);
-        renderCalendar();
-        renderStats();
-    }
-
-    function renderCalendar() {
-        const year = currentDate.getFullYear();
-        const month = currentDate.getMonth();
-        
-        const monthsNames = ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"];
-        document.getElementById('currentMonthYear').innerText = `${monthsNames[month]} ${year}`;
-        document.getElementById('calendarTitle').innerText = `${monthsNames[month]} ${year}`;
-
-        const firstDayIndex = (new Date(year, month, 1).getDay() + 6) % 7; // С понедельника
-        const totalDays = new Date(year, month + 1, 0).getDate();
-
-        const grid = document.getElementById('calendarDays');
-        grid.innerHTML = '';
-
-        const daysOfWeek = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
-        daysOfWeek.forEach(d => {
-            grid.innerHTML += `<div class="day-name">${d}</div>`;
-        });
-
-        for (let i = 0; i < firstDayIndex; i++) {
-            grid.innerHTML += `<div></div>`;
-        }
-
-        for (let day = 1; day <= totalDays; day++) {
-            const dayStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-            
-            // Считаем сумму за этот день
-            const dayOrders = orders.filter(o => o.date === dayStr);
-            const dayTotal = dayOrders.reduce((sum, o) => sum + Number(o.price || 0), 0);
-
-            const isSelected = dayStr === selectedDateStr ? 'selected' : '';
-
-            grid.innerHTML += `
-                <div class="day ${isSelected}" onclick="selectDate('${dayStr}')">
-                    <div class="day-number">${day}</div>
-                    <div>${dayOrders.length > 0 ? `<div class="day-total">$${dayTotal}</div>` : ''}</div>
-                </div>
-            `;
-        }
-    }
-
-    function selectDate(dateStr) {
-        selectedDateStr = dateStr;
-        document.getElementById('orderDate').value = dateStr;
-        document.getElementById('selectedDateText').innerText = dateStr;
-        renderCalendar();
-    }
-
-    // Сохранение заказа и клиента
-    function saveOrder(event) {
-        event.preventDefault();
-
-        const date = document.getElementById('orderDate').value;
-        const name = document.getElementById('clientName').value.trim();
-        const phone = document.getElementById('clientPhone').value.trim();
-        const address = document.getElementById('clientAddress').value.trim();
-        const price = Number(document.getElementById('orderPrice').value);
-        const notes = document.getElementById('orderNotes').value.trim();
-        const photoInput = document.getElementById('orderPhotos');
-
-        // Обработка картинок в base64
-        let photoPromises = [];
-        if (photoInput.files.length > 0) {
-            for (let file of photoInput.files) {
-                photoPromises.push(new Promise((resolve) => {
-                    const reader = new FileReader();
-                    reader.onload = (e) => resolve(e.target.result);
-                    reader.readAsDataURL(file);
-                }));
-            }
-        }
-
-        Promise.all(photoPromises).then(photos => {
-            const newOrder = {
-                id: Date.now(),
-                date,
-                name,
-                phone,
-                address,
-                price,
-                notes,
-                photos
-            };
-
-            orders.push(newOrder);
-            localStorage.setItem('slo_orders', JSON.stringify(orders));
-
-            resetForm();
-            renderCalendar();
-            renderStats();
-            renderClients();
-            alert('Заказ успешно сохранен!');
-        });
-    }
-
-    function resetForm() {
-        document.getElementById('orderForm').reset();
-        document.getElementById('orderDate').value = selectedDateStr;
-        document.getElementById('formTitle').innerText = `Добавить заказ на дату: ${selectedDateStr}`;
-    }
-
-    // Загрузка данных клиента при клике на него в базе
-    function selectClient(phone) {
-        const clientOrders = orders.filter(o => o.phone === phone);
-        if (clientOrders.length === 0) return;
-        const lastOrder = clientOrders[clientOrders.length - 1];
-
-        document.getElementById('clientName').value = lastOrder.name;
-        document.getElementById('clientPhone').value = lastOrder.phone;
-        document.getElementById('clientAddress').value = lastOrder.address;
-        
-        window.scrollTo({ top: document.getElementById('orderForm').offsetTop - 50, behavior: 'smooth' });
-    }
-
-    // Подсчет статистики по месяцам и неделям
-    function renderStats() {
-        const year = currentDate.getFullYear();
-        const month = currentDate.getMonth();
-
-        let monthTotal = 0;
-        let weekTotals = [0, 0, 0, 0];
-
-        orders.forEach(o => {
-            const oDate = new Date(o.date + 'T00:00:00');
-            if (oDate.getFullYear() === year && oDate.getMonth() === month) {
-                const price = Number(o.price || 0);
-                monthTotal += price;
-
-                // Определяем неделю месяца (1-я, 2-я, 3-я, 4-я+)
-                const dayOfMonth = oDate.getDate();
-                let weekIndex = Math.floor((dayOfMonth - 1) / 7);
-                if (weekIndex > 3) weekIndex = 3; // всё что после 28 числа относим к 4-й неделе
-                weekTotals[weekIndex] += price;
-            }
-        });
-
-        document.getElementById('statMonth').innerText = `$${monthTotal}`;
-        document.getElementById('statWeek1').innerText = `$${weekTotals[0]}`;
-        document.getElementById('statWeek2').innerText = `$${weekTotals[1]}`;
-        document.getElementById('statWeek3').innerText = `$${weekTotals[2]}`;
-        document.getElementById('statWeek4').innerText = `$${weekTotals[3]}`;
-    }
-
-    // Рендер списка клиентов внизу
-    function renderClients() {
-        const container = document.getElementById('clientListContainer');
-        const searchQuery = document.getElementById('searchClient').value.toLowerCase();
-        container.innerHTML = '';
-
-        // Группируем заказы по номеру телефона клиента
-        let clientsMap = {};
-        orders.forEach(o => {
-            if (!clientsMap[o.phone]) {
-                clientsMap[o.phone] = {
-                    name: o.name,
-                    phone: o.phone,
-                    address: o.address,
-                    orders: []
-                };
-            }
-            clientsMap[o.phone].orders.push(o);
-        });
-
-        let clients = Object.values(clientsMap);
-
-        // Фильтрация поиска
-        if (searchQuery) {
-            clients = clients.filter(c => 
-                c.name.toLowerCase().includes(searchQuery) || 
-                c.phone.toLowerCase().includes(searchQuery) || 
-                c.address.toLowerCase().includes(searchQuery)
-            );
-        }
-
-        if (clients.length === 0) {
-            container.innerHTML = `<p style="color: #64748b; font-size: 0.9rem;">Клиенты пока не добавлены или не найдены.</p>`;
+if (!files || files.length === 0) {
+            callback([]);
             return;
         }
 
-        clients.forEach(c => {
-            let ordersHtml = '';
-            c.orders.forEach(ord => {
-                let photosHtml = '';
-                if (ord.photos && ord.photos.length > 0) {
-                    photosHtml = `<div style="margin-top: 5px; display: flex; gap: 5px; flex-wrap: wrap;">`;
-                    ord.photos.forEach(p => {
-                        photosHtml += `<a href="${p}" target="_blank"><img src="${p}" style="width: 40px; height: 40px; object-fit: cover; border-radius: 4px;"></a>`;
-                    });
-                    photosHtml += `</div>`;
-                }
+        let photos = [...existingPhotos];
+        let processedCount = 0;
 
-                ordersHtml += `
-                    <div class="order-history-item">
-                        <strong>📅 ${ord.date}</strong> — $${ord.price}<br>
-                        📍 ${ord.address}<br>
-                        💬 ${ord.notes || 'Без примечаний'}
-                        ${photosHtml}
-                    </div>
-                `;
-            });
+        Array.from(files).forEach(file => {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const img = new Image();
+                img.onload = () => {
+                    const canvas = document.createElement('canvas');
+                    let width = img.width;
+                    let height = img.height;
+                    
+                    const MAX_WIDTH = 800;
+                    const MAX_HEIGHT = 800;
 
-            container.innerHTML += `
-                <div class="client-card" onclick="selectClient('${c.phone}')">
-                    <div style="font-weight: bold; font-size: 1rem; color: var(--primary);">${c.name}</div>
-                    <div style="font-size: 0.85rem; color: #64748b;">📞 ${c.phone}</div>
-                    <div style="font-size: 0.85rem; color: #64748b; margin-bottom: 8px;">📍 ${c.address}</div>
-                    <div style="font-size: 0.8rem; font-weight: bold; margin-top: 5px;">История заказов (${c.orders.length}):</div>
-                    ${ordersHtml}
-                    <button style="margin-top: 10px; width: 100%; font-size: 0.8rem; padding: 6px;" onclick="event.stopPropagation(); selectClient('${c.phone}')">Выбрать для нового заказа</button>
-                </div>
-            `;
+                    if (width > height) {
+                        if (width > MAX_WIDTH) {
+                            height *= MAX_WIDTH / width;
+                            width = MAX_WIDTH;
+                        }
+                    } else {
+                        if (height > MAX_HEIGHT) {
+                            width *= MAX_HEIGHT / height;
+                            height = MAX_HEIGHT;
+                        }
+                    }
+
+                    canvas.width = width;
+                    canvas.height = height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, width, height);
+
+                    // Сжимаем в JPEG с качеством 0.7
+                    const dataUrl = canvas.toDataURL('image/jpeg', 0.7);
+                    photos.push(dataUrl);
+
+                    processedCount++;
+                    if (processedCount === files.length) {
+                        callback(photos);
+                    }
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
         });
     }
-</script>
 
+    function saveJob(event) {
+        event.preventDefault();
+
+        if (selectedJobDates.length === 0) {
+            alert('Пожалуйста, выберите хотя бы одну дату!');
+            return;
+        }
+
+        const title = document.getElementById('title').value;
+        const price = parseFloat(document.getElementById('price').value) || 0;
+        const client = document.getElementById('client').value;
+        const phone = document.getElementById('phone').value;
+        const address = document.getElementById('address').value;
+        const desc = document.getElementById('desc').value;
+        const photoInput = document.getElementById('photo-files');
+
+        const saveBtn = document.getElementById('save-btn');
+        saveBtn.innerText = 'Сохранение...';
+        saveBtn.disabled = true;
+
+        processPhotos(photoInput.files, (photos) => {
+            const groupId = editingJobGroupId || 'group_' + Date.now();
+
+            // Если это редактирование, сначала удаляем старые записи этой группы, чтобы перезаписать корректно
+            if (editingJobId) {
+                Object.keys(jobsData).forEach(d => {
+                    Object.keys(jobsData[d]).forEach(jId => {
+                        if (jId === editingJobId || jobsData[d][jId].groupId === editingJobGroupId) {
+                            db.ref(`jobs/${d}/${jId}`).remove();
+                        }
+                    });
+                });
+            }
+
+            // Создаем новые записи для каждого выбранного дня
+            selectedJobDates.forEach(dateStr => {
+                const newRef = db.ref(`jobs/${dateStr}`).push();
+                const jobData = {
+                    title,
+                    price,
+                    time: selectedStartTime,
+                    client,
+                    phone,
+                    address,
+                    desc,
+                    photos,
+                    groupId,
+                    completed: false
+                };
+                newRef.set(jobData);
+            });
+
+            saveBtn.innerText = 'Сохранить заказ';
+            saveBtn.disabled = false;
+            closeModal('add-modal');
+        });
+    }
+
+    // Инициализация при загрузке страницы
+    window.onload = () => {
+        initDataSync();
+    };
+    </script>
 </body>
 </html>
