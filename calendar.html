@@ -78,13 +78,11 @@
         .detail-row { margin-bottom: 15px; }
         .detail-label { font-size: 12px; color: #777; text-transform: uppercase; margin-bottom: 2px; }
         .detail-value { font-size: 15px; font-weight: 500; }
-        .clickable-link { color: var(--primary); text-decoration: none; font-weight: 600; }
         .btn-grid-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 15px; }
         .photos-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 8px; }
         .photo-thumb { width: 100%; height: 90px; object-fit: cover; border-radius: 8px; border: 1px solid var(--border-color); cursor: pointer; }
 
         .client-card { background: #fff; border: 1px solid var(--border-color); border-radius: 8px; padding: 12px; margin-bottom: 10px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
-        .client-card:hover { border-color: var(--primary); }
         .client-info-name { font-weight: 700; font-size: 16px; margin-bottom: 2px; color: var(--text-dark); }
         .client-info-sub { font-size: 13px; color: #666; }
         .search-box { width: 100%; padding: 10px 12px; margin-bottom: 15px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 14px; }
@@ -92,23 +90,25 @@
         /* ESTIMATE LAYOUT */
         .estimate-paper { background: #fff; border: 1px solid #ccc; border-radius: 8px; padding: 25px 30px; color: #111; box-shadow: 0 4px 12px rgba(0,0,0,0.08); width: 100%; box-sizing: border-box; }
         .estimate-header-wrapper { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 2px solid #0f2c59; padding-bottom: 15px; margin-bottom: 15px; }
-        .logo-and-brand { display: flex; align-items: center; gap: 12px; }
-        .brand-text-title { font-size: 22px; font-weight: 900; color: #0f2c59; line-height: 1; letter-spacing: -0.5px; }
-        .brand-text-sub { font-size: 12px; font-weight: 700; color: #0f2c59; margin-top: 2px; }
-        .brand-text-tag { font-size: 10px; color: #64748b; font-weight: 500; }
+        .logo-and-brand { display: flex; align-items: center; gap: 10px; }
+        
+        /* СТИЛЬ МАЛЕНЬКОГО ЛОГОТИПА В УГЛУ */
+        .logo-img { height: 45px; width: auto; object-fit: contain; border-radius: 4px; }
         
         .contractor-meta { font-size: 11px; color: #475569; line-height: 1.35; margin-top: 8px; }
         .estimate-doc-title { font-size: 26px; font-weight: 900; color: #0f2c59; text-align: right; }
         .estimate-meta-right { font-size: 12px; color: #475569; text-align: right; line-height: 1.4; margin-top: 4px; }
 
-        /* 3-COLUMN OPTION COMPARISON */
-        .options-grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 15px 0; }
-        .option-card-doc { border: 1px solid #cbd5e1; border-radius: 8px; padding: 12px; position: relative; background: #fff; display: flex; flex-direction: column; justify-content: space-between; }
-        .option-card-doc.recommended { border: 2px solid #0f2c59; background: #f8fafc; }
-        .recommend-badge { position: absolute; top: -10px; right: 10px; background: #0f2c59; color: white; font-size: 9px; font-weight: 800; padding: 2px 8px; border-radius: 10px; text-transform: uppercase; }
-        .option-doc-title { font-size: 13px; font-weight: 800; color: #0f2c59; margin-bottom: 4px; }
-        .option-doc-price { font-size: 18px; font-weight: 900; color: #008b99; margin-bottom: 8px; }
-        .option-doc-desc { font-size: 11px; color: #475569; line-height: 1.35; white-space: pre-wrap; }
+        /* ГОРИЗОНТАЛЬНЫЙ ФОРМАТ ОПЦИЙ */
+        .options-container-horizontal { display: flex; flex-direction: column; gap: 12px; margin: 20px 0; }
+        .option-card-horizontal { border: 1px solid #cbd5e1; border-radius: 8px; padding: 14px 16px; background: #fff; position: relative; }
+        .option-card-horizontal.recommended { border: 2px solid #0f2c59; background: #f8fafc; box-shadow: 0 2px 8px rgba(15, 44, 89, 0.08); }
+        .recommend-badge { position: absolute; top: -10px; right: 15px; background: #0f2c59; color: white; font-size: 10px; font-weight: 800; padding: 2px 10px; border-radius: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
+        
+        .option-row-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px; border-bottom: 1px solid #e2e8f0; padding-bottom: 6px; }
+        .option-doc-title { font-size: 15px; font-weight: 800; color: #0f2c59; }
+        .option-doc-price { font-size: 18px; font-weight: 900; color: #008b99; }
+        .option-doc-desc { font-size: 12px; color: #475569; line-height: 1.4; white-space: pre-wrap; }
 
         .estimate-table { width: 100%; border-collapse: collapse; margin-top: 15px; margin-bottom: 15px; }
         .estimate-table th { background: #f1f5f9; text-align: left; padding: 8px 10px; font-size: 11px; font-weight: 700; border-bottom: 2px solid #cbd5e1; color: #334155; }
@@ -143,7 +143,7 @@
     
     <div class="revenue-card">
         <div class="revenue-item">
-            <div class="revenue-title">Чистый доход</div>
+            <div class="revenue-title">Чистая прибыль</div>
             <div class="revenue-value earned" id="month-earned">$0</div>
         </div>
         <div class="revenue-item" style="border-left: 1px solid var(--border-color); border-right: 1px solid var(--border-color);">
@@ -229,39 +229,45 @@
 
                 <!-- 3 ВАРИАНТА ПРЕДЛОЖЕНИЯ (ESTIMATE OPTIONS) -->
                 <div style="margin-bottom:15px; border-top:1px solid #ddd; padding-top:10px;">
-                    <label style="font-size:14px; font-weight:700; color:var(--primary); margin-bottom:8px; display:block;">Варианты предложения для Estimate (до 3 вариантов)</label>
+                    <label style="font-size:14px; font-weight:700; color:var(--primary); margin-bottom:8px; display:block;">Варианты предложения (ГОРИЗОНТАЛЬНЫЙ ВЫВОД В ESTIMATE)</label>
                     
+                    <!-- Дешевый вариант -->
                     <div class="option-box">
                         <div class="option-header">
-                            <span>Вариант 1 (Основной)</span>
-                            <label><input type="radio" name="recommended_opt" value="1" checked> Recommended</label>
+                            <span>1. Простой / Дешевый вариант</span>
+                            <label><input type="radio" name="recommended_opt" value="1"> Recommended</label>
                         </div>
-                        <input type="text" id="opt1_title" placeholder="Название (напр. Repair existing)" style="margin-bottom:6px; padding:8px;">
+                        <div style="display:grid; grid-template-columns: 2fr 1fr; gap:6px; margin-bottom:6px;">
+                            <input type="text" id="opt1_title" placeholder="Название (напр. Basic Patch Work)" style="padding:8px;">
+                            <input type="number" id="opt1_price" placeholder="Цена $" style="padding:8px;">
+                        </div>
                         <textarea id="opt1_desc" rows="2" placeholder="Описание работы..." style="padding:8px; font-size:13px;"></textarea>
                     </div>
 
-                    <div class="option-box">
+                    <!-- Средний рекомендуемый -->
+                    <div class="option-box" style="border: 2px solid var(--primary); background: #f0f4f8;">
                         <div class="option-header">
-                            <span>Вариант 2 (Опционально)</span>
-                            <label><input type="radio" name="recommended_opt" value="2"> Recommended</label>
+                            <span style="color:var(--primary); font-weight:800;">2. РЕКОМЕНДУЕМЫЙ ВАРИАНТ (Основной)</span>
+                            <label><input type="radio" name="recommended_opt" value="2" checked> Recommended</label>
                         </div>
                         <div style="display:grid; grid-template-columns: 2fr 1fr; gap:6px; margin-bottom:6px;">
-                            <input type="text" id="opt2_title" placeholder="Название (напр. Full Replace)" style="padding:8px;">
-                            <input type="number" id="opt2_price" placeholder="Цена $" style="padding:8px;">
+                            <input type="text" id="opt2_title" placeholder="Название (напр. Complete Repair)" style="padding:8px;">
+                            <input type="number" id="opt2_price" placeholder="Берется из Общей Цены" readonly style="padding:8px; background:#e2e8f0;">
                         </div>
-                        <textarea id="opt2_desc" rows="2" placeholder="Описание работы..." style="padding:8px; font-size:13px;"></textarea>
+                        <textarea id="opt2_desc" rows="2" placeholder="Описание основной работы..." style="padding:8px; font-size:13px;"></textarea>
                     </div>
 
+                    <!-- Дорогой / Премиум -->
                     <div class="option-box">
                         <div class="option-header">
-                            <span>Вариант 3 (Опционально / Премиум)</span>
+                            <span>3. Премиум / Полная замена</span>
                             <label><input type="radio" name="recommended_opt" value="3"> Recommended</label>
                         </div>
                         <div style="display:grid; grid-template-columns: 2fr 1fr; gap:6px; margin-bottom:6px;">
-                            <input type="text" id="opt3_title" placeholder="Название (напр. Premium Materials)" style="padding:8px;">
+                            <input type="text" id="opt3_title" placeholder="Название (напр. Full Premium Replacement)" style="padding:8px;">
                             <input type="number" id="opt3_price" placeholder="Цена $" style="padding:8px;">
                         </div>
-                        <textarea id="opt3_desc" rows="2" placeholder="Описание..." style="padding:8px; font-size:13px;"></textarea>
+                        <textarea id="opt3_desc" rows="2" placeholder="Описание работы..." style="padding:8px; font-size:13px;"></textarea>
                     </div>
                 </div>
 
@@ -318,6 +324,9 @@
     </div>
 
     <script>
+        // ПРЯМАЯ ССЫЛКА НА КАРТИНКУ ЛОГОТИПА ИЗ РЕПОЗИТОРИЯ GITHUB
+        const LOGO_URL = "https://raw.githubusercontent.com/Aleksandr001001/alex-calendar/main/README.md"; 
+
         const firebaseConfig = { databaseURL: "https://alex-calendar-b4f04-default-rtdb.firebaseio.com" };
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
@@ -417,10 +426,10 @@
             Object.keys(jobsData).forEach(dStr => {
                 if(dStr.startsWith(currentYearMonth)) {
                     Object.values(jobsData[dStr]).forEach(j => {
-                        const priceNum = parseFloat(j.finalPrice || j.dailyPrice || j.price || 0);
+                        const priceNum = parseFloat(j.dailyPrice || j.price || 0);
                         const matNum = parseFloat(j.dailyMaterials || 0);
                         if(j.completed) {
-                            earnedNet += (priceNum - matNum);
+                            earnedNet += (priceNum - matNum); // ЧИСТЫЙ ДОХОД В ШАПКЕ
                             materialsTotal += matNum;
                         } else {
                             pending += priceNum;
@@ -505,11 +514,11 @@
                 
                 const dayPrice = parseFloat(job.dailyPrice || job.price || 0);
                 const dayMat = parseFloat(job.dailyMaterials || 0);
-                const netEarned = dayPrice - dayMat;
+                const netEarned = dayPrice - dayMat; // ВЫЧИТАЕМ МАТЕРИАЛЫ ИЗ ДНЕВНОЙ СУММЫ
 
                 const statusHtml = job.completed 
-                    ? `<span class="status-badge completed">✓ Выполнено (Заработок: $${netEarned.toFixed(0)})</span>` 
-                    : `<span class="status-badge pending">⏳ В работе (Общая сумма: $${dayPrice})</span>`;
+                    ? `<span class="status-badge completed">✓ Выполнено (Чистый доход: $${netEarned.toFixed(0)})</span>` 
+                    : `<span class="status-badge pending">⏳ В работе (Общая сумма: $${dayPrice.toFixed(0)})</span>`;
                 
                 const phoneBtn = job.phone ? `<button class="btn-action" onclick="event.stopPropagation(); window.location.href='sms:${job.phone}'">Написать SMS</button>` : '';
                 let photosHtml = job.photos && job.photos.length > 0 ? `<div class="photos-grid">` + job.photos.map(p => `<img src="${p}" class="photo-thumb">`).join('') + `</div>` : '';
@@ -519,10 +528,11 @@
                     ${statusHtml}
                     <div class="job-card-header">
                         <span>${job.title} ${isMultiDay}</span>
-                        <span>$${dayPrice} ${dayMat > 0 ? `<small style="font-size:10px; color:#d32f2f;">(-$${dayMat} мат.)</small>` : ''}</span>
+                        <span>$${netEarned.toFixed(0)} <small style="font-size:11px; color:#666;">(чистыми)</small></span>
                     </div>
                     <div class="job-time">Время: ${job.time} | Клиент: ${job.client || 'Не указан'}</div>
                     <div class="job-address">${job.address || 'Адрес не указан'}</div>
+                    <div style="font-size:12px; color:#555; margin-bottom:6px;">За день всего: $${dayPrice.toFixed(0)} | Материалы: <span style="color:#d32f2f;">$${dayMat.toFixed(0)}</span></div>
                     ${photosHtml}
                     ${phoneBtn}
                 `;
@@ -530,7 +540,6 @@
             });
         }
 
-        /* CLIENTS LIST MODAL */
         function getAllClients() {
             const clients = {};
             Object.keys(jobsData).forEach(dateStr => {
@@ -665,18 +674,19 @@
                 document.getElementById('phone').value = editingJobData.phone || '';
                 document.getElementById('address').value = editingJobData.address || '';
                 
-                // Options populate
                 if(editingJobData.options) {
                     document.getElementById('opt1_title').value = editingJobData.options[0]?.title || '';
+                    document.getElementById('opt1_price').value = editingJobData.options[0]?.price || '';
                     document.getElementById('opt1_desc').value = editingJobData.options[0]?.desc || '';
+                    
                     document.getElementById('opt2_title').value = editingJobData.options[1]?.title || '';
-                    document.getElementById('opt2_price').value = editingJobData.options[1]?.price || '';
                     document.getElementById('opt2_desc').value = editingJobData.options[1]?.desc || '';
+                    
                     document.getElementById('opt3_title').value = editingJobData.options[2]?.title || '';
                     document.getElementById('opt3_price').value = editingJobData.options[2]?.price || '';
                     document.getElementById('opt3_desc').value = editingJobData.options[2]?.desc || '';
                     
-                    const recVal = editingJobData.recommendedOpt || 1;
+                    const recVal = editingJobData.recommendedOpt || 2;
                     const rInput = document.querySelector(`input[name="recommended_opt"][value="${recVal}"]`);
                     if(rInput) rInput.checked = true;
                 }
@@ -713,7 +723,7 @@
                     <div class="detail-label">Статус заказа на день</div>
                     <div class="detail-value">
                         <button class="btn-action" style="background:${job.completed ? '#2e7d32' : '#ed6c02'}; color:white;" onclick="toggleStatus('${id}', ${!job.completed}, '${dayPrice}')">
-                            ${job.completed ? `✓ Выполнено (Заработок: $${netEarned.toFixed(0)}) — Изменить` : '⏳ В работе — Отметить выполненным'}
+                            ${job.completed ? `✓ Выполнено (Чистый доход: $${netEarned.toFixed(0)}) — Изменить` : '⏳ В работе — Отметить выполненным'}
                         </button>
                     </div>
                 </div>
@@ -723,7 +733,7 @@
                         <strong>${job.title}</strong><br>
                         Общая цена заказа: <strong>$${job.totalPrice || job.price}</strong><br>
                         Материалы (всего): <strong>$${job.materials || 0}</strong><br>
-                        <span style="color:#008b99; font-size:13px;">В этот день ($${dayPrice.toFixed(0)} цена - $${dayMat.toFixed(0)} мат. = <strong>$${netEarned.toFixed(0)} прибыль</strong>)</span>
+                        <span style="color:#008b99; font-size:13px;">За этот день: ($${dayPrice.toFixed(0)} цена - $${dayMat.toFixed(0)} мат. = <strong>$${netEarned.toFixed(0)} чистый доход</strong>)</span>
                     </div>
                 </div>
                 <div class="detail-row">
@@ -744,7 +754,7 @@
             document.getElementById('details-modal').style.display = 'flex';
         }
 
-        /* GENERATE ESTIMATE WITH ORIGINAL SVG LOGO & MULTI-OPTION TIERS */
+        /* ГЕНЕРАЦИЯ ESTIMATE С КОМПАКТНЫМ ЛОГОТИПОМ В УГЛУ И ГОРИЗОНТАЛЬНЫМИ ОПЦИЯМИ */
         function generateEstimate(job, customData = null) {
             currentEstimateJob = job;
             const paper = document.getElementById('estimate-paper-body');
@@ -761,34 +771,35 @@
 
             let imageHtml = job.photos && job.photos.length > 0 ? `<img src="${job.photos[0]}" class="work-thumb-large" alt="Work Photo">` : '';
 
-            // OPTIONS CHECK
             const options = customData?.options || job.options || [];
-            const hasMultipleOptions = options.filter(o => o.title && o.title.trim() !== '').length > 1;
+            const activeOptions = options.filter(o => o.title && o.title.trim() !== '');
+            const hasMultipleOptions = activeOptions.length > 1;
 
             let optionsBodyHtml = '';
 
             if (hasMultipleOptions) {
-                // 3 COLUMN TIERS
+                // ГОРИЗОНТАЛЬНЫЕ БЛОКИ ДРУГ ПОД ДРУГОМ
                 let cardsHtml = '';
                 options.forEach((opt, idx) => {
                     if (!opt.title || opt.title.trim() === '') return;
-                    const isRec = (job.recommendedOpt || 1) == (idx + 1);
+                    const isRec = (job.recommendedOpt || 2) == (idx + 1);
                     const priceVal = opt.price ? `$${opt.price}` : `$${job.totalPrice || job.price}`;
+                    
                     cardsHtml += `
-                        <div class="option-card-doc ${isRec ? 'recommended' : ''}">
+                        <div class="option-card-horizontal ${isRec ? 'recommended' : ''}">
                             ${isRec ? '<div class="recommend-badge">RECOMMENDED</div>' : ''}
-                            <div>
-                                <div class="option-doc-title">${opt.title}</div>
-                                <div class="option-doc-price">${priceVal}</div>
-                                <div class="option-doc-desc">${opt.desc || ''}</div>
+                            <div class="option-row-header">
+                                <span class="option-doc-title">${opt.title}</span>
+                                <span class="option-doc-price">${priceVal}</span>
                             </div>
+                            <div class="option-doc-desc">${opt.desc || ''}</div>
                         </div>
                     `;
                 });
-                optionsBodyHtml = `<div class="options-grid-3">${cardsHtml}</div>`;
+                optionsBodyHtml = `<div class="options-container-horizontal">${cardsHtml}</div>`;
             } else {
-                // SINGLE ITEM TABLE
-                const mainOpt = options[0] || {};
+                // СТАНДАРТНАЯ ТАБЛИЦА ДЛЯ 1 ВАРИАНТА
+                const mainOpt = options[1] || options[0] || {};
                 const mainTitle = customData?.title || mainOpt.title || job.title || 'General Repairs';
                 const mainDesc = customData?.desc || mainOpt.desc || '';
                 const totalPrice = job.totalPrice || job.price || 0;
@@ -825,18 +836,9 @@
                     <div class="estimate-header-wrapper">
                         <div>
                             <div class="logo-and-brand">
-                                <svg width="58" height="58" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M100 22 L24 88 L24 172 L176 172 L176 88 Z" stroke="#0f2c59" stroke-width="16" stroke-linejoin="round" fill="none"/>
-                                    <rect x="76" y="44" width="22" height="22" fill="#0f2c59"/>
-                                    <path d="M68 126 C 68 152, 132 152, 132 126" stroke="#0f2c59" stroke-width="14" stroke-linecap="round" fill="none"/>
-                                    <path d="M72 82 H128 V114 H72 Z" fill="#0f2c59"/>
-                                    <path d="M100 82 V114 M72 98 H128" stroke="#ffffff" stroke-width="4"/>
-                                </svg>
-                                <div>
-                                    <div class="brand-text-title">HomeBuddy</div>
-                                    <div class="brand-text-sub">Handyman</div>
-                                    <div class="brand-text-tag">Local & Reliable</div>
-                                </div>
+                                <!-- КОМПАКТНЫЙ ЛОГОТИП В УГЛУ -->
+                                <img src="${LOGO_URL}" class="logo-img" alt="Logo" onerror="this.style.display='none';">
+                                <div style="font-size:18px; font-weight:800; color:#0f2c59;">HomeBuddy Handyman</div>
                             </div>
                             <div class="contractor-meta">
                                 <strong>Aleksandr Ivanov</strong><br>
@@ -927,7 +929,7 @@
                 return;
             }
             const clientName = currentTranslatedClient || 'Customer';
-            const smsText = `Hello ${clientName}! As requested, I am sending you the estimate for the work. Please find the PDF document attached. Thank you!`;
+            const smsText = `Hello ${clientName}! As requested, I am sending you the estimate for the work. Please find the document attached. Thank you!`;
             window.location.href = `sms:${currentEstimateJob.phone}?body=${encodeURIComponent(smsText)}`;
         }
 
@@ -1014,22 +1016,22 @@
                 const dailyMaterials = (materialsPrice / daysCount).toFixed(2);
 
                 const recRadio = document.querySelector('input[name="recommended_opt"]:checked');
-                const recommendedOpt = recRadio ? parseInt(recRadio.value) : 1;
+                const recommendedOpt = recRadio ? parseInt(recRadio.value) : 2;
 
                 const optionsArr = [
                     {
-                        title: document.getElementById('opt1_title').value || document.getElementById('title').value,
-                        price: totalPrice,
+                        title: document.getElementById('opt1_title').value,
+                        price: parseFloat(document.getElementById('opt1_price').value) || 0,
                         desc: document.getElementById('opt1_desc').value
                     },
                     {
-                        title: document.getElementById('opt2_title').value,
-                        price: parseFloat(document.getElementById('opt2_price').value) || totalPrice,
+                        title: document.getElementById('opt2_title').value || document.getElementById('title').value,
+                        price: totalPrice,
                         desc: document.getElementById('opt2_desc').value
                     },
                     {
                         title: document.getElementById('opt3_title').value,
-                        price: parseFloat(document.getElementById('opt3_price').value) || totalPrice,
+                        price: parseFloat(document.getElementById('opt3_price').value) || 0,
                         desc: document.getElementById('opt3_desc').value
                     }
                 ];
