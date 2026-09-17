@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Alex Handyman</title>
+    <title>Aleksandr Ivanov Schedule</title>
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
@@ -302,46 +302,88 @@
             font-size: 14px;
         }
 
-        /* Стиль документа Estimate */
+        /* ESTIMATE DOCUMENT STYLING */
         .estimate-paper {
             background: #fff;
-            border: 1px solid #ccc;
+            border: 1px solid #ddd;
             border-radius: 8px;
-            padding: 20px;
-            color: #333;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            padding: 40px;
+            color: #222;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            width: 100%;
+            box-sizing: border-box;
+            min-height: 800px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
         .estimate-header {
             display: flex;
             justify-content: space-between;
-            border-bottom: 2px solid var(--primary);
-            padding-bottom: 12px;
-            margin-bottom: 15px;
+            align-items: flex-start;
+            border-bottom: 2px solid #008b99;
+            padding-bottom: 20px;
+            margin-bottom: 25px;
         }
-        .estimate-title { font-size: 20px; font-weight: 800; color: var(--primary); text-transform: uppercase; }
-        .estimate-section { margin-bottom: 15px; }
-        .estimate-section-title { font-size: 12px; text-transform: uppercase; color: #888; font-weight: 700; margin-bottom: 4px; }
+        .estimate-title { font-size: 28px; font-weight: 900; color: #008b99; letter-spacing: 1px; }
+        .estimate-section-title { font-size: 11px; text-transform: uppercase; color: #777; font-weight: 700; margin-bottom: 6px; letter-spacing: 0.5px; }
         .estimate-table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 10px;
-            margin-bottom: 15px;
+            margin-top: 20px;
+            margin-bottom: 25px;
         }
-        .estimate-table th { background: #f0f4f5; text-align: left; padding: 8px; font-size: 13px; border-bottom: 1px solid #ddd; }
-        .estimate-table td { padding: 10px 8px; border-bottom: 1px solid #eee; font-size: 14px; }
-        .estimate-total { text-align: right; font-size: 18px; font-weight: 800; color: var(--primary); margin-top: 10px; }
+        .estimate-table th { background: #f4f7f8; text-align: left; padding: 12px 10px; font-size: 13px; font-weight: 700; border-bottom: 2px solid #ddd; color: #444; }
+        .estimate-table td { padding: 14px 10px; border-bottom: 1px solid #eee; font-size: 14px; vertical-align: top; }
+        .estimate-total { text-align: right; font-size: 22px; font-weight: 800; color: #008b99; margin-top: 15px; border-top: 2px solid #eee; padding-top: 10px; }
 
+        /* PRINT MEDIA STYLES - FULL PAGE A4 */
         @media print {
+            @page {
+                size: A4 portrait;
+                margin: 15mm;
+            }
+            body, html {
+                background: #fff !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                width: 100% !important;
+                height: 100% !important;
+            }
             body * { visibility: hidden; }
             #estimate-modal, #estimate-modal * { visibility: visible; }
-            #estimate-modal { position: absolute; left: 0; top: 0; width: 100%; height: auto; background: white; }
-            .modal-content { max-height: none; border: none; box-shadow: none; }
+            #estimate-modal {
+                position: absolute !important;
+                left: 0 !important;
+                top: 0 !important;
+                width: 100% !important;
+                height: 100% !important;
+                background: white !important;
+                display: block !important;
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+            .modal-content {
+                max-height: none !important;
+                border: none !important;
+                box-shadow: none !important;
+                padding: 0 !important;
+                width: 100% !important;
+                margin: 0 !important;
+            }
+            .estimate-paper {
+                border: none !important;
+                box-shadow: none !important;
+                padding: 0 !important;
+                width: 100% !important;
+                border-radius: 0 !important;
+            }
             .no-print { display: none !important; }
         }
     </style>
 </head>
 <body>
-    <header>Alex Handyman Schedule</header>
+    <header>Aleksandr Ivanov Schedule</header>
     <div class="calendar-nav">
         <button class="nav-btn" onclick="changeMonth(-1)">❮</button>
         <span id="month-year-title"></span>
@@ -421,11 +463,11 @@
                 </div>
                 <div class="form-group">
                     <label>Название услуги / Вид работы</label>
-                    <input type="text" id="title" required placeholder="Например: Handyman Service, Estimate, Покраска...">
+                    <input type="text" id="title" required placeholder="Например: Fascia Repair, Painting, Estimate...">
                 </div>
                 <div class="form-group">
                     <label>Предварительная цена ($)</label>
-                    <input type="number" id="price" min="0" max="5000" step="5" value="60">
+                    <input type="number" id="price" min="0" max="10000" step="5" value="60">
                 </div>
                 <div class="form-group">
                     <label>Время начала работы</label>
@@ -448,8 +490,8 @@
                     <input type="file" id="photo-files" accept="image/*" multiple style="padding: 8px;">
                 </div>
                 <div class="form-group">
-                    <label>Описание / Заметки (необязательно)</label>
-                    <textarea id="desc" rows="3" placeholder="Заметки или надиктованный текст..."></textarea>
+                    <label>Описание / Заметки (можно писать по-русски)</label>
+                    <textarea id="desc" rows="4" placeholder="Опишите детали ремонта (например: ремонт фасции, замена досок, покраска)..."></textarea>
                 </div>
                 <button type="submit" class="btn-add" id="save-btn">Сохранить заказ</button>
             </form>
@@ -469,15 +511,16 @@
 
     <!-- Модальное окно генерации Estimate -->
     <div class="modal" id="estimate-modal">
-        <div class="modal-content" style="max-width: 600px; margin: 0 auto;">
+        <div class="modal-content" style="max-width: 800px; margin: 0 auto; background: #f0f2f5;">
             <div class="modal-header no-print">
-                <span>Смета / Estimate</span>
+                <span>Estimate Document</span>
                 <span class="close-btn" onclick="closeModal('estimate-modal')">&times;</span>
             </div>
             <div id="estimate-paper-body"></div>
-            <div class="no-print" style="margin-top: 15px; display: flex; gap: 8px;">
-                <button class="btn-add" onclick="window.print()" style="background:#008b99;">🖨 Печать / PDF</button>
-                <button class="btn-add" id="send-estimate-sms-btn" style="background:#2e7d32;">💬 Отправить клиенту</button>
+            <div class="no-print" style="margin-top: 15px; display: flex; gap: 8px; flex-wrap: wrap;">
+                <button class="btn-add" id="translate-estimate-btn" style="background:#0288d1; flex: 1;" onclick="translateEstimateDetails()">🌐 Перевести на английский</button>
+                <button class="btn-add" onclick="window.print()" style="background:#008b99; flex: 1;">🖨 Печать / Save PDF</button>
+                <button class="btn-add" id="send-estimate-sms-btn" style="background:#2e7d32; flex: 1;">💬 Send SMS</button>
             </div>
         </div>
     </div>
@@ -498,6 +541,8 @@
         let editingJobId = null; 
         let editingJobGroupId = null;
         let existingPhotos = [];
+        let currentEstimateJob = null;
+
         const timeSlots = [
             "7:00 am", "7:30 am", "8:00 am", "8:30 am", 
             "9:00 am", "9:30 am", "10:00 am", "10:30 am",
@@ -693,7 +738,7 @@
             });
         }
 
-        /* ЛОГИКА ДЛЯ КЛИЕНТОВ */
+        /* CLIENTS LIST */
         function getAllClients() {
             const clients = {};
             Object.keys(jobsData).forEach(dateStr => {
@@ -868,7 +913,7 @@
                 editingJobGroupId = null;
                 selectedJobDates = [selectedDateStr];
                 document.getElementById('add-modal-title').innerText = `Новый заказ`;
-                document.getElementById('title').value = 'Estimate';
+                document.getElementById('title').value = 'Repair Services';
             }
             if(selectedJobDates.length > 0) {
                 const [y, m] = selectedJobDates[0].split('-').map(Number);
@@ -937,7 +982,7 @@
                     <div class="detail-label">Описание / Заметки</div>
                     <div class="detail-value">${job.desc || 'Нет описания'}</div>
                 </div>
-                <button class="btn-action" style="background:#ed6c02; color:white; border:none; margin-top:10px; font-size:15px; font-weight:700;" onclick="generateEstimate(${JSON.stringify(job).replace(/"/g, '&quot;')})">📄 Сделать Estimate</button>
+                <button class="btn-action" style="background:#0288d1; color:white; border:none; margin-top:10px; font-size:15px; font-weight:700;" onclick="generateEstimate(${JSON.stringify(job).replace(/"/g, '&quot;')})">📄 Сделать Estimate</button>
                 <div class="btn-grid-actions">
                     <button class="btn-action" style="background:#008b99; color:white;" onclick="openAddModal(${JSON.stringify(job).replace(/"/g, '&quot;')}, '${id}', false)">✏️ Редактировать</button>
                     <button class="btn-action" style="background:#2e7d32; color:white;" onclick="openAddModal(${JSON.stringify(job).replace(/"/g, '&quot;')}, '${id}', true)">➕ Ещё заказ</button>
@@ -947,80 +992,145 @@
             document.getElementById('details-modal').style.display = 'flex';
         }
 
-        /* ГЕНЕРАЦИЯ ESTIMATE */
-        function generateEstimate(job) {
+        /* GENERATE ESTIMATE DOCUMENT */
+        function generateEstimate(job, customTitle = null, customDesc = null) {
+            currentEstimateJob = job;
             const paper = document.getElementById('estimate-paper-body');
             const today = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
             
+            const displayTitle = customTitle || job.title || 'General Repairs';
+            const displayDesc = customDesc || job.desc || '';
+
             paper.innerHTML = `
                 <div class="estimate-paper">
-                    <div class="estimate-header">
-                        <div>
-                            <div class="estimate-title">ESTIMATE</div>
-                            <div style="font-size: 13px; color: #555; margin-top: 4px;">Alexandr Ivanov</div>
-                            <div style="font-size: 12px; color: #777;">Handyman Services</div>
+                    <div>
+                        <div class="estimate-header">
+                            <div>
+                                <div class="estimate-title">ESTIMATE</div>
+                                <div style="font-size: 16px; font-weight: 700; color: #333; margin-top: 6px;">Aleksandr Ivanov</div>
+                                <div style="font-size: 13px; color: #666;">Phone: 2797582752</div>
+                            </div>
+                            <div style="text-align: right; font-size: 13px; color: #444; line-height: 1.5;">
+                                <div><strong>Date:</strong> ${today}</div>
+                                <div><strong>Service Date:</strong> ${selectedDateStr}</div>
+                            </div>
                         </div>
-                        <div style="text-align: right; font-size: 12px; color: #555;">
-                            <div><strong>Date:</strong> ${today}</div>
-                            <div><strong>Service Date:</strong> ${selectedDateStr}</div>
+                        
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 25px; font-size: 14px; line-height: 1.5;">
+                            <div>
+                                <div class="estimate-section-title">Contractor:</div>
+                                <strong>Aleksandr Ivanov</strong><br>
+                                Phone: 2797582752
+                            </div>
+                            <div style="text-align: right;">
+                                <div class="estimate-section-title">Customer:</div>
+                                <strong>${job.client || 'Valued Customer'}</strong><br>
+                                ${job.phone ? 'Phone: ' + job.phone + '<br>' : ''}
+                                ${job.address ? 'Address: ' + job.address : ''}
+                            </div>
                         </div>
-                    </div>
-                    
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 15px; font-size: 13px;">
-                        <div>
-                            <div class="estimate-section-title">Contractor / Исполнитель:</div>
-                            <strong>Alexandr Ivanov (Alex Handyman)</strong><br>
-                            Phone: +1 (XXX) XXX-XXXX<br>
-                            Professional Repairs & Maintenance
-                        </div>
-                        <div style="text-align: right;">
-                            <div class="estimate-section-title">Customer / Клиент:</div>
-                            <strong>${job.client || 'Valued Customer'}</strong><br>
-                            ${job.phone ? 'Phone: ' + job.phone + '<br>' : ''}
-                            ${job.address ? 'Address: ' + job.address : ''}
-                        </div>
-                    </div>
 
-                    <table class="estimate-table">
-                        <thead>
-                            <tr>
-                                <th>Description / Description of Work</th>
-                                <th style="text-align: right;">Amount</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>
-                                    <strong>${job.title}</strong>
-                                    ${job.desc ? `<br><span style="font-size:12px; color:#666;">${job.desc}</span>` : ''}
-                                </td>
-                                <td style="text-align: right; font-weight: 600;">$${job.price}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-
-                    <div class="estimate-total">
-                        Total Estimate: $${job.price}
+                        <table class="estimate-table">
+                            <thead>
+                                <tr>
+                                    <th>Description of Work</th>
+                                    <th style="text-align: right; width: 120px;">Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <strong style="font-size: 15px;" id="est-title-text">${displayTitle}</strong>
+                                        <div style="font-size: 13px; color: #555; margin-top: 6px; white-space: pre-wrap;" id="est-desc-text">${displayDesc}</div>
+                                    </td>
+                                    <td style="text-align: right; font-weight: 700; font-size: 16px;">$${job.price}</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
 
-                    <div style="margin-top: 20px; border-top: 1px solid #eee; padding-top: 10px; font-size: 11px; color: #777;">
-                        <strong>Notes & Terms:</strong><br>
-                        • This estimate is valid for 30 days.<br>
-                        • Final costs may vary depending on unexpected additional work or materials requested during the process.<br>
-                        Thank you for choosing Alex Handyman!
+                    <div>
+                        <div class="estimate-total">
+                            Total Estimate: $${job.price}
+                        </div>
+
+                        <div style="margin-top: 30px; border-top: 1px solid #ddd; padding-top: 15px; font-size: 12px; color: #666; line-height: 1.6;">
+                            <strong>Terms & Notes:</strong><br>
+                            • This estimate is valid for 30 days from the date of issuance.<br>
+                            • Final pricing may vary if additional unexpected work or materials are required upon customer request.<br>
+                            Thank you for your business!
+                        </div>
                     </div>
                 </div>
             `;
 
             const smsBtn = document.getElementById('send-estimate-sms-btn');
             if (job.phone) {
-                const text = encodeURIComponent(`Hi ${job.client || ''}! Here is your estimate for ${job.title}: $${job.price}. Date: ${selectedDateStr}. Let me know if you have any questions! - Alexandr Ivanov`);
+                const text = encodeURIComponent(`Hi ${job.client || ''}! Here is your estimate for ${displayTitle}: $${job.price}. Date: ${selectedDateStr}. Please let me know if you have any questions! - Aleksandr Ivanov`);
                 smsBtn.onclick = () => { window.location.href = `sms:${job.phone}?body=${text}`; };
             } else {
-                smsBtn.onclick = () => { alert('У данного заказа не указан номер телефона клиента'); };
+                smsBtn.onclick = () => { alert('No client phone number specified for this order.'); };
             }
 
             document.getElementById('estimate-modal').style.display = 'flex';
+        }
+
+        /* AUTO TRANSLATE FUNCTIONALITY */
+        async function translateEstimateDetails() {
+            if (!currentEstimateJob) return;
+            const btn = document.getElementById('translate-estimate-btn');
+            btn.innerText = "⏳ Translating...";
+            btn.disabled = true;
+
+            let titleText = currentEstimateJob.title || '';
+            let descText = currentEstimateJob.desc || '';
+
+            try {
+                const titleTrans = await fetchTranslation(titleText);
+                const descTrans = await fetchTranslation(descText);
+
+                generateEstimate(currentEstimateJob, titleTrans, descTrans);
+                btn.innerText = "✓ Translated!";
+            } catch (err) {
+                console.error(err);
+                alert("Translation failed. You can manually edit text on the form.");
+                btn.innerText = "🌐 Translate to English";
+            } finally {
+                btn.disabled = false;
+            }
+        }
+
+        async function fetchTranslation(text) {
+            if (!text || text.trim() === '') return text;
+            
+            // Fallback dictionary for common repair terms
+            const dictionary = {
+                'фасция': 'fascia',
+                'ремонт фасции': 'fascia repair',
+                'покраска': 'painting',
+                'замена досок': 'board replacement',
+                'ремонт': 'repair',
+                'установка': 'installation',
+                'замена': 'replacement',
+                'гипсокартон': 'drywall repair',
+                'забор': 'fence repair',
+                'дверь': 'door repair',
+                'окно': 'window repair'
+            };
+
+            const lower = text.toLowerCase().trim();
+            if (dictionary[lower]) return dictionary[lower];
+
+            try {
+                const res = await fetch(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=ru&tl=en&dt=t&q=${encodeURIComponent(text)}`);
+                const data = await res.json();
+                if (data && data[0]) {
+                    return data[0].map(item => item[0]).join('');
+                }
+            } catch(e) {
+                console.log("Translation API limit, fallback used");
+            }
+            return text;
         }
 
         function toggleStatus(id, newStatus, currentPrice) {
@@ -1109,7 +1219,7 @@
                 const newJobData = {
                     groupId: groupId,
                     dates: selectedJobDates,
-                    title: document.getElementById('title').value || 'Услуга',
+                    title: document.getElementById('title').value || 'Repair Service',
                     price: document.getElementById('price').value,
                     time: selectedStartTime,
                     client: document.getElementById('client').value,
