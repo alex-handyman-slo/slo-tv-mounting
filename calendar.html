@@ -279,7 +279,6 @@
             cursor: pointer;
         }
 
-        /* Стилевые элементы для карточек клиентов */
         .client-card {
             background: #fff;
             border: 1px solid var(--border-color);
@@ -291,9 +290,7 @@
             justify-content: space-between;
             align-items: center;
         }
-        .client-card:hover {
-            border-color: var(--primary);
-        }
+        .client-card:hover { border-color: var(--primary); }
         .client-info-name { font-weight: 700; font-size: 16px; margin-bottom: 2px; color: var(--text-dark); }
         .client-info-sub { font-size: 13px; color: #666; }
         .search-box {
@@ -303,6 +300,43 @@
             border: 1px solid var(--border-color);
             border-radius: 8px;
             font-size: 14px;
+        }
+
+        /* Стиль документа Estimate */
+        .estimate-paper {
+            background: #fff;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 20px;
+            color: #333;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .estimate-header {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 12px;
+            margin-bottom: 15px;
+        }
+        .estimate-title { font-size: 20px; font-weight: 800; color: var(--primary); text-transform: uppercase; }
+        .estimate-section { margin-bottom: 15px; }
+        .estimate-section-title { font-size: 12px; text-transform: uppercase; color: #888; font-weight: 700; margin-bottom: 4px; }
+        .estimate-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            margin-bottom: 15px;
+        }
+        .estimate-table th { background: #f0f4f5; text-align: left; padding: 8px; font-size: 13px; border-bottom: 1px solid #ddd; }
+        .estimate-table td { padding: 10px 8px; border-bottom: 1px solid #eee; font-size: 14px; }
+        .estimate-total { text-align: right; font-size: 18px; font-weight: 800; color: var(--primary); margin-top: 10px; }
+
+        @media print {
+            body * { visibility: hidden; }
+            #estimate-modal, #estimate-modal * { visibility: visible; }
+            #estimate-modal { position: absolute; left: 0; top: 0; width: 100%; height: auto; background: white; }
+            .modal-content { max-height: none; border: none; box-shadow: none; }
+            .no-print { display: none !important; }
         }
     </style>
 </head>
@@ -349,7 +383,7 @@
         </div>
     </div>
 
-    <!-- Модальное окно конкретного клиента и его заказов -->
+    <!-- Модальное окно конкретного клиента -->
     <div class="modal" id="client-history-modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -371,7 +405,6 @@
                 <span class="close-btn" onclick="closeModal('add-modal')">&times;</span>
             </div>
             <form id="job-form" onsubmit="saveJob(event)">
-                
                 <div class="form-group">
                     <label>Выберите дату (или несколько дней)</label>
                     <div class="dates-picker-container">
@@ -423,7 +456,7 @@
         </div>
     </div>
 
-    <!-- Модальное окно просмотра -->
+    <!-- Модальное окно просмотра деталей -->
     <div class="modal" id="details-modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -431,6 +464,21 @@
                 <span class="close-btn" onclick="closeModal('details-modal')">&times;</span>
             </div>
             <div id="job-details-body"></div>
+        </div>
+    </div>
+
+    <!-- Модальное окно генерации Estimate -->
+    <div class="modal" id="estimate-modal">
+        <div class="modal-content" style="max-width: 600px; margin: 0 auto;">
+            <div class="modal-header no-print">
+                <span>Смета / Estimate</span>
+                <span class="close-btn" onclick="closeModal('estimate-modal')">&times;</span>
+            </div>
+            <div id="estimate-paper-body"></div>
+            <div class="no-print" style="margin-top: 15px; display: flex; gap: 8px;">
+                <button class="btn-add" onclick="window.print()" style="background:#008b99;">🖨 Печать / PDF</button>
+                <button class="btn-add" id="send-estimate-sms-btn" style="background:#2e7d32;">💬 Отправить клиенту</button>
+            </div>
         </div>
     </div>
 
@@ -727,7 +775,6 @@
             const jobsListContainer = document.getElementById('client-jobs-list');
             jobsListContainer.innerHTML = '';
 
-            // Собираем все заказы данного клиента
             const clientJobs = [];
             Object.keys(jobsData).forEach(dStr => {
                 Object.keys(jobsData[dStr]).forEach(id => {
@@ -738,7 +785,6 @@
                 });
             });
 
-            // Сортируем заказы от новых к старым
             clientJobs.sort((a, b) => b.date.localeCompare(a.date));
 
             if (clientJobs.length === 0) {
@@ -891,6 +937,7 @@
                     <div class="detail-label">Описание / Заметки</div>
                     <div class="detail-value">${job.desc || 'Нет описания'}</div>
                 </div>
+                <button class="btn-action" style="background:#ed6c02; color:white; border:none; margin-top:10px; font-size:15px; font-weight:700;" onclick="generateEstimate(${JSON.stringify(job).replace(/"/g, '&quot;')})">📄 Сделать Estimate</button>
                 <div class="btn-grid-actions">
                     <button class="btn-action" style="background:#008b99; color:white;" onclick="openAddModal(${JSON.stringify(job).replace(/"/g, '&quot;')}, '${id}', false)">✏️ Редактировать</button>
                     <button class="btn-action" style="background:#2e7d32; color:white;" onclick="openAddModal(${JSON.stringify(job).replace(/"/g, '&quot;')}, '${id}', true)">➕ Ещё заказ</button>
@@ -898,6 +945,82 @@
                 <button class="btn-action" style="background:#d32f2f; color:white; border-color:#d32f2f; margin-top:8px;" onclick="deleteJobGroup('${targetGroupId}', '${selectedDateStr}', '${id}')">Удалить заказ</button>
             `;
             document.getElementById('details-modal').style.display = 'flex';
+        }
+
+        /* ГЕНЕРАЦИЯ ESTIMATE */
+        function generateEstimate(job) {
+            const paper = document.getElementById('estimate-paper-body');
+            const today = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+            
+            paper.innerHTML = `
+                <div class="estimate-paper">
+                    <div class="estimate-header">
+                        <div>
+                            <div class="estimate-title">ESTIMATE</div>
+                            <div style="font-size: 13px; color: #555; margin-top: 4px;">Alexandr Ivanov</div>
+                            <div style="font-size: 12px; color: #777;">Handyman Services</div>
+                        </div>
+                        <div style="text-align: right; font-size: 12px; color: #555;">
+                            <div><strong>Date:</strong> ${today}</div>
+                            <div><strong>Service Date:</strong> ${selectedDateStr}</div>
+                        </div>
+                    </div>
+                    
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 15px; font-size: 13px;">
+                        <div>
+                            <div class="estimate-section-title">Contractor / Исполнитель:</div>
+                            <strong>Alexandr Ivanov (Alex Handyman)</strong><br>
+                            Phone: +1 (XXX) XXX-XXXX<br>
+                            Professional Repairs & Maintenance
+                        </div>
+                        <div style="text-align: right;">
+                            <div class="estimate-section-title">Customer / Клиент:</div>
+                            <strong>${job.client || 'Valued Customer'}</strong><br>
+                            ${job.phone ? 'Phone: ' + job.phone + '<br>' : ''}
+                            ${job.address ? 'Address: ' + job.address : ''}
+                        </div>
+                    </div>
+
+                    <table class="estimate-table">
+                        <thead>
+                            <tr>
+                                <th>Description / Description of Work</th>
+                                <th style="text-align: right;">Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <strong>${job.title}</strong>
+                                    ${job.desc ? `<br><span style="font-size:12px; color:#666;">${job.desc}</span>` : ''}
+                                </td>
+                                <td style="text-align: right; font-weight: 600;">$${job.price}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="estimate-total">
+                        Total Estimate: $${job.price}
+                    </div>
+
+                    <div style="margin-top: 20px; border-top: 1px solid #eee; padding-top: 10px; font-size: 11px; color: #777;">
+                        <strong>Notes & Terms:</strong><br>
+                        • This estimate is valid for 30 days.<br>
+                        • Final costs may vary depending on unexpected additional work or materials requested during the process.<br>
+                        Thank you for choosing Alex Handyman!
+                    </div>
+                </div>
+            `;
+
+            const smsBtn = document.getElementById('send-estimate-sms-btn');
+            if (job.phone) {
+                const text = encodeURIComponent(`Hi ${job.client || ''}! Here is your estimate for ${job.title}: $${job.price}. Date: ${selectedDateStr}. Let me know if you have any questions! - Alexandr Ivanov`);
+                smsBtn.onclick = () => { window.location.href = `sms:${job.phone}?body=${text}`; };
+            } else {
+                smsBtn.onclick = () => { alert('У данного заказа не указан номер телефона клиента'); };
+            }
+
+            document.getElementById('estimate-modal').style.display = 'flex';
         }
 
         function toggleStatus(id, newStatus, currentPrice) {
