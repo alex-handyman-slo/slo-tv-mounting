@@ -6,11 +6,11 @@
     <title>Aleksandr Ivanov Schedule</title>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
-    <!-- Google Places API for Address Auto-Complete -->
     <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places"></script>
     <style>
         :root {
-            --primary: #008b99;
+            --primary: #0f2c59;
+            --secondary: #008b99;
             --bg-gray: #f7f9fa;
             --text-dark: #1c1c1c;
             --border-color: #e5e9eb;
@@ -19,319 +19,102 @@
         }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
         body { background-color: var(--bg-gray); color: var(--text-dark); padding-bottom: 40px; }
-        header {
-            background-color: var(--primary);
-            color: white;
-            padding: 16px;
-            text-align: center;
-            font-size: 18px;
-            font-weight: 600;
-        }
-        .calendar-nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: white;
-            padding: 12px 16px;
-            font-weight: 700;
-            font-size: 16px;
-            border-bottom: 1px solid var(--border-color);
-        }
-        .nav-btn {
-            background: none;
-            border: none;
-            font-size: 18px;
-            cursor: pointer;
-            color: var(--primary);
-            padding: 4px 12px;
-            font-weight: bold;
-        }
+        header { background-color: var(--primary); color: white; padding: 16px; text-align: center; font-size: 18px; font-weight: 600; }
+        .calendar-nav { display: flex; justify-content: space-between; align-items: center; background: white; padding: 12px 16px; font-weight: 700; font-size: 16px; border-bottom: 1px solid var(--border-color); }
+        .nav-btn { background: none; border: none; font-size: 18px; cursor: pointer; color: var(--primary); padding: 4px 12px; font-weight: bold; }
         .calendar-container { background: white; border-bottom: 1px solid var(--border-color); padding: 5px 10px 15px 10px; }
         .weekdays { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; font-size: 13px; color: #666; font-weight: 600; margin-bottom: 8px; }
         .days-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
-        
-        .day-cell {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 48px;
-            cursor: pointer;
-            position: relative;
-            border-radius: 8px;
-            background: #fafafa;
-            border: 1px solid #f0f0f0;
-        }
-        
+        .day-cell { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 48px; cursor: pointer; position: relative; border-radius: 8px; background: #fafafa; border: 1px solid #f0f0f0; }
         .day-number { font-weight: 600; font-size: 15px; color: var(--text-dark); }
-        .day-cell.selected { border-color: var(--primary); background: #eef8f9; }
+        .day-cell.selected { border-color: var(--primary); background: #eef4fb; }
         .day-cell.selected .day-number { color: var(--primary); }
         .dots-container { display: flex; gap: 2px; margin-top: 2px; height: 5px; }
         .dot { width: 5px; height: 5px; background-color: var(--primary); border-radius: 50%; }
         .dot.completed { background-color: var(--success); }
         .dot.pending { background-color: var(--pending); }
         
-        .revenue-card {
-            background: white;
-            margin: 15px;
-            padding: 15px;
-            border-radius: 10px;
-            border: 1px solid var(--border-color);
-            display: flex;
-            justify-content: space-around;
-            text-align: center;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-        }
+        .revenue-card { background: white; margin: 15px; padding: 15px; border-radius: 10px; border: 1px solid var(--border-color); display: flex; justify-content: space-around; text-align: center; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
         .revenue-item { flex: 1; }
-        .revenue-title { font-size: 12px; color: #666; font-weight: 600; margin-bottom: 4px; text-transform: uppercase; }
-        .revenue-value { font-size: 18px; font-weight: 700; }
+        .revenue-title { font-size: 11px; color: #666; font-weight: 600; margin-bottom: 4px; text-transform: uppercase; }
+        .revenue-value { font-size: 17px; font-weight: 700; }
         .revenue-value.earned { color: var(--success); }
         .revenue-value.pending { color: var(--pending); }
         .jobs-section { padding: 0 15px 15px 15px; }
         .date-header { font-size: 16px; font-weight: 700; margin-bottom: 12px; }
         
-        .job-card {
-            background: white;
-            border-radius: 8px;
-            padding: 15px;
-            margin-bottom: 12px;
-            border: 1px solid var(--border-color);
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-            cursor: pointer;
-            border-left: 4px solid var(--primary);
-        }
+        .job-card { background: white; border-radius: 8px; padding: 15px; margin-bottom: 12px; border: 1px solid var(--border-color); box-shadow: 0 1px 3px rgba(0,0,0,0.05); cursor: pointer; border-left: 4px solid var(--primary); }
         .job-card.is-completed { border-left-color: var(--success); opacity: 0.85; }
         .job-card-header { display: flex; justify-content: space-between; font-weight: 700; font-size: 16px; margin-bottom: 6px; }
         .job-time { font-size: 13px; color: #666; margin-bottom: 4px; }
         .job-address { font-size: 13px; color: #444; margin-bottom: 10px; }
         
-        .status-badge {
-            display: inline-block;
-            font-size: 11px;
-            padding: 2px 8px;
-            border-radius: 4px;
-            font-weight: 600;
-            margin-bottom: 6px;
-        }
+        .status-badge { display: inline-block; font-size: 11px; padding: 2px 8px; border-radius: 4px; font-weight: 600; margin-bottom: 6px; }
         .status-badge.completed { background: #e8f5e9; color: var(--success); }
         .status-badge.pending { background: #fff3e0; color: var(--pending); }
-        .btn-action {
-            display: inline-block;
-            width: 100%;
-            padding: 10px;
-            border: 1px solid var(--primary);
-            color: var(--primary);
-            background: white;
-            border-radius: 6px;
-            text-align: center;
-            font-weight: 600;
-            text-decoration: none;
-            font-size: 14px;
-            margin-top: 6px;
-            cursor: pointer;
-        }
-        .btn-add {
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 14px;
-            border-radius: 8px;
-            width: 100%;
-            font-size: 16px;
-            font-weight: 600;
-            margin-top: 10px;
-            cursor: pointer;
-        }
-        .btn-clients {
-            background: white;
-            color: var(--primary);
-            border: 2px solid var(--primary);
-            padding: 12px;
-            border-radius: 8px;
-            width: 100%;
-            font-size: 16px;
-            font-weight: 600;
-            margin-top: 8px;
-            cursor: pointer;
-        }
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.5);
-            justify-content: center;
-            align-items: flex-end;
-            z-index: 1000;
-        }
-        .modal-content {
-            background: white;
-            width: 100%;
-            max-height: 90vh;
-            border-top-left-radius: 16px;
-            border-top-right-radius: 16px;
-            padding: 20px;
-            overflow-y: auto;
-        }
+        .btn-action { display: inline-block; width: 100%; padding: 10px; border: 1px solid var(--primary); color: var(--primary); background: white; border-radius: 6px; text-align: center; font-weight: 600; text-decoration: none; font-size: 14px; margin-top: 6px; cursor: pointer; }
+        .btn-add { background: var(--primary); color: white; border: none; padding: 14px; border-radius: 8px; width: 100%; font-size: 16px; font-weight: 600; margin-top: 10px; cursor: pointer; }
+        .btn-clients { background: white; color: var(--primary); border: 2px solid var(--primary); padding: 12px; border-radius: 8px; width: 100%; font-size: 16px; font-weight: 600; margin-top: 8px; cursor: pointer; }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); justify-content: center; align-items: flex-end; z-index: 1000; }
+        .modal-content { background: white; width: 100%; max-height: 92vh; border-top-left-radius: 16px; border-top-right-radius: 16px; padding: 20px; overflow-y: auto; }
         .modal-header { font-size: 18px; font-weight: 700; margin-bottom: 15px; display: flex; justify-content: space-between; }
         .close-btn { cursor: pointer; font-size: 22px; color: #888; }
         
         .form-group { margin-bottom: 15px; }
-        .form-group label { display: block; font-size: 13px; color: #666; margin-bottom: 6px; font-weight: 600; }
-        .form-group input, .form-group select, .form-group textarea {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            font-size: 15px;
-            background: #fff;
-        }
-        .time-picker-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 6px;
-            max-height: 120px;
-            overflow-y: auto;
-            border: 1px solid var(--border-color);
-            padding: 8px;
-            border-radius: 8px;
-        }
+        .form-group label { display: block; font-size: 13px; color: #444; margin-bottom: 6px; font-weight: 600; }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 15px; background: #fff; }
         
-        .chip {
-            padding: 8px 4px;
-            font-size: 12px;
-            text-align: center;
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            background: #f9f9f9;
-            cursor: pointer;
-            font-weight: 600;
-        }
+        .option-box { background: #f8fafc; border: 1px dashed #cbd5e1; border-radius: 8px; padding: 12px; margin-bottom: 12px; }
+        .option-header { display: flex; justify-content: space-between; align-items: center; font-weight: 700; font-size: 13px; color: var(--primary); margin-bottom: 8px; }
+
+        .time-picker-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; max-height: 120px; overflow-y: auto; border: 1px solid var(--border-color); padding: 8px; border-radius: 8px; }
+        .chip { padding: 8px 4px; font-size: 12px; text-align: center; border: 1px solid var(--border-color); border-radius: 6px; background: #f9f9f9; cursor: pointer; font-weight: 600; }
         .chip.selected { background: var(--primary); color: white; border-color: var(--primary); }
+        
         .dates-picker-container { border: 1px solid var(--border-color); border-radius: 8px; padding: 8px; background: #fff; }
         .dates-picker-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
-        .date-chip {
-            height: 36px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 6px;
-            border: 1px solid #eee;
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-            background: #fafafa;
-        }
+        .date-chip { height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 6px; border: 1px solid #eee; font-size: 13px; font-weight: 600; cursor: pointer; background: #fafafa; }
         .date-chip.selected { background: var(--primary); color: white; border-color: var(--primary); }
         .detail-row { margin-bottom: 15px; }
         .detail-label { font-size: 12px; color: #777; text-transform: uppercase; margin-bottom: 2px; }
         .detail-value { font-size: 15px; font-weight: 500; }
         .clickable-link { color: var(--primary); text-decoration: none; font-weight: 600; }
-        
         .btn-grid-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 15px; }
         .photos-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 8px; }
         .photo-thumb { width: 100%; height: 90px; object-fit: cover; border-radius: 8px; border: 1px solid var(--border-color); cursor: pointer; }
 
-        .client-card {
-            background: #fff;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 12px;
-            margin-bottom: 10px;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+        .client-card { background: #fff; border: 1px solid var(--border-color); border-radius: 8px; padding: 12px; margin-bottom: 10px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
         .client-card:hover { border-color: var(--primary); }
         .client-info-name { font-weight: 700; font-size: 16px; margin-bottom: 2px; color: var(--text-dark); }
         .client-info-sub { font-size: 13px; color: #666; }
         .search-box { width: 100%; padding: 10px 12px; margin-bottom: 15px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 14px; }
 
-        /* ESTIMATE FORM & PRINTING */
-        .estimate-paper {
-            background: #fff;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: 25px 30px;
-            color: #222;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-            width: 100%;
-            box-sizing: border-box;
-        }
-        .estimate-top-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            border-bottom: 2px solid #008b99;
-            padding-bottom: 12px;
-            margin-bottom: 15px;
-        }
-        .company-header-box {
-            display: flex;
-            align-items: flex-start;
-            gap: 12px;
-        }
-        .logo-box {
-            width: 55px;
-            height: 55px;
-            flex-shrink: 0;
-        }
-        .company-title {
-            font-size: 18px;
-            font-weight: 800;
-            color: #111;
-            line-height: 1.1;
-        }
-        .company-subtitle {
-            font-size: 11px;
-            color: #555;
-            font-weight: 600;
-        }
-        .contractor-details {
-            font-size: 12px;
-            color: #444;
-            line-height: 1.35;
-            margin-top: 6px;
-        }
-        .estimate-right-title {
-            text-align: right;
-        }
-        .estimate-doc-title {
-            font-size: 24px;
-            font-weight: 900;
-            color: #008b99;
-            letter-spacing: 0.5px;
-        }
-        .estimate-meta-info {
-            font-size: 12px;
-            color: #444;
-            line-height: 1.4;
-            margin-top: 6px;
-            white-space: nowrap;
-        }
-        .estimate-section-title { font-size: 10px; text-transform: uppercase; color: #777; font-weight: 700; margin-bottom: 4px; letter-spacing: 0.5px; }
-        .estimate-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 15px;
-            margin-bottom: 15px;
-        }
-        .estimate-table th { background: #f4f7f8; text-align: left; padding: 8px 10px; font-size: 11px; font-weight: 700; border-bottom: 2px solid #ddd; color: #444; }
-        .estimate-table td { padding: 10px; border-bottom: 1px solid #eee; font-size: 12px; vertical-align: top; }
-        .estimate-total { text-align: right; font-size: 18px; font-weight: 800; color: #008b99; margin-top: 10px; border-top: 2px solid #eee; padding-top: 8px; }
+        /* ESTIMATE LAYOUT */
+        .estimate-paper { background: #fff; border: 1px solid #ccc; border-radius: 8px; padding: 25px 30px; color: #111; box-shadow: 0 4px 12px rgba(0,0,0,0.08); width: 100%; box-sizing: border-box; }
+        .estimate-header-wrapper { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 2px solid #0f2c59; padding-bottom: 15px; margin-bottom: 15px; }
+        .logo-and-brand { display: flex; align-items: center; gap: 12px; }
+        .brand-text-title { font-size: 22px; font-weight: 900; color: #0f2c59; line-height: 1; letter-spacing: -0.5px; }
+        .brand-text-sub { font-size: 12px; font-weight: 700; color: #0f2c59; margin-top: 2px; }
+        .brand-text-tag { font-size: 10px; color: #64748b; font-weight: 500; }
         
-        /* 4x Larger Image for Clear Visibility */
-        .work-thumb-large {
-            width: 160px;
-            height: 160px;
-            border-radius: 6px;
-            object-fit: cover;
-            border: 1px solid #ccc;
-            margin-right: 15px;
-            float: left;
-        }
+        .contractor-meta { font-size: 11px; color: #475569; line-height: 1.35; margin-top: 8px; }
+        .estimate-doc-title { font-size: 26px; font-weight: 900; color: #0f2c59; text-align: right; }
+        .estimate-meta-right { font-size: 12px; color: #475569; text-align: right; line-height: 1.4; margin-top: 4px; }
 
-        /* PRINT STYLING FOR PERFECT PDF & PRINT */
+        /* 3-COLUMN OPTION COMPARISON */
+        .options-grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 15px 0; }
+        .option-card-doc { border: 1px solid #cbd5e1; border-radius: 8px; padding: 12px; position: relative; background: #fff; display: flex; flex-direction: column; justify-content: space-between; }
+        .option-card-doc.recommended { border: 2px solid #0f2c59; background: #f8fafc; }
+        .recommend-badge { position: absolute; top: -10px; right: 10px; background: #0f2c59; color: white; font-size: 9px; font-weight: 800; padding: 2px 8px; border-radius: 10px; text-transform: uppercase; }
+        .option-doc-title { font-size: 13px; font-weight: 800; color: #0f2c59; margin-bottom: 4px; }
+        .option-doc-price { font-size: 18px; font-weight: 900; color: #008b99; margin-bottom: 8px; }
+        .option-doc-desc { font-size: 11px; color: #475569; line-height: 1.35; white-space: pre-wrap; }
+
+        .estimate-table { width: 100%; border-collapse: collapse; margin-top: 15px; margin-bottom: 15px; }
+        .estimate-table th { background: #f1f5f9; text-align: left; padding: 8px 10px; font-size: 11px; font-weight: 700; border-bottom: 2px solid #cbd5e1; color: #334155; }
+        .estimate-table td { padding: 10px; border-bottom: 1px solid #e2e8f0; font-size: 12px; vertical-align: top; }
+        .work-thumb-large { width: 140px; height: 140px; border-radius: 6px; object-fit: cover; border: 1px solid #ccc; margin-right: 12px; float: left; }
+
         @media print {
             @page { size: A4 portrait; margin: 8mm; }
             body, html { background: #fff !important; padding: 0 !important; margin: 0 !important; }
@@ -360,10 +143,14 @@
     
     <div class="revenue-card">
         <div class="revenue-item">
-            <div class="revenue-title">Заработано</div>
+            <div class="revenue-title">Чистый доход</div>
             <div class="revenue-value earned" id="month-earned">$0</div>
         </div>
-        <div class="revenue-item" style="border-left: 1px solid var(--border-color);">
+        <div class="revenue-item" style="border-left: 1px solid var(--border-color); border-right: 1px solid var(--border-color);">
+            <div class="revenue-title">Материалы</div>
+            <div class="revenue-value" style="color:#d32f2f;" id="month-materials">$0</div>
+        </div>
+        <div class="revenue-item">
             <div class="revenue-title">В ожидании</div>
             <div class="revenue-value pending" id="month-pending">$0</div>
         </div>
@@ -423,14 +210,61 @@
                         <div class="dates-picker-grid" id="form-dates-grid"></div>
                     </div>
                 </div>
+
                 <div class="form-group">
                     <label>Название услуги / Вид работы</label>
                     <input type="text" id="title" required placeholder="Например: Fascia Repair, Painting...">
                 </div>
-                <div class="form-group">
-                    <label>ОБЩАЯ ЦЕНА заказа ($) — автоделение по дням</label>
-                    <input type="number" id="price" min="0" max="50000" step="5" value="100">
+
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+                    <div class="form-group">
+                        <label>ОБЩАЯ ЦЕНА ($)</label>
+                        <input type="number" id="price" min="0" step="5" value="100">
+                    </div>
+                    <div class="form-group">
+                        <label>МАТЕРИАЛЫ ($)</label>
+                        <input type="number" id="materials" min="0" step="5" value="0" placeholder="0">
+                    </div>
                 </div>
+
+                <!-- 3 ВАРИАНТА ПРЕДЛОЖЕНИЯ (ESTIMATE OPTIONS) -->
+                <div style="margin-bottom:15px; border-top:1px solid #ddd; padding-top:10px;">
+                    <label style="font-size:14px; font-weight:700; color:var(--primary); margin-bottom:8px; display:block;">Варианты предложения для Estimate (до 3 вариантов)</label>
+                    
+                    <div class="option-box">
+                        <div class="option-header">
+                            <span>Вариант 1 (Основной)</span>
+                            <label><input type="radio" name="recommended_opt" value="1" checked> Recommended</label>
+                        </div>
+                        <input type="text" id="opt1_title" placeholder="Название (напр. Repair existing)" style="margin-bottom:6px; padding:8px;">
+                        <textarea id="opt1_desc" rows="2" placeholder="Описание работы..." style="padding:8px; font-size:13px;"></textarea>
+                    </div>
+
+                    <div class="option-box">
+                        <div class="option-header">
+                            <span>Вариант 2 (Опционально)</span>
+                            <label><input type="radio" name="recommended_opt" value="2"> Recommended</label>
+                        </div>
+                        <div style="display:grid; grid-template-columns: 2fr 1fr; gap:6px; margin-bottom:6px;">
+                            <input type="text" id="opt2_title" placeholder="Название (напр. Full Replace)" style="padding:8px;">
+                            <input type="number" id="opt2_price" placeholder="Цена $" style="padding:8px;">
+                        </div>
+                        <textarea id="opt2_desc" rows="2" placeholder="Описание работы..." style="padding:8px; font-size:13px;"></textarea>
+                    </div>
+
+                    <div class="option-box">
+                        <div class="option-header">
+                            <span>Вариант 3 (Опционально / Премиум)</span>
+                            <label><input type="radio" name="recommended_opt" value="3"> Recommended</label>
+                        </div>
+                        <div style="display:grid; grid-template-columns: 2fr 1fr; gap:6px; margin-bottom:6px;">
+                            <input type="text" id="opt3_title" placeholder="Название (напр. Premium Materials)" style="padding:8px;">
+                            <input type="number" id="opt3_price" placeholder="Цена $" style="padding:8px;">
+                        </div>
+                        <textarea id="opt3_desc" rows="2" placeholder="Описание..." style="padding:8px; font-size:13px;"></textarea>
+                    </div>
+                </div>
+
                 <div class="form-group">
                     <label>Время начала работы</label>
                     <div class="time-picker-grid" id="start-time-grid"></div>
@@ -451,10 +285,6 @@
                     <label>Прикрепить фото (до 5 шт)</label>
                     <input type="file" id="photo-files" accept="image/*" multiple style="padding: 8px;">
                 </div>
-                <div class="form-group">
-                    <label>Описание / Заметки (можно писать по-русски)</label>
-                    <textarea id="desc" rows="4" placeholder="Опишите детали ремонта..."></textarea>
-                </div>
                 <button type="submit" class="btn-add" id="save-btn">Сохранить заказ</button>
             </form>
         </div>
@@ -473,28 +303,25 @@
 
     <!-- Модальное окно генерации Estimate -->
     <div class="modal" id="estimate-modal">
-        <div class="modal-content" style="max-width: 800px; margin: 0 auto; background: #f0f2f5;">
+        <div class="modal-content" style="max-width: 850px; margin: 0 auto; background: #f0f2f5;">
             <div class="modal-header no-print">
                 <span>Estimate Document</span>
                 <span class="close-btn" onclick="closeModal('estimate-modal')">&times;</span>
             </div>
             <div id="estimate-paper-body"></div>
-            <!-- 3 КНОПКИ: Translate, Print/PDF, Send SMS -->
             <div class="no-print" style="margin-top: 15px; display: flex; gap: 8px; flex-wrap: wrap;">
                 <button class="btn-add" id="translate-estimate-btn" style="background:#0288d1; flex: 1;" onclick="translateEstimateDetails()">🌐 Translate Everything</button>
-                <button class="btn-add" style="background:#008b99; flex: 1;" onclick="window.print()">🖨 Print / Save PDF</button>
+                <button class="btn-add" style="background:#0f2c59; flex: 1;" onclick="window.print()">🖨 Print / Save PDF</button>
                 <button class="btn-add" id="send-sms-btn" style="background:#2e7d32; flex: 1;" onclick="sendEstimateSMS()">💬 Send SMS</button>
             </div>
         </div>
     </div>
 
     <script>
-        const firebaseConfig = {
-            databaseURL: "https://alex-calendar-b4f04-default-rtdb.firebaseio.com"
-        };
-        
+        const firebaseConfig = { databaseURL: "https://alex-calendar-b4f04-default-rtdb.firebaseio.com" };
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
+        
         let viewDate = new Date();
         let formViewDate = new Date();
         let selectedDateStr = new Date().toISOString().split('T')[0];
@@ -507,23 +334,12 @@
         let currentEstimateJob = null;
         let currentTranslatedClient = null;
 
-        const timeSlots = [
-            "7:00 am", "7:30 am", "8:00 am", "8:30 am", 
-            "9:00 am", "9:30 am", "10:00 am", "10:30 am",
-            "11:00 am", "11:30 am", "12:00 pm", "12:30 pm",
-            "1:00 pm", "1:30 pm", "2:00 pm", "2:30 pm",
-            "3:00 pm", "3:30 pm", "4:00 pm", "4:30 pm",
-            "5:00 pm", "5:30 pm", "6:00 pm", "6:30 pm"
-        ];
+        const timeSlots = ["7:00 am", "7:30 am", "8:00 am", "8:30 am", "9:00 am", "9:30 am", "10:00 am", "10:30 am", "11:00 am", "11:30 am", "12:00 pm", "12:30 pm", "1:00 pm", "1:30 pm", "2:00 pm", "2:30 pm", "3:00 pm", "3:30 pm", "4:00 pm", "4:30 pm", "5:00 pm", "5:30 pm", "6:00 pm", "6:30 pm"];
 
-        // Init Google Autocomplete for Address Field
         window.addEventListener('load', () => {
             const addressInput = document.getElementById('address');
             if (window.google && window.google.maps && window.google.maps.places) {
-                const autocomplete = new google.maps.places.Autocomplete(addressInput, {
-                    types: ['address'],
-                    componentRestrictions: { country: 'us' }
-                });
+                new google.maps.places.Autocomplete(addressInput, { types: ['address'], componentRestrictions: { country: 'us' } });
             }
         });
 
@@ -534,10 +350,7 @@
                 const sChip = document.createElement('div');
                 sChip.className = 'chip' + (slot === selectedStartTime ? ' selected' : '');
                 sChip.innerText = slot;
-                sChip.onclick = () => {
-                    selectedStartTime = slot;
-                    initTimePicker();
-                };
+                sChip.onclick = () => { selectedStartTime = slot; initTimePicker(); };
                 startGrid.appendChild(sChip);
             });
         }
@@ -559,9 +372,7 @@
             let firstDayIndex = new Date(year, month, 1).getDay() - 1;
             if (firstDayIndex === -1) firstDayIndex = 6;
             const totalDays = new Date(year, month + 1, 0).getDate();
-            for(let i = 0; i < firstDayIndex; i++) {
-                grid.appendChild(document.createElement('div'));
-            }
+            for(let i = 0; i < firstDayIndex; i++) grid.appendChild(document.createElement('div'));
             for(let d = 1; d <= totalDays; d++) {
                 const monthStr = String(month + 1).padStart(2, '0');
                 const dayStrFormatted = String(d).padStart(2, '0');
@@ -598,22 +409,27 @@
         }
 
         function calculateRevenue() {
-            let earned = 0;
+            let earnedNet = 0;
+            let materialsTotal = 0;
             let pending = 0;
             const currentYearMonth = `${viewDate.getFullYear()}-${String(viewDate.getMonth() + 1).padStart(2, '0')}`;
+            
             Object.keys(jobsData).forEach(dStr => {
                 if(dStr.startsWith(currentYearMonth)) {
                     Object.values(jobsData[dStr]).forEach(j => {
                         const priceNum = parseFloat(j.finalPrice || j.dailyPrice || j.price || 0);
+                        const matNum = parseFloat(j.dailyMaterials || 0);
                         if(j.completed) {
-                            earned += priceNum;
+                            earnedNet += (priceNum - matNum);
+                            materialsTotal += matNum;
                         } else {
                             pending += priceNum;
                         }
                     });
                 }
             });
-            document.getElementById('month-earned').innerText = `$${earned.toFixed(0)}`;
+            document.getElementById('month-earned').innerText = `$${earnedNet.toFixed(0)}`;
+            document.getElementById('month-materials').innerText = `$${materialsTotal.toFixed(0)}`;
             document.getElementById('month-pending').innerText = `$${pending.toFixed(0)}`;
         }
 
@@ -624,20 +440,18 @@
             
             const year = viewDate.getFullYear();
             const month = viewDate.getMonth();
-            
             const monthNames = ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"];
             monthTitle.innerText = `${monthNames[month]} ${year}`;
+            
             let firstDayIndex = new Date(year, month, 1).getDay() - 1;
             if (firstDayIndex === -1) firstDayIndex = 6;
             const totalDays = new Date(year, month + 1, 0).getDate();
-            for(let i = 0; i < firstDayIndex; i++) {
-                grid.appendChild(document.createElement('div'));
-            }
+            for(let i = 0; i < firstDayIndex; i++) grid.appendChild(document.createElement('div'));
+            
             for(let d = 1; d <= totalDays; d++) {
                 const monthStr = String(month + 1).padStart(2, '0');
                 const dayStrFormatted = String(d).padStart(2, '0');
                 const dayStr = `${year}-${monthStr}-${dayStrFormatted}`;
-                
                 const cell = document.createElement('div');
                 cell.className = 'day-cell' + (dayStr === selectedDateStr ? ' selected' : '');
                 
@@ -668,11 +482,10 @@
         function renderJobs() {
             const list = document.getElementById('jobs-list');
             const title = document.getElementById('selected-date-title');
-            
             const [y, m, d] = selectedDateStr.split('-').map(Number);
-            const dateObj = new Date(y, m - 1, d);
-            title.innerText = dateObj.toLocaleDateString('ru-RU', { month: 'long', day: 'numeric', weekday: 'short' });
+            title.innerText = new Date(y, m - 1, d).toLocaleDateString('ru-RU', { month: 'long', day: 'numeric', weekday: 'short' });
             list.innerHTML = '';
+            
             const dayJobs = jobsData[selectedDateStr];
             if(!dayJobs || Object.keys(dayJobs).length === 0) {
                 list.innerHTML = '<p style="text-align:center; color:#888; padding:15px;">На этот день заказов нет</p>';
@@ -683,29 +496,30 @@
                 const timeB = timeSlots.indexOf(dayJobs[b].time);
                 return (timeA === -1 ? 99 : timeA) - (timeB === -1 ? 99 : timeB);
             });
+            
             sortedKeys.forEach(id => {
                 const job = dayJobs[id];
                 const card = document.createElement('div');
                 card.className = 'job-card' + (job.completed ? ' is-completed' : '');
                 card.onclick = () => openDetailsModal(id, job);
                 
-                // BACKWARD COMPATIBILITY FOR OLD PRICES
-                const dayPrice = job.dailyPrice || job.price;
-                const displayPrice = job.finalPrice ? `$${job.finalPrice}` : `$${dayPrice}`;
+                const dayPrice = parseFloat(job.dailyPrice || job.price || 0);
+                const dayMat = parseFloat(job.dailyMaterials || 0);
+                const netEarned = dayPrice - dayMat;
+
                 const statusHtml = job.completed 
-                    ? `<span class="status-badge completed">✓ Выполнено (${displayPrice})</span>` 
-                    : `<span class="status-badge pending">⏳ В работе (${displayPrice})</span>`;
+                    ? `<span class="status-badge completed">✓ Выполнено (Заработок: $${netEarned.toFixed(0)})</span>` 
+                    : `<span class="status-badge pending">⏳ В работе (Общая сумма: $${dayPrice})</span>`;
+                
                 const phoneBtn = job.phone ? `<button class="btn-action" onclick="event.stopPropagation(); window.location.href='sms:${job.phone}'">Написать SMS</button>` : '';
-                let photosHtml = '';
-                if(job.photos && job.photos.length > 0) {
-                    photosHtml = `<div class="photos-grid">` + job.photos.map(p => `<img src="${p}" class="photo-thumb">`).join('') + `</div>`;
-                }
-                const isMultiDay = job.dates && job.dates.length > 1 ? ` <span style="font-size:11px; background:#008b99; color:white; padding:1px 5px; border-radius:3px;">${job.dates.length} дн.</span>` : '';
+                let photosHtml = job.photos && job.photos.length > 0 ? `<div class="photos-grid">` + job.photos.map(p => `<img src="${p}" class="photo-thumb">`).join('') + `</div>` : '';
+                const isMultiDay = job.dates && job.dates.length > 1 ? ` <span style="font-size:11px; background:#0f2c59; color:white; padding:1px 5px; border-radius:3px;">${job.dates.length} дн.</span>` : '';
+                
                 card.innerHTML = `
                     ${statusHtml}
                     <div class="job-card-header">
                         <span>${job.title} ${isMultiDay}</span>
-                        <span>$${dayPrice}</span>
+                        <span>$${dayPrice} ${dayMat > 0 ? `<small style="font-size:10px; color:#d32f2f;">(-$${dayMat} мат.)</small>` : ''}</span>
                     </div>
                     <div class="job-time">Время: ${job.time} | Клиент: ${job.client || 'Не указан'}</div>
                     <div class="job-address">${job.address || 'Адрес не указан'}</div>
@@ -716,7 +530,7 @@
             });
         }
 
-        /* CLIENTS LIST */
+        /* CLIENTS LIST MODAL */
         function getAllClients() {
             const clients = {};
             Object.keys(jobsData).forEach(dateStr => {
@@ -724,12 +538,7 @@
                     if (job.client && job.client.trim() !== '') {
                         const nameKey = job.client.trim();
                         if (!clients[nameKey]) {
-                            clients[nameKey] = {
-                                name: nameKey,
-                                phone: job.phone || '',
-                                address: job.address || '',
-                                jobsCount: 0
-                            };
+                            clients[nameKey] = { name: nameKey, phone: job.phone || '', address: job.address || '', jobsCount: 0 };
                         }
                         if (job.phone) clients[nameKey].phone = job.phone;
                         if (job.address) clients[nameKey].address = job.address;
@@ -751,13 +560,7 @@
             const searchQuery = document.getElementById('client-search-input').value.toLowerCase().trim();
             const clients = getAllClients();
             container.innerHTML = '';
-
-            const clientNames = Object.keys(clients).sort();
-
-            const filteredNames = clientNames.filter(name => {
-                const c = clients[name];
-                return name.toLowerCase().includes(searchQuery) || c.phone.toLowerCase().includes(searchQuery);
-            });
+            const filteredNames = Object.keys(clients).sort().filter(name => name.toLowerCase().includes(searchQuery) || clients[name].phone.toLowerCase().includes(searchQuery));
 
             if (filteredNames.length === 0) {
                 container.innerHTML = '<p style="text-align:center; color:#888; padding:20px;">Клиенты не найдены</p>';
@@ -775,9 +578,7 @@
                         <div class="client-info-sub">${c.phone ? '📞 ' + c.phone : 'Телефон не указан'}</div>
                         <div class="client-info-sub">${c.address ? '📍 ' + c.address : 'Адрес не указан'}</div>
                     </div>
-                    <div style="font-size: 13px; font-weight: bold; color: var(--primary);">
-                        Заказов: ${c.jobsCount} ❯
-                    </div>
+                    <div style="font-size: 13px; font-weight: bold; color: var(--primary);">Заказов: ${c.jobsCount} ❯</div>
                 `;
                 container.appendChild(card);
             });
@@ -786,18 +587,14 @@
         function openClientHistoryModal(clientName) {
             const clients = getAllClients();
             const clientInfo = clients[clientName] || { name: clientName, phone: '', address: '' };
-            
             document.getElementById('client-history-title').innerText = clientName;
-            
-            const summaryBox = document.getElementById('client-details-summary');
-            summaryBox.innerHTML = `
+            document.getElementById('client-details-summary').innerHTML = `
                 <div><strong>Телефон:</strong> ${clientInfo.phone ? `<a href="tel:${clientInfo.phone}">${clientInfo.phone}</a>` : '—'}</div>
                 <div><strong>Адрес:</strong> ${clientInfo.address ? clientInfo.address : '—'}</div>
             `;
 
             const jobsListContainer = document.getElementById('client-jobs-list');
             jobsListContainer.innerHTML = '';
-
             const clientJobs = [];
             Object.keys(jobsData).forEach(dStr => {
                 Object.keys(jobsData[dStr]).forEach(id => {
@@ -809,7 +606,6 @@
             });
 
             clientJobs.sort((a, b) => b.date.localeCompare(a.date));
-
             if (clientJobs.length === 0) {
                 jobsListContainer.innerHTML = '<p style="color:#888; text-align:center;">История заказов пуста</p>';
             } else {
@@ -822,39 +618,24 @@
                         closeModal('clients-modal');
                         openDetailsModal(job.id, job);
                     };
-
                     const dayPrice = job.dailyPrice || job.price;
-                    const displayPrice = job.finalPrice ? `$${job.finalPrice}` : `$${dayPrice}`;
-                    const statusHtml = job.completed 
-                        ? `<span class="status-badge completed">✓ Выполнено (${displayPrice})</span>` 
-                        : `<span class="status-badge pending">⏳ В работе (${displayPrice})</span>`;
-                    
-                    let photosHtml = '';
-                    if(job.photos && job.photos.length > 0) {
-                        photosHtml = `<div class="photos-grid">` + job.photos.map(p => `<img src="${p}" class="photo-thumb">`).join('') + `</div>`;
-                    }
-
                     card.innerHTML = `
-                        ${statusHtml}
                         <div class="job-card-header">
                             <span>${job.title}</span>
-                            <span>${displayPrice}</span>
+                            <span>$${dayPrice}</span>
                         </div>
                         <div class="job-time">Дата: <strong>${job.date}</strong> | Время: ${job.time}</div>
                         <div class="job-address">${job.address || 'Адрес не указан'}</div>
-                        ${photosHtml}
                     `;
                     jobsListContainer.appendChild(card);
                 });
             }
 
-            const addBtn = document.getElementById('add-job-for-client-btn');
-            addBtn.onclick = () => {
+            document.getElementById('add-job-for-client-btn').onclick = () => {
                 closeModal('client-history-modal');
                 closeModal('clients-modal');
                 openAddModalWithClient(clientInfo);
             };
-
             document.getElementById('client-history-modal').style.display = 'flex';
         }
 
@@ -870,30 +651,45 @@
             existingPhotos = [];
             if(editingJobData) {
                 if(isDuplicate) {
-                    editingJobId = null;
-                    editingJobGroupId = null;
+                    editingJobId = null; editingJobGroupId = null;
                     document.getElementById('add-modal-title').innerText = 'Новый заказ (для клиента)';
                 } else {
-                    editingJobId = rawId;
-                    editingJobGroupId = editingJobData.groupId || rawId;
+                    editingJobId = rawId; editingJobGroupId = editingJobData.groupId || rawId;
                     document.getElementById('add-modal-title').innerText = 'Редактирование заказа';
                 }
                 selectedJobDates = editingJobData.dates || [selectedDateStr];
                 document.getElementById('title').value = editingJobData.title || '';
                 document.getElementById('price').value = editingJobData.totalPrice || editingJobData.price || 100;
+                document.getElementById('materials').value = editingJobData.materials || 0;
                 document.getElementById('client').value = editingJobData.client || '';
                 document.getElementById('phone').value = editingJobData.phone || '';
                 document.getElementById('address').value = editingJobData.address || '';
-                document.getElementById('desc').value = editingJobData.desc || '';
+                
+                // Options populate
+                if(editingJobData.options) {
+                    document.getElementById('opt1_title').value = editingJobData.options[0]?.title || '';
+                    document.getElementById('opt1_desc').value = editingJobData.options[0]?.desc || '';
+                    document.getElementById('opt2_title').value = editingJobData.options[1]?.title || '';
+                    document.getElementById('opt2_price').value = editingJobData.options[1]?.price || '';
+                    document.getElementById('opt2_desc').value = editingJobData.options[1]?.desc || '';
+                    document.getElementById('opt3_title').value = editingJobData.options[2]?.title || '';
+                    document.getElementById('opt3_price').value = editingJobData.options[2]?.price || '';
+                    document.getElementById('opt3_desc').value = editingJobData.options[2]?.desc || '';
+                    
+                    const recVal = editingJobData.recommendedOpt || 1;
+                    const rInput = document.querySelector(`input[name="recommended_opt"][value="${recVal}"]`);
+                    if(rInput) rInput.checked = true;
+                }
+
                 selectedStartTime = editingJobData.time || "8:00 am";
                 existingPhotos = isDuplicate ? [] : (editingJobData.photos || []);
             } else {
-                editingJobId = null;
-                editingJobGroupId = null;
+                editingJobId = null; editingJobGroupId = null;
                 selectedJobDates = [selectedDateStr];
                 document.getElementById('add-modal-title').innerText = `Новый заказ`;
                 document.getElementById('title').value = 'Repair Services';
             }
+            
             if(selectedJobDates.length > 0) {
                 const [y, m] = selectedJobDates[0].split('-').map(Number);
                 formViewDate = new Date(y, m - 1, 1);
@@ -908,82 +704,54 @@
 
         function openDetailsModal(id, job) {
             const body = document.getElementById('job-details-body');
-            
-            const phoneSection = job.phone ? `
-                <div class="detail-row">
-                    <div class="detail-label">Телефон для связи</div>
-                    <div class="detail-value"><a class="clickable-link" href="tel:${job.phone}">📞 ${job.phone}</a></div>
-                </div>
-                <div class="btn-group">
-                    <a href="sms:${job.phone}" class="btn-action">💬 SMS</a>
-                    <a href="tel:${job.phone}" class="btn-action">📞 Звонок</a>
-                </div>` : '';
-            const addressSection = job.address ? `
-                <div class="detail-row">
-                    <div class="detail-label">Локация (Google Maps)</div>
-                    <div class="detail-value">
-                        <a class="clickable-link" href="https://maps.google.com/?q=${encodeURIComponent(job.address)}" target="_blank">📍 ${job.address}</a>
-                    </div>
-                </div>` : '';
-            let photoSection = '';
-            if(job.photos && job.photos.length > 0) {
-                photoSection = `<div class="detail-row"><div class="detail-label">Фотографии заказа (${job.photos.length})</div><div class="photos-grid">` + 
-                    job.photos.map(p => `<a href="${p}" target="_blank"><img src="${p}" class="photo-thumb"></a>`).join('') + 
-                    `</div></div>`;
-            }
-            const targetGroupId = job.groupId || id;
-            const dayPrice = job.dailyPrice || job.price;
-            const currentPrice = job.finalPrice || dayPrice;
-            const datesListStr = job.dates && job.dates.length > 1 ? `<br><small style="color:#555;">Все дни (${job.dates.length}): ${job.dates.join(', ')}</small>` : '';
+            const dayPrice = parseFloat(job.dailyPrice || job.price || 0);
+            const dayMat = parseFloat(job.dailyMaterials || 0);
+            const netEarned = dayPrice - dayMat;
 
             body.innerHTML = `
                 <div class="detail-row">
                     <div class="detail-label">Статус заказа на день</div>
                     <div class="detail-value">
-                        <button class="btn-action" style="background:${job.completed ? '#2e7d32' : '#ed6c02'}; color:white;" onclick="toggleStatus('${id}', ${!job.completed}, '${currentPrice}')">
-                            ${job.completed ? `✓ Выполнено ($${currentPrice}) — Нажмите, чтобы вернуть` : '⏳ В работе — Отметить выполненным'}
+                        <button class="btn-action" style="background:${job.completed ? '#2e7d32' : '#ed6c02'}; color:white;" onclick="toggleStatus('${id}', ${!job.completed}, '${dayPrice}')">
+                            ${job.completed ? `✓ Выполнено (Заработок: $${netEarned.toFixed(0)}) — Изменить` : '⏳ В работе — Отметить выполненным'}
                         </button>
                     </div>
                 </div>
                 <div class="detail-row">
-                    <div class="detail-label">Услуга и Цена</div>
-                    <div class="detail-value">${job.title} — $${currentPrice}/день (Общая сумма: $${job.totalPrice || job.price})${datesListStr}</div>
-                </div>
-                <div class="detail-row">
-                    <div class="detail-label">Время начала</div>
-                    <div class="detail-value">${job.time}</div>
+                    <div class="detail-label">Услуга и Расчет суммы</div>
+                    <div class="detail-value">
+                        <strong>${job.title}</strong><br>
+                        Общая цена заказа: <strong>$${job.totalPrice || job.price}</strong><br>
+                        Материалы (всего): <strong>$${job.materials || 0}</strong><br>
+                        <span style="color:#008b99; font-size:13px;">В этот день ($${dayPrice.toFixed(0)} цена - $${dayMat.toFixed(0)} мат. = <strong>$${netEarned.toFixed(0)} прибыль</strong>)</span>
+                    </div>
                 </div>
                 <div class="detail-row">
                     <div class="detail-label">Клиент</div>
-                    <div class="detail-value">${job.client || 'Не указан'}</div>
+                    <div class="detail-value">${job.client || 'Не указан'} (${job.phone || 'Нет тел.'})</div>
                 </div>
-                ${addressSection}
-                ${phoneSection}
-                ${photoSection}
-                <div class="detail-row" style="margin-top:10px;">
-                    <div class="detail-label">Описание / Заметки</div>
-                    <div class="detail-value">${job.desc || 'Нет описания'}</div>
+                <div class="detail-row">
+                    <div class="detail-label">Адрес</div>
+                    <div class="detail-value">${job.address || 'Не указан'}</div>
                 </div>
-                <button class="btn-action" style="background:#0288d1; color:white; border:none; margin-top:10px; font-size:15px; font-weight:700;" onclick="generateEstimate(${JSON.stringify(job).replace(/"/g, '&quot;')})">📄 Сделать Estimate</button>
+                <button class="btn-action" style="background:#008b99; color:white; border:none; margin-top:10px; font-size:15px; font-weight:700;" onclick="generateEstimate(${JSON.stringify(job).replace(/"/g, '&quot;')})">📄 Сформировать Estimate</button>
                 <div class="btn-grid-actions">
-                    <button class="btn-action" style="background:#008b99; color:white;" onclick="openAddModal(${JSON.stringify(job).replace(/"/g, '&quot;')}, '${id}', false)">✏️ Редактировать</button>
+                    <button class="btn-action" style="background:#0f2c59; color:white;" onclick="openAddModal(${JSON.stringify(job).replace(/"/g, '&quot;')}, '${id}', false)">✏️ Редактировать</button>
                     <button class="btn-action" style="background:#2e7d32; color:white;" onclick="openAddModal(${JSON.stringify(job).replace(/"/g, '&quot;')}, '${id}', true)">➕ Ещё заказ</button>
                 </div>
-                <button class="btn-action" style="background:#d32f2f; color:white; border-color:#d32f2f; margin-top:8px;" onclick="deleteJobGroup('${targetGroupId}', '${selectedDateStr}', '${id}')">Удалить весь заказ</button>
+                <button class="btn-action" style="background:#d32f2f; color:white; border-color:#d32f2f; margin-top:8px;" onclick="deleteJobGroup('${job.groupId || id}', '${selectedDateStr}', '${id}')">Удалить весь заказ</button>
             `;
             document.getElementById('details-modal').style.display = 'flex';
         }
 
-        /* GENERATE ESTIMATE DOCUMENT WITH REDESIGNED PERFECT VECTOR LOGO & LAYOUT */
-        function generateEstimate(job, customTitle = null, customDesc = null, customClient = null) {
+        /* GENERATE ESTIMATE WITH ORIGINAL SVG LOGO & MULTI-OPTION TIERS */
+        function generateEstimate(job, customData = null) {
             currentEstimateJob = job;
-            currentTranslatedClient = customClient || job.client || 'Customer';
             const paper = document.getElementById('estimate-paper-body');
             const today = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
             
-            const displayTitle = customTitle || job.title || 'General Repairs';
-            const displayDesc = customDesc || job.desc || '';
-            const displayClient = currentTranslatedClient;
+            const clientName = customData?.client || job.client || 'Customer';
+            currentTranslatedClient = clientName;
 
             let serviceDateText = selectedDateStr;
             if (job.dates && job.dates.length > 1) {
@@ -991,54 +759,41 @@
                 serviceDateText = `${sortedDates[0]} — ${sortedDates[sortedDates.length - 1]}`;
             }
 
-            // 4x LARGER THUMBNAIL PHOTO
-            let imageHtml = '';
-            if (job.photos && job.photos.length > 0) {
-                imageHtml = `<img src="${job.photos[0]}" class="work-thumb-large" alt="Work Photo">`;
-            }
+            let imageHtml = job.photos && job.photos.length > 0 ? `<img src="${job.photos[0]}" class="work-thumb-large" alt="Work Photo">` : '';
 
-            const totalPrice = job.totalPrice || job.price || 0;
+            // OPTIONS CHECK
+            const options = customData?.options || job.options || [];
+            const hasMultipleOptions = options.filter(o => o.title && o.title.trim() !== '').length > 1;
 
-            paper.innerHTML = `
-                <div class="estimate-paper" id="pdf-printable-area">
-                    <div class="estimate-top-bar">
-                        <div class="company-header-box">
-                            <div class="logo-box">
-                                <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%; height:100%;">
-                                    <path d="M50 8L10 42V88H90V42L50 8Z" stroke="#111" stroke-width="7" stroke-linejoin="round" fill="none"/>
-                                    <rect x="38" y="20" width="12" height="12" fill="#111"/>
-                                    <path d="M36 68C36 68 43 76 50 76C57 76 64 68 64 68" stroke="#111" stroke-width="5" stroke-linecap="round"/>
-                                    <rect x="34" y="48" width="10" height="10" fill="#111"/>
-                                    <rect x="56" y="48" width="10" height="10" fill="#111"/>
-                                </svg>
-                            </div>
+            let optionsBodyHtml = '';
+
+            if (hasMultipleOptions) {
+                // 3 COLUMN TIERS
+                let cardsHtml = '';
+                options.forEach((opt, idx) => {
+                    if (!opt.title || opt.title.trim() === '') return;
+                    const isRec = (job.recommendedOpt || 1) == (idx + 1);
+                    const priceVal = opt.price ? `$${opt.price}` : `$${job.totalPrice || job.price}`;
+                    cardsHtml += `
+                        <div class="option-card-doc ${isRec ? 'recommended' : ''}">
+                            ${isRec ? '<div class="recommend-badge">RECOMMENDED</div>' : ''}
                             <div>
-                                <div class="company-title">HomeBuddy</div>
-                                <div class="company-subtitle">Handyman<br><span style="font-weight:normal; font-size:10px; color:#777;">Local & Reliable</span></div>
-                                <div class="contractor-details">
-                                    <strong>Aleksandr Ivanov</strong><br>
-                                    484 Stimson Avenue<br>
-                                    Pismo Beach, California, USA<br>
-                                    Phone: 2797582752 | Email: aristorh@gmail.com
-                                </div>
+                                <div class="option-doc-title">${opt.title}</div>
+                                <div class="option-doc-price">${priceVal}</div>
+                                <div class="option-doc-desc">${opt.desc || ''}</div>
                             </div>
                         </div>
-                        <div class="estimate-right-title">
-                            <div class="estimate-doc-title">ESTIMATE</div>
-                            <div class="estimate-meta-info">
-                                <div><strong>Date:</strong> ${today}</div>
-                                <div><strong>Estimated Service Date:</strong> ${serviceDateText}</div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div style="margin-bottom: 15px; font-size: 13px; background:#fafafa; padding:10px 12px; border-radius:6px; border:1px solid #eee;">
-                        <div class="estimate-section-title">BILL TO / CUSTOMER:</div>
-                        <strong style="font-size:15px;">${displayClient}</strong><br>
-                        ${job.phone ? 'Phone: ' + job.phone + '<br>' : ''}
-                        ${job.address ? 'Address: ' + job.address : ''}
-                    </div>
+                    `;
+                });
+                optionsBodyHtml = `<div class="options-grid-3">${cardsHtml}</div>`;
+            } else {
+                // SINGLE ITEM TABLE
+                const mainOpt = options[0] || {};
+                const mainTitle = customData?.title || mainOpt.title || job.title || 'General Repairs';
+                const mainDesc = customData?.desc || mainOpt.desc || '';
+                const totalPrice = job.totalPrice || job.price || 0;
 
+                optionsBodyHtml = `
                     <table class="estimate-table">
                         <thead>
                             <tr>
@@ -1051,24 +806,67 @@
                                 <td>
                                     ${imageHtml}
                                     <div style="overflow:hidden;">
-                                        <strong style="font-size: 15px;">${displayTitle}</strong>
-                                        <div style="font-size: 13px; color: #555; margin-top: 6px; white-space: pre-wrap;">${displayDesc}</div>
+                                        <strong style="font-size: 15px; color:#0f2c59;">${mainTitle}</strong>
+                                        <div style="font-size: 13px; color: #475569; margin-top: 6px; white-space: pre-wrap;">${mainDesc}</div>
                                     </div>
                                 </td>
-                                <td style="text-align: right; font-weight: 700; font-size: 16px;">$${totalPrice}</td>
+                                <td style="text-align: right; font-weight: 800; font-size: 16px; color:#0f2c59;">$${totalPrice}</td>
                             </tr>
                         </tbody>
                     </table>
-
-                    <div class="estimate-total">
+                    <div style="text-align:right; font-size:18px; font-weight:900; color:#0f2c59; border-top:2px solid #cbd5e1; padding-top:8px;">
                         TOTAL ESTIMATE: $${totalPrice}
                     </div>
+                `;
+            }
 
-                    <div style="margin-top: 20px; border-top: 1px solid #ddd; padding-top: 10px; font-size: 11px; color: #666; line-height: 1.4;">
+            paper.innerHTML = `
+                <div class="estimate-paper" id="pdf-printable-area">
+                    <div class="estimate-header-wrapper">
+                        <div>
+                            <div class="logo-and-brand">
+                                <svg width="58" height="58" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M100 22 L24 88 L24 172 L176 172 L176 88 Z" stroke="#0f2c59" stroke-width="16" stroke-linejoin="round" fill="none"/>
+                                    <rect x="76" y="44" width="22" height="22" fill="#0f2c59"/>
+                                    <path d="M68 126 C 68 152, 132 152, 132 126" stroke="#0f2c59" stroke-width="14" stroke-linecap="round" fill="none"/>
+                                    <path d="M72 82 H128 V114 H72 Z" fill="#0f2c59"/>
+                                    <path d="M100 82 V114 M72 98 H128" stroke="#ffffff" stroke-width="4"/>
+                                </svg>
+                                <div>
+                                    <div class="brand-text-title">HomeBuddy</div>
+                                    <div class="brand-text-sub">Handyman</div>
+                                    <div class="brand-text-tag">Local & Reliable</div>
+                                </div>
+                            </div>
+                            <div class="contractor-meta">
+                                <strong>Aleksandr Ivanov</strong><br>
+                                484 Stimson Avenue, Pismo Beach, CA, USA<br>
+                                Phone: 2797582752 | Email: aristorh@gmail.com
+                            </div>
+                        </div>
+                        <div>
+                            <div class="estimate-doc-title">ESTIMATE</div>
+                            <div class="estimate-meta-right">
+                                <div><strong>Date:</strong> ${today}</div>
+                                <div><strong>Est. Date:</strong> ${serviceDateText}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="margin-bottom: 15px; font-size: 12px; background:#f8fafc; padding:10px 12px; border-radius:6px; border:1px solid #e2e8f0;">
+                        <div style="font-size:10px; font-weight:800; color:#64748b; text-transform:uppercase; margin-bottom:2px;">CUSTOMER / BILL TO:</div>
+                        <strong style="font-size:15px; color:#0f2c59;">${clientName}</strong><br>
+                        ${job.phone ? 'Phone: ' + job.phone + '<br>' : ''}
+                        ${job.address ? 'Address: ' + job.address : ''}
+                    </div>
+
+                    ${optionsBodyHtml}
+
+                    <div style="margin-top: 20px; border-top: 1px solid #e2e8f0; padding-top: 10px; font-size: 11px; color: #64748b; line-height: 1.4;">
                         <strong>TERMS & NOTES:</strong><br>
                         • This estimate is valid for 30 days from issuance.<br>
                         • Final pricing may vary if additional unexpected work or materials are required.<br>
-                        <div style="text-align:center; font-weight:bold; font-size:12px; margin-top:8px; color:#333;">
+                        <div style="text-align:center; font-weight:bold; font-size:12px; margin-top:8px; color:#0f2c59;">
                             THANK YOU FOR YOUR BUSINESS!
                         </div>
                     </div>
@@ -1078,28 +876,36 @@
             document.getElementById('estimate-modal').style.display = 'flex';
         }
 
-        /* TRANSLATION SERVICE */
         async function translateEstimateDetails() {
             if (!currentEstimateJob) return;
             const btn = document.getElementById('translate-estimate-btn');
-            btn.innerText = "⏳ Translating...";
-            btn.disabled = true;
-
-            let titleText = currentEstimateJob.title || '';
-            let descText = currentEstimateJob.desc || '';
-            let clientText = currentEstimateJob.client || '';
+            btn.innerText = "⏳ Translating..."; btn.disabled = true;
 
             try {
-                const titleTrans = await fetchTranslation(titleText);
-                const descTrans = await fetchTranslation(descText);
-                const clientTrans = await fetchTranslation(clientText);
+                let transTitle = await fetchTranslation(currentEstimateJob.title);
+                let transDesc = await fetchTranslation(currentEstimateJob.desc);
+                let transClient = await fetchTranslation(currentEstimateJob.client);
 
-                generateEstimate(currentEstimateJob, titleTrans, descTrans, clientTrans);
+                let translatedOpts = [];
+                if (currentEstimateJob.options) {
+                    for (let opt of currentEstimateJob.options) {
+                        translatedOpts.push({
+                            title: await fetchTranslation(opt.title),
+                            price: opt.price,
+                            desc: await fetchTranslation(opt.desc)
+                        });
+                    }
+                }
+
+                generateEstimate(currentEstimateJob, {
+                    title: transTitle,
+                    desc: transDesc,
+                    client: transClient,
+                    options: translatedOpts
+                });
                 btn.innerText = "✓ Translated!";
-            } catch (err) {
-                console.error(err);
-                alert("Translation complete.");
-                btn.innerText = "🌐 Translate Everything";
+            } catch(e) {
+                alert('Translation finished.');
             } finally {
                 btn.disabled = false;
             }
@@ -1110,16 +916,11 @@
             try {
                 const res = await fetch(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=ru&tl=en&dt=t&q=${encodeURIComponent(text)}`);
                 const data = await res.json();
-                if (data && data[0]) {
-                    return data[0].map(item => item[0]).join('');
-                }
-            } catch(e) {
-                console.log("Translation fallback");
-            }
+                if (data && data[0]) return data[0].map(item => item[0]).join('');
+            } catch(e) {}
             return text;
         }
 
-        /* SEND POLITE SMS WITH ENGLISH TEMPLATE & CLIENT NAME */
         function sendEstimateSMS() {
             if (!currentEstimateJob || !currentEstimateJob.phone) {
                 alert('У этого клиента не указан номер телефона!');
@@ -1134,15 +935,10 @@
             if(newStatus) {
                 const finalAmt = prompt("Укажите итоговую сумму оплаты за этот день ($):", currentPrice);
                 if(finalAmt !== null) {
-                    db.ref(`jobs/${selectedDateStr}/${id}`).update({
-                        completed: true,
-                        finalPrice: parseFloat(finalAmt) || currentPrice
-                    });
+                    db.ref(`jobs/${selectedDateStr}/${id}`).update({ completed: true, finalPrice: parseFloat(finalAmt) || currentPrice });
                 }
             } else {
-                db.ref(`jobs/${selectedDateStr}/${id}`).update({
-                    completed: false
-                });
+                db.ref(`jobs/${selectedDateStr}/${id}`).update({ completed: false });
             }
             closeModal('details-modal');
         }
@@ -1160,9 +956,7 @@
             }
         }
 
-        function closeModal(modalId) {
-            document.getElementById(modalId).style.display = 'none';
-        }
+        function closeModal(modalId) { document.getElementById(modalId).style.display = 'none'; }
 
         function processPhotos(files, callback) {
             if (!files || files.length === 0) return callback(existingPhotos);
@@ -1195,16 +989,13 @@
         function saveJob(e) {
             e.preventDefault();
             if(selectedJobDates.length === 0) {
-                alert('Пожалуйста, выберите хотя бы один день!');
-                return;
+                alert('Пожалуйста, выберите хотя бы один день!'); return;
             }
             const saveBtn = document.getElementById('save-btn');
-            saveBtn.disabled = true;
-            saveBtn.innerText = "Сохранение...";
-            const fileInput = document.getElementById('photo-files');
-            processPhotos(fileInput.files, (photoArray) => {
+            saveBtn.disabled = true; saveBtn.innerText = "Сохранение...";
+
+            processPhotos(document.getElementById('photo-files').files, (photoArray) => {
                 const groupId = editingJobGroupId || ('grp_' + Date.now());
-                
                 if(editingJobId || editingJobGroupId) {
                     Object.keys(jobsData).forEach(d => {
                         Object.keys(jobsData[d]).forEach(jId => {
@@ -1215,32 +1006,56 @@
                     });
                 }
 
-                const totalInputPrice = parseFloat(document.getElementById('price').value) || 0;
+                const totalPrice = parseFloat(document.getElementById('price').value) || 0;
+                const materialsPrice = parseFloat(document.getElementById('materials').value) || 0;
                 const daysCount = selectedJobDates.length;
-                const calculatedDailyPrice = (totalInputPrice / daysCount).toFixed(2);
+                
+                const dailyPrice = (totalPrice / daysCount).toFixed(2);
+                const dailyMaterials = (materialsPrice / daysCount).toFixed(2);
+
+                const recRadio = document.querySelector('input[name="recommended_opt"]:checked');
+                const recommendedOpt = recRadio ? parseInt(recRadio.value) : 1;
+
+                const optionsArr = [
+                    {
+                        title: document.getElementById('opt1_title').value || document.getElementById('title').value,
+                        price: totalPrice,
+                        desc: document.getElementById('opt1_desc').value
+                    },
+                    {
+                        title: document.getElementById('opt2_title').value,
+                        price: parseFloat(document.getElementById('opt2_price').value) || totalPrice,
+                        desc: document.getElementById('opt2_desc').value
+                    },
+                    {
+                        title: document.getElementById('opt3_title').value,
+                        price: parseFloat(document.getElementById('opt3_price').value) || totalPrice,
+                        desc: document.getElementById('opt3_desc').value
+                    }
+                ];
 
                 const newJobData = {
                     groupId: groupId,
                     dates: selectedJobDates,
                     title: document.getElementById('title').value || 'Repair Service',
-                    totalPrice: totalInputPrice,
-                    dailyPrice: calculatedDailyPrice,
-                    price: totalInputPrice,
+                    totalPrice: totalPrice,
+                    materials: materialsPrice,
+                    dailyPrice: dailyPrice,
+                    dailyMaterials: dailyMaterials,
+                    price: totalPrice,
                     time: selectedStartTime,
                     client: document.getElementById('client').value,
                     phone: document.getElementById('phone').value,
                     address: document.getElementById('address').value,
-                    desc: document.getElementById('desc').value,
+                    options: optionsArr,
+                    recommendedOpt: recommendedOpt,
                     photos: photoArray || [],
                     completed: false
                 };
 
-                selectedJobDates.forEach(dStr => {
-                    db.ref(`jobs/${dStr}`).push(newJobData);
-                });
+                selectedJobDates.forEach(dStr => { db.ref(`jobs/${dStr}`).push(newJobData); });
 
-                saveBtn.disabled = false;
-                saveBtn.innerText = "Сохранить заказ";
+                saveBtn.disabled = false; saveBtn.innerText = "Сохранить заказ";
                 document.getElementById('job-form').reset();
                 closeModal('add-modal');
             });
