@@ -99,11 +99,20 @@
         .estimate-doc-title { font-size: 26px; font-weight: 900; color: #0f2c59; text-align: right; }
         .estimate-meta-right { font-size: 12px; color: #475569; text-align: right; line-height: 1.4; margin-top: 4px; }
         
-        .horizontal-options-table { width: 100%; border-collapse: collapse; margin: 15px 0; }
-        .horizontal-options-table th { background: #f1f5f9; text-align: left; padding: 10px; font-size: 12px; border-bottom: 2px solid #cbd5e1; color: #334155; }
-        .horizontal-options-table td { padding: 12px 10px; border-bottom: 1px solid #e2e8f0; font-size: 13px; vertical-align: top; }
-        .horizontal-options-table tr.recommended-row { background: #f8fafc; }
-        .price-align { font-family: "Courier New", Courier, monospace; font-size: 15px; font-weight: 800; text-align: right; white-space: pre; color: #0f2c59; }
+        .task-block-wrapper { display: flex; gap: 15px; margin-top: 15px; align-items: flex-start; }
+        .task-photo-col { width: 110px; flex-shrink: 0; }
+        .task-photo-img { width: 110px; height: 110px; object-fit: cover; border-radius: 6px; border: 1px solid #cbd5e1; }
+        
+        .horizontal-options-table { width: 100%; border-collapse: collapse; }
+        .horizontal-options-table th { background: #f1f5f9; text-align: left; padding: 8px; font-size: 11px; border-bottom: 2px solid #cbd5e1; color: #334155; }
+        .horizontal-options-table td { padding: 10px 8px; border-bottom: 1px solid #e2e8f0; font-size: 12px; vertical-align: top; }
+        
+        /* Clear Border and Star style for Recommended option */
+        .horizontal-options-table tr.recommended-row td { border: 2px solid #0f2c59 !important; font-weight: 600; background: #fff !important; }
+        
+        .price-align { font-family: "Courier New", Courier, monospace; font-size: 14px; font-weight: 800; text-align: right; white-space: pre; color: #0f2c59; }
+        
+        .totals-summary-box { margin-top: 20px; border-top: 2px solid #0f2c59; padding-top: 12px; background: #f8fafc; border-radius: 6px; padding: 12px; }
         
         /* PHOTO VIEWER MODAL */
         .full-photo-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); justify-content: center; align-items: center; z-index: 2000; }
@@ -118,6 +127,7 @@
             .modal-content { border: none !important; box-shadow: none !important; padding: 0 !important; width: 100% !important; margin: 0 !important; }
             .estimate-paper { border: none !important; box-shadow: none !important; padding: 0 !important; width: 100% !important; }
             .no-print { display: none !important; }
+            .horizontal-options-table tr.recommended-row td { border: 2px solid #0f2c59 !important; background: #fff !important; color: #000 !important; }
         }
     </style>
 </head>
@@ -239,6 +249,12 @@
                 <div class="form-group">
                     <label>Адрес объекта (с автоподсказкой Google Maps)</label>
                     <input type="text" id="address" placeholder="Введите адрес...">
+                </div>
+
+                <!-- Описание работ в заказе -->
+                <div class="form-group">
+                    <label>Описание работ в заказе</label>
+                    <textarea id="description" rows="3" placeholder="Подробное описание выполняемых работ..."></textarea>
                 </div>
 
                 <!-- Управление прикреплёнными фото при редактировании -->
@@ -660,6 +676,7 @@
                 document.getElementById('client').value = editingJobData.client || '';
                 document.getElementById('phone').value = editingJobData.phone || '';
                 document.getElementById('address').value = editingJobData.address || '';
+                document.getElementById('description').value = editingJobData.description || '';
                 selectedStartTime = editingJobData.time || "8:00 am";
                 existingPhotos = isDuplicate ? [] : [...(editingJobData.photos || [])];
             } else {
@@ -667,6 +684,7 @@
                 selectedJobDates = [selectedDateStr];
                 document.getElementById('add-modal-title').innerText = `Новый заказ`;
                 document.getElementById('title').value = 'Repair Services';
+                document.getElementById('description').value = '';
             }
             
             renderExistingPhotosInForm();
@@ -699,6 +717,10 @@
                 ? `<div class="detail-row"><div class="detail-label">Фотографии заказа</div><div class="photos-grid">` + job.photos.map(p => `<img src="${p}" class="photo-thumb" onclick="openPhotoViewer('${p}', event)">`).join('') + `</div></div>`
                 : '';
 
+            let descriptionHtml = job.description 
+                ? `<div class="detail-row"><div class="detail-label">Описание работ</div><div class="detail-value" style="white-space:pre-wrap; background:#f8fafc; padding:10px; border-radius:6px; border:1px solid #e2e8f0;">${job.description}</div></div>` 
+                : '';
+
             body.innerHTML = `
                 <div class="detail-row">
                     <div class="detail-label">Статус заказа на день</div>
@@ -724,6 +746,7 @@
                     <div class="detail-value">${job.address ? `<a href="https://maps.google.com/?q=${encodeURIComponent(job.address)}" target="_blank" class="clickable-link">📍 ${job.address}</a>` : 'Не указан'}</div>
                 </div>
                 ${photosHtml}
+                ${descriptionHtml}
                 ${smsButtonHtml}
                 <button class="btn-action" style="background:#008b99; color:white; border:none; margin-top:10px; font-size:15px; font-weight:700;" onclick="openEstimateBuilderModal(${JSON.stringify(job).replace(/"/g, '&quot;')})">📄 Сформировать Estimate</button>
                 <div class="btn-grid-actions">
@@ -744,6 +767,7 @@
             } else {
                 estimateTasksList = [{
                     taskTitle: job.title || "Main Repair Work",
+                    photo: (job.photos && job.photos.length > 0) ? job.photos[0] : "",
                     options: [
                         { title: "Basic Option", price: job.totalPrice || job.price || 100, desc: "" },
                         { title: "Standard Option", price: job.totalPrice || job.price || 100, desc: "" },
@@ -759,6 +783,7 @@
         function addEstimateTaskBlock() {
             estimateTasksList.push({
                 taskTitle: "Additional Job #" + (estimateTasksList.length + 1),
+                photo: "",
                 options: [
                     { title: "Basic Option", price: 50, desc: "" },
                     { title: "Standard Option", price: 100, desc: "" },
@@ -773,6 +798,33 @@
             renderEstimateTaskBlocks();
         }
 
+        function handleTaskPhotoUpload(index, fileInput) {
+            if (!fileInput.files || !fileInput.files[0]) return;
+            const file = fileInput.files[0];
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const img = new Image();
+                img.onload = () => {
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    const maxW = 500;
+                    const scale = maxW / img.width;
+                    canvas.width = (img.width > maxW) ? maxW : img.width;
+                    canvas.height = (img.width > maxW) ? img.height * scale : img.height;
+                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                    estimateTasksList[index].photo = canvas.toDataURL('image/jpeg', 0.7);
+                    renderEstimateTaskBlocks();
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function removeTaskPhoto(index) {
+            estimateTasksList[index].photo = "";
+            renderEstimateTaskBlocks();
+        }
+
         function renderEstimateTaskBlocks() {
             const container = document.getElementById('estimate-tasks-container');
             container.innerHTML = '';
@@ -784,12 +836,26 @@
                     ? `<button type="button" class="remove-task-btn" onclick="removeEstimateTaskBlock(${tIndex})">✕</button>` 
                     : '';
                 
+                let photoBoxHtml = task.photo ? `
+                    <div style="display:flex; align-items:center; gap:10px; margin-bottom:10px;">
+                        <img src="${task.photo}" style="width:60px; height:60px; object-fit:cover; border-radius:6px;">
+                        <button type="button" style="background:#d32f2f; color:white; border:none; padding:6px 10px; border-radius:4px; cursor:pointer; font-size:12px;" onclick="removeTaskPhoto(${tIndex})">Удалить фото</button>
+                    </div>
+                ` : `
+                    <div style="margin-bottom:10px;">
+                        <label style="font-size:12px; color:#666;">Прикрепить фото к этой работе:</label>
+                        <input type="file" accept="image/*" onchange="handleTaskPhotoUpload(${tIndex}, this)" style="font-size:12px; display:block; margin-top:4px;">
+                    </div>
+                `;
+
                 card.innerHTML = `
                     ${removeBtn}
                     <div class="form-group" style="margin-bottom:10px;">
                         <label style="color:var(--primary); font-size:14px; font-weight:700;">Работа №${tIndex + 1}</label>
                         <input type="text" value="${task.taskTitle}" onchange="estimateTasksList[${tIndex}].taskTitle = this.value" placeholder="Название работы (напр. Fence Painting)">
                     </div>
+
+                    ${photoBoxHtml}
                     
                     <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:8px;">
                         <div class="option-box" style="margin:0;">
@@ -839,43 +905,84 @@
 
             const tasksToRender = customTasks || estimateTasksList;
             let tablesHtml = '';
+            
+            let totalOpt0 = 0;
+            let totalOpt1 = 0;
+            let totalOpt2 = 0;
 
             tasksToRender.forEach((task, tIdx) => {
                 let optionsRowsHtml = '';
+                
+                totalOpt0 += parseFloat(task.options[0]?.price || 0);
+                totalOpt1 += parseFloat(task.options[1]?.price || 0);
+                totalOpt2 += parseFloat(task.options[2]?.price || 0);
+
                 task.options.forEach((opt, idx) => {
                     if (!opt.title || opt.title.trim() === '') return;
                     const isRecommended = (idx === 1);
-                    const recBadge = isRecommended ? '<span style="background:#0f2c59; color:#fff; font-size:10px; padding:2px 6px; border-radius:3px; margin-left:6px;">RECOMMENDED</span>' : '';
+                    const recBadge = isRecommended ? '<span style="color:#ed6c02; font-weight:bold; font-size:13px; margin-left:4px;">⭐ RECOMMENDED</span>' : '';
                     const formattedPrice = formatMonospacedPrice(opt.price);
                     
                     optionsRowsHtml += `
                         <tr class="${isRecommended ? 'recommended-row' : ''}">
-                            <td>
+                            <td style="padding:8px;">
                                 <strong style="color:#0f2c59; font-size:13px;">${opt.title}</strong>${recBadge}
-                                <div style="color:#64748b; font-size:12px; margin-top:2px; white-space:pre-wrap;">${opt.desc || ''}</div>
+                                <div style="color:#64748b; font-size:11px; margin-top:2px; white-space:pre-wrap;">${opt.desc || ''}</div>
                             </td>
-                            <td class="price-align">${formattedPrice}</td>
+                            <td class="price-align" style="padding:8px;">${formattedPrice}</td>
                         </tr>
                     `;
                 });
 
+                let photoColHtml = task.photo 
+                    ? `<div class="task-photo-col"><img src="${task.photo}" class="task-photo-img" onclick="openPhotoViewer('${task.photo}', event)"></div>` 
+                    : '';
+
                 tablesHtml += `
-                    <div style="margin-top: 15px; font-weight:800; font-size:14px; color:#0f2c59; border-bottom:1px solid #0f2c59; padding-bottom:4px;">
+                    <div style="margin-top: 15px; font-weight:800; font-size:13px; color:#0f2c59; border-bottom:1px solid #0f2c59; padding-bottom:3px;">
                         TASK #${tIdx + 1}: ${task.taskTitle.toUpperCase()}
                     </div>
-                    <table class="horizontal-options-table" style="margin-top:5px;">
-                        <thead>
-                            <tr>
-                                <th>OPTION / DESCRIPTION OF WORK</th>
-                                <th style="text-align: right; width: 140px;">AMOUNT (USD)</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            ${optionsRowsHtml}
-                        </tbody>
-                    </table>
+                    <div class="task-block-wrapper">
+                        ${photoColHtml}
+                        <div style="flex: 1; width:100%;">
+                            <table class="horizontal-options-table">
+                                <thead>
+                                    <tr>
+                                        <th>OPTION / DESCRIPTION</th>
+                                        <th style="text-align: right; width: 130px;">AMOUNT (USD)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${optionsRowsHtml}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 `;
             });
+
+            let totalSummaryHtml = '';
+            if (tasksToRender.length > 1) {
+                totalSummaryHtml = `
+                    <div class="totals-summary-box">
+                        <div style="font-weight:800; font-size:13px; color:#0f2c59; margin-bottom:8px; border-bottom:1px solid #cbd5e1; padding-bottom:4px;">
+                            TOTAL ESTIMATED PRICE (ALL TASKS COMBINED)
+                        </div>
+                        <div style="display:flex; justify-content:space-between; font-size:12px; margin-bottom:4px;">
+                            <span>1. Basic Option Total:</span>
+                            <strong style="font-family:'Courier New', monospace; font-size:14px;">$${totalOpt0.toFixed(2)}</strong>
+                        </div>
+                        <div style="display:flex; justify-content:space-between; font-size:13px; font-weight:bold; color:#0f2c59; background:#fff; padding:6px; border:2px solid #0f2c59; border-radius:4px; margin-bottom:4px;">
+                            <span>2. Recommended Option Total: ⭐</span>
+                            <strong style="font-family:'Courier New', monospace; font-size:15px;">$${totalOpt1.toFixed(2)}</strong>
+                        </div>
+                        <div style="display:flex; justify-content:space-between; font-size:12px;">
+                            <span>3. Premium Option Total:</span>
+                            <strong style="font-family:'Courier New', monospace; font-size:14px;">$${totalOpt2.toFixed(2)}</strong>
+                        </div>
+                    </div>
+                `;
+            }
 
             paper.innerHTML = `
                 <div class="estimate-paper" id="pdf-printable-area">
@@ -904,6 +1011,7 @@
                     </div>
 
                     ${tablesHtml}
+                    ${totalSummaryHtml}
 
                     <div style="margin-top: 20px; border-top: 1px solid #e2e8f0; padding-top: 10px; font-size: 11px; color: #64748b; line-height: 1.4;">
                         <strong>TERMS & NOTES:</strong><br>
@@ -933,7 +1041,7 @@
                             desc: await fetchTranslation(opt.desc)
                         });
                     }
-                    translatedTasks.push({ taskTitle: transTaskTitle, options: transOpts });
+                    translatedTasks.push({ taskTitle: transTaskTitle, photo: task.photo, options: transOpts });
                 }
                 renderEstimateFromBuilder(translatedTasks);
                 btn.innerText = "✓ Translated!";
@@ -1057,6 +1165,7 @@
                     client: document.getElementById('client').value,
                     phone: document.getElementById('phone').value,
                     address: document.getElementById('address').value,
+                    description: document.getElementById('description').value || '',
                     photos: photoArray || [],
                     completed: false
                 };
