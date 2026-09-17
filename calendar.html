@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Aleksandr Ivanov Schedule</title>
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+    <!-- Library for PDF generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
         :root {
             --primary: #008b99;
@@ -63,30 +63,11 @@
             border: 1px solid #f0f0f0;
         }
         
-        .day-number {
-            font-weight: 600;
-            font-size: 15px;
-            color: var(--text-dark);
-        }
-        .day-cell.selected {
-            border-color: var(--primary);
-            background: #eef8f9;
-        }
-        .day-cell.selected .day-number {
-            color: var(--primary);
-        }
-        .dots-container {
-            display: flex;
-            gap: 2px;
-            margin-top: 2px;
-            height: 5px;
-        }
-        .dot {
-            width: 5px;
-            height: 5px;
-            background-color: var(--primary);
-            border-radius: 50%;
-        }
+        .day-number { font-weight: 600; font-size: 15px; color: var(--text-dark); }
+        .day-cell.selected { border-color: var(--primary); background: #eef8f9; }
+        .day-cell.selected .day-number { color: var(--primary); }
+        .dots-container { display: flex; gap: 2px; margin-top: 2px; height: 5px; }
+        .dot { width: 5px; height: 5px; background-color: var(--primary); border-radius: 50%; }
         .dot.completed { background-color: var(--success); }
         .dot.pending { background-color: var(--pending); }
         
@@ -225,22 +206,9 @@
             cursor: pointer;
             font-weight: 600;
         }
-        .chip.selected {
-            background: var(--primary);
-            color: white;
-            border-color: var(--primary);
-        }
-        .dates-picker-container {
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 8px;
-            background: #fff;
-        }
-        .dates-picker-grid {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 4px;
-        }
+        .chip.selected { background: var(--primary); color: white; border-color: var(--primary); }
+        .dates-picker-container { border: 1px solid var(--border-color); border-radius: 8px; padding: 8px; background: #fff; }
+        .dates-picker-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
         .date-chip {
             height: 36px;
             display: flex;
@@ -253,31 +221,15 @@
             cursor: pointer;
             background: #fafafa;
         }
-        .date-chip.selected {
-            background: var(--primary);
-            color: white;
-            border-color: var(--primary);
-        }
+        .date-chip.selected { background: var(--primary); color: white; border-color: var(--primary); }
         .detail-row { margin-bottom: 15px; }
         .detail-label { font-size: 12px; color: #777; text-transform: uppercase; margin-bottom: 2px; }
         .detail-value { font-size: 15px; font-weight: 500; }
         .clickable-link { color: var(--primary); text-decoration: none; font-weight: 600; }
         
         .btn-grid-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 15px; }
-        .photos-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 8px;
-            margin-top: 8px;
-        }
-        .photo-thumb {
-            width: 100%;
-            height: 90px;
-            object-fit: cover;
-            border-radius: 8px;
-            border: 1px solid var(--border-color);
-            cursor: pointer;
-        }
+        .photos-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 8px; }
+        .photo-thumb { width: 100%; height: 90px; object-fit: cover; border-radius: 8px; border: 1px solid var(--border-color); cursor: pointer; }
 
         .client-card {
             background: #fff;
@@ -293,91 +245,99 @@
         .client-card:hover { border-color: var(--primary); }
         .client-info-name { font-weight: 700; font-size: 16px; margin-bottom: 2px; color: var(--text-dark); }
         .client-info-sub { font-size: 13px; color: #666; }
-        .search-box {
-            width: 100%;
-            padding: 10px 12px;
-            margin-bottom: 15px;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            font-size: 14px;
-        }
+        .search-box { width: 100%; padding: 10px 12px; margin-bottom: 15px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 14px; }
 
-        /* ESTIMATE DOCUMENT STYLING */
+        /* ESTIMATE STYLING & PRINT / PDF TARGET */
         .estimate-paper {
             background: #fff;
             border: 1px solid #ddd;
             border-radius: 8px;
-            padding: 40px;
+            padding: 35px 40px;
             color: #222;
             box-shadow: 0 4px 12px rgba(0,0,0,0.08);
             width: 100%;
             box-sizing: border-box;
-            min-height: 800px;
+            min-height: 900px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
         }
-        .estimate-header {
+        .estimate-top-bar {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
             border-bottom: 2px solid #008b99;
-            padding-bottom: 20px;
-            margin-bottom: 25px;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
         }
-        .estimate-title { font-size: 28px; font-weight: 900; color: #008b99; letter-spacing: 1px; }
-        .estimate-section-title { font-size: 11px; text-transform: uppercase; color: #777; font-weight: 700; margin-bottom: 6px; letter-spacing: 0.5px; }
+        .brand-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .logo-svg {
+            width: 50px;
+            height: 50px;
+        }
+        .company-title {
+            font-size: 20px;
+            font-weight: 800;
+            color: #111;
+            line-height: 1.1;
+        }
+        .company-subtitle {
+            font-size: 12px;
+            color: #555;
+            font-weight: 600;
+        }
+        .contractor-details {
+            font-size: 13px;
+            color: #444;
+            line-height: 1.4;
+        }
+        .estimate-doc-title {
+            font-size: 26px;
+            font-weight: 900;
+            color: #008b99;
+            text-align: right;
+            letter-spacing: 1px;
+        }
+        .estimate-meta-info {
+            text-align: right;
+            font-size: 13px;
+            color: #444;
+            line-height: 1.5;
+            white-space: nowrap;
+        }
+        .estimate-section-title { font-size: 11px; text-transform: uppercase; color: #777; font-weight: 700; margin-bottom: 4px; letter-spacing: 0.5px; }
         .estimate-table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 20px;
-            margin-bottom: 25px;
+            margin-top: 15px;
+            margin-bottom: 20px;
         }
-        .estimate-table th { background: #f4f7f8; text-align: left; padding: 12px 10px; font-size: 13px; font-weight: 700; border-bottom: 2px solid #ddd; color: #444; }
-        .estimate-table td { padding: 14px 10px; border-bottom: 1px solid #eee; font-size: 14px; vertical-align: top; }
-        .estimate-total { text-align: right; font-size: 22px; font-weight: 800; color: #008b99; margin-top: 15px; border-top: 2px solid #eee; padding-top: 10px; }
+        .estimate-table th { background: #f4f7f8; text-align: left; padding: 10px; font-size: 12px; font-weight: 700; border-bottom: 2px solid #ddd; color: #444; }
+        .estimate-table td { padding: 12px 10px; border-bottom: 1px solid #eee; font-size: 13px; vertical-align: top; }
+        .estimate-total { text-align: right; font-size: 20px; font-weight: 800; color: #008b99; margin-top: 10px; border-top: 2px solid #eee; padding-top: 8px; }
+        .work-thumb-box {
+            width: 80px;
+            height: 80px;
+            border-radius: 6px;
+            object-fit: cover;
+            border: 1px solid #ddd;
+            margin-right: 12px;
+            float: left;
+        }
 
-        /* PRINT MEDIA STYLES - FULL PAGE A4 */
+        /* PRINT MEDIA STYLES - A4 */
         @media print {
-            @page {
-                size: A4 portrait;
-                margin: 15mm;
-            }
-            body, html {
-                background: #fff !important;
-                padding: 0 !important;
-                margin: 0 !important;
-                width: 100% !important;
-                height: 100% !important;
-            }
+            @page { size: A4 portrait; margin: 10mm; }
+            body, html { background: #fff !important; padding: 0 !important; margin: 0 !important; width: 100% !important; height: 100% !important; }
             body * { visibility: hidden; }
             #estimate-modal, #estimate-modal * { visibility: visible; }
-            #estimate-modal {
-                position: absolute !important;
-                left: 0 !important;
-                top: 0 !important;
-                width: 100% !important;
-                height: 100% !important;
-                background: white !important;
-                display: block !important;
-                padding: 0 !important;
-                margin: 0 !important;
-            }
-            .modal-content {
-                max-height: none !important;
-                border: none !important;
-                box-shadow: none !important;
-                padding: 0 !important;
-                width: 100% !important;
-                margin: 0 !important;
-            }
-            .estimate-paper {
-                border: none !important;
-                box-shadow: none !important;
-                padding: 0 !important;
-                width: 100% !important;
-                border-radius: 0 !important;
-            }
+            #estimate-modal { position: absolute !important; left: 0 !important; top: 0 !important; width: 100% !important; height: 100% !important; background: white !important; display: block !important; padding: 0 !important; margin: 0 !important; }
+            .modal-content { max-height: none !important; border: none !important; box-shadow: none !important; padding: 0 !important; width: 100% !important; margin: 0 !important; }
+            .estimate-paper { border: none !important; box-shadow: none !important; padding: 0 !important; width: 100% !important; border-radius: 0 !important; }
             .no-print { display: none !important; }
         }
     </style>
@@ -413,7 +373,7 @@
         <button class="btn-clients" onclick="openClientsModal()">👥 Клиенты</button>
     </div>
 
-    <!-- Модальное окно списка клиентов -->
+    <!-- Модальное окно клиентов -->
     <div class="modal" id="clients-modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -425,7 +385,7 @@
         </div>
     </div>
 
-    <!-- Модальное окно конкретного клиента -->
+    <!-- Модальное окно истории клиента -->
     <div class="modal" id="client-history-modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -439,7 +399,7 @@
         </div>
     </div>
 
-    <!-- Модальное окно добавления/редактирования -->
+    <!-- Модальное окно создания/редактирования -->
     <div class="modal" id="add-modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -463,11 +423,11 @@
                 </div>
                 <div class="form-group">
                     <label>Название услуги / Вид работы</label>
-                    <input type="text" id="title" required placeholder="Например: Fascia Repair, Painting, Estimate...">
+                    <input type="text" id="title" required placeholder="Например: Fascia Repair, Painting...">
                 </div>
                 <div class="form-group">
-                    <label>Предварительная цена ($)</label>
-                    <input type="number" id="price" min="0" max="10000" step="5" value="60">
+                    <label>ОБЩАЯ ЦЕНА заказа ($) — автоделение по дням</label>
+                    <input type="number" id="price" min="0" max="50000" step="5" value="100">
                 </div>
                 <div class="form-group">
                     <label>Время начала работы</label>
@@ -491,7 +451,7 @@
                 </div>
                 <div class="form-group">
                     <label>Описание / Заметки (можно писать по-русски)</label>
-                    <textarea id="desc" rows="4" placeholder="Опишите детали ремонта (например: ремонт фасции, замена досок, покраска)..."></textarea>
+                    <textarea id="desc" rows="4" placeholder="Опишите детали ремонта..."></textarea>
                 </div>
                 <button type="submit" class="btn-add" id="save-btn">Сохранить заказ</button>
             </form>
@@ -511,16 +471,16 @@
 
     <!-- Модальное окно генерации Estimate -->
     <div class="modal" id="estimate-modal">
-        <div class="modal-content" style="max-width: 800px; margin: 0 auto; background: #f0f2f5;">
+        <div class="modal-content" style="max-width: 820px; margin: 0 auto; background: #f0f2f5;">
             <div class="modal-header no-print">
                 <span>Estimate Document</span>
                 <span class="close-btn" onclick="closeModal('estimate-modal')">&times;</span>
             </div>
             <div id="estimate-paper-body"></div>
             <div class="no-print" style="margin-top: 15px; display: flex; gap: 8px; flex-wrap: wrap;">
-                <button class="btn-add" id="translate-estimate-btn" style="background:#0288d1; flex: 1;" onclick="translateEstimateDetails()">🌐 Перевести на английский</button>
-                <button class="btn-add" onclick="window.print()" style="background:#008b99; flex: 1;">🖨 Печать / Save PDF</button>
-                <button class="btn-add" id="send-estimate-sms-btn" style="background:#2e7d32; flex: 1;">💬 Send SMS</button>
+                <button class="btn-add" id="translate-estimate-btn" style="background:#0288d1; flex: 1;" onclick="translateEstimateDetails()">🌐 Translate Everything</button>
+                <button class="btn-add" onclick="window.print()" style="background:#008b99; flex: 1;">🖨 Print / PDF</button>
+                <button class="btn-add" id="send-estimate-pdf-btn" style="background:#2e7d32; flex: 1;" onclick="shareEstimatePDF()">📄 Share PDF (SMS)</button>
             </div>
         </div>
     </div>
@@ -629,7 +589,7 @@
             Object.keys(jobsData).forEach(dStr => {
                 if(dStr.startsWith(currentYearMonth)) {
                     Object.values(jobsData[dStr]).forEach(j => {
-                        const priceNum = parseFloat(j.finalPrice || j.price || 0);
+                        const priceNum = parseFloat(j.finalPrice || j.dailyPrice || j.price || 0);
                         if(j.completed) {
                             earned += priceNum;
                         } else {
@@ -714,7 +674,8 @@
                 card.className = 'job-card' + (job.completed ? ' is-completed' : '');
                 card.onclick = () => openDetailsModal(id, job);
                 
-                const displayPrice = job.finalPrice ? `$${job.finalPrice} (оплачено)` : `$${job.price}`;
+                const dayPrice = job.dailyPrice || (job.price / (job.dates ? job.dates.length : 1)).toFixed(0);
+                const displayPrice = job.finalPrice ? `$${job.finalPrice} (день)` : `$${dayPrice}/день (всего $${job.totalPrice || job.price})`;
                 const statusHtml = job.completed 
                     ? `<span class="status-badge completed">✓ Выполнено (${displayPrice})</span>` 
                     : `<span class="status-badge pending">⏳ В работе (${displayPrice})</span>`;
@@ -723,11 +684,12 @@
                 if(job.photos && job.photos.length > 0) {
                     photosHtml = `<div class="photos-grid">` + job.photos.map(p => `<img src="${p}" class="photo-thumb">`).join('') + `</div>`;
                 }
+                const isMultiDay = job.dates && job.dates.length > 1 ? ` <span style="font-size:11px; background:#008b99; color:white; padding:1px 5px; border-radius:3px;">${job.dates.length} дн.</span>` : '';
                 card.innerHTML = `
                     ${statusHtml}
                     <div class="job-card-header">
-                        <span>${job.title}</span>
-                        <span>${displayPrice}</span>
+                        <span>${job.title} ${isMultiDay}</span>
+                        <span>$${dayPrice}</span>
                     </div>
                     <div class="job-time">Время: ${job.time} | Клиент: ${job.client || 'Не указан'}</div>
                     <div class="job-address">${job.address || 'Адрес не указан'}</div>
@@ -845,7 +807,8 @@
                         openDetailsModal(job.id, job);
                     };
 
-                    const displayPrice = job.finalPrice ? `$${job.finalPrice} (оплачено)` : `$${job.price}`;
+                    const dayPrice = job.dailyPrice || job.price;
+                    const displayPrice = job.finalPrice ? `$${job.finalPrice}` : `$${dayPrice}/день ($${job.totalPrice || job.price} всего)`;
                     const statusHtml = job.completed 
                         ? `<span class="status-badge completed">✓ Выполнено (${displayPrice})</span>` 
                         : `<span class="status-badge pending">⏳ В работе (${displayPrice})</span>`;
@@ -901,7 +864,7 @@
                 }
                 selectedJobDates = editingJobData.dates || [selectedDateStr];
                 document.getElementById('title').value = editingJobData.title || '';
-                document.getElementById('price').value = editingJobData.price || 60;
+                document.getElementById('price').value = editingJobData.totalPrice || editingJobData.price || 100;
                 document.getElementById('client').value = editingJobData.client || '';
                 document.getElementById('phone').value = editingJobData.phone || '';
                 document.getElementById('address').value = editingJobData.address || '';
@@ -953,10 +916,13 @@
                     `</div></div>`;
             }
             const targetGroupId = job.groupId || id;
-            const currentPrice = job.finalPrice || job.price;
+            const dayPrice = job.dailyPrice || (job.price / (job.dates ? job.dates.length : 1)).toFixed(0);
+            const currentPrice = job.finalPrice || dayPrice;
+            const datesListStr = job.dates && job.dates.length > 1 ? `<br><small style="color:#555;">Все дни (${job.dates.length}): ${job.dates.join(', ')}</small>` : '';
+
             body.innerHTML = `
                 <div class="detail-row">
-                    <div class="detail-label">Статус заказа</div>
+                    <div class="detail-label">Статус заказа на день</div>
                     <div class="detail-value">
                         <button class="btn-action" style="background:${job.completed ? '#2e7d32' : '#ed6c02'}; color:white;" onclick="toggleStatus('${id}', ${!job.completed}, '${currentPrice}')">
                             ${job.completed ? `✓ Выполнено ($${currentPrice}) — Нажмите, чтобы вернуть` : '⏳ В работе — Отметить выполненным'}
@@ -965,7 +931,7 @@
                 </div>
                 <div class="detail-row">
                     <div class="detail-label">Услуга и Цена</div>
-                    <div class="detail-value">${job.title} — $${currentPrice} ${job.finalPrice ? '(Фактическая)' : '(План)'}</div>
+                    <div class="detail-value">${job.title} — $${currentPrice}/день (Общая сумма: $${job.totalPrice || job.price})${datesListStr}</div>
                 </div>
                 <div class="detail-row">
                     <div class="detail-label">Время начала</div>
@@ -987,63 +953,95 @@
                     <button class="btn-action" style="background:#008b99; color:white;" onclick="openAddModal(${JSON.stringify(job).replace(/"/g, '&quot;')}, '${id}', false)">✏️ Редактировать</button>
                     <button class="btn-action" style="background:#2e7d32; color:white;" onclick="openAddModal(${JSON.stringify(job).replace(/"/g, '&quot;')}, '${id}', true)">➕ Ещё заказ</button>
                 </div>
-                <button class="btn-action" style="background:#d32f2f; color:white; border-color:#d32f2f; margin-top:8px;" onclick="deleteJobGroup('${targetGroupId}', '${selectedDateStr}', '${id}')">Удалить заказ</button>
+                <button class="btn-action" style="background:#d32f2f; color:white; border-color:#d32f2f; margin-top:8px;" onclick="deleteJobGroup('${targetGroupId}', '${selectedDateStr}', '${id}')">Удалить весь заказ</button>
             `;
             document.getElementById('details-modal').style.display = 'flex';
         }
 
-        /* GENERATE ESTIMATE DOCUMENT */
-        function generateEstimate(job, customTitle = null, customDesc = null) {
+        /* GENERATE ESTIMATE DOCUMENT WITH EXACT LOGO & DETAILS FROM ATTACHMENT */
+        function generateEstimate(job, customTitle = null, customDesc = null, customClient = null) {
             currentEstimateJob = job;
             const paper = document.getElementById('estimate-paper-body');
             const today = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
             
             const displayTitle = customTitle || job.title || 'General Repairs';
             const displayDesc = customDesc || job.desc || '';
+            const displayClient = customClient || job.client || 'Valued Customer';
+
+            // Format Service Date range neatly in one line
+            let serviceDateText = selectedDateStr;
+            if (job.dates && job.dates.length > 1) {
+                const sortedDates = [...job.dates].sort();
+                serviceDateText = `${sortedDates[0]} — ${sortedDates[sortedDates.length - 1]}`;
+            }
+
+            // Optional Thumbnail Image
+            let imageHtml = '';
+            if (job.photos && job.photos.length > 0) {
+                imageHtml = `<img src="${job.photos[0]}" class="work-thumb-box" alt="Work Specimen">`;
+            }
+
+            const totalPrice = job.totalPrice || job.price || 0;
 
             paper.innerHTML = `
-                <div class="estimate-paper">
+                <div class="estimate-paper" id="pdf-printable-area">
                     <div>
-                        <div class="estimate-header">
+                        <div class="estimate-top-bar">
                             <div>
-                                <div class="estimate-title">ESTIMATE</div>
-                                <div style="font-size: 16px; font-weight: 700; color: #333; margin-top: 6px;">Aleksandr Ivanov</div>
-                                <div style="font-size: 13px; color: #666;">Phone: 2797582752</div>
+                                <div class="brand-header">
+                                    <svg class="logo-svg" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M50 12L12 45V88H88V45L50 12Z" stroke="#111" stroke-width="6" stroke-linejoin="round" fill="none"/>
+                                        <path d="M40 32H60V22H40V32Z" fill="#111"/>
+                                        <path d="M38 68C38 68 44 76 50 76C56 76 62 68 62 68" stroke="#111" stroke-width="5" stroke-linecap="round"/>
+                                        <rect x="36" y="50" width="10" height="10" fill="#111"/>
+                                        <rect x="54" y="50" width="10" height="10" fill="#111"/>
+                                    </svg>
+                                    <div>
+                                        <div class="company-title">HomeBuddy</div>
+                                        <div class="company-subtitle">Handyman<br><span style="font-weight:normal; font-size:10px; color:#777;">Local & Reliable</span></div>
+                                    </div>
+                                </div>
+                                <div class="contractor-details" style="margin-top:12px;">
+                                    <strong>Aleksandr Ivanov</strong><br>
+                                    484 Stimson Avenue<br>
+                                    Pismo Beach, California, USA<br>
+                                    Phone: 2797582752<br>
+                                    Email: aristorh@gmail.com
+                                </div>
                             </div>
-                            <div style="text-align: right; font-size: 13px; color: #444; line-height: 1.5;">
-                                <div><strong>Date:</strong> ${today}</div>
-                                <div><strong>Service Date:</strong> ${selectedDateStr}</div>
+                            <div>
+                                <div class="estimate-doc-title">ESTIMATE</div>
+                                <div class="estimate-meta-info" style="margin-top:15px;">
+                                    <div><strong>Date:</strong> <span style="white-space:nowrap;">${today}</span></div>
+                                    <div><strong>Estimated Service Date:</strong> <span style="white-space:nowrap;">${serviceDateText}</span></div>
+                                </div>
                             </div>
                         </div>
                         
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 25px; font-size: 14px; line-height: 1.5;">
-                            <div>
-                                <div class="estimate-section-title">Contractor:</div>
-                                <strong>Aleksandr Ivanov</strong><br>
-                                Phone: 2797582752
-                            </div>
-                            <div style="text-align: right;">
-                                <div class="estimate-section-title">Customer:</div>
-                                <strong>${job.client || 'Valued Customer'}</strong><br>
-                                ${job.phone ? 'Phone: ' + job.phone + '<br>' : ''}
-                                ${job.address ? 'Address: ' + job.address : ''}
-                            </div>
+                        <div style="margin-bottom: 20px; font-size: 14px; line-height: 1.5; background:#fafafa; padding:12px 15px; border-radius:6px; border:1px solid #eee;">
+                            <div class="estimate-section-title">BILL TO / CUSTOMER:</div>
+                            <strong style="font-size:16px;" id="est-client-text">${displayClient}</strong><br>
+                            ${job.phone ? 'Phone: ' + job.phone + '<br>' : ''}
+                            ${job.address ? 'Address: ' + job.address : ''}
                         </div>
 
                         <table class="estimate-table">
                             <thead>
                                 <tr>
-                                    <th>Description of Work</th>
-                                    <th style="text-align: right; width: 120px;">Amount</th>
+                                    <th>DESCRIPTION OF WORK / SERVICE</th>
+                                    <th style="text-align: right; width: 130px;">AMOUNT (USD)</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
                                     <td>
-                                        <strong style="font-size: 15px;" id="est-title-text">${displayTitle}</strong>
-                                        <div style="font-size: 13px; color: #555; margin-top: 6px; white-space: pre-wrap;" id="est-desc-text">${displayDesc}</div>
+                                        ${imageHtml}
+                                        <div style="overflow:hidden;">
+                                            <strong style="font-size: 15px;" id="est-title-text">${displayTitle}</strong>
+                                            <div style="font-size: 13px; color: #555; margin-top: 6px; white-space: pre-wrap;" id="est-desc-text">${displayDesc}</div>
+                                        </div>
                                     </td>
-                                    <td style="text-align: right; font-weight: 700; font-size: 16px;">$${job.price}</td>
+                                    <td style="text-align: right; font-weight: 700; font-size: 16px;">$${totalPrice}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -1051,31 +1049,25 @@
 
                     <div>
                         <div class="estimate-total">
-                            Total Estimate: $${job.price}
+                            TOTAL ESTIMATE: $${totalPrice}
                         </div>
 
-                        <div style="margin-top: 30px; border-top: 1px solid #ddd; padding-top: 15px; font-size: 12px; color: #666; line-height: 1.6;">
-                            <strong>Terms & Notes:</strong><br>
+                        <div style="margin-top: 25px; border-top: 1px solid #ddd; padding-top: 12px; font-size: 11px; color: #666; line-height: 1.5;">
+                            <strong>TERMS & NOTES:</strong><br>
                             • This estimate is valid for 30 days from the date of issuance.<br>
-                            • Final pricing may vary if additional unexpected work or materials are required upon customer request.<br>
-                            Thank you for your business!
+                            • Final pricing may vary if additional unexpected work or materials are required.<br>
+                            <div style="text-align:center; font-weight:bold; font-size:12px; margin-top:10px; color:#333;">
+                                THANK YOU FOR YOUR BUSINESS!
+                            </div>
                         </div>
                     </div>
                 </div>
             `;
 
-            const smsBtn = document.getElementById('send-estimate-sms-btn');
-            if (job.phone) {
-                const text = encodeURIComponent(`Hi ${job.client || ''}! Here is your estimate for ${displayTitle}: $${job.price}. Date: ${selectedDateStr}. Please let me know if you have any questions! - Aleksandr Ivanov`);
-                smsBtn.onclick = () => { window.location.href = `sms:${job.phone}?body=${text}`; };
-            } else {
-                smsBtn.onclick = () => { alert('No client phone number specified for this order.'); };
-            }
-
             document.getElementById('estimate-modal').style.display = 'flex';
         }
 
-        /* AUTO TRANSLATE FUNCTIONALITY */
+        /* AUTO TRANSLATE EVERYTHING (Title, Desc, Client) */
         async function translateEstimateDetails() {
             if (!currentEstimateJob) return;
             const btn = document.getElementById('translate-estimate-btn');
@@ -1084,17 +1076,19 @@
 
             let titleText = currentEstimateJob.title || '';
             let descText = currentEstimateJob.desc || '';
+            let clientText = currentEstimateJob.client || '';
 
             try {
                 const titleTrans = await fetchTranslation(titleText);
                 const descTrans = await fetchTranslation(descText);
+                const clientTrans = await fetchTranslation(clientText);
 
-                generateEstimate(currentEstimateJob, titleTrans, descTrans);
+                generateEstimate(currentEstimateJob, titleTrans, descTrans, clientTrans);
                 btn.innerText = "✓ Translated!";
             } catch (err) {
                 console.error(err);
                 alert("Translation failed. You can manually edit text on the form.");
-                btn.innerText = "🌐 Translate to English";
+                btn.innerText = "🌐 Translate Everything";
             } finally {
                 btn.disabled = false;
             }
@@ -1103,8 +1097,10 @@
         async function fetchTranslation(text) {
             if (!text || text.trim() === '') return text;
             
-            // Fallback dictionary for common repair terms
             const dictionary = {
+                'александр': 'Aleksandr',
+                'иван': 'Ivan',
+                'михаил': 'Mikhail',
                 'фасция': 'fascia',
                 'ремонт фасции': 'fascia repair',
                 'покраска': 'painting',
@@ -1133,9 +1129,50 @@
             return text;
         }
 
+        /* GENERATE PDF & SHARE VIA SMS / MEDIA */
+        async function shareEstimatePDF() {
+            const element = document.getElementById('pdf-printable-area');
+            const opt = {
+                margin:       0.3,
+                filename:     `Estimate_${currentEstimateJob.client || 'Customer'}.pdf`,
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { scale: 2 },
+                jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+            };
+
+            const pdfBlob = await html2pdf().set(opt).from(element).output('blob');
+            const file = new File([pdfBlob], `Estimate_${currentEstimateJob.client || 'Customer'}.pdf`, { type: 'application/pdf' });
+
+            if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                try {
+                    await navigator.share({
+                        files: [file],
+                        title: 'Estimate',
+                        text: `Estimate for ${currentEstimateJob.client || 'you'} from Aleksandr Ivanov.`
+                    });
+                } catch (err) {
+                    console.log('Sharing canceled or failed:', err);
+                }
+            } else {
+                // Fallback: download PDF & open SMS with explanation
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(pdfBlob);
+                link.download = `Estimate_${currentEstimateJob.client || 'Customer'}.pdf`;
+                link.click();
+                
+                if (currentEstimateJob.phone) {
+                    setTimeout(() => {
+                        window.location.href = `sms:${currentEstimateJob.phone}?body=${encodeURIComponent('Hi! Here is your estimate PDF attached/downloaded. Please let me know if you have questions!')}`;
+                    }, 1000);
+                } else {
+                    alert('PDF file downloaded! Web Share is not supported on this browser version.');
+                }
+            }
+        }
+
         function toggleStatus(id, newStatus, currentPrice) {
             if(newStatus) {
-                const finalAmt = prompt("Укажите итоговую сумму оплаты ($):", currentPrice);
+                const finalAmt = prompt("Укажите итоговую сумму оплаты за этот день ($):", currentPrice);
                 if(finalAmt !== null) {
                     db.ref(`jobs/${selectedDateStr}/${id}`).update({
                         completed: true,
@@ -1207,6 +1244,8 @@
             const fileInput = document.getElementById('photo-files');
             processPhotos(fileInput.files, (photoArray) => {
                 const groupId = editingJobGroupId || ('grp_' + Date.now());
+                
+                // If editing, clean old instances across dates
                 if(editingJobId || editingJobGroupId) {
                     Object.keys(jobsData).forEach(d => {
                         Object.keys(jobsData[d]).forEach(jId => {
@@ -1216,11 +1255,18 @@
                         });
                     });
                 }
+
+                const totalInputPrice = parseFloat(document.getElementById('price').value) || 0;
+                const daysCount = selectedJobDates.length;
+                const calculatedDailyPrice = (totalInputPrice / daysCount).toFixed(2);
+
                 const newJobData = {
                     groupId: groupId,
                     dates: selectedJobDates,
                     title: document.getElementById('title').value || 'Repair Service',
-                    price: document.getElementById('price').value,
+                    totalPrice: totalInputPrice,
+                    dailyPrice: calculatedDailyPrice,
+                    price: totalInputPrice,
                     time: selectedStartTime,
                     client: document.getElementById('client').value,
                     phone: document.getElementById('phone').value,
@@ -1229,9 +1275,11 @@
                     photos: photoArray || [],
                     completed: false
                 };
+
                 selectedJobDates.forEach(dStr => {
                     db.ref(`jobs/${dStr}`).push(newJobData);
                 });
+
                 saveBtn.disabled = false;
                 saveBtn.innerText = "Сохранить заказ";
                 document.getElementById('job-form').reset();
