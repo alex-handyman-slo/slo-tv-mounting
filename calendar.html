@@ -16,6 +16,7 @@
             --border-color: #e5e9eb;
             --success: #2e7d32;
             --pending: #ed6c02;
+            --danger: #d32f2f;
         }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
         body { background-color: var(--bg-gray); color: var(--text-dark); padding-bottom: 40px; }
@@ -57,7 +58,7 @@
         .btn-clients { background: white; color: var(--primary); border: 2px solid var(--primary); padding: 12px; border-radius: 8px; width: 100%; font-size: 16px; font-weight: 600; margin-top: 8px; cursor: pointer; }
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); justify-content: center; align-items: flex-end; z-index: 1000; }
         .modal-content { background: white; width: 100%; max-height: 92vh; border-top-left-radius: 16px; border-top-right-radius: 16px; padding: 20px; overflow-y: auto; }
-        .modal-header { font-size: 18px; font-weight: 700; margin-bottom: 15px; display: flex; justify-content: space-between; }
+        .modal-header { font-size: 18px; font-weight: 700; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; }
         .close-btn { cursor: pointer; font-size: 22px; color: #888; }
         
         .form-group { margin-bottom: 15px; }
@@ -80,8 +81,16 @@
         .clickable-link { color: var(--primary); text-decoration: none; font-weight: 600; cursor: pointer; }
         .btn-grid-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 15px; }
         .photos-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 8px; }
+        .photo-thumb-wrapper { position: relative; display: inline-block; }
         .photo-thumb { width: 100%; height: 90px; object-fit: cover; border-radius: 8px; border: 1px solid var(--border-color); cursor: pointer; }
-        
+        .photo-delete-btn { position: absolute; top: 4px; right: 4px; background: rgba(211, 47, 47, 0.9); color: white; border: none; border-radius: 50%; width: 22px; height: 22px; font-size: 12px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+
+        .client-item { padding: 14px; border-bottom: 1px solid var(--border-color); font-weight: 600; font-size: 16px; cursor: pointer; color: var(--primary); }
+        .client-item:hover { background: #f0f4f8; }
+
+        .task-builder-card { background: #f8fafc; border: 1px solid var(--border-color); border-radius: 10px; padding: 15px; margin-bottom: 15px; position: relative; }
+        .remove-task-btn { position: absolute; top: 10px; right: 10px; background: var(--danger); color: white; border: none; border-radius: 50%; width: 26px; height: 26px; font-weight: bold; cursor: pointer; font-size: 14px; }
+
         /* ESTIMATE STYLES */
         .estimate-paper { background: #fff; border: 1px solid #ccc; border-radius: 8px; padding: 25px 30px; color: #111; box-shadow: 0 4px 12px rgba(0,0,0,0.08); width: 100%; box-sizing: border-box; }
         .estimate-header-wrapper { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 2px solid #0f2c59; padding-bottom: 15px; margin-bottom: 15px; }
@@ -90,7 +99,6 @@
         .estimate-doc-title { font-size: 26px; font-weight: 900; color: #0f2c59; text-align: right; }
         .estimate-meta-right { font-size: 12px; color: #475569; text-align: right; line-height: 1.4; margin-top: 4px; }
         
-        /* HORIZONTAL TIERS / TABLE LAYOUT */
         .horizontal-options-table { width: 100%; border-collapse: collapse; margin: 15px 0; }
         .horizontal-options-table th { background: #f1f5f9; text-align: left; padding: 10px; font-size: 12px; border-bottom: 2px solid #cbd5e1; color: #334155; }
         .horizontal-options-table td { padding: 12px 10px; border-bottom: 1px solid #e2e8f0; font-size: 13px; vertical-align: top; }
@@ -160,7 +168,7 @@
                 <span>Список клиентов</span>
                 <span class="close-btn" onclick="closeModal('clients-modal')">&times;</span>
             </div>
-            <input type="text" class="search-box" id="client-search-input" placeholder="🔍 Поиск по имени или телефону..." oninput="renderClientsList()">
+            <input type="text" class="search-box" id="client-search-input" placeholder="🔍 Поиск по имени или телефону..." oninput="renderClientsList()" style="width:100%; padding:10px; margin-bottom:12px; border:1px solid #ccc; border-radius:6px;">
             <div id="clients-list-container"></div>
         </div>
     </div>
@@ -216,48 +224,6 @@
                     </div>
                 </div>
 
-                <!-- 3 ВАРИАНТА ПРЕДЛОЖЕНИЯ (ESTIMATE TIERS) -->
-                <div style="margin-bottom:15px; border-top:1px solid #ddd; padding-top:10px;">
-                    <label style="font-size:14px; font-weight:700; color:var(--primary); margin-bottom:8px; display:block;">Варианты предложения (Estimate)</label>
-                    
-                    <!-- Вариант 1 (Минимальная цена) -->
-                    <div class="option-box">
-                        <div class="option-header">
-                            <span>1. Минимальный вариант (Бюджет)</span>
-                        </div>
-                        <div style="display:grid; grid-template-columns: 2fr 1fr; gap:6px; margin-bottom:6px;">
-                            <input type="text" id="opt1_title" placeholder="Название (напр. Basic Repair)" style="padding:8px;">
-                            <input type="number" id="opt1_price" placeholder="Цена $" style="padding:8px;">
-                        </div>
-                        <textarea id="opt1_desc" rows="2" placeholder="Описание базовой работы..." style="padding:8px; font-size:13px;"></textarea>
-                    </div>
-
-                    <!-- Вариант 2 (Рекомендуемый - Посередине) -->
-                    <div class="option-box" style="border:2px solid var(--primary);">
-                        <div class="option-header">
-                            <span>2. РЕКОМЕНДУЕМЫЙ ВАРИАНТ (Стандарт)</span>
-                            <span style="font-size:11px; background:var(--primary); color:white; padding:2px 6px; border-radius:4px;">RECOMMENDED</span>
-                        </div>
-                        <div style="display:grid; grid-template-columns: 2fr 1fr; gap:6px; margin-bottom:6px;">
-                            <input type="text" id="opt2_title" placeholder="Название (напр. Standard Fix)" style="padding:8px;">
-                            <input type="number" id="opt2_price" placeholder="Цена $" style="padding:8px;">
-                        </div>
-                        <textarea id="opt2_desc" rows="2" placeholder="Описание идеального варианта по цене и качеству..." style="padding:8px; font-size:13px;"></textarea>
-                    </div>
-
-                    <!-- Вариант 3 (Премиум) -->
-                    <div class="option-box">
-                        <div class="option-header">
-                            <span>3. Премиум вариант (Максимум)</span>
-                        </div>
-                        <div style="display:grid; grid-template-columns: 2fr 1fr; gap:6px; margin-bottom:6px;">
-                            <input type="text" id="opt3_title" placeholder="Название (напр. Full Replacement)" style="padding:8px;">
-                            <input type="number" id="opt3_price" placeholder="Цена $" style="padding:8px;">
-                        </div>
-                        <textarea id="opt3_desc" rows="2" placeholder="Описание премиум работы с гарантией..." style="padding:8px; font-size:13px;"></textarea>
-                    </div>
-                </div>
-
                 <div class="form-group">
                     <label>Время начала работы</label>
                     <div class="time-picker-grid" id="start-time-grid"></div>
@@ -272,12 +238,19 @@
                 </div>
                 <div class="form-group">
                     <label>Адрес объекта (с автоподсказкой Google Maps)</label>
-                    <input type="text" id="address" placeholder="Введите адрес (например, 484 Stimson...)">
+                    <input type="text" id="address" placeholder="Введите адрес...">
+                </div>
+
+                <!-- Управление прикреплёнными фото при редактировании -->
+                <div class="form-group">
+                    <label>Прикреплённые фото</label>
+                    <div id="existing-photos-container" class="photos-grid"></div>
                 </div>
                 <div class="form-group">
-                    <label>Прикрепить фото (до 5 шт)</label>
+                    <label>Добавить новые фото</label>
                     <input type="file" id="photo-files" accept="image/*" multiple style="padding: 8px;">
                 </div>
+
                 <button type="submit" class="btn-add" id="save-btn">Сохранить заказ</button>
             </form>
         </div>
@@ -294,14 +267,23 @@
         </div>
     </div>
 
-    <!-- Модальное окно генерации Estimate -->
+    <!-- Модальное окно генерации Estimate с конструктором работ -->
     <div class="modal" id="estimate-modal">
         <div class="modal-content" style="max-width: 850px; margin: 0 auto; background: #f0f2f5;">
             <div class="modal-header no-print">
-                <span>Estimate Document</span>
+                <span>Сформировать Estimate</span>
                 <span class="close-btn" onclick="closeModal('estimate-modal')">&times;</span>
             </div>
+            
+            <!-- Конструктор работ для Estimate (скрывается при печати) -->
+            <div id="estimate-builder-section" class="no-print" style="margin-bottom: 20px;">
+                <div id="estimate-tasks-container"></div>
+                <button type="button" class="btn-add" style="background:#008b99; margin-bottom: 15px;" onclick="addEstimateTaskBlock()">+ Добавить ещё одну работу</button>
+                <button type="button" class="btn-add" style="background:var(--primary);" onclick="renderEstimateFromBuilder()">Обновить предпросмотр Estimate ↻</button>
+            </div>
+
             <div id="estimate-paper-body"></div>
+            
             <div class="no-print" style="margin-top: 15px; display: flex; gap: 8px; flex-wrap: wrap;">
                 <button class="btn-add" id="translate-estimate-btn" style="background:#0288d1; flex: 1;" onclick="translateEstimateDetails()">🌐 Translate Everything</button>
                 <button class="btn-add" style="background:#0f2c59; flex: 1;" onclick="window.print()">🖨 Print / Save PDF</button>
@@ -326,6 +308,8 @@
         let existingPhotos = [];
         let currentEstimateJob = null;
         let currentTranslatedClient = null;
+        let estimateTasksList = [];
+
         const timeSlots = ["7:00 am", "7:30 am", "8:00 am", "8:30 am", "9:00 am", "9:30 am", "10:00 am", "10:30 am", "11:00 am", "11:30 am", "12:00 pm", "12:30 pm", "1:00 pm", "1:30 pm", "2:00 pm", "2:30 pm", "3:00 pm", "3:30 pm", "4:00 pm", "4:30 pm", "5:00 pm", "5:30 pm", "6:00 pm", "6:30 pm"];
 
         window.addEventListener('load', () => {
@@ -505,7 +489,7 @@
                 
                 const dayPrice = parseFloat(job.dailyPrice || job.price || 0);
                 const dayMat = parseFloat(job.dailyMaterials || 0);
-                const netEarned = dayPrice - dayMat; // Чистый заработок
+                const netEarned = dayPrice - dayMat;
                 
                 const statusHtml = job.completed 
                     ? `<span class="status-badge completed">✓ Выполнено ($${netEarned.toFixed(2)} чистыми)</span>` 
@@ -533,14 +517,14 @@
             const clients = {};
             Object.keys(jobsData).forEach(dateStr => {
                 Object.values(jobsData[dateStr]).forEach(job => {
-                    if (job.client && job.client.trim() !== '') {
-                        const nameKey = job.client.trim();
-                        if (!clients[nameKey]) {
-                            clients[nameKey] = { name: nameKey, phone: job.phone || '', address: job.address || '', jobsCount: 0 };
+                    const clientName = (job.client && job.client.trim()) ? job.client.trim() : (job.phone || '').trim();
+                    if (clientName) {
+                        if (!clients[clientName]) {
+                            clients[clientName] = { displayName: clientName, name: job.client || '', phone: job.phone || '', address: job.address || '', jobsCount: 0 };
                         }
-                        if (job.phone) clients[nameKey].phone = job.phone;
-                        if (job.address) clients[nameKey].address = job.address;
-                        clients[nameKey].jobsCount++;
+                        if (job.phone) clients[clientName].phone = job.phone;
+                        if (job.address) clients[clientName].address = job.address;
+                        clients[clientName].jobsCount++;
                     }
                 });
             });
@@ -558,33 +542,27 @@
             const searchQuery = document.getElementById('client-search-input').value.toLowerCase().trim();
             const clients = getAllClients();
             container.innerHTML = '';
-            const filteredNames = Object.keys(clients).sort().filter(name => name.toLowerCase().includes(searchQuery) || clients[name].phone.toLowerCase().includes(searchQuery));
-            if (filteredNames.length === 0) {
+            const filteredKeys = Object.keys(clients).sort().filter(key => key.toLowerCase().includes(searchQuery));
+            if (filteredKeys.length === 0) {
                 container.innerHTML = '<p style="text-align:center; color:#888; padding:20px;">Клиенты не найдены</p>';
                 return;
             }
-            filteredNames.forEach(name => {
-                const c = clients[name];
-                const card = document.createElement('div');
-                card.className = 'client-card';
-                card.onclick = () => openClientHistoryModal(c.name);
-                card.innerHTML = `
-                    <div>
-                        <div class="client-info-name">👤 ${c.name}</div>
-                        <div class="client-info-sub">${c.phone ? '📞 ' + c.phone : 'Телефон не указан'}</div>
-                        <div class="client-info-sub">${c.address ? '📍 ' + c.address : 'Адрес не указан'}</div>
-                    </div>
-                    <div style="font-size: 13px; font-weight: bold; color: var(--primary);">Заказов: ${c.jobsCount} ❯</div>
-                `;
-                container.appendChild(card);
+            filteredKeys.forEach(key => {
+                const c = clients[key];
+                const item = document.createElement('div');
+                item.className = 'client-item';
+                item.onclick = () => openClientHistoryModal(c.displayName);
+                item.innerText = c.displayName;
+                container.appendChild(item);
             });
         }
 
-        function openClientHistoryModal(clientName) {
+        function openClientHistoryModal(clientKey) {
             const clients = getAllClients();
-            const clientInfo = clients[clientName] || { name: clientName, phone: '', address: '' };
-            document.getElementById('client-history-title').innerText = clientName;
+            const clientInfo = clients[clientKey] || { name: clientKey, phone: '', address: '' };
+            document.getElementById('client-history-title').innerText = clientInfo.name || clientInfo.phone || 'Клиент';
             document.getElementById('client-details-summary').innerHTML = `
+                <div><strong>Имя:</strong> ${clientInfo.name || '—'}</div>
                 <div><strong>Телефон:</strong> ${clientInfo.phone ? `<a href="tel:${clientInfo.phone}">${clientInfo.phone}</a>` : '—'}</div>
                 <div><strong>Адрес:</strong> ${clientInfo.address ? clientInfo.address : '—'}</div>
             `;
@@ -594,7 +572,9 @@
             Object.keys(jobsData).forEach(dStr => {
                 Object.keys(jobsData[dStr]).forEach(id => {
                     const job = jobsData[dStr][id];
-                    if (job.client && job.client.trim().toLowerCase() === clientName.toLowerCase()) {
+                    const matchName = job.client && job.client.trim().toLowerCase() === clientKey.toLowerCase();
+                    const matchPhone = job.phone && job.phone.trim().toLowerCase() === clientKey.toLowerCase();
+                    if (matchName || matchPhone) {
                         clientJobs.push({ id, date: dStr, ...job });
                     }
                 });
@@ -639,6 +619,29 @@
             document.getElementById('address').value = clientInfo.address || '';
         }
 
+        function renderExistingPhotosInForm() {
+            const container = document.getElementById('existing-photos-container');
+            container.innerHTML = '';
+            if(!existingPhotos || existingPhotos.length === 0) {
+                container.innerHTML = '<span style="font-size:12px; color:#888;">Нет загруженных фото</span>';
+                return;
+            }
+            existingPhotos.forEach((pUrl, index) => {
+                const wrapper = document.createElement('div');
+                wrapper.className = 'photo-thumb-wrapper';
+                wrapper.innerHTML = `
+                    <img src="${pUrl}" class="photo-thumb" onclick="openPhotoViewer('${pUrl}', event)">
+                    <button type="button" class="photo-delete-btn" onclick="removePhotoFromForm(${index})">✕</button>
+                `;
+                container.appendChild(wrapper);
+            });
+        }
+
+        function removePhotoFromForm(index) {
+            existingPhotos.splice(index, 1);
+            renderExistingPhotosInForm();
+        }
+
         function openAddModal(editingJobData = null, rawId = null, isDuplicate = false) {
             document.getElementById('job-form').reset();
             existingPhotos = [];
@@ -657,22 +660,8 @@
                 document.getElementById('client').value = editingJobData.client || '';
                 document.getElementById('phone').value = editingJobData.phone || '';
                 document.getElementById('address').value = editingJobData.address || '';
-                
-                if(editingJobData.options) {
-                    document.getElementById('opt1_title').value = editingJobData.options[0]?.title || '';
-                    document.getElementById('opt1_price').value = editingJobData.options[0]?.price || '';
-                    document.getElementById('opt1_desc').value = editingJobData.options[0]?.desc || '';
-                    
-                    document.getElementById('opt2_title').value = editingJobData.options[1]?.title || '';
-                    document.getElementById('opt2_price').value = editingJobData.options[1]?.price || '';
-                    document.getElementById('opt2_desc').value = editingJobData.options[1]?.desc || '';
-                    
-                    document.getElementById('opt3_title').value = editingJobData.options[2]?.title || '';
-                    document.getElementById('opt3_price').value = editingJobData.options[2]?.price || '';
-                    document.getElementById('opt3_desc').value = editingJobData.options[2]?.desc || '';
-                }
                 selectedStartTime = editingJobData.time || "8:00 am";
-                existingPhotos = isDuplicate ? [] : (editingJobData.photos || []);
+                existingPhotos = isDuplicate ? [] : [...(editingJobData.photos || [])];
             } else {
                 editingJobId = null; editingJobGroupId = null;
                 selectedJobDates = [selectedDateStr];
@@ -680,6 +669,8 @@
                 document.getElementById('title').value = 'Repair Services';
             }
             
+            renderExistingPhotosInForm();
+
             if(selectedJobDates.length > 0) {
                 const [y, m] = selectedJobDates[0].split('-').map(Number);
                 formViewDate = new Date(y, m - 1, 1);
@@ -698,8 +689,14 @@
             const dayMat = parseFloat(job.dailyMaterials || 0);
             const netEarned = dayPrice - dayMat;
             
+            let clientGreeting = job.client ? `Hi ${job.client}, ` : "Hi, ";
+            const smsText = `${clientGreeting}`;
             const smsButtonHtml = job.phone 
-                ? `<button class="btn-action" style="background:#2e7d32; color:white;" onclick="window.location.href='sms:${job.phone}'">💬 Написать SMS</button>` 
+                ? `<button class="btn-action" style="background:#2e7d32; color:white;" onclick="window.location.href='sms:${job.phone}?body=${encodeURIComponent(smsText)}'">💬 Написать SMS</button>` 
+                : '';
+
+            let photosHtml = job.photos && job.photos.length > 0 
+                ? `<div class="detail-row"><div class="detail-label">Фотографии заказа</div><div class="photos-grid">` + job.photos.map(p => `<img src="${p}" class="photo-thumb" onclick="openPhotoViewer('${p}', event)">`).join('') + `</div></div>`
                 : '';
 
             body.innerHTML = `
@@ -726,8 +723,9 @@
                     <div class="detail-label">Адрес</div>
                     <div class="detail-value">${job.address ? `<a href="https://maps.google.com/?q=${encodeURIComponent(job.address)}" target="_blank" class="clickable-link">📍 ${job.address}</a>` : 'Не указан'}</div>
                 </div>
+                ${photosHtml}
                 ${smsButtonHtml}
-                <button class="btn-action" style="background:#008b99; color:white; border:none; margin-top:10px; font-size:15px; font-weight:700;" onclick="generateEstimate(${JSON.stringify(job).replace(/"/g, '&quot;')})">📄 Сформировать Estimate</button>
+                <button class="btn-action" style="background:#008b99; color:white; border:none; margin-top:10px; font-size:15px; font-weight:700;" onclick="openEstimateBuilderModal(${JSON.stringify(job).replace(/"/g, '&quot;')})">📄 Сформировать Estimate</button>
                 <div class="btn-grid-actions">
                     <button class="btn-action" style="background:#0f2c59; color:white;" onclick="openAddModal(${JSON.stringify(job).replace(/"/g, '&quot;')}, '${id}', false)">✏️ Редактировать</button>
                     <button class="btn-action" style="background:#2e7d32; color:white;" onclick="openAddModal(${JSON.stringify(job).replace(/"/g, '&quot;')}, '${id}', true)">➕ Ещё заказ</button>
@@ -737,7 +735,87 @@
             document.getElementById('details-modal').style.display = 'flex';
         }
 
-        /* FORMAT MONOSPACED NUMBERS FOR EXACT RIGHT-ALIGNMENT */
+        /* ESTIMATE BUILDER & GENERATION */
+        function openEstimateBuilderModal(job) {
+            currentEstimateJob = job;
+            estimateTasksList = [];
+            if (job.estimateTasks && job.estimateTasks.length > 0) {
+                estimateTasksList = JSON.parse(JSON.stringify(job.estimateTasks));
+            } else {
+                estimateTasksList = [{
+                    taskTitle: job.title || "Main Repair Work",
+                    options: [
+                        { title: "Basic Option", price: job.totalPrice || job.price || 100, desc: "" },
+                        { title: "Standard Option", price: job.totalPrice || job.price || 100, desc: "" },
+                        { title: "Premium Option", price: job.totalPrice || job.price || 100, desc: "" }
+                    ]
+                }];
+            }
+            renderEstimateTaskBlocks();
+            renderEstimateFromBuilder();
+            document.getElementById('estimate-modal').style.display = 'flex';
+        }
+
+        function addEstimateTaskBlock() {
+            estimateTasksList.push({
+                taskTitle: "Additional Job #" + (estimateTasksList.length + 1),
+                options: [
+                    { title: "Basic Option", price: 50, desc: "" },
+                    { title: "Standard Option", price: 100, desc: "" },
+                    { title: "Premium Option", price: 150, desc: "" }
+                ]
+            });
+            renderEstimateTaskBlocks();
+        }
+
+        function removeEstimateTaskBlock(index) {
+            estimateTasksList.splice(index, 1);
+            renderEstimateTaskBlocks();
+        }
+
+        function renderEstimateTaskBlocks() {
+            const container = document.getElementById('estimate-tasks-container');
+            container.innerHTML = '';
+            estimateTasksList.forEach((task, tIndex) => {
+                const card = document.createElement('div');
+                card.className = 'task-builder-card';
+                
+                let removeBtn = (estimateTasksList.length > 1) 
+                    ? `<button type="button" class="remove-task-btn" onclick="removeEstimateTaskBlock(${tIndex})">✕</button>` 
+                    : '';
+                
+                card.innerHTML = `
+                    ${removeBtn}
+                    <div class="form-group" style="margin-bottom:10px;">
+                        <label style="color:var(--primary); font-size:14px; font-weight:700;">Работа №${tIndex + 1}</label>
+                        <input type="text" value="${task.taskTitle}" onchange="estimateTasksList[${tIndex}].taskTitle = this.value" placeholder="Название работы (напр. Fence Painting)">
+                    </div>
+                    
+                    <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:8px;">
+                        <div class="option-box" style="margin:0;">
+                            <div class="option-header" style="font-size:11px;">1. Бюджет</div>
+                            <input type="text" value="${task.options[0].title}" onchange="estimateTasksList[${tIndex}].options[0].title = this.value" placeholder="Название" style="padding:4px; font-size:12px; margin-bottom:4px; width:100%;">
+                            <input type="number" value="${task.options[0].price}" onchange="estimateTasksList[${tIndex}].options[0].price = parseFloat(this.value)|0" placeholder="Цена $" style="padding:4px; font-size:12px; margin-bottom:4px; width:100%;">
+                            <textarea onchange="estimateTasksList[${tIndex}].options[0].desc = this.value" placeholder="Описание" style="padding:4px; font-size:11px; width:100%;" rows="2">${task.options[0].desc}</textarea>
+                        </div>
+                        <div class="option-box" style="margin:0; border:2px solid var(--primary);">
+                            <div class="option-header" style="font-size:11px;">2. Стандарт ⭐</div>
+                            <input type="text" value="${task.options[1].title}" onchange="estimateTasksList[${tIndex}].options[1].title = this.value" placeholder="Название" style="padding:4px; font-size:12px; margin-bottom:4px; width:100%;">
+                            <input type="number" value="${task.options[1].price}" onchange="estimateTasksList[${tIndex}].options[1].price = parseFloat(this.value)|0" placeholder="Цена $" style="padding:4px; font-size:12px; margin-bottom:4px; width:100%;">
+                            <textarea onchange="estimateTasksList[${tIndex}].options[1].desc = this.value" placeholder="Описание" style="padding:4px; font-size:11px; width:100%;" rows="2">${task.options[1].desc}</textarea>
+                        </div>
+                        <div class="option-box" style="margin:0;">
+                            <div class="option-header" style="font-size:11px;">3. Премиум</div>
+                            <input type="text" value="${task.options[2].title}" onchange="estimateTasksList[${tIndex}].options[2].title = this.value" placeholder="Название" style="padding:4px; font-size:12px; margin-bottom:4px; width:100%;">
+                            <input type="number" value="${task.options[2].price}" onchange="estimateTasksList[${tIndex}].options[2].price = parseFloat(this.value)|0" placeholder="Цена $" style="padding:4px; font-size:12px; margin-bottom:4px; width:100%;">
+                            <textarea onchange="estimateTasksList[${tIndex}].options[2].desc = this.value" placeholder="Описание" style="padding:4px; font-size:11px; width:100%;" rows="2">${task.options[2].desc}</textarea>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
         function formatMonospacedPrice(amount) {
             const num = parseFloat(amount || 0).toFixed(2);
             const parts = num.split('.');
@@ -745,13 +823,13 @@
             return `$${dollars}.${parts[1]}`;
         }
 
-        /* GENERATE ESTIMATE WITH HORIZONTAL LAYOUT AND MIDDLE RECOMMENDED OPTION */
-        function generateEstimate(job, customData = null) {
-            currentEstimateJob = job;
+        function renderEstimateFromBuilder(customTasks = null) {
+            const job = currentEstimateJob;
+            if(!job) return;
             const paper = document.getElementById('estimate-paper-body');
             const today = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
             
-            const clientName = customData?.client || job.client || 'Customer';
+            const clientName = job.client || 'Customer';
             currentTranslatedClient = clientName;
             let serviceDateText = selectedDateStr;
             if (job.dates && job.dates.length > 1) {
@@ -759,23 +837,43 @@
                 serviceDateText = `${sortedDates[0]} — ${sortedDates[sortedDates.length - 1]}`;
             }
 
-            const options = customData?.options || job.options || [];
-            let optionsRowsHtml = '';
+            const tasksToRender = customTasks || estimateTasksList;
+            let tablesHtml = '';
 
-            options.forEach((opt, idx) => {
-                if (!opt.title || opt.title.trim() === '') return;
-                const isRecommended = (idx === 1); // Средний вариант (№2) — рекомендованный
-                const recBadge = isRecommended ? '<span style="background:#0f2c59; color:#fff; font-size:10px; padding:2px 6px; border-radius:3px; margin-left:6px;">RECOMMENDED</span>' : '';
-                const formattedPrice = formatMonospacedPrice(opt.price || job.totalPrice || job.price);
-                
-                optionsRowsHtml += `
-                    <tr class="${isRecommended ? 'recommended-row' : ''}">
-                        <td>
-                            <strong style="color:#0f2c59; font-size:14px;">${opt.title}</strong>${recBadge}
-                            <div style="color:#64748b; font-size:12px; margin-top:4px; white-space:pre-wrap;">${opt.desc || ''}</div>
-                        </td>
-                        <td class="price-align">${formattedPrice}</td>
-                    </tr>
+            tasksToRender.forEach((task, tIdx) => {
+                let optionsRowsHtml = '';
+                task.options.forEach((opt, idx) => {
+                    if (!opt.title || opt.title.trim() === '') return;
+                    const isRecommended = (idx === 1);
+                    const recBadge = isRecommended ? '<span style="background:#0f2c59; color:#fff; font-size:10px; padding:2px 6px; border-radius:3px; margin-left:6px;">RECOMMENDED</span>' : '';
+                    const formattedPrice = formatMonospacedPrice(opt.price);
+                    
+                    optionsRowsHtml += `
+                        <tr class="${isRecommended ? 'recommended-row' : ''}">
+                            <td>
+                                <strong style="color:#0f2c59; font-size:13px;">${opt.title}</strong>${recBadge}
+                                <div style="color:#64748b; font-size:12px; margin-top:2px; white-space:pre-wrap;">${opt.desc || ''}</div>
+                            </td>
+                            <td class="price-align">${formattedPrice}</td>
+                        </tr>
+                    `;
+                });
+
+                tablesHtml += `
+                    <div style="margin-top: 15px; font-weight:800; font-size:14px; color:#0f2c59; border-bottom:1px solid #0f2c59; padding-bottom:4px;">
+                        TASK #${tIdx + 1}: ${task.taskTitle.toUpperCase()}
+                    </div>
+                    <table class="horizontal-options-table" style="margin-top:5px;">
+                        <thead>
+                            <tr>
+                                <th>OPTION / DESCRIPTION OF WORK</th>
+                                <th style="text-align: right; width: 140px;">AMOUNT (USD)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${optionsRowsHtml}
+                        </tbody>
+                    </table>
                 `;
             });
 
@@ -805,17 +903,7 @@
                         ${job.address ? 'Address: ' + job.address : ''}
                     </div>
 
-                    <table class="horizontal-options-table">
-                        <thead>
-                            <tr>
-                                <th>OPTION / DESCRIPTION OF WORK</th>
-                                <th style="text-align: right; width: 140px;">AMOUNT (USD)</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            ${optionsRowsHtml}
-                        </tbody>
-                    </table>
+                    ${tablesHtml}
 
                     <div style="margin-top: 20px; border-top: 1px solid #e2e8f0; padding-top: 10px; font-size: 11px; color: #64748b; line-height: 1.4;">
                         <strong>TERMS & NOTES:</strong><br>
@@ -827,7 +915,6 @@
                     </div>
                 </div>
             `;
-            document.getElementById('estimate-modal').style.display = 'flex';
         }
 
         async function translateEstimateDetails() {
@@ -835,28 +922,23 @@
             const btn = document.getElementById('translate-estimate-btn');
             btn.innerText = "⏳ Translating..."; btn.disabled = true;
             try {
-                let transTitle = await fetchTranslation(currentEstimateJob.title);
-                let transDesc = await fetchTranslation(currentEstimateJob.desc);
-                let transClient = await fetchTranslation(currentEstimateJob.client);
-                let translatedOpts = [];
-                if (currentEstimateJob.options) {
-                    for (let opt of currentEstimateJob.options) {
-                        translatedOpts.push({
+                let translatedTasks = [];
+                for (let task of estimateTasksList) {
+                    let transTaskTitle = await fetchTranslation(task.taskTitle);
+                    let transOpts = [];
+                    for (let opt of task.options) {
+                        transOpts.push({
                             title: await fetchTranslation(opt.title),
                             price: opt.price,
                             desc: await fetchTranslation(opt.desc)
                         });
                     }
+                    translatedTasks.push({ taskTitle: transTaskTitle, options: transOpts });
                 }
-                generateEstimate(currentEstimateJob, {
-                    title: transTitle,
-                    desc: transDesc,
-                    client: transClient,
-                    options: translatedOpts
-                });
+                renderEstimateFromBuilder(translatedTasks);
                 btn.innerText = "✓ Translated!";
             } catch(e) {
-                alert('Translation finished.');
+                alert('Translation complete.');
             } finally {
                 btn.disabled = false;
             }
@@ -877,8 +959,8 @@
                 alert('У этого клиента не указан номер телефона!');
                 return;
             }
-            const clientName = currentTranslatedClient || 'Customer';
-            const smsText = `Hello ${clientName}! As requested, I am sending you the estimate for the work. Please find the document attached. Thank you!`;
+            const clientName = currentEstimateJob.client ? ` ${currentEstimateJob.client}` : '';
+            const smsText = `Hi${clientName}, as requested, I am sending you the estimate for the work. Please find the details attached. Thank you!`;
             window.location.href = `sms:${currentEstimateJob.phone}?body=${encodeURIComponent(smsText)}`;
         }
 
@@ -962,24 +1044,6 @@
                 const dailyPrice = (totalPrice / daysCount).toFixed(2);
                 const dailyMaterials = (materialsPrice / daysCount).toFixed(2);
 
-                const optionsArr = [
-                    {
-                        title: document.getElementById('opt1_title').value || "Basic Repair Option",
-                        price: parseFloat(document.getElementById('opt1_price').value) || totalPrice,
-                        desc: document.getElementById('opt1_desc').value
-                    },
-                    {
-                        title: document.getElementById('opt2_title').value || document.getElementById('title').value,
-                        price: parseFloat(document.getElementById('opt2_price').value) || totalPrice,
-                        desc: document.getElementById('opt2_desc').value
-                    },
-                    {
-                        title: document.getElementById('opt3_title').value || "Premium Option",
-                        price: parseFloat(document.getElementById('opt3_price').value) || totalPrice,
-                        desc: document.getElementById('opt3_desc').value
-                    }
-                ];
-
                 const newJobData = {
                     groupId: groupId,
                     dates: selectedJobDates,
@@ -993,7 +1057,6 @@
                     client: document.getElementById('client').value,
                     phone: document.getElementById('phone').value,
                     address: document.getElementById('address').value,
-                    options: optionsArr,
                     photos: photoArray || [],
                     completed: false
                 };
