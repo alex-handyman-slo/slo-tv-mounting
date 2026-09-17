@@ -52,9 +52,11 @@
         .status-badge { display: inline-block; font-size: 11px; padding: 2px 8px; border-radius: 4px; font-weight: 600; margin-bottom: 6px; }
         .status-badge.completed { background: #e8f5e9; color: var(--success); }
         .status-badge.pending { background: #fff3e0; color: var(--pending); }
+        
         .btn-action { display: inline-block; width: 100%; padding: 10px; border: 1px solid var(--primary); color: var(--primary); background: white; border-radius: 6px; text-align: center; font-weight: 600; text-decoration: none; font-size: 14px; margin-top: 6px; cursor: pointer; }
         .btn-add { background: var(--primary); color: white; border: none; padding: 14px; border-radius: 8px; width: 100%; font-size: 16px; font-weight: 600; margin-top: 10px; cursor: pointer; }
         .btn-clients { background: white; color: var(--primary); border: 2px solid var(--primary); padding: 12px; border-radius: 8px; width: 100%; font-size: 16px; font-weight: 600; margin-top: 8px; cursor: pointer; }
+        
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); justify-content: center; align-items: flex-end; z-index: 1000; }
         .modal-content { background: white; width: 100%; max-height: 92vh; border-top-left-radius: 16px; border-top-right-radius: 16px; padding: 20px; overflow-y: auto; }
         .modal-header { font-size: 18px; font-weight: 700; margin-bottom: 15px; display: flex; justify-content: space-between; }
@@ -81,27 +83,24 @@
         .date-chip.selected { background: var(--primary); color: white; border-color: var(--primary); }
         
         /* ESTIMATE STYLES */
-        .estimate-paper { background: #fff; border: 2px solid #0f2c59; border-radius: 8px; padding: 25px; color: #000; box-shadow: 0 4px 12px rgba(0,0,0,0.08); width: 100%; box-sizing: border-box; }
+        .estimate-paper { background: #fff; border: 2px solid #0f2c59; border-radius: 8px; padding: 20px; color: #000; box-shadow: 0 4px 12px rgba(0,0,0,0.08); width: 100%; box-sizing: border-box; }
         .estimate-header-wrapper { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 3px solid #0f2c59; padding-bottom: 12px; margin-bottom: 15px; }
-        .logo-and-brand { display: flex; align-items: center; gap: 10px; }
-        .logo-img { height: 45px; width: auto; object-fit: contain; }
-        .contractor-meta { font-size: 11px; color: #333; line-height: 1.35; margin-top: 6px; }
-        .estimate-doc-title { font-size: 26px; font-weight: 900; color: #0f2c59; text-align: right; }
+        .contractor-meta { font-size: 11px; color: #333; line-height: 1.35; margin-top: 4px; }
+        .estimate-doc-title { font-size: 24px; font-weight: 900; color: #0f2c59; text-align: right; }
         .estimate-meta-right { font-size: 12px; color: #333; text-align: right; line-height: 1.4; margin-top: 4px; }
 
         .works-list-table { width: 100%; border-collapse: collapse; margin: 15px 0; }
-        .works-list-table th { background: #0f2c59; color: white; text-align: left; padding: 8px 10px; font-size: 12px; }
         .works-list-table td { padding: 10px; border-bottom: 1px solid #cbd5e1; font-size: 13px; vertical-align: top; }
-        .work-img-preview { width: 90px; height: 90px; object-fit: cover; border-radius: 6px; border: 1px solid #0f2c59; margin-right: 12px; float: left; }
+        .work-img-preview { width: 80px; height: 80px; object-fit: cover; border-radius: 6px; border: 1px solid #0f2c59; margin-right: 12px; float: left; }
 
         .options-container-vertical { display: flex; flex-direction: column; gap: 10px; margin: 20px 0; }
-        .option-card-vertical { border: 1.5px solid #0f2c59; border-radius: 8px; padding: 12px 15px; background: #fff; position: relative; }
+        .option-card-vertical { border: 1.5px solid #0f2c59; border-radius: 8px; padding: 12px; background: #fff; position: relative; }
         .option-card-vertical.recommended { border: 3px solid #0f2c59; background: #f0f4f8; }
-        .recommend-badge { position: absolute; top: -11px; right: 15px; background: #0f2c59; color: white; font-size: 10px; font-weight: 800; padding: 2px 10px; border-radius: 10px; }
+        .recommend-badge { position: absolute; top: -11px; right: 15px; background: #0f2c59; color: white; font-size: 10px; font-weight: 800; padding: 2px 8px; border-radius: 10px; }
 
         .option-row-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; border-bottom: 1px solid #cbd5e1; padding-bottom: 4px; }
-        .option-doc-title { font-size: 15px; font-weight: 800; color: #0f2c59; }
-        .option-doc-price { font-size: 18px; font-weight: 900; color: #0f2c59; }
+        .option-doc-title { font-size: 14px; font-weight: 800; color: #0f2c59; }
+        .option-doc-price { font-size: 16px; font-weight: 900; color: #0f2c59; }
         .option-doc-desc { font-size: 12px; color: #222; line-height: 1.35; white-space: pre-wrap; }
 
         @media print {
@@ -180,11 +179,11 @@
                     <input type="text" id="title" required placeholder="Например: Door, Deck & Fence Repairs">
                 </div>
 
-                <!-- ДИНАМИЧЕСКИЙ СПИСОК РАБОТ С ФОТОГРАФИЯМИ -->
+                <!-- СПИСОК РАБОТ С ФОТОГРАФИЯМИ -->
                 <div style="margin-bottom:15px; border:1px solid var(--primary); padding:10px; border-radius:8px; background:#f8fafc;">
-                    <label style="font-size:14px; font-weight:700; color:var(--primary); margin-bottom:8px; display:block;">Работы по заказу (со своими фотографиями)</label>
+                    <label style="font-size:14px; font-weight:700; color:var(--primary); margin-bottom:8px; display:block;">Работы по заказу (с фотографиями)</label>
                     <div id="works-container"></div>
-                    <button type="button" class="btn-action" style="background:var(--primary); color:white;" onclick="addWorkItem()">+ Добавить работу с фотографией</button>
+                    <button type="button" class="btn-action" style="background:var(--primary); color:white;" onclick="addWorkItem()">+ Добавить работу с фото</button>
                 </div>
 
                 <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
@@ -198,7 +197,7 @@
                     </div>
                 </div>
 
-                <!-- 3 ВАРИАНТА ПРЕДЛОЖЕНИЯ (СРЕДНИЙ ПОСЕРЕДИНЕ - $3,200) -->
+                <!-- 3 ВАРИАНТА В ESTIMATE -->
                 <div style="margin-bottom:15px; border-top:2px solid var(--primary); padding-top:10px;">
                     <label style="font-size:14px; font-weight:700; color:var(--primary); margin-bottom:8px; display:block;">3 Варианта в Estimate (Дешёвый / Основной / Премиум)</label>
                     
@@ -214,7 +213,7 @@
                         <textarea id="opt1_desc" rows="2" placeholder="Описание..." style="font-size:13px;">Quick temporary fix / cosmetic patch only.</textarea>
                     </div>
 
-                    <!-- 2. СРЕДНИЙ РЕКОМЕНДУЕМЫЙ ($3,200 ПОСЕРЕДИНЕ) -->
+                    <!-- 2. СРЕДНИЙ РЕКОМЕНДУЕМЫЙ ($3,200) -->
                     <div class="option-box recommended">
                         <div class="option-header">
                             <span style="font-weight:800; color:var(--primary);">2. ОСНОВНОЙ РЕКОМЕНДУЕМЫЙ ВАРИАНТ</span>
@@ -222,7 +221,7 @@
                         </div>
                         <div style="display:grid; grid-template-columns: 2fr 1fr; gap:6px; margin-bottom:6px;">
                             <input type="text" id="opt2_title" value="Standard Full Repair & Restoration" placeholder="Название">
-                            <input type="number" id="opt2_price" value="3200" placeholder="Цена из основной цены" readonly style="background:#e2e8f0; font-weight:bold;">
+                            <input type="number" id="opt2_price" value="3200" readonly style="background:#e2e8f0; font-weight:bold;">
                         </div>
                         <textarea id="opt2_desc" rows="2" placeholder="Описание..." style="font-size:13px;">Complete standard repair using quality materials. Highly recommended for long-lasting results.</textarea>
                     </div>
@@ -249,7 +248,7 @@
                     <input type="text" id="client" placeholder="Имя клиента">
                 </div>
                 <div class="form-group">
-                    <label>Телефон (необязательно)</label>
+                    <label>Телефон клиента</label>
                     <input type="tel" id="phone" placeholder="Номер телефона">
                 </div>
                 <div class="form-group">
@@ -261,18 +260,18 @@
         </div>
     </div>
 
-    <!-- Модальное окно просмотра деталей -->
+    <!-- Модальное окно просмотра деталей заказа -->
     <div class="modal" id="details-modal">
         <div class="modal-content">
             <div class="modal-header">
-                <span>Детали заказа</span>
+                <span>Карточка заказа</span>
                 <span class="close-btn" onclick="closeModal('details-modal')">&times;</span>
             </div>
             <div id="job-details-body"></div>
         </div>
     </div>
 
-    <!-- Модальное окно генерации Estimate -->
+    <!-- Модальное окно просмотра Estimate -->
     <div class="modal" id="estimate-modal">
         <div class="modal-content" style="max-width: 850px; margin: 0 auto; background: #f0f2f5;">
             <div class="modal-header no-print">
@@ -281,9 +280,7 @@
             </div>
             <div id="estimate-paper-body"></div>
             <div class="no-print" style="margin-top: 15px; display: flex; gap: 8px; flex-wrap: wrap;">
-                <button class="btn-add" id="translate-estimate-btn" style="background:#0288d1; flex: 1;" onclick="translateEstimateDetails()">🌐 Translate Everything</button>
-                <button class="btn-add" style="background:#0f2c59; flex: 1;" onclick="window.print()">🖨 Print / Save PDF</button>
-                <button class="btn-add" id="send-sms-btn" style="background:#2e7d32; flex: 1;" onclick="sendEstimateSMS()">💬 Send SMS</button>
+                <button class="btn-add" style="background:#0f2c59; flex: 1;" onclick="window.print()">🖨 Распечатать / Сохранить PDF</button>
             </div>
         </div>
     </div>
@@ -295,14 +292,12 @@
                 <span>Список клиентов</span>
                 <span class="close-btn" onclick="closeModal('clients-modal')">&times;</span>
             </div>
-            <input type="text" class="search-box" style="width:100%; padding:10px; margin-bottom:10px;" id="client-search-input" placeholder="🔍 Поиск..." oninput="renderClientsList()">
+            <input type="text" class="search-box" style="width:100%; padding:12px; border:1px solid var(--border-color); border-radius:8px; margin-bottom:12px;" id="client-search-input" placeholder="🔍 Поиск по имени или адресу..." oninput="renderClientsList()">
             <div id="clients-list-container"></div>
         </div>
     </div>
 
     <script>
-        const LOGO_URL = "https://raw.githubusercontent.com/Aleksandr001001/alex-calendar/main/README.md"; 
-
         const firebaseConfig = { databaseURL: "https://alex-calendar-b4f04-default-rtdb.firebaseio.com" };
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
@@ -315,8 +310,6 @@
         let selectedJobDates = [];
         let editingJobId = null; 
         let editingJobGroupId = null;
-        let currentEstimateJob = null;
-        let currentWorkItems = [];
 
         const timeSlots = ["7:00 am", "7:30 am", "8:00 am", "8:30 am", "9:00 am", "9:30 am", "10:00 am", "10:30 am", "11:00 am", "11:30 am", "12:00 pm", "12:30 pm", "1:00 pm", "1:30 pm", "2:00 pm", "2:30 pm", "3:00 pm", "3:30 pm", "4:00 pm", "4:30 pm", "5:00 pm", "5:30 pm", "6:00 pm", "6:30 pm"];
 
@@ -325,7 +318,6 @@
             if (window.google && window.google.maps && window.google.maps.places) {
                 new google.maps.places.Autocomplete(addressInput, { types: ['address'], componentRestrictions: { country: 'us' } });
             }
-            // Синхронизация цен
             document.getElementById('price').addEventListener('input', (e) => {
                 document.getElementById('opt2_price').value = e.target.value;
             });
@@ -339,7 +331,7 @@
             box.innerHTML = `
                 <button type="button" class="remove-work-btn" onclick="this.parentElement.remove()">✕ Удалить</button>
                 <div style="font-weight:bold; font-size:12px; margin-bottom:6px; color:#0f2c59;">Работа #${index + 1}</div>
-                <input type="text" class="work-title-input" value="${title}" placeholder="Например: Ремонт двери / Забор" style="margin-bottom:6px; padding:8px; width:100%; font-size:13px;">
+                <input type="text" class="work-title-input" value="${title}" placeholder="Например: Ремонт двери / Забор" style="margin-bottom:6px; padding:8px; width:100%; font-size:13px; border:1px solid #ccc; border-radius:4px;">
                 <label style="font-size:11px; display:block; margin-bottom:4px;">Фотография работы:</label>
                 <input type="file" class="work-photo-input" accept="image/*" onchange="handleWorkPhoto(this)" style="font-size:12px;">
                 <input type="hidden" class="work-photo-base64" value="${photoData}">
@@ -566,7 +558,7 @@
                 selectedJobDates = [selectedDateStr];
                 document.getElementById('price').value = 3200;
                 document.getElementById('opt2_price').value = 3200;
-                addWorkItem('Door Replacement', '');
+                addWorkItem('Door Repair', '');
                 addWorkItem('Porch / Deck Repair', '');
                 addWorkItem('Fence Restoration', '');
             }
@@ -576,27 +568,72 @@
             document.getElementById('add-modal').style.display = 'flex';
         }
 
+        /* ПОЛНОЦЕННАЯ КАРТОЧКА ЗАКАЗА С ВОЗМОЖНОСТЬЮ ПОЗВОНИТЬ, ОТРЕДАКТИРОВАТЬ И СГЕНЕРИРОВАТЬ ESTIMATE */
         function openDetailsModal(id, job) {
             const body = document.getElementById('job-details-body');
+            
+            let worksListHtml = '';
+            if (job.worksList && job.worksList.length > 0) {
+                worksListHtml = '<div style="margin-top:12px; font-weight:bold; font-size:13px;">Список работ:</div>';
+                job.worksList.forEach((w, idx) => {
+                    worksListHtml += `
+                        <div style="display:flex; align-items:center; gap:10px; margin-top:8px; border:1px solid #e2e8f0; padding:6px; border-radius:6px;">
+                            ${w.photo ? `<img src="${w.photo}" style="width:50px; height:50px; object-fit:cover; border-radius:4px;">` : ''}
+                            <div style="font-size:13px; font-weight:600;">${idx + 1}. ${w.title}</div>
+                        </div>
+                    `;
+                });
+            }
+
             body.innerHTML = `
-                <div style="font-size:16px; font-weight:bold; margin-bottom:10px;">${job.title}</div>
-                <div>Клиент: <strong>${job.client || '—'}</strong></div>
-                <div>Телефон: <strong>${job.phone || '—'}</strong></div>
-                <div>Общая сумма: <strong>$${job.totalPrice || job.price}</strong></div>
-                <button class="btn-action" style="background:#0f2c59; color:white; margin-top:15px; font-size:16px;" onclick="generateEstimate(${JSON.stringify(job).replace(/"/g, '&quot;')})">📄 Открыть / Печать Estimate</button>
+                <div style="font-size:18px; font-weight:bold; color:var(--primary); margin-bottom:10px;">${job.title}</div>
+                
+                <div style="background:#f8fafc; padding:12px; border-radius:8px; border:1px solid #cbd5e1; margin-bottom:12px;">
+                    <div style="margin-bottom:6px;">👤 Клиент: <strong>${job.client || 'Не указан'}</strong></div>
+                    <div style="margin-bottom:6px;">📞 Телефон: <strong>${job.phone ? `<a href="tel:${job.phone}" style="color:var(--primary); text-decoration:underline;">${job.phone}</a>` : '—'}</strong></div>
+                    <div style="margin-bottom:6px;">📍 Адрес: <strong>${job.address || '—'}</strong></div>
+                    <div>🕒 Время: <strong>${job.time}</strong></div>
+                </div>
+
+                <div style="background:#f8fafc; padding:12px; border-radius:8px; border:1px solid #cbd5e1; margin-bottom:12px;">
+                    <div>💰 Общая цена: <strong>$${job.totalPrice || job.price}</strong></div>
+                    <div>📦 Материалы: <strong>$${job.materials || 0}</strong></div>
+                </div>
+
+                ${worksListHtml}
+
+                <div style="display:flex; gap:8px; margin-top:15px; flex-direction:column;">
+                    ${job.phone ? `<a href="tel:${job.phone}" class="btn-action" style="background:var(--success); color:white; text-align:center;">📞 Позвонить клиенту</a>` : ''}
+                    <button class="btn-action" style="background:#0f2c59; color:white;" onclick="generateEstimate(${JSON.stringify(job).replace(/"/g, '&quot;')})">📄 Сформировать Estimate (PDF)</button>
+                    <button class="btn-action" onclick="openAddModal(${JSON.stringify(job).replace(/"/g, '&quot;')}, '${id}')">✏️ Редактировать заказ</button>
+                    <button class="btn-action" style="border-color:#d32f2f; color:#d32f2f;" onclick="toggleJobStatus('${selectedDateStr}', '${id}', ${!job.completed})">
+                        ${job.completed ? '↩️ Отметить как "В работе"' : '✓ Отметить как "Выполнено"'}
+                    </button>
+                    <button class="btn-action" style="background:#ef4444; color:white; border:none;" onclick="deleteJob('${selectedDateStr}', '${id}')">🗑 Удалить заказ</button>
+                </div>
             `;
             document.getElementById('details-modal').style.display = 'flex';
         }
 
-        /* ГЕНЕРАЦИЯ ESTIMATE В СИНЕМ СТИЛЕ С 3 ОПЦИЯМИ В ПРАВИЛЬНОМ ПОРЯДКЕ */
-        function generateEstimate(job, customData = null) {
-            currentEstimateJob = job;
+        function toggleJobStatus(dateStr, jobId, isCompleted) {
+            db.ref(`jobs/${dateStr}/${jobId}`).update({ completed: isCompleted }).then(() => {
+                closeModal('details-modal');
+            });
+        }
+
+        function deleteJob(dateStr, jobId) {
+            if(confirm("Удалить этот заказ?")) {
+                db.ref(`jobs/${dateStr}/${jobId}`).remove().then(() => {
+                    closeModal('details-modal');
+                });
+            }
+        }
+
+        function generateEstimate(job) {
             const paper = document.getElementById('estimate-paper-body');
             const today = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
-            const clientName = customData?.client || job.client || 'Customer';
 
-            // Работы
-            const works = customData?.worksList || job.worksList || [];
+            const works = job.worksList || [];
             let worksTableRows = '';
             works.forEach((w, idx) => {
                 const photoImg = w.photo ? `<img src="${w.photo}" class="work-img-preview">` : '';
@@ -612,12 +649,11 @@
                 `;
             });
 
-            // 3 Опции (Сверху дешёвая, Посередине основная, Снизу дорогая)
-            const options = customData?.options || job.options || [];
+            const options = job.options || [];
             let optionsHtml = '';
             
             options.forEach((opt, idx) => {
-                const isMiddleRec = (idx === 1); // Средний вариант рекомендованный!
+                const isMiddleRec = (idx === 1);
                 optionsHtml += `
                     <div class="option-card-vertical ${isMiddleRec ? 'recommended' : ''}">
                         ${isMiddleRec ? '<div class="recommend-badge">RECOMMENDED OPTION</div>' : ''}
@@ -634,10 +670,7 @@
                 <div class="estimate-paper">
                     <div class="estimate-header-wrapper">
                         <div>
-                            <div class="logo-and-brand">
-                                <img src="${LOGO_URL}" class="logo-img" alt="Logo" onerror="this.style.display='none';">
-                                <div style="font-size:22px; font-weight:900; color:#0f2c59; letter-spacing:0.5px;">HomeBuddy</div>
-                            </div>
+                            <div style="font-size:22px; font-weight:900; color:#0f2c59; letter-spacing:0.5px;">HomeBuddy</div>
                             <div class="contractor-meta">
                                 <strong>Aleksandr Ivanov</strong><br>
                                 484 Stimson Avenue, Pismo Beach, CA, USA<br>
@@ -654,14 +687,14 @@
 
                     <div style="margin-bottom: 15px; font-size: 12px; background:#f0f4f8; padding:10px; border-radius:6px; border:1px solid #cbd5e1;">
                         <div style="font-size:10px; font-weight:800; color:#0f2c59; text-transform:uppercase;">CUSTOMER / BILL TO:</div>
-                        <strong style="font-size:15px; color:#0f2c59;">${clientName}</strong><br>
+                        <strong style="font-size:15px; color:#0f2c59;">${job.client || 'Customer'}</strong><br>
                         ${job.phone ? 'Phone: ' + job.phone + '<br>' : ''}
                         ${job.address ? 'Address: ' + job.address : ''}
                     </div>
 
                     <div style="font-size:13px; font-weight:800; color:#0f2c59; margin-bottom:6px;">SCOPE OF WORKS / PHOTOS:</div>
                     <table class="works-list-table">
-                        <tbody>${worksTableRows}</tbody>
+                        <tbody>${worksTableRows || '<tr><td>Standard repair and restoration work.</td></tr>'}</tbody>
                     </table>
 
                     <div style="font-size:13px; font-weight:800; color:#0f2c59; margin-top:15px; margin-bottom:6px;">ESTIMATE OPTIONS:</div>
@@ -680,6 +713,50 @@
                 </div>
             `;
             document.getElementById('estimate-modal').style.display = 'flex';
+        }
+
+        function openClientsModal() {
+            renderClientsList();
+            document.getElementById('clients-modal').style.display = 'flex';
+        }
+
+        function renderClientsList() {
+            const container = document.getElementById('clients-list-container');
+            const query = document.getElementById('client-search-input').value.toLowerCase();
+            container.innerHTML = '';
+
+            const clientsMap = {};
+            Object.keys(jobsData).forEach(dStr => {
+                Object.values(jobsData[dStr]).forEach(j => {
+                    if (j.client && j.client.trim() !== '') {
+                        const key = j.client.toLowerCase();
+                        if (!clientsMap[key]) {
+                            clientsMap[key] = { client: j.client, phone: j.phone, address: j.address };
+                        }
+                    }
+                });
+            });
+
+            const filtered = Object.values(clientsMap).filter(c => 
+                c.client.toLowerCase().includes(query) || (c.address && c.address.toLowerCase().includes(query))
+            );
+
+            if(filtered.length === 0) {
+                container.innerHTML = '<p style="text-align:center; color:#888; padding:15px;">Клиенты не найдены</p>';
+                return;
+            }
+
+            filtered.forEach(c => {
+                const item = document.createElement('div');
+                item.style.cssText = "background:#f8fafc; border:1px solid #cbd5e1; border-radius:8px; padding:12px; margin-bottom:8px;";
+                item.innerHTML = `
+                    <div style="font-weight:bold; font-size:15px; color:#0f2c59;">${c.client}</div>
+                    <div style="font-size:13px; color:#444;">📞 ${c.phone || 'Нет телефона'}</div>
+                    <div style="font-size:13px; color:#666;">📍 ${c.address || 'Нет адреса'}</div>
+                    ${c.phone ? `<a href="tel:${c.phone}" class="btn-action" style="background:var(--success); color:white; margin-top:8px; text-align:center; display:block;">📞 Позвонить</a>` : ''}
+                `;
+                container.appendChild(item);
+            });
         }
 
         function saveJob(e) {
