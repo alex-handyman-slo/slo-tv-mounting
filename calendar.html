@@ -6,7 +6,6 @@
     <title>Aleksandr Ivanov Schedule</title>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places"></script>
     <style>
         :root {
             --primary: #0f2c59;
@@ -84,13 +83,10 @@
         .photo-thumb-wrapper { position: relative; display: inline-block; }
         .photo-thumb { width: 100%; height: 90px; object-fit: cover; border-radius: 8px; border: 1px solid var(--border-color); cursor: pointer; }
         .photo-delete-btn { position: absolute; top: 4px; right: 4px; background: rgba(211, 47, 47, 0.9); color: white; border: none; border-radius: 50%; width: 22px; height: 22px; font-size: 12px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-
         .client-item { padding: 14px; border-bottom: 1px solid var(--border-color); font-weight: 600; font-size: 16px; cursor: pointer; color: var(--primary); }
         .client-item:hover { background: #f0f4f8; }
-
         .task-builder-card { background: #f8fafc; border: 1px solid var(--border-color); border-radius: 10px; padding: 15px; margin-bottom: 15px; position: relative; }
         .remove-task-btn { position: absolute; top: 10px; right: 10px; background: var(--danger); color: white; border: none; border-radius: 50%; width: 26px; height: 26px; font-weight: bold; cursor: pointer; font-size: 14px; }
-
         /* ESTIMATE STYLES */
         .estimate-paper { background: #fff; border: 1px solid #ccc; border-radius: 8px; padding: 25px 30px; color: #111; box-shadow: 0 4px 12px rgba(0,0,0,0.08); width: 100%; box-sizing: border-box; }
         .estimate-header-wrapper { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 2px solid #0f2c59; padding-bottom: 15px; margin-bottom: 15px; }
@@ -117,7 +113,6 @@
         /* PHOTO VIEWER MODAL */
         .full-photo-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); justify-content: center; align-items: center; z-index: 2000; }
         .full-photo-modal img { max-width: 95%; max-height: 90vh; border-radius: 8px; object-fit: contain; }
-
         @media print {
             @page { size: A4 portrait; margin: 8mm; }
             body, html { background: #fff !important; padding: 0 !important; margin: 0 !important; }
@@ -165,12 +160,10 @@
         <button class="btn-add" onclick="openAddModal()">+ Добавить заказ на эту дату</button>
         <button class="btn-clients" onclick="openClientsModal()">👥 Клиенты</button>
     </div>
-
     <!-- Модальное окно просмотра фото ВО ВЕСЬ ЭКРАН -->
     <div class="full-photo-modal" id="photo-viewer-modal" onclick="closePhotoViewer()">
         <img id="full-photo-img" src="" alt="Full view">
     </div>
-
     <!-- Модальное окно клиентов -->
     <div class="modal" id="clients-modal">
         <div class="modal-content">
@@ -182,7 +175,6 @@
             <div id="clients-list-container"></div>
         </div>
     </div>
-
     <!-- Модальное окно истории клиента -->
     <div class="modal" id="client-history-modal">
         <div class="modal-content">
@@ -196,7 +188,6 @@
             <button class="btn-add" id="add-job-for-client-btn" style="margin-top:15px;">+ Добавить новый заказ этому клиенту</button>
         </div>
     </div>
-
     <!-- Модальное окно создания/редактирования -->
     <div class="modal" id="add-modal">
         <div class="modal-content">
@@ -233,7 +224,6 @@
                         <input type="number" id="materials" min="0" step="5" value="0" placeholder="0">
                     </div>
                 </div>
-
                 <div class="form-group">
                     <label>Время начала работы</label>
                     <div class="time-picker-grid" id="start-time-grid"></div>
@@ -247,16 +237,14 @@
                     <input type="tel" id="phone" placeholder="Номер телефона">
                 </div>
                 <div class="form-group">
-                    <label>Адрес объекта (с автоподсказкой Google Maps)</label>
-                    <input type="text" id="address" placeholder="Введите адрес...">
+                    <label>Адрес объекта</label>
+                    <input type="text" id="address" placeholder="Введите адрес..." style="width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 15px;">
                 </div>
-
                 <!-- Описание работ в заказе -->
                 <div class="form-group">
                     <label>Описание работ в заказе</label>
                     <textarea id="description" rows="3" placeholder="Подробное описание выполняемых работ..."></textarea>
                 </div>
-
                 <!-- Управление прикреплёнными фото при редактировании -->
                 <div class="form-group">
                     <label>Прикреплённые фото</label>
@@ -266,12 +254,10 @@
                     <label>Добавить новые фото</label>
                     <input type="file" id="photo-files" accept="image/*" multiple style="padding: 8px;">
                 </div>
-
                 <button type="submit" class="btn-add" id="save-btn">Сохранить заказ</button>
             </form>
         </div>
     </div>
-
     <!-- Модальное окно просмотра деталей -->
     <div class="modal" id="details-modal">
         <div class="modal-content">
@@ -282,7 +268,6 @@
             <div id="job-details-body"></div>
         </div>
     </div>
-
     <!-- Модальное окно генерации Estimate с конструктором работ -->
     <div class="modal" id="estimate-modal">
         <div class="modal-content" style="max-width: 850px; margin: 0 auto; background: #f0f2f5;">
@@ -297,7 +282,6 @@
                 <button type="button" class="btn-add" style="background:#008b99; margin-bottom: 15px;" onclick="addEstimateTaskBlock()">+ Добавить ещё одну работу</button>
                 <button type="button" class="btn-add" style="background:var(--primary);" onclick="renderEstimateFromBuilder()">Обновить предпросмотр Estimate ↻</button>
             </div>
-
             <div id="estimate-paper-body"></div>
             
             <div class="no-print" style="margin-top: 15px; display: flex; gap: 8px; flex-wrap: wrap;">
@@ -307,7 +291,6 @@
             </div>
         </div>
     </div>
-
     <script>
         const firebaseConfig = { databaseURL: "https://alex-calendar-b4f04-default-rtdb.firebaseio.com" };
         firebase.initializeApp(firebaseConfig);
@@ -325,16 +308,8 @@
         let currentEstimateJob = null;
         let currentTranslatedClient = null;
         let estimateTasksList = [];
-
         const timeSlots = ["7:00 am", "7:30 am", "8:00 am", "8:30 am", "9:00 am", "9:30 am", "10:00 am", "10:30 am", "11:00 am", "11:30 am", "12:00 pm", "12:30 pm", "1:00 pm", "1:30 pm", "2:00 pm", "2:30 pm", "3:00 pm", "3:30 pm", "4:00 pm", "4:30 pm", "5:00 pm", "5:30 pm", "6:00 pm", "6:30 pm"];
-
-        window.addEventListener('load', () => {
-            const addressInput = document.getElementById('address');
-            if (window.google && window.google.maps && window.google.maps.places) {
-                new google.maps.places.Autocomplete(addressInput, { types: ['address'], componentRestrictions: { country: 'us' } });
-            }
-        });
-
+        
         function openPhotoViewer(url, event) {
             if(event) event.stopPropagation();
             document.getElementById('full-photo-img').src = url;
@@ -343,7 +318,6 @@
         function closePhotoViewer() {
             document.getElementById('photo-viewer-modal').style.display = 'none';
         }
-
         function initTimePicker() {
             const startGrid = document.getElementById('start-time-grid');
             startGrid.innerHTML = '';
@@ -355,12 +329,10 @@
                 startGrid.appendChild(sChip);
             });
         }
-
         function changeFormMonth(direction) {
             formViewDate.setMonth(formViewDate.getMonth() + direction);
             renderFormDatesGrid();
         }
-
         function renderFormDatesGrid() {
             const grid = document.getElementById('form-dates-grid');
             const title = document.getElementById('form-month-year-title');
@@ -392,7 +364,6 @@
                 grid.appendChild(chip);
             }
         }
-
         function initDataSync() {
             db.ref('jobs').on('value', (snapshot) => {
                 jobsData = snapshot.val() || {};
@@ -401,13 +372,11 @@
                 calculateRevenue();
             });
         }
-
         function changeMonth(direction) {
             viewDate.setMonth(viewDate.getMonth() + direction);
             renderCalendar();
             calculateRevenue();
         }
-
         function calculateRevenue() {
             let earnedNet = 0;
             let materialsTotal = 0;
@@ -432,7 +401,6 @@
             document.getElementById('month-materials').innerText = `$${materialsTotal.toFixed(0)}`;
             document.getElementById('month-pending').innerText = `$${pending.toFixed(0)}`;
         }
-
         function renderCalendar() {
             const grid = document.getElementById('days-grid');
             const monthTitle = document.getElementById('month-year-title');
@@ -478,7 +446,6 @@
                 grid.appendChild(cell);
             }
         }
-
         function renderJobs() {
             const list = document.getElementById('jobs-list');
             const title = document.getElementById('selected-date-title');
@@ -527,7 +494,6 @@
                 list.appendChild(card);
             });
         }
-
         /* CLIENTS LIST MODAL */
         function getAllClients() {
             const clients = {};
@@ -546,13 +512,11 @@
             });
             return clients;
         }
-
         function openClientsModal() {
             document.getElementById('client-search-input').value = '';
             renderClientsList();
             document.getElementById('clients-modal').style.display = 'flex';
         }
-
         function renderClientsList() {
             const container = document.getElementById('clients-list-container');
             const searchQuery = document.getElementById('client-search-input').value.toLowerCase().trim();
@@ -572,7 +536,6 @@
                 container.appendChild(item);
             });
         }
-
         function openClientHistoryModal(clientKey) {
             const clients = getAllClients();
             const clientInfo = clients[clientKey] || { name: clientKey, phone: '', address: '' };
@@ -627,14 +590,12 @@
             };
             document.getElementById('client-history-modal').style.display = 'flex';
         }
-
         function openAddModalWithClient(clientInfo) {
             openAddModal();
             document.getElementById('client').value = clientInfo.name || '';
             document.getElementById('phone').value = clientInfo.phone || '';
             document.getElementById('address').value = clientInfo.address || '';
         }
-
         function renderExistingPhotosInForm() {
             const container = document.getElementById('existing-photos-container');
             container.innerHTML = '';
@@ -652,12 +613,10 @@
                 container.appendChild(wrapper);
             });
         }
-
         function removePhotoFromForm(index) {
             existingPhotos.splice(index, 1);
             renderExistingPhotosInForm();
         }
-
         function openAddModal(editingJobData = null, rawId = null, isDuplicate = false) {
             document.getElementById('job-form').reset();
             existingPhotos = [];
@@ -688,7 +647,6 @@
             }
             
             renderExistingPhotosInForm();
-
             if(selectedJobDates.length > 0) {
                 const [y, m] = selectedJobDates[0].split('-').map(Number);
                 formViewDate = new Date(y, m - 1, 1);
@@ -700,7 +658,6 @@
             closeModal('details-modal');
             document.getElementById('add-modal').style.display = 'flex';
         }
-
         function openDetailsModal(id, job) {
             const body = document.getElementById('job-details-body');
             const dayPrice = parseFloat(job.dailyPrice || job.price || 0);
@@ -712,15 +669,12 @@
             const smsButtonHtml = job.phone 
                 ? `<button class="btn-action" style="background:#2e7d32; color:white;" onclick="window.location.href='sms:${job.phone}?body=${encodeURIComponent(smsText)}'">💬 Написать SMS</button>` 
                 : '';
-
             let photosHtml = job.photos && job.photos.length > 0 
                 ? `<div class="detail-row"><div class="detail-label">Фотографии заказа</div><div class="photos-grid">` + job.photos.map(p => `<img src="${p}" class="photo-thumb" onclick="openPhotoViewer('${p}', event)">`).join('') + `</div></div>`
                 : '';
-
             let descriptionHtml = job.description 
                 ? `<div class="detail-row"><div class="detail-label">Описание работ</div><div class="detail-value" style="white-space:pre-wrap; background:#f8fafc; padding:10px; border-radius:6px; border:1px solid #e2e8f0;">${job.description}</div></div>` 
                 : '';
-
             body.innerHTML = `
                 <div class="detail-row">
                     <div class="detail-label">Статус заказа на день</div>
@@ -743,7 +697,7 @@
                 </div>
                 <div class="detail-row">
                     <div class="detail-label">Адрес</div>
-                    <div class="detail-value">${job.address ? `<a href="https://maps.google.com/?q=${encodeURIComponent(job.address)}" target="_blank" class="clickable-link">📍 ${job.address}</a>` : 'Не указан'}</div>
+                    <div class="detail-value">${job.address ? `<a href="https://maps.apple.com/?q=${encodeURIComponent(job.address)}" target="_blank" class="clickable-link">📍 ${job.address}</a>` : 'Не указан'}</div>
                 </div>
                 ${photosHtml}
                 ${descriptionHtml}
@@ -757,7 +711,6 @@
             `;
             document.getElementById('details-modal').style.display = 'flex';
         }
-
         /* ESTIMATE BUILDER & GENERATION */
         function openEstimateBuilderModal(job) {
             currentEstimateJob = job;
@@ -779,7 +732,6 @@
             renderEstimateFromBuilder();
             document.getElementById('estimate-modal').style.display = 'flex';
         }
-
         function addEstimateTaskBlock() {
             estimateTasksList.push({
                 taskTitle: "Additional Job #" + (estimateTasksList.length + 1),
@@ -792,12 +744,10 @@
             });
             renderEstimateTaskBlocks();
         }
-
         function removeEstimateTaskBlock(index) {
             estimateTasksList.splice(index, 1);
             renderEstimateTaskBlocks();
         }
-
         function handleTaskPhotoUpload(index, fileInput) {
             if (!fileInput.files || !fileInput.files[0]) return;
             const file = fileInput.files[0];
@@ -819,12 +769,10 @@
             };
             reader.readAsDataURL(file);
         }
-
         function removeTaskPhoto(index) {
             estimateTasksList[index].photo = "";
             renderEstimateTaskBlocks();
         }
-
         function renderEstimateTaskBlocks() {
             const container = document.getElementById('estimate-tasks-container');
             container.innerHTML = '';
@@ -847,14 +795,12 @@
                         <input type="file" accept="image/*" onchange="handleTaskPhotoUpload(${tIndex}, this)" style="font-size:12px; display:block; margin-top:4px;">
                     </div>
                 `;
-
                 card.innerHTML = `
                     ${removeBtn}
                     <div class="form-group" style="margin-bottom:10px;">
                         <label style="color:var(--primary); font-size:14px; font-weight:700;">Работа №${tIndex + 1}</label>
                         <input type="text" value="${task.taskTitle}" onchange="estimateTasksList[${tIndex}].taskTitle = this.value" placeholder="Название работы (напр. Fence Painting)">
                     </div>
-
                     ${photoBoxHtml}
                     
                     <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:8px;">
@@ -881,14 +827,12 @@
                 container.appendChild(card);
             });
         }
-
         function formatMonospacedPrice(amount) {
             const num = parseFloat(amount || 0).toFixed(2);
             const parts = num.split('.');
             const dollars = parts[0].padStart(6, ' '); 
             return `$${dollars}.${parts[1]}`;
         }
-
         function renderEstimateFromBuilder(customTasks = null) {
             const job = currentEstimateJob;
             if(!job) return;
@@ -902,21 +846,18 @@
                 const sortedDates = [...job.dates].sort();
                 serviceDateText = `${sortedDates[0]} — ${sortedDates[sortedDates.length - 1]}`;
             }
-
             const tasksToRender = customTasks || estimateTasksList;
             let tablesHtml = '';
             
             let totalOpt0 = 0;
             let totalOpt1 = 0;
             let totalOpt2 = 0;
-
             tasksToRender.forEach((task, tIdx) => {
                 let optionsRowsHtml = '';
                 
                 totalOpt0 += parseFloat(task.options[0]?.price || 0);
                 totalOpt1 += parseFloat(task.options[1]?.price || 0);
                 totalOpt2 += parseFloat(task.options[2]?.price || 0);
-
                 task.options.forEach((opt, idx) => {
                     if (!opt.title || opt.title.trim() === '') return;
                     const isRecommended = (idx === 1);
@@ -933,11 +874,9 @@
                         </tr>
                     `;
                 });
-
                 let photoColHtml = task.photo 
                     ? `<div class="task-photo-col"><img src="${task.photo}" class="task-photo-img" onclick="openPhotoViewer('${task.photo}', event)"></div>` 
                     : '';
-
                 tablesHtml += `
                     <div style="margin-top: 15px; font-weight:800; font-size:13px; color:#0f2c59; border-bottom:1px solid #0f2c59; padding-bottom:3px;">
                         TASK #${tIdx + 1}: ${task.taskTitle.toUpperCase()}
@@ -960,7 +899,6 @@
                     </div>
                 `;
             });
-
             let totalSummaryHtml = '';
             if (tasksToRender.length > 1) {
                 totalSummaryHtml = `
@@ -983,7 +921,6 @@
                     </div>
                 `;
             }
-
             paper.innerHTML = `
                 <div class="estimate-paper" id="pdf-printable-area">
                     <div class="estimate-header-wrapper">
@@ -1009,10 +946,8 @@
                         ${job.phone ? 'Phone: ' + job.phone + '<br>' : ''}
                         ${job.address ? 'Address: ' + job.address : ''}
                     </div>
-
                     ${tablesHtml}
                     ${totalSummaryHtml}
-
                     <div style="margin-top: 20px; border-top: 1px solid #e2e8f0; padding-top: 10px; font-size: 11px; color: #64748b; line-height: 1.4;">
                         <strong>TERMS & NOTES:</strong><br>
                         • This estimate is valid for 30 days from issuance.<br>
@@ -1024,7 +959,6 @@
                 </div>
             `;
         }
-
         async function translateEstimateDetails() {
             if (!currentEstimateJob) return;
             const btn = document.getElementById('translate-estimate-btn');
@@ -1051,7 +985,6 @@
                 btn.disabled = false;
             }
         }
-
         async function fetchTranslation(text) {
             if (!text || text.trim() === '') return text;
             try {
@@ -1061,7 +994,6 @@
             } catch(e) {}
             return text;
         }
-
         function sendEstimateSMS() {
             if (!currentEstimateJob || !currentEstimateJob.phone) {
                 alert('У этого клиента не указан номер телефона!');
@@ -1071,7 +1003,6 @@
             const smsText = `Hi${clientName}, as requested, I am sending you the estimate for the work. Please find the details attached. Thank you!`;
             window.location.href = `sms:${currentEstimateJob.phone}?body=${encodeURIComponent(smsText)}`;
         }
-
         function toggleStatus(id, newStatus, currentPrice) {
             if(newStatus) {
                 const finalAmt = prompt("Укажите итоговую сумму оплаты за этот день ($):", currentPrice);
@@ -1083,7 +1014,6 @@
             }
             closeModal('details-modal');
         }
-
         function deleteJobGroup(groupId, dateStr, id) {
             if(confirm('Удалить этот заказ изо всех выбранных дней?')) {
                 Object.keys(jobsData).forEach(d => {
@@ -1096,9 +1026,7 @@
                 closeModal('details-modal');
             }
         }
-
         function closeModal(modalId) { document.getElementById(modalId).style.display = 'none'; }
-
         function processPhotos(files, callback) {
             if (!files || files.length === 0) return callback(existingPhotos);
             let photos = [...existingPhotos];
@@ -1126,7 +1054,6 @@
                 reader.readAsDataURL(file);
             });
         }
-
         function saveJob(e) {
             e.preventDefault();
             if(selectedJobDates.length === 0) {
@@ -1151,7 +1078,6 @@
                 
                 const dailyPrice = (totalPrice / daysCount).toFixed(2);
                 const dailyMaterials = (materialsPrice / daysCount).toFixed(2);
-
                 const newJobData = {
                     groupId: groupId,
                     dates: selectedJobDates,
@@ -1175,7 +1101,6 @@
                 closeModal('add-modal');
             });
         }
-
         initTimePicker();
         initDataSync();
     </script>
