@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Aleksandr Ivanov Handyman - SLO County, CA</title>
+  <title>White River Construction, Inc. - SLO County, CA</title>
   <style>
     /* Reset & Core Styles */
     *, *::before, *::after {
@@ -29,17 +29,21 @@
     }
     .brand-logo-container {
       background: #ffffff;
-      padding: 8px 16px;
+      padding: 12px 20px;
       border-radius: 12px;
       box-shadow: 0 4px 14px rgba(0,0,0,0.25);
-      margin-bottom: 8px;
+      margin-bottom: 12px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
+      max-width: 320px;
+      width: 100%;
     }
-    .brand-logo-svg {
-      width: 140px;
+    .brand-logo-img {
+      width: 100%;
       height: auto;
+      max-height: 90px;
+      object-fit: contain;
     }
     header h1 {
       margin: 2px 0;
@@ -112,7 +116,8 @@
     .btn-instagram-color { background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); }
     .btn-nextdoor-color { background-color: #00b246; }
     .btn-facebook-color { background-color: #1877f2; }
-    /* Strict 3x2 Grid for Projects */
+    
+    /* Strict Grid for Projects */
     .projects-section {
       width: 100%;
       max-width: 900px;
@@ -263,7 +268,6 @@
       color: #0f172a;
       margin-bottom: 10px;
     }
-    /* Equal Sized Uniform Buttons Grid */
     .sub-buttons-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -423,21 +427,39 @@
       background: #ffffff;
       border: 1px solid #e2e8f0;
       border-radius: 12px;
-      padding: 14px;
+      padding: 16px;
       text-align: center;
       margin-top: 15px;
     }
     .license-card h3 {
-      margin: 0 0 4px 0;
+      margin: 0 0 6px 0;
       color: #1e3a8a;
-      font-size: 1rem;
+      font-size: 1.05rem;
       font-weight: 800;
     }
     .license-card p {
-      margin: 0;
-      font-size: 0.85rem;
+      margin: 0 0 10px 0;
+      font-size: 0.88rem;
       color: #475569;
       font-weight: 600;
+    }
+    .cslb-verify-box {
+      background: #f1f5f9;
+      border: 1px dashed #94a3b8;
+      border-radius: 8px;
+      padding: 10px;
+      font-size: 0.82rem;
+      color: #334155;
+    }
+    .cslb-link {
+      display: inline-block;
+      margin-top: 6px;
+      color: #2563eb;
+      font-weight: 700;
+      text-decoration: underline;
+    }
+    .cslb-link:hover {
+      color: #1d4ed8;
     }
     footer {
       text-align: center;
@@ -453,20 +475,10 @@
   <!-- Header -->
   <header>
     <div class="brand-logo-container">
-      <svg class="brand-logo-svg" viewBox="0 0 300 120" xmlns="http://www.w3.org/2000/svg">
-        <path d="M 50 45 L 85 18 L 120 45 L 120 85 L 50 85 Z" fill="none" stroke="#1e3a8a" stroke-width="7" stroke-linejoin="round"/>
-        <path d="M 40 50 L 85 15 L 130 50" fill="none" stroke="#1e3a8a" stroke-width="8" stroke-linecap="round"/>
-        <path d="M 62 62 Q 85 82 108 62" fill="none" stroke="#1e3a8a" stroke-width="6" stroke-linecap="round"/>
-        <rect x="73" y="38" width="24" height="20" fill="none" stroke="#1e3a8a" stroke-width="4"/>
-        <line x1="85" y1="38" x2="85" y2="58" stroke="#1e3a8a" stroke-width="3"/>
-        <line x1="73" y1="48" x2="97" y2="48" stroke="#1e3a8a" stroke-width="3"/>
-        <text x="135" y="48" font-family="-apple-system, sans-serif" font-weight="800" font-size="18" fill="#1e3a8a">Aleksandr Ivanov</text>
-        <text x="135" y="72" font-family="-apple-system, sans-serif" font-weight="700" font-size="18" fill="#1e3a8a">Handyman</text>
-        <text x="135" y="92" font-family="-apple-system, sans-serif" font-weight="600" font-size="12" fill="#2563eb">Local &amp; Reliable</text>
-      </svg>
+      <img src="logo.jpg" alt="White River Construction, Inc." class="brand-logo-img">
     </div>
-    <h1>Aleksandr Ivanov</h1>
-    <p class="location-text">SLO County, CA • Local &amp; Reliable Services</p>
+    <h1>White River Construction, Inc.</h1>
+    <p class="location-text">SLO County, CA • Licensed &amp; Insured Construction Services</p>
     
     <a href="sms:2797582752?body=Hello%21%20I%20would%20like%20to%20get%20an%20estimate%20for%20a%20service." class="cta-sms-header">
       💬 Text Aleksandr for Estimate
@@ -520,6 +532,7 @@
       </div>
     </div>
   </header>
+
   <!-- Lightbox Modal -->
   <div class="modal-overlay" id="imageModal" onclick="closeLightbox()">
     <div class="modal-img-container" onclick="event.stopPropagation()">
@@ -528,6 +541,7 @@
       <div class="modal-caption" id="modalCaption"></div>
     </div>
   </div>
+
   <!-- Main Container -->
   <main class="container">
     <section>
@@ -540,16 +554,27 @@
         <div id="stepContainer"></div>
       </div>
     </section>
+
+    <!-- License Section with CSLB Link -->
     <section>
       <div class="license-card">
         <h3>Licensed &amp; Insured Construction Services</h3>
-        <p>Licensed General Construction Contractor (Class B) &amp; Roofing Contractor (Class C) in California • Lic #848613</p>
+        <p>White River Construction, Inc. • Licensed General Building Contractor (Class B) &amp; Roofing Contractor (Class C-39) in California • <strong>Lic #848613</strong></p>
+        <div class="cslb-verify-box">
+          Want to verify our license status? You can check official details on the California Contractors State License Board (CSLB) website by entering License <strong>#848613</strong>:
+          <br>
+          <a href="https://www.cslb.ca.gov/OnlineServices/CheckLicenseII/CheckLicense.aspx" target="_blank" rel="noopener" class="cslb-link">
+            🔍 Verify License #848613 on CSLB Website
+          </a>
+        </div>
       </div>
     </section>
   </main>
+
   <footer>
-    <p>&copy; 2026 Aleksandr Ivanov Handyman. SLO County, CA • (279) 758-2752</p>
+    <p>&copy; 2026 White River Construction, Inc. SLO County, CA • (279) 758-2752</p>
   </footer>
+
   <script>
     function openLightbox(src, caption) {
       document.getElementById('modalImg').src = src;
@@ -559,18 +584,20 @@
     function closeLightbox() {
       document.getElementById('imageModal').classList.remove('active');
     }
+
     let historyStack = [];
     let cartItems = [];
     let MINIMUM_CALL_OUT = 60;
     let tempDraftItem = null;
     let isComplexEstimate = false;
+
     const wizardTree = {
       root: {
         isRoot: true,
         options: [
           { label: "TV Mounting & Hanging Services", subtext: "TVs, shelves, mirrors, door locks", next: "home_services" },
           { label: "Furniture Assembly", subtext: "Beds, dressers, desks, tables, chairs", next: "furniture_type" },
-          { label: "Small Electrical Services", subtext: "Outlets, light fixtures, fans, hair dryers", next: "small_electrical" },
+          { label: "Small Electrical Services", subtext: "Outlets, light fixtures, fans", next: "small_electrical" },
           { label: "Small Plumbing Services", subtext: "Faucets, siphons/p-traps, showerheads", next: "small_plumbing" },
           { label: "Painting Services", subtext: "Interior, exterior, doors, trims", next: "painting_services" },
           { label: "Concrete Work", subtext: "Slabs, walkways, patio bases", isComplex: true, next: "concrete_work" },
@@ -653,7 +680,7 @@
           { label: "Light Fixture Installation", setBasePrice: 65, enableQty: true, next: "qty_screen" },
           { label: "Ceiling Fan Installation", setBasePrice: 95, enableQty: true, next: "qty_screen" },
           { label: "Add New Outlet Wiring", setBasePrice: 110, enableQty: true, next: "qty_screen" },
-          { label: "Wall-Mount Hair Dryer / Appliance Mount", setBasePrice: 40, enableQty: true, next: "qty_screen" }
+          { label: "Wall-Mount Appliance Mount", setBasePrice: 40, enableQty: true, next: "qty_screen" }
         ]
       },
       small_plumbing: {
@@ -715,6 +742,7 @@
         ]
       }
     };
+
     function updatePriceBadge(overridePrice) {
       const display = document.getElementById('runningTotalDisplay');
       let cartSum = cartItems.reduce((acc, item) => acc + item.price, 0);
@@ -727,6 +755,7 @@
         display.style.display = 'none';
       }
     }
+
     function renderCurrentStep(stepKey) {
       const container = document.getElementById('stepContainer');
       const backBtn = document.getElementById('backBtn');
@@ -851,7 +880,7 @@
         });
         listHtml += `</ul>`;
         let disclaimerHtml = isComplexEstimate ? `
-          <div class="estimate-disclaimer">
+          <div class="estimate-disclaimer" style="font-size:0.85rem; color:#475569; background:#fff; padding:10px; border-radius:8px; margin-bottom:10px; text-align:left; border:1px solid #cbd5e1;">
             📋 <strong>Estimated Price Notice:</strong><br>
             This is an estimated starting price. For major project details and accurate scope, please text Aleksandr directly for a precise estimate.
           </div>
@@ -866,13 +895,13 @@
             
             <div class="action-buttons-group">
               <button class="add-more-btn" onclick="addAnotherService()">➕ Add Another Service / Task</button>
-              <a href="#" id="finalSmsBtn" class="sms-btn-final">💬 Order Service / Text Aleksandr</a>
+              <a href="#" id="finalSmsBtn" class="sms-btn-final">💬 Order Service / Text White River Construction</a>
             </div>
           </div>
         `;
         let phone = '2797582752';
         let itemsStr = cartItems.map(i => `- ${i.name} ${i.qty > 1 ? `(x${i.qty})` : ''}: $${i.price}`).join('\n');
-        let msg = `Hello! I would like to get an estimate for:\n${itemsStr}\nEstimated Total: $${finalPayable.toLocaleString()}.\nWhen are you available?`;
+        let msg = `Hello White River Construction! I would like to get an estimate for:\n${itemsStr}\nEstimated Total: $${finalPayable.toLocaleString()}.\nWhen are you available?`;
         document.getElementById('finalSmsBtn').href = `sms:${phone}?body=${encodeURIComponent(msg)}`;
         
         updatePriceBadge(0);
@@ -895,6 +924,7 @@
       container.innerHTML = html;
       updatePriceBadge();
     }
+
     function makeChoice(currentStepKey, optionIndex) {
       const stepData = wizardTree[currentStepKey];
       const selectedOpt = stepData.options[optionIndex];
@@ -929,11 +959,13 @@
       }
       renderCurrentStep(selectedOpt.next);
     }
+
     function addAnotherService() {
       historyStack = [];
       tempDraftItem = null;
       renderCurrentStep('root');
     }
+
     function goBackStep() {
       if (historyStack.length === 0) {
         tempDraftItem = null;
@@ -944,6 +976,7 @@
       tempDraftItem = lastState.draft;
       renderCurrentStep(lastState.stepKey);
     }
+
     renderCurrentStep('root');
   </script>
 </body>
