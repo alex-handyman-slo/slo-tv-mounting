@@ -87,6 +87,30 @@
         .client-item:hover { background: #f0f4f8; }
         .task-builder-card { background: #f8fafc; border: 1px solid var(--border-color); border-radius: 10px; padding: 15px; margin-bottom: 15px; position: relative; }
         .remove-task-btn { position: absolute; top: 10px; right: 10px; background: var(--danger); color: white; border: none; border-radius: 50%; width: 26px; height: 26px; font-weight: bold; cursor: pointer; font-size: 14px; }
+        /* COMMUNICATION HISTORY */
+        .communication-summary { background:#f0f4f5; padding:12px; border-radius:8px; margin-bottom:12px; border:1px solid #e5e9eb; }
+        .communication-list { display:flex; flex-direction:column; gap:10px; margin-top:10px; }
+        .communication-item { background:#fff; border:1px solid var(--border-color); border-radius:10px; padding:12px; box-shadow:0 1px 2px rgba(0,0,0,0.04); }
+        .communication-item.customer { border-left:4px solid var(--secondary); }
+        .communication-item.owner { border-left:4px solid var(--primary); }
+        .communication-item.note { border-left:4px solid var(--pending); background:#fffaf2; }
+        .communication-meta { display:flex; justify-content:space-between; gap:8px; flex-wrap:wrap; font-size:11px; color:#777; margin-bottom:6px; }
+        .communication-source { font-weight:800; color:var(--primary); text-transform:uppercase; letter-spacing:.2px; }
+        .communication-text { font-size:14px; line-height:1.45; white-space:pre-wrap; word-break:break-word; }
+        .communication-empty { text-align:center; color:#888; padding:25px 10px; background:#f8fafc; border-radius:8px; border:1px dashed #cbd5e1; }
+        .communication-toolbar { display:grid; grid-template-columns:1fr 1fr 1fr; gap:7px; margin-bottom:12px; }
+        .communication-toolbar button { border:1px solid var(--border-color); background:#fff; color:var(--primary); border-radius:7px; padding:9px 6px; font-weight:700; cursor:pointer; }
+        .communication-toolbar button.active { background:var(--primary); color:#fff; border-color:var(--primary); }
+        .communication-add-box { background:#f8fafc; border:1px solid var(--border-color); border-radius:10px; padding:12px; margin-top:12px; }
+        .communication-add-box textarea { width:100%; min-height:90px; padding:10px; border:1px solid var(--border-color); border-radius:8px; resize:vertical; font-size:14px; }
+        .communication-add-row { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:8px; }
+        .communication-badge { display:inline-block; font-size:10px; font-weight:800; padding:3px 6px; border-radius:4px; background:#eef4fb; color:var(--primary); margin-top:4px; }
+        .communication-original { margin-top:8px; font-size:12px; color:#555; }
+        .communication-original button { border:none; background:none; color:var(--primary); font-weight:700; padding:0; cursor:pointer; }
+        @media (max-width:520px) {
+            .communication-toolbar { grid-template-columns:1fr 1fr 1fr; }
+            .communication-add-row { grid-template-columns:1fr; }
+        }
         /* ESTIMATE STYLES */
         .estimate-paper { background: #fff; border: 1px solid #ccc; border-radius: 8px; padding: 25px 30px; color: #111; box-shadow: 0 4px 12px rgba(0,0,0,0.08); width: 100%; box-sizing: border-box; }
         .estimate-header-wrapper { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 2px solid #0f2c59; padding-bottom: 15px; margin-bottom: 15px; }
@@ -183,9 +207,46 @@
                 <span class="close-btn" onclick="closeModal('client-history-modal')">&times;</span>
             </div>
             <div id="client-details-summary" style="margin-bottom: 15px; font-size:14px; background:#f0f4f5; padding:10px; border-radius:8px;"></div>
+            <button class="btn-action" style="background:#008b99; color:white; border:none; margin-bottom:12px; font-size:15px; font-weight:700;" id="client-history-communications-btn">💬 История переписки</button>
             <h4 style="margin-bottom:10px; font-size:15px; color:#555;">Все заказы клиента:</h4>
             <div id="client-jobs-list"></div>
             <button class="btn-add" id="add-job-for-client-btn" style="margin-top:15px;">+ Добавить новый заказ этому клиенту</button>
+        </div>
+    </div>
+    <!-- Модальное окно общей истории общения клиента -->
+    <div class="modal" id="communications-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span id="communications-title">История переписки</span>
+                <span class="close-btn" onclick="closeModal('communications-modal')">&times;</span>
+            </div>
+            <div id="communications-summary" class="communication-summary"></div>
+            <div class="communication-toolbar">
+                <button id="communication-filter-all" class="active" type="button" onclick="setCommunicationFilter('all')">Все</button>
+                <button id="communication-filter-messages" type="button" onclick="setCommunicationFilter('message')">Сообщения</button>
+                <button id="communication-filter-calls" type="button" onclick="setCommunicationFilter('call')">Звонки</button>
+            </div>
+            <div id="communications-list" class="communication-list"></div>
+            <div class="communication-add-box">
+                <div style="font-weight:800; color:#0f2c59; margin-bottom:7px;">Добавить запись вручную</div>
+                <div style="font-size:12px; color:#666; margin-bottom:8px;">Это временный ручной ввод. Позже сюда подключим GPT, скриншоты, SMS и стенограммы звонков.</div>
+                <textarea id="communication-new-text" placeholder="Например: Клиент подтвердил визит во вторник в 9:30..."></textarea>
+                <div class="communication-add-row">
+                    <select id="communication-new-source" style="width:100%; padding:10px; border:1px solid var(--border-color); border-radius:8px; font-size:14px;">
+                        <option value="Marketplace">Marketplace</option>
+                        <option value="SMS">SMS</option>
+                        <option value="Телефон">Телефон</option>
+                        <option value="Заметка">Заметка</option>
+                        <option value="Другое">Другое</option>
+                    </select>
+                    <select id="communication-new-sender" style="width:100%; padding:10px; border:1px solid var(--border-color); border-radius:8px; font-size:14px;">
+                        <option value="customer">Клиент</option>
+                        <option value="owner">Я</option>
+                        <option value="note">Заметка</option>
+                    </select>
+                </div>
+                <button class="btn-add" type="button" style="margin-top:8px;" onclick="addCommunicationEntry()">+ Сохранить запись</button>
+            </div>
         </div>
     </div>
     <!-- Модальное окно создания/редактирования -->
@@ -308,6 +369,10 @@
         let currentEstimateJob = null;
         let currentTranslatedClient = null;
         let estimateTasksList = [];
+        let currentCommunicationClient = null;
+        let currentCommunicationFilter = 'all';
+        let communicationEntries = [];
+        let communicationListener = null;
         const timeSlots = ["7:00 am", "7:30 am", "8:00 am", "8:30 am", "9:00 am", "9:30 am", "10:00 am", "10:30 am", "11:00 am", "11:30 am", "12:00 pm", "12:30 pm", "1:00 pm", "1:30 pm", "2:00 pm", "2:30 pm", "3:00 pm", "3:30 pm", "4:00 pm", "4:30 pm", "5:00 pm", "5:30 pm", "6:00 pm", "6:30 pm"];
         
         function openPhotoViewer(url, event) {
@@ -536,6 +601,136 @@
                 container.appendChild(item);
             });
         }
+        function escapeHtml(value) {
+            return String(value ?? '')
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+        function communicationClientId(clientInfo) {
+            const raw = `${clientInfo?.name || ''}|${clientInfo?.phone || ''}|${clientInfo?.address || ''}`.trim().toLowerCase();
+            // Deterministic simple hash so the same existing client gets the same Firebase path.
+            let hash = 2166136261;
+            for (let i = 0; i < raw.length; i++) {
+                hash ^= raw.charCodeAt(i);
+                hash = Math.imul(hash, 16777619);
+            }
+            return `c_${(hash >>> 0).toString(16)}`;
+        }
+        function openCommunicationsModal(clientInfo, job = null) {
+            currentCommunicationClient = {
+                name: clientInfo?.name || job?.client || clientInfo?.displayName || 'Клиент',
+                phone: clientInfo?.phone || job?.phone || '',
+                address: clientInfo?.address || job?.address || ''
+            };
+            currentCommunicationFilter = 'all';
+            document.getElementById('communications-title').innerText = `История переписки — ${currentCommunicationClient.name || 'Клиент'}`;
+            document.getElementById('communications-summary').innerHTML = `
+                <div style="font-weight:800; font-size:16px; color:#0f2c59; margin-bottom:4px;">${escapeHtml(currentCommunicationClient.name || 'Клиент')}</div>
+                <div style="font-size:13px; color:#555;">Телефон: ${currentCommunicationClient.phone ? `<a href="tel:${escapeHtml(currentCommunicationClient.phone)}">${escapeHtml(currentCommunicationClient.phone)}</a>` : '<span style="color:#d32f2f; font-weight:700;">Не найден</span>'}</div>
+                <div style="font-size:13px; color:#555;">Адрес: ${escapeHtml(currentCommunicationClient.address || 'Не указан')}</div>
+            `;
+            document.getElementById('communication-new-text').value = '';
+            document.getElementById('communications-modal').style.display = 'flex';
+            setCommunicationFilter('all');
+            subscribeToCommunicationHistory();
+        }
+        function subscribeToCommunicationHistory() {
+            if (!currentCommunicationClient) return;
+            if (communicationListener) {
+                communicationListener.off();
+                communicationListener = null;
+            }
+            const id = communicationClientId(currentCommunicationClient);
+            communicationListener = db.ref(`client_communications/${id}`);
+            communicationListener.on('value', snapshot => {
+                const data = snapshot.val() || {};
+                communicationEntries = Object.keys(data).map(key => ({ id:key, ...data[key] }));
+                communicationEntries.sort((a,b) => (a.timestamp || 0) - (b.timestamp || 0));
+                renderCommunicationHistory();
+            });
+        }
+        function renderCommunicationHistory() {
+            const list = document.getElementById('communications-list');
+            if (!list) return;
+            const filtered = communicationEntries.filter(entry => {
+                if (currentCommunicationFilter === 'all') return true;
+                return entry.type === currentCommunicationFilter;
+            });
+            list.innerHTML = '';
+            if (filtered.length === 0) {
+                list.innerHTML = `<div class="communication-empty">История пока пуста.<br><span style="font-size:12px;">Позже сюда будут попадать скриншоты, сообщения и стенограммы звонков.</span></div>`;
+                return;
+            }
+            filtered.forEach(entry => {
+                const item = document.createElement('div');
+                const senderClass = entry.sender === 'owner' ? 'owner' : (entry.sender === 'note' ? 'note' : 'customer');
+                item.className = `communication-item ${senderClass}`;
+                const dateText = entry.timestamp ? new Date(entry.timestamp).toLocaleString('ru-RU', { dateStyle:'medium', timeStyle:'short' }) : '';
+                const senderText = entry.sender === 'owner' ? 'Я' : (entry.sender === 'note' ? 'Заметка' : 'Клиент');
+                item.innerHTML = `
+                    <div class="communication-meta">
+                        <span class="communication-source">${escapeHtml(entry.source || 'Другое')}</span>
+                        <span>${escapeHtml(dateText)}</span>
+                    </div>
+                    <div style="font-size:12px; color:#555; margin-bottom:4px; font-weight:700;">${escapeHtml(senderText)}</div>
+                    <div class="communication-text">${escapeHtml(entry.text || '')}</div>
+                    ${entry.originalType ? `<div class="communication-original">Источник: ${escapeHtml(entry.originalType)}</div>` : ''}
+                `;
+                list.appendChild(item);
+            });
+            list.scrollTop = list.scrollHeight;
+        }
+        function setCommunicationFilter(filter) {
+            currentCommunicationFilter = filter;
+            ['all','messages','calls'].forEach(id => {
+                const el = document.getElementById(`communication-filter-${id}`);
+                if (el) el.classList.remove('active');
+            });
+            const map = { all:'all', message:'messages', call:'calls' };
+            const active = document.getElementById(`communication-filter-${map[filter] || 'all'}`);
+            if (active) active.classList.add('active');
+            renderCommunicationHistory();
+        }
+        function addCommunicationEntry() {
+            if (!currentCommunicationClient) return;
+            const text = document.getElementById('communication-new-text').value.trim();
+            if (!text) {
+                alert('Введите текст записи.');
+                return;
+            }
+            const source = document.getElementById('communication-new-source').value;
+            const sender = document.getElementById('communication-new-sender').value;
+            const type = source === 'Телефон' ? 'call' : 'message';
+            const id = communicationClientId(currentCommunicationClient);
+            db.ref(`client_communications/${id}`).push({
+                text,
+                source,
+                sender,
+                type,
+                timestamp: Date.now(),
+                clientName: currentCommunicationClient.name || '',
+                phone: currentCommunicationClient.phone || '',
+                address: currentCommunicationClient.address || '',
+                originalType: 'Ручная запись'
+            }).then(() => {
+                document.getElementById('communication-new-text').value = '';
+            }).catch(err => {
+                console.error(err);
+                alert('Не удалось сохранить запись. Проверьте доступ Firebase Database.');
+            });
+        }
+        function closeCommunicationsModal() {
+            if (communicationListener) {
+                communicationListener.off();
+                communicationListener = null;
+            }
+            currentCommunicationClient = null;
+            communicationEntries = [];
+            closeModal('communications-modal');
+        }
         function openClientHistoryModal(clientKey) {
             const clients = getAllClients();
             const clientInfo = clients[clientKey] || { name: clientKey, phone: '', address: '' };
@@ -587,6 +782,9 @@
                 closeModal('client-history-modal');
                 closeModal('clients-modal');
                 openAddModalWithClient(clientInfo);
+            };
+            document.getElementById('client-history-communications-btn').onclick = () => {
+                openCommunicationsModal(clientInfo);
             };
             document.getElementById('client-history-modal').style.display = 'flex';
         }
@@ -702,6 +900,7 @@
                 ${photosHtml}
                 ${descriptionHtml}
                 ${smsButtonHtml}
+                <button class="btn-action" style="background:#008b99; color:white; border:none; margin-top:10px; font-size:15px; font-weight:700;" onclick="openCommunicationsModal({name:${JSON.stringify(job.client || '')}, phone:${JSON.stringify(job.phone || '')}, address:${JSON.stringify(job.address || '')}}, ${JSON.stringify(job).replace(/"/g, '&quot;')})">💬 История переписки</button>
                 <button class="btn-action" style="background:#008b99; color:white; border:none; margin-top:10px; font-size:15px; font-weight:700;" onclick="openEstimateBuilderModal(${JSON.stringify(job).replace(/"/g, '&quot;')})">📄 Сформировать Estimate</button>
                 <div class="btn-grid-actions">
                     <button class="btn-action" style="background:#0f2c59; color:white;" onclick="openAddModal(${JSON.stringify(job).replace(/"/g, '&quot;')}, '${id}', false)">✏️ Редактировать</button>
@@ -1026,7 +1225,14 @@
                 closeModal('details-modal');
             }
         }
-        function closeModal(modalId) { document.getElementById(modalId).style.display = 'none'; }
+        function closeModal(modalId) {
+            if (modalId === 'communications-modal') {
+                if (communicationListener) { communicationListener.off(); communicationListener = null; }
+                currentCommunicationClient = null;
+                communicationEntries = [];
+            }
+            document.getElementById(modalId).style.display = 'none';
+        }
         function processPhotos(files, callback) {
             if (!files || files.length === 0) return callback(existingPhotos);
             let photos = [...existingPhotos];
